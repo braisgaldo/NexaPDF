@@ -196,9 +196,14 @@
     <string name="error_sin_memoria">O documento é grande de máis para a memoria dispoñible. Proba a separalo en partes antes.</string>
     <string name="firma_aviso_legal">NexaPDF aplica a sinatura no teu dispositivo e nunca envía o teu certificado a ningún sitio. Que a sinatura teña validez legal depende de quen emitiu o certificado.</string>
     <string name="firma_certificado">Sinatura con certificado</string>
+    <string name="firma_certificado_activo">Certificado: %1$s</string>
     <string name="firma_certificado_desc">Usa o teu certificado PKCS#12 (.p12 ou .pfx). Calquera lector poderá comprobar que o documento non se alterou.</string>
     <string name="firma_colocar">Colocar na páxina</string>
     <string name="firma_cubre_todo">Cobre todo o documento</string>
+    <string name="firma_desde_almacen">Instalado no dispositivo</string>
+    <string name="firma_desde_almacen_desc">Os certificados que instalaches nos axustes de Android. A chave privada non sae nunca do almacén do sistema.</string>
+    <string name="firma_desde_fichero">Desde un ficheiro (.p12 ou .pfx)</string>
+    <string name="firma_desde_fichero_desc">Un ficheiro de certificado gardado no teléfono. Pedirache o seu contrasinal.</string>
     <string name="firma_dibuja_aqui">Debuxa aquí a túa sinatura</string>
     <string name="firma_elegir_certificado">Escoller certificado</string>
     <string name="firma_existentes">Sinaturas deste documento</string>
@@ -212,8 +217,10 @@
     <string name="firma_manuscrita_desc">Debúxaa e colócaa na páxina. É unha marca visible, non unha sinatura certificada.</string>
     <string name="firma_motivo">Motivo (opcional)</string>
     <string name="firma_nombre_visible">Nome visible</string>
+    <string name="firma_origen">Onde tes o certificado?</string>
     <string name="firma_sin_existentes">Este documento aínda non está asinado</string>
     <string name="firma_titulo">Asinar documento</string>
+    <string name="firma_vista_previa">Primeira páxina do documento</string>
     <string name="herr_editar_desc">Debuxa, engade texto, formas e imaxes</string>
     <string name="herr_editar_titulo">Editar PDF</string>
     <string name="herr_firmar_desc">A man ou co teu certificado</string>

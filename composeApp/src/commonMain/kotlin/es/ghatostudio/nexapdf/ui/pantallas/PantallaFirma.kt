@@ -22,9 +22,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Badge
 import androidx.compose.material.icons.filled.Draw
+import androidx.compose.material.icons.filled.FolderOpen
+import androidx.compose.material.icons.filled.PhoneAndroid
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -57,7 +62,12 @@ import es.ghatostudio.nexapdf.resources.Res
 import es.ghatostudio.nexapdf.resources.doc_contrasena
 import es.ghatostudio.nexapdf.resources.firma_aviso_legal
 import es.ghatostudio.nexapdf.resources.firma_certificado
+import es.ghatostudio.nexapdf.resources.firma_certificado_activo
 import es.ghatostudio.nexapdf.resources.firma_certificado_desc
+import es.ghatostudio.nexapdf.resources.firma_desde_almacen
+import es.ghatostudio.nexapdf.resources.firma_desde_almacen_desc
+import es.ghatostudio.nexapdf.resources.firma_desde_fichero
+import es.ghatostudio.nexapdf.resources.firma_desde_fichero_desc
 import es.ghatostudio.nexapdf.resources.firma_cubre_todo
 import es.ghatostudio.nexapdf.resources.firma_dibuja_aqui
 import es.ghatostudio.nexapdf.resources.firma_elegir_certificado
@@ -70,9 +80,12 @@ import es.ghatostudio.nexapdf.resources.firma_manuscrita
 import es.ghatostudio.nexapdf.resources.firma_manuscrita_desc
 import es.ghatostudio.nexapdf.resources.firma_motivo
 import es.ghatostudio.nexapdf.resources.firma_nombre_visible
+import es.ghatostudio.nexapdf.resources.firma_origen
 import es.ghatostudio.nexapdf.resources.firma_sin_existentes
 import es.ghatostudio.nexapdf.resources.firma_titulo
+import es.ghatostudio.nexapdf.resources.firma_vista_previa
 import es.ghatostudio.nexapdf.ui.componentes.BarraSuperior
+import es.ghatostudio.nexapdf.ui.componentes.MiniaturaPagina
 import es.ghatostudio.nexapdf.ui.componentes.TituloSeccion
 import org.jetbrains.compose.resources.stringResource
 
@@ -86,13 +99,22 @@ data class PeticionFirmaCertificado(
 
 @Composable
 fun PantallaFirma(
+    rutaDocumento: String,
     nombreDocumento: String,
     firmasExistentes: List<FirmaExistente>,
     nombreCertificado: String?,
+    /**
+     * Si el certificado elegido necesita contrasena. Los de fichero si; los del
+     * almacen del sistema no, porque de autenticar al usuario ya se encarga
+     * Android antes de dejar usar la clave.
+     */
+    certificadoPideContrasena: Boolean,
+    hayAlmacenDeClaves: Boolean,
     nombreSugerido: String,
     snackbar: SnackbarHostState,
     alColocarManuscrita: (List<List<Punto>>) -> Unit,
-    alElegirCertificado: () -> Unit,
+    alElegirCertificadoDeFichero: () -> Unit,
+    alElegirCertificadoDelSistema: () -> Unit,
     alFirmarConCertificado: (PeticionFirmaCertificado) -> Unit,
     alVolver: () -> Unit,
 ) {
@@ -120,6 +142,29 @@ fun PantallaFirma(
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
                 )
+            }
+
+            // Ver el documento antes de firmarlo no es un adorno: firmar es
+            // irreversible y con nombres parecidos es facil equivocarse de
+            // fichero. La primera pagina basta para reconocerlo.
+            item {
+                val descripcion = stringResource(Res.string.firma_vista_previa)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 4.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    MiniaturaPagina(
+                        ruta = rutaDocumento,
+                        indice = 0,
+                        proporcion = null,
+                        anchoPx = 520,
+                        modifier = Modifier
+                            .width(200.dp)
+                            .semantics { contentDescription = descripcion },
+                    )
+                }
             }
 
             // --- Firmas ya presentes -----------------------------------------
@@ -212,29 +257,72 @@ fun PantallaFirma(
                 )
             }
             item {
-                TextButton(
-                    onClick = alElegirCertificado,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 48.dp)
-                        .padding(horizontal = 16.dp),
-                ) {
-                    Icon(Icons.Filled.Badge, contentDescription = null)
-                    Spacer(Modifier.width(8.dp))
-                    Text(nombreCertificado ?: stringResource(Res.string.firma_elegir_certificado))
+                Text(
+                    text = stringResource(Res.string.firma_origen),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+                )
+            }
+
+            if (hayAlmacenDeClaves) {
+                item {
+                    OpcionOrigen(
+                        icono = Icons.Filled.PhoneAndroid,
+                        titulo = stringResource(Res.string.firma_desde_almacen),
+                        descripcion = stringResource(Res.string.firma_desde_almacen_desc),
+                        alPulsar = alElegirCertificadoDelSistema,
+                    )
+                }
+            }
+
+            item {
+                OpcionOrigen(
+                    icono = Icons.Filled.FolderOpen,
+                    titulo = stringResource(Res.string.firma_desde_fichero),
+                    descripcion = stringResource(Res.string.firma_desde_fichero_desc),
+                    alPulsar = alElegirCertificadoDeFichero,
+                )
+            }
+
+            if (nombreCertificado != null) {
+                item {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            Icons.Filled.Badge,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                        Spacer(Modifier.width(10.dp))
+                        Text(
+                            text = stringResource(
+                                Res.string.firma_certificado_activo,
+                                nombreCertificado,
+                            ),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                    }
                 }
             }
             item {
                 Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-                    OutlinedTextField(
-                        value = contrasena,
-                        onValueChange = { contrasena = it },
-                        label = { Text(stringResource(Res.string.doc_contrasena)) },
-                        singleLine = true,
-                        visualTransformation = PasswordVisualTransformation(),
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                    Spacer(Modifier.height(10.dp))
+                    if (certificadoPideContrasena) {
+                        OutlinedTextField(
+                            value = contrasena,
+                            onValueChange = { contrasena = it },
+                            label = { Text(stringResource(Res.string.doc_contrasena)) },
+                            singleLine = true,
+                            visualTransformation = PasswordVisualTransformation(),
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                        Spacer(Modifier.height(10.dp))
+                    }
                     OutlinedTextField(
                         value = nombreVisible,
                         onValueChange = { nombreVisible = it },
@@ -265,7 +353,10 @@ fun PantallaFirma(
                                 PeticionFirmaCertificado(contrasena, motivo, lugar, nombreVisible),
                             )
                         },
-                        enabled = nombreCertificado != null && contrasena.isNotEmpty(),
+                        // Con el certificado del sistema no hay contrasena que
+                        // exigir: la pide Android, no la aplicacion.
+                        enabled = nombreCertificado != null &&
+                            (!certificadoPideContrasena || contrasena.isNotEmpty()),
                         modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp),
                     ) {
                         Text(stringResource(Res.string.firma_firmar_ahora))
@@ -277,6 +368,50 @@ fun PantallaFirma(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
+            }
+        }
+    }
+}
+
+/** Una de las dos procedencias posibles del certificado. */
+@Composable
+private fun OpcionOrigen(
+    icono: androidx.compose.ui.graphics.vector.ImageVector,
+    titulo: String,
+    descripcion: String,
+    alPulsar: () -> Unit,
+) {
+    Card(
+        onClick = alPulsar,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 48.dp)
+            .padding(horizontal = 20.dp, vertical = 5.dp),
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                icono,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+            )
+            Spacer(Modifier.width(14.dp))
+            Column {
+                Text(
+                    text = titulo,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                Text(
+                    text = descripcion,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
         }
     }

@@ -196,9 +196,14 @@
     <string name="error_sin_memoria">المستند أكبر من الذاكرة المتاحة. جرّب تقسيمه إلى أجزاء أولًا.</string>
     <string name="firma_aviso_legal">يوقّع NexaPDF داخل جهازك ولا يرسل شهادتك إلى أي مكان. أما الصلاحية القانونية للتوقيع فتعتمد على الجهة التي أصدرت الشهادة.</string>
     <string name="firma_certificado">التوقيع بشهادة</string>
+    <string name="firma_certificado_activo">الشهادة: %1$s</string>
     <string name="firma_certificado_desc">يستخدم شهادتك من نوع PKCS#12 (‏.p12 أو ‎.pfx). عندها يمكن لأي قارئ التحقق من أن المستند لم يُعدَّل.</string>
     <string name="firma_colocar">ضعه في الصفحة</string>
     <string name="firma_cubre_todo">يغطي المستند بالكامل</string>
+    <string name="firma_desde_almacen">مثبّتة على الجهاز</string>
+    <string name="firma_desde_almacen_desc">الشهادات التي ثبّتها في إعدادات أندرويد. المفتاح الخاص لا يغادر مخزن النظام أبدًا.</string>
+    <string name="firma_desde_fichero">من ملف (‏.p12 أو ‎.pfx)</string>
+    <string name="firma_desde_fichero_desc">ملف شهادة محفوظ في الهاتف. سيُطلب منك إدخال كلمة مروره.</string>
     <string name="firma_dibuja_aqui">ارسم توقيعك هنا</string>
     <string name="firma_elegir_certificado">اختيار شهادة</string>
     <string name="firma_existentes">التوقيعات في هذا المستند</string>
@@ -212,8 +217,10 @@
     <string name="firma_manuscrita_desc">ارسمه وضعه في الصفحة. إنه علامة مرئية وليس توقيعًا مُعتمدًا.</string>
     <string name="firma_motivo">السبب (اختياري)</string>
     <string name="firma_nombre_visible">الاسم الظاهر</string>
+    <string name="firma_origen">أين شهادتك؟</string>
     <string name="firma_sin_existentes">لم يُوقَّع هذا المستند بعد</string>
     <string name="firma_titulo">توقيع المستند</string>
+    <string name="firma_vista_previa">الصفحة الأولى من المستند</string>
     <string name="herr_editar_desc">ارسم وأضف نصًا وأشكالًا وصورًا</string>
     <string name="herr_editar_titulo">تحرير PDF</string>
     <string name="herr_firmar_desc">بخط اليد أو باستخدام شهادتك</string>

@@ -47,6 +47,18 @@ interface SelectorFicheros {
     /** Elige un certificado PKCS#12 (.p12 o .pfx). */
     suspend fun elegirCertificado(): FicheroElegido?
 
+    /** Si el sistema tiene un almacen de claves donde elegir un certificado. */
+    fun hayAlmacenDeClaves(): Boolean
+
+    /**
+     * Deja al usuario elegir un certificado ya instalado en el dispositivo y
+     * devuelve su alias, o `null` si cancela o no concede el acceso.
+     *
+     * Devuelve un alias y no la clave: el material criptografico se queda en el
+     * almacen del sistema y solo se usa a traves de el.
+     */
+    suspend fun elegirDelAlmacenDeClaves(): String?
+
     /** Elige una copia de seguridad .nexaPDF.bak. */
     suspend fun elegirCopiaSeguridad(): FicheroElegido?
 

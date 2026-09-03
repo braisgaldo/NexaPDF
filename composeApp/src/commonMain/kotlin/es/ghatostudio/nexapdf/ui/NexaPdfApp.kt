@@ -43,6 +43,7 @@ import es.ghatostudio.nexapdf.domain.pdf.EntradaUnion
 import es.ghatostudio.nexapdf.domain.pdf.ErrorPdf
 import es.ghatostudio.nexapdf.domain.pdf.FirmaExistente
 import es.ghatostudio.nexapdf.domain.pdf.FormatoDocumento
+import es.ghatostudio.nexapdf.domain.pdf.OrigenCertificado
 import es.ghatostudio.nexapdf.domain.pdf.ResultadoPdf
 import es.ghatostudio.nexapdf.resources.Res
 import es.ghatostudio.nexapdf.resources.aj_compartir_texto
@@ -150,7 +151,7 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
 
     // Estado de la firma
     var firmasExistentes by remember { mutableStateOf(emptyList<FirmaExistente>()) }
-    var certificado by remember { mutableStateOf<Pair<String, ByteArray>?>(null) }
+    var certificado by remember { mutableStateOf<Pair<String, OrigenCertificado>?>(null) }
 
     // De donde sacar las imagenes. `null` = no se esta preguntando; `true` =
     // se pueden elegir varias, `false` = solo una.
@@ -697,9 +698,13 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
             }
 
             is Destino.Firma -> PantallaFirma(
+                rutaDocumento = destino.ruta,
                 nombreDocumento = contenedor.ficheros.nombre(destino.ruta),
                 firmasExistentes = firmasExistentes,
                 nombreCertificado = certificado?.first,
+                certificadoPideContrasena =
+                    certificado?.second is OrigenCertificado.Fichero,
+                hayAlmacenDeClaves = contenedor.selector.hayAlmacenDeClaves(),
                 nombreSugerido = ajustes.nombreParaFirmas,
                 snackbar = snackbar,
                 alVolver = { estado.volver() },
@@ -748,26 +753,47 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
                         }
                     }
                 },
-                alElegirCertificado = {
+                alElegirCertificadoDeFichero = {
                     alcance.launch {
                         val elegido = contenedor.selector.elegirCertificado() ?: return@launch
                         val contenido = contenedor.ficheros.leerBytes(elegido.ruta)
                         if (contenido == null) {
                             estado.avisar(getString(Res.string.error_certificado))
                         } else {
-                            certificado = elegido.nombre to contenido
+                            // La contrasena se rellena al pulsar Firmar: aqui
+                            // solo queda apuntado de donde salen los bytes.
+                            certificado = elegido.nombre to
+                                OrigenCertificado.Fichero(contenido, "")
+                        }
+                    }
+                },
+                alElegirCertificadoDelSistema = {
+                    alcance.launch {
+                        val alias = contenedor.selector.elegirDelAlmacenDeClaves()
+                        if (alias == null) {
+                            estado.avisar(getString(Res.string.error_certificado))
+                        } else {
+                            certificado = alias to OrigenCertificado.AlmacenDelSistema(alias)
                         }
                     }
                 },
                 alFirmarConCertificado = { peticion ->
                     alcance.launch {
                         val credenciales = certificado ?: return@launch
+                        // La contrasena la escribe el usuario justo ahora, asi
+                        // que el origen de fichero se rehace con ella; el del
+                        // almacen del sistema no la necesita.
+                        val origen = when (val elegido = credenciales.second) {
+                            is OrigenCertificado.Fichero ->
+                                OrigenCertificado.Fichero(elegido.contenido, peticion.contrasena)
+
+                            is OrigenCertificado.AlmacenDelSistema -> elegido
+                        }
                         estado.empezarTrabajo(textoProcesando)
                         val salida = rutaDeSalida("${nombreBase(destino.ruta)} firmado.pdf")
                         val resultado = contenedor.motorPdf.firmarConCertificado(
                             ruta = destino.ruta,
-                            certificado = credenciales.second,
-                            contrasenaCertificado = peticion.contrasena,
+                            origen = origen,
                             apariencia = null as AparienciaFirma?,
                             motivo = peticion.motivo,
                             lugar = peticion.lugar,

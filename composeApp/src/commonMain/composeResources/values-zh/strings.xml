@@ -196,9 +196,14 @@
     <string name="error_sin_memoria">文档太大，超出可用内存。可以先把它拆成几部分。</string>
     <string name="firma_aviso_legal">NexaPDF 在你的设备上完成签名，绝不会把证书发送到任何地方。签名是否具有法律效力，取决于证书的颁发机构。</string>
     <string name="firma_certificado">证书签名</string>
+    <string name="firma_certificado_activo">证书：%1$s</string>
     <string name="firma_certificado_desc">使用你的 PKCS#12 证书（.p12 或 .pfx）。之后任何阅读器都能验证文档未被改动。</string>
     <string name="firma_colocar">放到页面上</string>
     <string name="firma_cubre_todo">覆盖整个文档</string>
+    <string name="firma_desde_almacen">已安装在本机</string>
+    <string name="firma_desde_almacen_desc">您在 Android 设置中安装的证书。私钥始终不会离开系统存储区。</string>
+    <string name="firma_desde_fichero">从文件选择（.p12 或 .pfx）</string>
+    <string name="firma_desde_fichero_desc">保存在手机上的证书文件。稍后会请您输入密码。</string>
     <string name="firma_dibuja_aqui">在此处签名</string>
     <string name="firma_elegir_certificado">选择证书</string>
     <string name="firma_existentes">本文档中的签名</string>
@@ -212,8 +217,10 @@
     <string name="firma_manuscrita_desc">画好后放到页面上。这是可见的标记，不是经过认证的签名。</string>
     <string name="firma_motivo">原因（可选）</string>
     <string name="firma_nombre_visible">显示的姓名</string>
+    <string name="firma_origen">证书在哪里？</string>
     <string name="firma_sin_existentes">该文档尚未签署</string>
     <string name="firma_titulo">签署文档</string>
+    <string name="firma_vista_previa">文档的第一页</string>
     <string name="herr_editar_desc">涂画、添加文字、形状和图片</string>
     <string name="herr_editar_titulo">编辑 PDF</string>
     <string name="herr_firmar_desc">手写签名或使用证书</string>

@@ -97,14 +97,14 @@ interface MotorPdf {
     ): ResultadoPdf<List<BloqueTexto>>
 
     /**
-     * Firma con un certificado PKCS#12 del usuario. Produce una firma
+     * Firma con un certificado del usuario, venga de un fichero PKCS#12 o del
+     * almacen de claves del dispositivo. Produce una firma
      * `adbe.pkcs7.detached` incrustada en el PDF, comprobable por cualquier
      * lector, y opcionalmente su representacion visible.
      */
     suspend fun firmarConCertificado(
         ruta: String,
-        certificado: ByteArray,
-        contrasenaCertificado: String,
+        origen: OrigenCertificado,
         apariencia: AparienciaFirma?,
         motivo: String?,
         lugar: String?,

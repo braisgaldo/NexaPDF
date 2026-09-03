@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
             contexto = applicationContext,
             actividadActual = { this },
         )
-        val motor = MotorPdfAndroid(servicios.directorioTrabajo)
+        val motor = MotorPdfAndroid(applicationContext, servicios.directorioTrabajo)
         contenedor = ContenedorApp(
             motorPdf = motor,
             conversor = ConversorDocumentosAndroid(motor),

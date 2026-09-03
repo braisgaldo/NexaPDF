@@ -196,9 +196,14 @@
     <string name="error_sin_memoria">Το έγγραφο είναι πολύ μεγάλο για τη διαθέσιμη μνήμη. Δοκιμάστε πρώτα να το χωρίσετε.</string>
     <string name="firma_aviso_legal">Το NexaPDF υπογράφει στη συσκευή σας και δεν στέλνει ποτέ το πιστοποιητικό σας πουθενά. Η νομική ισχύς εξαρτάται από τον εκδότη του πιστοποιητικού.</string>
     <string name="firma_certificado">Υπογραφή με πιστοποιητικό</string>
+    <string name="firma_certificado_activo">Πιστοποιητικό: %1$s</string>
     <string name="firma_certificado_desc">Χρησιμοποιεί το πιστοποιητικό σας PKCS#12 (.p12 ή .pfx). Κάθε πρόγραμμα ανάγνωσης θα μπορεί να επαληθεύσει ότι το έγγραφο δεν άλλαξε.</string>
     <string name="firma_colocar">Τοποθέτηση στη σελίδα</string>
     <string name="firma_cubre_todo">Καλύπτει όλο το έγγραφο</string>
+    <string name="firma_desde_almacen">Εγκατεστημένο στη συσκευή</string>
+    <string name="firma_desde_almacen_desc">Τα πιστοποιητικά που εγκαταστήσατε στις ρυθμίσεις του Android. Το ιδιωτικό κλειδί δεν βγαίνει ποτέ από το σύστημα.</string>
+    <string name="firma_desde_fichero">Από αρχείο (.p12 ή .pfx)</string>
+    <string name="firma_desde_fichero_desc">Ένα αρχείο πιστοποιητικού στο τηλέφωνο. Θα σας ζητηθεί ο κωδικός του.</string>
     <string name="firma_dibuja_aqui">Σχεδιάστε εδώ την υπογραφή σας</string>
     <string name="firma_elegir_certificado">Επιλογή πιστοποιητικού</string>
     <string name="firma_existentes">Υπογραφές σε αυτό το έγγραφο</string>
@@ -212,8 +217,10 @@
     <string name="firma_manuscrita_desc">Σχεδιάστε την και τοποθετήστε την στη σελίδα. Είναι ορατό σημάδι, όχι πιστοποιημένη υπογραφή.</string>
     <string name="firma_motivo">Λόγος (προαιρετικά)</string>
     <string name="firma_nombre_visible">Εμφανιζόμενο όνομα</string>
+    <string name="firma_origen">Πού είναι το πιστοποιητικό σας;</string>
     <string name="firma_sin_existentes">Αυτό το έγγραφο δεν έχει υπογραφεί ακόμη</string>
     <string name="firma_titulo">Υπογραφή εγγράφου</string>
+    <string name="firma_vista_previa">Πρώτη σελίδα του εγγράφου</string>
     <string name="herr_editar_desc">Σχεδιάστε, προσθέστε κείμενο, σχήματα και εικόνες</string>
     <string name="herr_editar_titulo">Επεξεργασία PDF</string>
     <string name="herr_firmar_desc">Με το χέρι ή με το πιστοποιητικό σας</string>

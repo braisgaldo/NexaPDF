@@ -196,9 +196,14 @@
     <string name="error_sin_memoria">The document is too large for the memory available. Try splitting it into parts first.</string>
     <string name="firma_aviso_legal">NexaPDF applies the signature on your device and never sends your certificate anywhere. Whether the signature is legally valid depends on who issued the certificate.</string>
     <string name="firma_certificado">Certificate signature</string>
+    <string name="firma_certificado_activo">Certificate: %1$s</string>
     <string name="firma_certificado_desc">Uses your PKCS#12 certificate (.p12 or .pfx). Any reader can then verify the document has not been altered.</string>
     <string name="firma_colocar">Place on the page</string>
     <string name="firma_cubre_todo">Covers the whole document</string>
+    <string name="firma_desde_almacen">Installed on this device</string>
+    <string name="firma_desde_almacen_desc">Certificates you added in Android settings. The private key never leaves the system store.</string>
+    <string name="firma_desde_fichero">From a file (.p12 or .pfx)</string>
+    <string name="firma_desde_fichero_desc">A certificate file saved on the phone. You will be asked for its password.</string>
     <string name="firma_dibuja_aqui">Draw your signature here</string>
     <string name="firma_elegir_certificado">Choose certificate</string>
     <string name="firma_existentes">Signatures in this document</string>
@@ -212,8 +217,10 @@
     <string name="firma_manuscrita_desc">Draw it and place it on the page. It is a visible mark, not a certified signature.</string>
     <string name="firma_motivo">Reason (optional)</string>
     <string name="firma_nombre_visible">Name shown</string>
+    <string name="firma_origen">Where is your certificate?</string>
     <string name="firma_sin_existentes">This document is not signed yet</string>
     <string name="firma_titulo">Sign document</string>
+    <string name="firma_vista_previa">First page of the document</string>
     <string name="herr_editar_desc">Draw, add text, shapes and images</string>
     <string name="herr_editar_titulo">Edit PDF</string>
     <string name="herr_firmar_desc">By hand or with your certificate</string>

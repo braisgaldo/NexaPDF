@@ -196,9 +196,14 @@
     <string name="error_sin_memoria">Il documento è troppo grande per la memoria disponibile. Prova prima a dividerlo in parti.</string>
     <string name="firma_aviso_legal">NexaPDF applica la firma sul tuo dispositivo e non invia mai il certificato da nessuna parte. La validità legale dipende da chi ha emesso il certificato.</string>
     <string name="firma_certificado">Firma con certificato</string>
+    <string name="firma_certificado_activo">Certificato: %1$s</string>
     <string name="firma_certificado_desc">Usa il tuo certificato PKCS#12 (.p12 o .pfx). Qualsiasi lettore potrà verificare che il documento non sia stato alterato.</string>
     <string name="firma_colocar">Posiziona sulla pagina</string>
     <string name="firma_cubre_todo">Copre tutto il documento</string>
+    <string name="firma_desde_almacen">Installato sul dispositivo</string>
+    <string name="firma_desde_almacen_desc">I certificati installati nelle impostazioni di Android. La chiave privata non esce mai dall’archivio di sistema.</string>
+    <string name="firma_desde_fichero">Da un file (.p12 o .pfx)</string>
+    <string name="firma_desde_fichero_desc">Un file di certificato salvato sul telefono. Ti verrà chiesta la password.</string>
     <string name="firma_dibuja_aqui">Disegna qui la tua firma</string>
     <string name="firma_elegir_certificado">Scegli certificato</string>
     <string name="firma_existentes">Firme in questo documento</string>
@@ -212,8 +217,10 @@
     <string name="firma_manuscrita_desc">Disegnala e posizionala sulla pagina. È un segno visibile, non una firma certificata.</string>
     <string name="firma_motivo">Motivo (facoltativo)</string>
     <string name="firma_nombre_visible">Nome visibile</string>
+    <string name="firma_origen">Dove si trova il certificato?</string>
     <string name="firma_sin_existentes">Questo documento non è ancora firmato</string>
     <string name="firma_titulo">Firma il documento</string>
+    <string name="firma_vista_previa">Prima pagina del documento</string>
     <string name="herr_editar_desc">Disegna, aggiungi testo, forme e immagini</string>
     <string name="herr_editar_titulo">Modifica PDF</string>
     <string name="herr_firmar_desc">A mano o con il tuo certificato</string>

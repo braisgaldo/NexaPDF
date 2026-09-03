@@ -196,9 +196,14 @@
     <string name="error_sin_memoria">文書が大きすぎて空きメモリに収まりません。先に分割してみてください。</string>
     <string name="firma_aviso_legal">NexaPDF は端末内で署名し、証明書をどこにも送信しません。署名に法的効力があるかどうかは証明書の発行元によります。</string>
     <string name="firma_certificado">証明書による署名</string>
+    <string name="firma_certificado_activo">証明書：%1$s</string>
     <string name="firma_certificado_desc">PKCS#12 証明書（.p12 または .pfx）を使います。どの閲覧ソフトでも改ざんされていないことを確認できます。</string>
     <string name="firma_colocar">ページに配置</string>
     <string name="firma_cubre_todo">文書全体を保護しています</string>
+    <string name="firma_desde_almacen">この端末にある証明書</string>
+    <string name="firma_desde_almacen_desc">Android の設定で追加した証明書です。秘密鍵がシステムの保管庫から出ることはありません。</string>
+    <string name="firma_desde_fichero">ファイルから（.p12 または .pfx）</string>
+    <string name="firma_desde_fichero_desc">スマートフォンに保存した証明書ファイルです。パスワードの入力を求められます。</string>
     <string name="firma_dibuja_aqui">ここに署名してください</string>
     <string name="firma_elegir_certificado">証明書を選ぶ</string>
     <string name="firma_existentes">この文書の署名</string>
@@ -212,8 +217,10 @@
     <string name="firma_manuscrita_desc">書いてページに配置します。見た目の印であり、証明付きの署名ではありません。</string>
     <string name="firma_motivo">理由（任意）</string>
     <string name="firma_nombre_visible">表示する名前</string>
+    <string name="firma_origen">証明書の場所</string>
     <string name="firma_sin_existentes">この文書はまだ署名されていません</string>
     <string name="firma_titulo">文書に署名</string>
+    <string name="firma_vista_previa">文書の 1 ページ目</string>
     <string name="herr_editar_desc">手書き、文字、図形、画像を追加します</string>
     <string name="herr_editar_titulo">PDF を編集</string>
     <string name="herr_firmar_desc">手書き、または証明書で署名します</string>

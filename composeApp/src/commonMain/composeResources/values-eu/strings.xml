@@ -196,9 +196,14 @@
     <string name="error_sin_memoria">Dokumentua handiegia da eskuragarri dagoen memoriarako. Saiatu lehenik zatitzen.</string>
     <string name="firma_aviso_legal">NexaPDFek zure gailuan sinatzen du eta ez du zure ziurtagiria inora bidaltzen. Sinadurak balio juridikoa duen ala ez, ziurtagiria nork eman duen araberakoa da.</string>
     <string name="firma_certificado">Ziurtagiriarekin sinatzea</string>
+    <string name="firma_certificado_activo">Ziurtagiria: %1$s</string>
     <string name="firma_certificado_desc">Zure PKCS#12 ziurtagiria erabiltzen du (.p12 edo .pfx). Edozein irakurgailuk egiaztatu ahal izango du dokumentua ez dela aldatu.</string>
     <string name="firma_colocar">Jarri orrian</string>
     <string name="firma_cubre_todo">Dokumentu osoa hartzen du</string>
+    <string name="firma_desde_almacen">Gailuan instalatuta</string>
+    <string name="firma_desde_almacen_desc">Android-en ezarpenetan instalatu zenituen ziurtagiriak. Gako pribatua ez da inoiz sistemaren biltegitik ateratzen.</string>
+    <string name="firma_desde_fichero">Fitxategi batetik (.p12 edo .pfx)</string>
+    <string name="firma_desde_fichero_desc">Telefonoan gordetako ziurtagiri-fitxategi bat. Bere pasahitza eskatuko dizu.</string>
     <string name="firma_dibuja_aqui">Marraztu hemen zure sinadura</string>
     <string name="firma_elegir_certificado">Aukeratu ziurtagiria</string>
     <string name="firma_existentes">Dokumentu honetako sinadurak</string>
@@ -212,8 +217,10 @@
     <string name="firma_manuscrita_desc">Marraztu eta jarri orrian. Marka ikusgai bat da, ez ziurtagiridun sinadura.</string>
     <string name="firma_motivo">Arrazoia (aukerakoa)</string>
     <string name="firma_nombre_visible">Izen ikusgaia</string>
+    <string name="firma_origen">Non duzu ziurtagiria?</string>
     <string name="firma_sin_existentes">Dokumentu hau ez dago oraindik sinatuta</string>
     <string name="firma_titulo">Sinatu dokumentua</string>
+    <string name="firma_vista_previa">Dokumentuaren lehen orria</string>
     <string name="herr_editar_desc">Marraztu, gehitu testua, formak eta irudiak</string>
     <string name="herr_editar_titulo">Editatu PDFa</string>
     <string name="herr_firmar_desc">Eskuz edo zure ziurtagiriarekin</string>

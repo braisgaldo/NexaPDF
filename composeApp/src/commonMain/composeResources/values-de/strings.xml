@@ -196,9 +196,14 @@
     <string name="error_sin_memoria">Das Dokument ist zu groß für den verfügbaren Speicher. Teilen Sie es zuerst auf.</string>
     <string name="firma_aviso_legal">NexaPDF signiert auf Ihrem Gerät und sendet Ihr Zertifikat niemals irgendwohin. Ob die Signatur rechtsgültig ist, hängt vom Aussteller des Zertifikats ab.</string>
     <string name="firma_certificado">Signatur mit Zertifikat</string>
+    <string name="firma_certificado_activo">Zertifikat: %1$s</string>
     <string name="firma_certificado_desc">Verwendet Ihr PKCS#12-Zertifikat (.p12 oder .pfx). Jeder Betrachter kann dann prüfen, dass das Dokument unverändert ist.</string>
     <string name="firma_colocar">Auf der Seite platzieren</string>
     <string name="firma_cubre_todo">Umfasst das gesamte Dokument</string>
+    <string name="firma_desde_almacen">Auf diesem Gerät installiert</string>
+    <string name="firma_desde_almacen_desc">Zertifikate, die Sie in den Android-Einstellungen hinzugefügt haben. Der private Schlüssel verlässt den Systemspeicher nie.</string>
+    <string name="firma_desde_fichero">Aus einer Datei (.p12 oder .pfx)</string>
+    <string name="firma_desde_fichero_desc">Eine auf dem Telefon gespeicherte Zertifikatsdatei. Das Passwort wird abgefragt.</string>
     <string name="firma_dibuja_aqui">Zeichnen Sie hier Ihre Unterschrift</string>
     <string name="firma_elegir_certificado">Zertifikat wählen</string>
     <string name="firma_existentes">Signaturen in diesem Dokument</string>
@@ -212,8 +217,10 @@
     <string name="firma_manuscrita_desc">Zeichnen und auf der Seite platzieren. Es ist eine sichtbare Markierung, keine zertifizierte Signatur.</string>
     <string name="firma_motivo">Grund (optional)</string>
     <string name="firma_nombre_visible">Angezeigter Name</string>
+    <string name="firma_origen">Wo liegt Ihr Zertifikat?</string>
     <string name="firma_sin_existentes">Dieses Dokument ist noch nicht signiert</string>
     <string name="firma_titulo">Dokument unterschreiben</string>
+    <string name="firma_vista_previa">Erste Seite des Dokuments</string>
     <string name="herr_editar_desc">Zeichnen, Text, Formen und Bilder hinzufügen</string>
     <string name="herr_editar_titulo">PDF bearbeiten</string>
     <string name="herr_firmar_desc">Handschriftlich oder mit Zertifikat</string>

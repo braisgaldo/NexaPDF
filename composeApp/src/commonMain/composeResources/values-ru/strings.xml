@@ -196,9 +196,14 @@
     <string name="error_sin_memoria">Документ слишком велик для доступной памяти. Попробуйте сначала разделить его.</string>
     <string name="firma_aviso_legal">NexaPDF подписывает на вашем устройстве и никуда не отправляет сертификат. Юридическая сила подписи зависит от того, кто выдал сертификат.</string>
     <string name="firma_certificado">Подпись сертификатом</string>
+    <string name="firma_certificado_activo">Сертификат: %1$s</string>
     <string name="firma_certificado_desc">Использует ваш сертификат PKCS#12 (.p12 или .pfx). Любая программа сможет проверить, что документ не изменялся.</string>
     <string name="firma_colocar">Разместить на странице</string>
     <string name="firma_cubre_todo">Охватывает весь документ</string>
+    <string name="firma_desde_almacen">Установлен на устройстве</string>
+    <string name="firma_desde_almacen_desc">Сертификаты, добавленные в настройках Android. Закрытый ключ никогда не покидает системное хранилище.</string>
+    <string name="firma_desde_fichero">Из файла (.p12 или .pfx)</string>
+    <string name="firma_desde_fichero_desc">Файл сертификата на телефоне. Потребуется его пароль.</string>
     <string name="firma_dibuja_aqui">Нарисуйте здесь свою подпись</string>
     <string name="firma_elegir_certificado">Выбрать сертификат</string>
     <string name="firma_existentes">Подписи в этом документе</string>
@@ -212,8 +217,10 @@
     <string name="firma_manuscrita_desc">Нарисуйте и разместите на странице. Это видимая отметка, а не заверенная подпись.</string>
     <string name="firma_motivo">Причина (необязательно)</string>
     <string name="firma_nombre_visible">Отображаемое имя</string>
+    <string name="firma_origen">Где ваш сертификат?</string>
     <string name="firma_sin_existentes">Документ ещё не подписан</string>
     <string name="firma_titulo">Подписать документ</string>
+    <string name="firma_vista_previa">Первая страница документа</string>
     <string name="herr_editar_desc">Рисуйте, добавляйте текст, фигуры и изображения</string>
     <string name="herr_editar_titulo">Редактировать PDF</string>
     <string name="herr_firmar_desc">От руки или сертификатом</string>

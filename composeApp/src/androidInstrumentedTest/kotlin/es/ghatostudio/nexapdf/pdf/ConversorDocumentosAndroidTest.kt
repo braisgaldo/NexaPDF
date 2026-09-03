@@ -47,7 +47,7 @@ class ConversorDocumentosAndroidTest {
             deleteRecursively()
             mkdirs()
         }
-        conversor = ConversorDocumentosAndroid(MotorPdfAndroid(trabajo.absolutePath))
+        conversor = ConversorDocumentosAndroid(MotorPdfAndroid(contexto, trabajo.absolutePath))
     }
 
     private fun <T> exito(resultado: ResultadoPdf<T>): T {

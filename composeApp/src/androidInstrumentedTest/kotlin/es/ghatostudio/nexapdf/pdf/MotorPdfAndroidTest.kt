@@ -26,6 +26,7 @@ import es.ghatostudio.nexapdf.domain.model.TamanoPagina
 import es.ghatostudio.nexapdf.domain.model.TipoFigura
 import es.ghatostudio.nexapdf.domain.pdf.EntradaUnion
 import es.ghatostudio.nexapdf.domain.pdf.ErrorPdf
+import es.ghatostudio.nexapdf.domain.pdf.OrigenCertificado
 import es.ghatostudio.nexapdf.domain.pdf.ResultadoPdf
 import kotlinx.coroutines.runBlocking
 import org.bouncycastle.asn1.x500.X500Name
@@ -71,7 +72,7 @@ class MotorPdfAndroidTest {
             deleteRecursively()
             mkdirs()
         }
-        motor = MotorPdfAndroid(trabajo.absolutePath)
+        motor = MotorPdfAndroid(contexto, trabajo.absolutePath)
     }
 
     // --- Utilidades ----------------------------------------------------------
@@ -544,8 +545,7 @@ class MotorPdfAndroidTest {
         exito(
             motor.firmarConCertificado(
                 ruta = fichero.absolutePath,
-                certificado = certificado,
-                contrasenaCertificado = CONTRASENA_CERTIFICADO,
+                origen = OrigenCertificado.Fichero(certificado, CONTRASENA_CERTIFICADO),
                 apariencia = null,
                 motivo = "Conformidad",
                 lugar = "A Coruna",
@@ -577,8 +577,7 @@ class MotorPdfAndroidTest {
 
         val resultado = motor.firmarConCertificado(
             ruta = fichero.absolutePath,
-            certificado = certificado,
-            contrasenaCertificado = "contrasena-equivocada",
+            origen = OrigenCertificado.Fichero(certificado, "contrasena-equivocada"),
             apariencia = null,
             motivo = null,
             lugar = null,

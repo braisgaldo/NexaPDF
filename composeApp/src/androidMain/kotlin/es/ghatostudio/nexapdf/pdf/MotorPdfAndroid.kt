@@ -1,5 +1,6 @@
 package es.ghatostudio.nexapdf.pdf
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -34,6 +35,7 @@ import es.ghatostudio.nexapdf.domain.pdf.EntradaUnion
 import es.ghatostudio.nexapdf.domain.pdf.ErrorPdf
 import es.ghatostudio.nexapdf.domain.pdf.FirmaExistente
 import es.ghatostudio.nexapdf.domain.pdf.MotorPdf
+import es.ghatostudio.nexapdf.domain.pdf.OrigenCertificado
 import es.ghatostudio.nexapdf.domain.pdf.ResultadoPdf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
@@ -59,6 +61,7 @@ import kotlin.math.roundToInt
  * sobre la copia descifrada, porque PdfRenderer no admite contrasenas.
  */
 class MotorPdfAndroid(
+    private val contexto: Context,
     private val directorioTrabajo: String,
 ) : MotorPdf {
 
@@ -720,20 +723,24 @@ class MotorPdfAndroid(
 
     override suspend fun firmarConCertificado(
         ruta: String,
-        certificado: ByteArray,
-        contrasenaCertificado: String,
+        origen: OrigenCertificado,
         apariencia: AparienciaFirma?,
         motivo: String?,
         lugar: String?,
         rutaSalida: String,
     ): ResultadoPdf<String> = withContext(Dispatchers.IO) {
-        val credenciales = firmador.abrirCertificado(certificado, contrasenaCertificado)
-            ?: return@withContext ResultadoPdf.Fallo(ErrorPdf.CERTIFICADO_INVALIDO)
+        val credenciales = when (origen) {
+            is OrigenCertificado.Fichero ->
+                firmador.abrirCertificado(origen.contenido, origen.contrasena)
+
+            is OrigenCertificado.AlmacenDelSistema ->
+                firmador.credencialesDelSistema(contexto, origen.alias)
+        } ?: return@withContext ResultadoPdf.Fallo(ErrorPdf.CERTIFICADO_INVALIDO)
 
         try {
             // Si hay firma visible se estampa antes: asi el dibujo queda dentro
             // de lo que la firma criptografica protege, y no encima de ella.
-            val origen = if (apariencia?.imagenPng != null) {
+            val ficheroOrigen = if (apariencia?.imagenPng != null) {
                 val intermedio = File(directorioTrabajo, "firma_visible_${System.nanoTime()}.pdf")
                 estamparApariencia(ruta, apariencia, intermedio)
                 intermedio
@@ -741,11 +748,11 @@ class MotorPdfAndroid(
                 File(ruta)
             }
 
-            PDDocument.load(origen).use { documento ->
+            PDDocument.load(ficheroOrigen).use { documento ->
                 File(rutaSalida).outputStream().use { salida ->
                     firmador.firmar(
                         documento = documento,
-                        origen = origen,
+                        origen = ficheroOrigen,
                         salida = salida,
                         credenciales = credenciales,
                         nombre = apariencia?.nombreVisible?.takeIf { it.isNotBlank() }
@@ -756,7 +763,7 @@ class MotorPdfAndroid(
                 }
             }
 
-            if (origen.absolutePath != ruta) origen.delete()
+            if (ficheroOrigen.absolutePath != ruta) ficheroOrigen.delete()
             ResultadoPdf.Exito(rutaSalida)
         } catch (e: OutOfMemoryError) {
             ResultadoPdf.Fallo(ErrorPdf.SIN_MEMORIA, e.message)

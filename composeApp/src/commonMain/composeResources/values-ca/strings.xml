@@ -196,9 +196,14 @@
     <string name="error_sin_memoria">El document és massa gran per a la memòria disponible. Prova de dividir-lo abans.</string>
     <string name="firma_aviso_legal">NexaPDF aplica la signatura al teu dispositiu i mai envia el teu certificat enlloc. Que la signatura tingui validesa legal depèn de qui va emetre el certificat.</string>
     <string name="firma_certificado">Signatura amb certificat</string>
+    <string name="firma_certificado_activo">Certificat: %1$s</string>
     <string name="firma_certificado_desc">Fa servir el teu certificat PKCS#12 (.p12 o .pfx). Qualsevol lector podrà comprovar que el document no s’ha alterat.</string>
     <string name="firma_colocar">Col·loca a la pàgina</string>
     <string name="firma_cubre_todo">Cobreix tot el document</string>
+    <string name="firma_desde_almacen">Instal·lat al dispositiu</string>
+    <string name="firma_desde_almacen_desc">Els certificats que vas instal·lar als ajustos d’Android. La clau privada no surt mai del magatzem del sistema.</string>
+    <string name="firma_desde_fichero">Des d’un fitxer (.p12 o .pfx)</string>
+    <string name="firma_desde_fichero_desc">Un fitxer de certificat desat al telèfon. Te’n demanarà la contrasenya.</string>
     <string name="firma_dibuja_aqui">Dibuixa aquí la teva signatura</string>
     <string name="firma_elegir_certificado">Tria el certificat</string>
     <string name="firma_existentes">Signatures d’aquest document</string>
@@ -212,8 +217,10 @@
     <string name="firma_manuscrita_desc">Dibuixa-la i col·loca-la a la pàgina. És una marca visible, no una signatura certificada.</string>
     <string name="firma_motivo">Motiu (opcional)</string>
     <string name="firma_nombre_visible">Nom visible</string>
+    <string name="firma_origen">On tens el certificat?</string>
     <string name="firma_sin_existentes">Aquest document encara no està signat</string>
     <string name="firma_titulo">Signa el document</string>
+    <string name="firma_vista_previa">Primera pàgina del document</string>
     <string name="herr_editar_desc">Dibuixa, afegeix text, formes i imatges</string>
     <string name="herr_editar_titulo">Edita PDF</string>
     <string name="herr_firmar_desc">A mà o amb el teu certificat</string>
