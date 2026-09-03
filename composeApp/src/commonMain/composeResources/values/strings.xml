@@ -27,14 +27,20 @@
     <string name="aj_calidad_equilibrada">Balanced</string>
     <string name="aj_calidad_nitida">Sharp</string>
     <string name="aj_calidad_rapida">Fast</string>
+    <string name="aj_carpeta_destino">Folder: %1$s</string>
+    <string name="aj_carpeta_predeterminada">Downloads/NexaPDF</string>
     <string name="aj_compartir_app">Share NexaPDF</string>
     <string name="aj_compartir_texto">NexaPDF: merge, split, edit and sign PDFs on your phone, offline and free. %1$s</string>
     <string name="aj_confirmar_destructivas">Ask before deleting</string>
+    <string name="aj_cuando_guardar">When to save the results</string>
     <string name="aj_datos">Your data</string>
+    <string name="aj_elegir_carpeta">Choose folder</string>
     <string name="aj_exportar">Export settings</string>
     <string name="aj_exportar_desc">Saves a %1$s file with your preferences and signatures. Your documents are not included: they already live on your device.</string>
+    <string name="aj_guardar_al_final">Only at the end</string>
     <string name="aj_guardar_descargas">Also save to Downloads</string>
     <string name="aj_guardar_descargas_desc">Every document you create is copied to Downloads/NexaPDF so other apps can find it.</string>
+    <string name="aj_guardar_paso_a_paso">Step by step</string>
     <string name="aj_idioma">Language</string>
     <string name="aj_idioma_detalle_fijo">The app stays in this language, whatever the phone uses.</string>
     <string name="aj_idioma_detalle_sistema">Follows the phone. Changes only if you change the phone’s language.</string>
@@ -82,6 +88,7 @@
     <string name="comun_aceptar">OK</string>
     <string name="comun_anadir">Add</string>
     <string name="comun_atras">Back</string>
+    <string name="comun_buscar">Search</string>
     <string name="comun_cancelar">Cancel</string>
     <string name="comun_cerrar">Close</string>
     <string name="comun_compartir">Share</string>
@@ -96,6 +103,7 @@
     <string name="comun_reintentar">Retry</string>
     <string name="comun_seleccionar_todo">Select all</string>
     <string name="comun_sin_titulo">Untitled</string>
+    <string name="conv_elige_destino">Convert to…</string>
     <string name="copia_error_formato">That file is not a NexaPDF backup</string>
     <string name="copia_error_incompleta">That backup is incomplete or damaged</string>
     <string name="copia_error_version">That backup was made with a newer version of NexaPDF</string>
@@ -232,6 +240,8 @@
     <string name="firma_sin_existentes">This document is not signed yet</string>
     <string name="firma_titulo">Sign document</string>
     <string name="firma_vista_previa">First page of the document</string>
+    <string name="herr_convertir_desc">Word, Excel and PowerPoint to PDF, and the other way round</string>
+    <string name="herr_convertir_titulo">Convert</string>
     <string name="herr_editar_desc">Draw, add text, shapes and images</string>
     <string name="herr_editar_titulo">Edit PDF</string>
     <string name="herr_firmar_desc">By hand or with your certificate</string>
@@ -244,6 +254,8 @@
     <string name="herr_unir_titulo">Merge PDFs</string>
     <string name="herr_varias_imagenes_desc">One per page, or several together</string>
     <string name="herr_varias_imagenes_titulo">Images to PDF</string>
+    <string name="herr_visor_desc">Read, search and jump around the document</string>
+    <string name="herr_visor_titulo">Read PDF</string>
     <string name="img_ajustar_a_imagen">Fit the image</string>
     <string name="img_anadir_mas">Add more images</string>
     <string name="img_automatica">Automatic</string>
@@ -285,6 +297,10 @@
     <string name="tour_saltar">Skip</string>
     <string name="tour_siguiente">Next</string>
     <string name="tour_ver_otra_vez">Show the tour again</string>
+    <string name="visor_indice">Contents</string>
+    <string name="visor_pagina_numero">Page %1$d</string>
+    <string name="visor_sin_indice">This document has no contents list. Scanned documents usually don’t.</string>
+    <string name="visor_sin_resultados">No matches</string>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d document</item>
         <item quantity="other">%1$d documents</item>

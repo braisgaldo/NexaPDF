@@ -27,14 +27,20 @@
     <string name="aj_calidad_equilibrada">Équilibrée</string>
     <string name="aj_calidad_nitida">Nette</string>
     <string name="aj_calidad_rapida">Rapide</string>
+    <string name="aj_carpeta_destino">Dossier : %1$s</string>
+    <string name="aj_carpeta_predeterminada">Téléchargements/NexaPDF</string>
     <string name="aj_compartir_app">Partager NexaPDF</string>
     <string name="aj_compartir_texto">NexaPDF : fusionnez, divisez, modifiez et signez des PDF sur votre téléphone, hors ligne et gratuitement. %1$s</string>
     <string name="aj_confirmar_destructivas">Demander avant de supprimer</string>
+    <string name="aj_cuando_guardar">Quand enregistrer les résultats</string>
     <string name="aj_datos">Vos données</string>
+    <string name="aj_elegir_carpeta">Choisir un dossier</string>
     <string name="aj_exportar">Exporter les réglages</string>
     <string name="aj_exportar_desc">Enregistre un fichier %1$s avec vos préférences et vos signatures. Vos documents n’y figurent pas : ils sont déjà sur votre appareil.</string>
+    <string name="aj_guardar_al_final">Seulement à la fin</string>
     <string name="aj_guardar_descargas">Enregistrer aussi dans Téléchargements</string>
     <string name="aj_guardar_descargas_desc">Chaque document créé est copié dans Téléchargements/NexaPDF pour que d’autres applis le trouvent.</string>
+    <string name="aj_guardar_paso_a_paso">Étape par étape</string>
     <string name="aj_idioma">Langue</string>
     <string name="aj_idioma_detalle_fijo">L’application reste dans cette langue, quelle que soit celle du téléphone.</string>
     <string name="aj_idioma_detalle_sistema">Suit le téléphone. Ne change que si vous changez la langue du téléphone.</string>
@@ -82,6 +88,7 @@
     <string name="comun_aceptar">OK</string>
     <string name="comun_anadir">Ajouter</string>
     <string name="comun_atras">Retour</string>
+    <string name="comun_buscar">Rechercher</string>
     <string name="comun_cancelar">Annuler</string>
     <string name="comun_cerrar">Fermer</string>
     <string name="comun_compartir">Partager</string>
@@ -96,6 +103,7 @@
     <string name="comun_reintentar">Réessayer</string>
     <string name="comun_seleccionar_todo">Tout sélectionner</string>
     <string name="comun_sin_titulo">Sans titre</string>
+    <string name="conv_elige_destino">Convertir en…</string>
     <string name="copia_error_formato">Ce fichier n’est pas une sauvegarde NexaPDF</string>
     <string name="copia_error_incompleta">Cette sauvegarde est incomplète ou endommagée</string>
     <string name="copia_error_version">Cette sauvegarde a été créée avec une version plus récente de NexaPDF</string>
@@ -232,6 +240,8 @@
     <string name="firma_sin_existentes">Ce document n’est pas encore signé</string>
     <string name="firma_titulo">Signer le document</string>
     <string name="firma_vista_previa">Première page du document</string>
+    <string name="herr_convertir_desc">Word, Excel et PowerPoint vers PDF, et l’inverse</string>
+    <string name="herr_convertir_titulo">Convertir</string>
     <string name="herr_editar_desc">Dessiner, ajouter du texte, des formes et des images</string>
     <string name="herr_editar_titulo">Modifier un PDF</string>
     <string name="herr_firmar_desc">À la main ou avec votre certificat</string>
@@ -244,6 +254,8 @@
     <string name="herr_unir_titulo">Fusionner des PDF</string>
     <string name="herr_varias_imagenes_desc">Une par page, ou plusieurs ensemble</string>
     <string name="herr_varias_imagenes_titulo">Images en PDF</string>
+    <string name="herr_visor_desc">Lisez, cherchez et naviguez dans le document</string>
+    <string name="herr_visor_titulo">Lire un PDF</string>
     <string name="img_ajustar_a_imagen">Adapter à l’image</string>
     <string name="img_anadir_mas">Ajouter d’autres images</string>
     <string name="img_automatica">Automatique</string>
@@ -285,6 +297,10 @@
     <string name="tour_saltar">Passer</string>
     <string name="tour_siguiente">Suivant</string>
     <string name="tour_ver_otra_vez">Revoir la visite guidée</string>
+    <string name="visor_indice">Sommaire</string>
+    <string name="visor_pagina_numero">Page %1$d</string>
+    <string name="visor_sin_indice">Ce document n’a pas de sommaire. Les documents numérisés n’en ont généralement pas.</string>
+    <string name="visor_sin_resultados">Aucun résultat</string>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d document</item>
         <item quantity="other">%1$d documents</item>

@@ -27,14 +27,20 @@
     <string name="aj_calidad_equilibrada">متوازنة</string>
     <string name="aj_calidad_nitida">حادة</string>
     <string name="aj_calidad_rapida">سريعة</string>
+    <string name="aj_carpeta_destino">المجلد: %1$s</string>
+    <string name="aj_carpeta_predeterminada">التنزيلات/NexaPDF</string>
     <string name="aj_compartir_app">مشاركة NexaPDF</string>
     <string name="aj_compartir_texto">‏NexaPDF: ادمج وقسّم وحرّر ووقّع ملفات PDF على هاتفك، دون اتصال ومجانًا. %1$s</string>
     <string name="aj_confirmar_destructivas">السؤال قبل الحذف</string>
+    <string name="aj_cuando_guardar">متى تُحفظ النتائج</string>
     <string name="aj_datos">بياناتك</string>
+    <string name="aj_elegir_carpeta">اختيار مجلد</string>
     <string name="aj_exportar">تصدير الإعدادات</string>
     <string name="aj_exportar_desc">يحفظ ملف %1$s يتضمن تفضيلاتك وتوقيعاتك. مستنداتك غير مضمّنة، فهي موجودة أصلًا على جهازك.</string>
+    <string name="aj_guardar_al_final">في النهاية فقط</string>
     <string name="aj_guardar_descargas">الحفظ أيضًا في مجلد التنزيلات</string>
     <string name="aj_guardar_descargas_desc">يُنسخ كل مستند تنشئه إلى مجلد التنزيلات/NexaPDF لتتمكن التطبيقات الأخرى من العثور عليه.</string>
+    <string name="aj_guardar_paso_a_paso">خطوة بخطوة</string>
     <string name="aj_idioma">اللغة</string>
     <string name="aj_idioma_detalle_fijo">يبقى التطبيق بهذه اللغة مهما كانت لغة الهاتف.</string>
     <string name="aj_idioma_detalle_sistema">يتبع الهاتف. لا يتغيّر إلا إذا غيّرت لغة الهاتف.</string>
@@ -82,6 +88,7 @@
     <string name="comun_aceptar">موافق</string>
     <string name="comun_anadir">إضافة</string>
     <string name="comun_atras">رجوع</string>
+    <string name="comun_buscar">بحث</string>
     <string name="comun_cancelar">إلغاء</string>
     <string name="comun_cerrar">إغلاق</string>
     <string name="comun_compartir">مشاركة</string>
@@ -96,6 +103,7 @@
     <string name="comun_reintentar">إعادة المحاولة</string>
     <string name="comun_seleccionar_todo">تحديد الكل</string>
     <string name="comun_sin_titulo">بدون عنوان</string>
+    <string name="conv_elige_destino">التحويل إلى…</string>
     <string name="copia_error_formato">هذا الملف ليس نسخة احتياطية من NexaPDF</string>
     <string name="copia_error_incompleta">هذه النسخة ناقصة أو تالفة</string>
     <string name="copia_error_version">أُنشئت هذه النسخة بإصدار أحدث من NexaPDF</string>
@@ -232,6 +240,8 @@
     <string name="firma_sin_existentes">لم يُوقَّع هذا المستند بعد</string>
     <string name="firma_titulo">توقيع المستند</string>
     <string name="firma_vista_previa">الصفحة الأولى من المستند</string>
+    <string name="herr_convertir_desc">من Word و Excel و PowerPoint إلى PDF والعكس</string>
+    <string name="herr_convertir_titulo">تحويل</string>
     <string name="herr_editar_desc">ارسم وأضف نصًا وأشكالًا وصورًا</string>
     <string name="herr_editar_titulo">تحرير PDF</string>
     <string name="herr_firmar_desc">بخط اليد أو باستخدام شهادتك</string>
@@ -244,6 +254,8 @@
     <string name="herr_unir_titulo">دمج ملفات PDF</string>
     <string name="herr_varias_imagenes_desc">واحدة في كل صفحة أو عدة معًا</string>
     <string name="herr_varias_imagenes_titulo">صور إلى PDF</string>
+    <string name="herr_visor_desc">اقرأ وابحث وتنقّل في المستند</string>
+    <string name="herr_visor_titulo">قراءة PDF</string>
     <string name="img_ajustar_a_imagen">ملاءمة الصورة</string>
     <string name="img_anadir_mas">إضافة المزيد من الصور</string>
     <string name="img_automatica">تلقائي</string>
@@ -285,6 +297,10 @@
     <string name="tour_saltar">تخطٍّ</string>
     <string name="tour_siguiente">التالي</string>
     <string name="tour_ver_otra_vez">إعادة عرض الجولة</string>
+    <string name="visor_indice">الفهرس</string>
+    <string name="visor_pagina_numero">الصفحة %1$d</string>
+    <string name="visor_sin_indice">لا يحتوي هذا المستند على فهرس. المستندات الممسوحة ضوئيًا عادةً لا تحتوي عليه.</string>
+    <string name="visor_sin_resultados">لا نتائج</string>
     <plurals name="plural_documentos">
         <item quantity="zero">لا مستندات</item>
         <item quantity="one">مستند واحد</item>

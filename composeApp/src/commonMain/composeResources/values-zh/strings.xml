@@ -27,14 +27,20 @@
     <string name="aj_calidad_equilibrada">均衡</string>
     <string name="aj_calidad_nitida">清晰</string>
     <string name="aj_calidad_rapida">快速</string>
+    <string name="aj_carpeta_destino">文件夹：%1$s</string>
+    <string name="aj_carpeta_predeterminada">下载/NexaPDF</string>
     <string name="aj_compartir_app">分享 NexaPDF</string>
     <string name="aj_compartir_texto">NexaPDF：在手机上合并、拆分、编辑和签署 PDF，离线且免费。%1$s</string>
     <string name="aj_confirmar_destructivas">删除前询问</string>
+    <string name="aj_cuando_guardar">何时保存结果</string>
     <string name="aj_datos">你的数据</string>
+    <string name="aj_elegir_carpeta">选择文件夹</string>
     <string name="aj_exportar">导出设置</string>
     <string name="aj_exportar_desc">保存一个 %1$s 文件，内含你的偏好设置和签名。不包含你的文档，因为它们已经在你的设备上。</string>
+    <string name="aj_guardar_al_final">仅在最后</string>
     <string name="aj_guardar_descargas">同时保存到“下载”</string>
     <string name="aj_guardar_descargas_desc">你创建的每个文档都会复制到“下载/NexaPDF”，方便其他应用找到。</string>
+    <string name="aj_guardar_paso_a_paso">逐步保存</string>
     <string name="aj_idioma">语言</string>
     <string name="aj_idioma_detalle_fijo">无论手机使用哪种语言，应用都保持此语言。</string>
     <string name="aj_idioma_detalle_sistema">跟随手机设置，仅在您更改手机语言时才变化。</string>
@@ -82,6 +88,7 @@
     <string name="comun_aceptar">确定</string>
     <string name="comun_anadir">添加</string>
     <string name="comun_atras">返回</string>
+    <string name="comun_buscar">搜索</string>
     <string name="comun_cancelar">取消</string>
     <string name="comun_cerrar">关闭</string>
     <string name="comun_compartir">分享</string>
@@ -96,6 +103,7 @@
     <string name="comun_reintentar">重试</string>
     <string name="comun_seleccionar_todo">全选</string>
     <string name="comun_sin_titulo">无标题</string>
+    <string name="conv_elige_destino">转换为…</string>
     <string name="copia_error_formato">该文件不是 NexaPDF 备份</string>
     <string name="copia_error_incompleta">该备份不完整或已损坏</string>
     <string name="copia_error_version">该备份是用更新版本的 NexaPDF 创建的</string>
@@ -232,6 +240,8 @@
     <string name="firma_sin_existentes">该文档尚未签署</string>
     <string name="firma_titulo">签署文档</string>
     <string name="firma_vista_previa">文档的第一页</string>
+    <string name="herr_convertir_desc">Word、Excel、PowerPoint 与 PDF 互转</string>
+    <string name="herr_convertir_titulo">转换</string>
     <string name="herr_editar_desc">涂画、添加文字、形状和图片</string>
     <string name="herr_editar_titulo">编辑 PDF</string>
     <string name="herr_firmar_desc">手写签名或使用证书</string>
@@ -244,6 +254,8 @@
     <string name="herr_unir_titulo">合并 PDF</string>
     <string name="herr_varias_imagenes_desc">每页一张，或多张排在一起</string>
     <string name="herr_varias_imagenes_titulo">多张图片转 PDF</string>
+    <string name="herr_visor_desc">阅读、搜索并在文档中跳转</string>
+    <string name="herr_visor_titulo">阅读 PDF</string>
     <string name="img_ajustar_a_imagen">适应图片</string>
     <string name="img_anadir_mas">添加更多图片</string>
     <string name="img_automatica">自动</string>
@@ -285,6 +297,10 @@
     <string name="tour_saltar">跳过</string>
     <string name="tour_siguiente">下一步</string>
     <string name="tour_ver_otra_vez">重新查看导览</string>
+    <string name="visor_indice">目录</string>
+    <string name="visor_pagina_numero">第 %1$d 页</string>
+    <string name="visor_sin_indice">此文档没有目录。扫描件通常没有。</string>
+    <string name="visor_sin_resultados">没有结果</string>
     <plurals name="plural_documentos">
         <item quantity="other">%1$d 个文档</item>
     </plurals>

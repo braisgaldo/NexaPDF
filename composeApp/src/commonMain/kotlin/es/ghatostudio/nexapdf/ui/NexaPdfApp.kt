@@ -34,6 +34,7 @@ import es.ghatostudio.nexapdf.domain.model.BloqueTexto
 import es.ghatostudio.nexapdf.domain.model.BorradorEdicion
 import es.ghatostudio.nexapdf.domain.model.DocumentoPdf
 import es.ghatostudio.nexapdf.domain.model.EdicionPagina
+import es.ghatostudio.nexapdf.domain.model.ModoGuardado
 import es.ghatostudio.nexapdf.domain.model.PaginaPdf
 import es.ghatostudio.nexapdf.domain.model.Punto
 import es.ghatostudio.nexapdf.domain.model.RangoPaginas
@@ -45,6 +46,7 @@ import es.ghatostudio.nexapdf.domain.pdf.FirmaExistente
 import es.ghatostudio.nexapdf.domain.pdf.FormatoDocumento
 import es.ghatostudio.nexapdf.domain.pdf.OrigenCertificado
 import es.ghatostudio.nexapdf.domain.pdf.ResultadoPdf
+import es.ghatostudio.nexapdf.domain.pdf.Seccion
 import es.ghatostudio.nexapdf.resources.Res
 import es.ghatostudio.nexapdf.resources.aj_compartir_texto
 import es.ghatostudio.nexapdf.resources.comun_procesando
@@ -83,7 +85,10 @@ import es.ghatostudio.nexapdf.ui.pantallas.PantallaEditor
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaFirma
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaImagenes
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaInicio
+import es.ghatostudio.nexapdf.ui.pantallas.PantallaRecientes
+import es.ghatostudio.nexapdf.ui.pantallas.AccionesVisor
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaTour
+import es.ghatostudio.nexapdf.ui.pantallas.PantallaVisor
 import es.ghatostudio.nexapdf.ui.pantallas.PeticionFirmaCertificado
 import es.ghatostudio.nexapdf.ui.componentes.DialogoOrigenImagen
 import es.ghatostudio.nexapdf.ui.componentes.VeloDeTrabajo
@@ -166,6 +171,10 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
     var aplicarFirma by remember { mutableStateOf<((List<List<Punto>>) -> Unit)?>(null) }
     // Firma dibujada desde "Firmar PDF" que falta por situar en la pagina.
     var firmaParaColocar by remember { mutableStateOf<List<List<Punto>>?>(null) }
+
+    // Estado del visor
+    var paginaVisor by remember { mutableStateOf<ImageBitmap?>(null) }
+    var seccionesVisor by remember { mutableStateOf(emptyList<Seccion>()) }
 
     // Estado de la firma
     var firmasExistentes by remember { mutableStateOf(emptyList<FirmaExistente>()) }
@@ -259,12 +268,24 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
         estado.registrarUsoReal()
         refrescarRecientes()
 
-        if (ajustes.guardarEnDescargasAlTerminar) {
-            val destino = contenedor.servicios.guardarEnDescargas(
-                rutaResultado,
-                contenedor.ficheros.nombre(rutaResultado),
-                "application/pdf",
-            )
+        // Con SOLO_AL_FINAL el fichero se queda en la carpeta privada hasta
+        // que el usuario lo guarde o lo comparta a proposito: una tarea larga
+        // deja de sembrar de versiones intermedias la carpeta del telefono.
+        val sacarloAhora = ajustes.guardado == ModoGuardado.PASO_A_PASO &&
+            ajustes.guardarEnDescargasAlTerminar
+        if (sacarloAhora) {
+            val nombre = contenedor.ficheros.nombre(rutaResultado)
+            val carpeta = ajustes.carpetaDestino
+            val destino = if (carpeta != null) {
+                contenedor.servicios.guardarEnCarpeta(
+                    rutaResultado,
+                    nombre,
+                    "application/pdf",
+                    carpeta,
+                )
+            } else {
+                contenedor.servicios.guardarEnDescargas(rutaResultado, nombre, "application/pdf")
+            }
             if (destino != null) {
                 estado.avisar(getString(Res.string.doc_resultado_guardado, destino))
                 return
@@ -327,7 +348,7 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
     Box(Modifier.fillMaxSize()) {
         when (val destino = estado.destinoActual) {
             Destino.Inicio -> PantallaInicio(
-                recientes = recientes,
+                numeroRecientes = recientes.size,
                 snackbar = snackbar,
                 alElegirHerramienta = { herramienta ->
                     alcance.launch {
@@ -353,6 +374,34 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
                                     abrirDocumentos(rutas)
                                     estado.ir(Destino.Documento(rutas, modoUnion = true))
                                 }
+                            }
+
+                            Herramienta.VISOR -> {
+                                val elegido = contenedor.selector.elegirPdf(multiple = false)
+                                    .firstOrNull() ?: return@launch
+                                abrirDocumentos(listOf(elegido.ruta))
+                                estado.ir(Destino.Visor(elegido.ruta))
+                            }
+
+                            Herramienta.CONVERTIR -> {
+                                // Un solo camino para las dos direcciones: se
+                                // elige un fichero y la aplicacion deduce que
+                                // toca. Lo que no es PDF se convierte y se
+                                // abre; lo que ya es PDF se abre para elegir a
+                                // que formato sale.
+                                val elegidos = contenedor.selector.elegirParaUnir()
+                                if (elegidos.isEmpty()) return@launch
+                                val rutas = convertirTodoAPdf(
+                                    contenedor = contenedor,
+                                    estado = estado,
+                                    ficheros = elegidos,
+                                    textoConvirtiendo = textoConvirtiendo,
+                                    rutaDeSalida = ::rutaDeSalida,
+                                    mensajeDeError = { mensajeDeError(it) },
+                                )
+                                val primera = rutas.firstOrNull() ?: return@launch
+                                abrirDocumentos(listOf(primera))
+                                estado.ir(Destino.Documento(listOf(primera)))
                             }
 
                             Herramienta.SEPARAR -> {
@@ -392,12 +441,59 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
                         }
                     }
                 },
-                alAbrirReciente = { reciente ->
-                    abrirDocumentos(listOf(reciente.ruta))
-                    estado.ir(Destino.Documento(listOf(reciente.ruta)))
-                },
+                alAbrirRecientes = { estado.ir(Destino.Recientes) },
                 alAbrirAjustes = { estado.ir(Destino.Ajustes) },
             )
+
+            Destino.Recientes -> PantallaRecientes(
+                recientes = recientes,
+                snackbar = snackbar,
+                alAbrir = { reciente ->
+                    abrirDocumentos(listOf(reciente.ruta))
+                    estado.ir(Destino.Visor(reciente.ruta))
+                },
+                alVolver = { estado.volver() },
+            )
+
+            is Destino.Visor -> {
+                LaunchedEffect(destino.ruta, destino.pagina, ajustes.calidad) {
+                    paginaVisor = null
+                    val ancho = (1400 * ajustes.calidad.escala).toInt()
+                    paginaVisor = contenedor.motorPdf
+                        .renderizarPagina(destino.ruta, destino.pagina, ancho, contrasenaActual)
+                        .valorONulo()
+                }
+                LaunchedEffect(destino.ruta) {
+                    seccionesVisor = contenedor.motorPdf
+                        .esquema(destino.ruta, contrasenaActual).valorONulo().orEmpty()
+                    firmasExistentes = contenedor.motorPdf
+                        .firmasExistentes(destino.ruta).valorONulo().orEmpty()
+                }
+
+                PantallaVisor(
+                    nombreDocumento = contenedor.ficheros.nombre(destino.ruta),
+                    paginaActual = destino.pagina,
+                    totalPaginas = paginas.size,
+                    proporcion = paginas.getOrNull(destino.pagina)?.proporcion ?: 0.707f,
+                    pagina = paginaVisor,
+                    secciones = seccionesVisor,
+                    firmas = firmasExistentes,
+                    snackbar = snackbar,
+                    acciones = AccionesVisor(
+                        alBuscar = { consulta ->
+                            contenedor.motorPdf
+                                .buscarTexto(destino.ruta, consulta, contrasenaActual)
+                                .valorONulo().orEmpty()
+                        },
+                        alIrAPagina = { indice ->
+                            if (indice in paginas.indices) {
+                                estado.reemplazar(Destino.Visor(destino.ruta, indice))
+                            }
+                        },
+                    ),
+                    alVolver = { estado.volver() },
+                )
+            }
 
             is Destino.Documento -> PantallaDocumento(
                 documentos = documentos,
@@ -861,6 +957,16 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
                 alCambiarCalidad = { estado.fijarCalidadVista(it.name) },
                 alCambiarConfirmar = { estado.fijarConfirmarDestructivas(it) },
                 alCambiarDescargas = { estado.fijarGuardarEnDescargas(it) },
+                alCambiarModoGuardado = { estado.fijarModoGuardado(it) },
+                alElegirCarpeta = {
+                    alcance.launch {
+                        val elegida = contenedor.selector.elegirCarpeta()
+                        if (elegida != null) estado.fijarCarpetaDestino(elegida)
+                    }
+                },
+                alQuitarCarpeta = { estado.fijarCarpetaDestino(null) },
+                nombreCarpeta = ajustes.carpetaDestino
+                    ?.let { contenedor.selector.nombreDeCarpeta(it) },
                 alCambiarNombreFirmas = { estado.fijarNombreParaFirmas(it) },
                 alExportar = {
                     alcance.launch {

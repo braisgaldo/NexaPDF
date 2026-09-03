@@ -35,6 +35,24 @@ data class Ajustes(
     val confirmarAccionesDestructivas: Boolean = true,
     val guardarEnDescargasAlTerminar: Boolean = true,
 
+    /**
+     * Cuando sacar los resultados de la carpeta privada de la aplicacion.
+     *
+     * Una tarea encadena varios ficheros: unes, reordenas, editas, firmas. Con
+     * PASO_A_PASO queda cada resultado intermedio, que es util para volver
+     * atras y ver como iba; con SOLO_AL_FINAL solo sale lo que se guarda o se
+     * comparte a proposito, y la carpeta no se llena de versiones.
+     */
+    val modoGuardado: String = ModoGuardado.PASO_A_PASO.name,
+
+    /**
+     * Carpeta elegida por el usuario, como URI de arbol del sistema.
+     *
+     * `null` significa la carpeta de la aplicacion (Descargas/NexaPDF), que es
+     * donde va todo si no se toca nada.
+     */
+    val carpetaDestino: String? = null,
+
     // --- Aviso de donacion ---
     val estadoDonacion: String = EstadoDonacion.SIN_MOSTRAR.name,
     /** Sesiones en las que el usuario ha completado alguna operacion real. */
@@ -53,6 +71,10 @@ data class Ajustes(
 ) {
     val familia: ThemeFamily get() = ThemeFamily.desdeClave(familiaTema)
     val modo: ThemeMode get() = ThemeMode.desdeClave(modoTema)
+    val guardado: ModoGuardado
+        get() = ModoGuardado.entries.firstOrNull { it.name == modoGuardado }
+            ?: ModoGuardado.PASO_A_PASO
+
     val calidad: CalidadVista
         get() = CalidadVista.entries.firstOrNull { it.name == calidadVista } ?: CalidadVista.EQUILIBRADA
     val donacion: EstadoDonacion
@@ -90,3 +112,12 @@ data class FirmaGuardada(
     val grosor: Float,
     val creadaEn: Long,
 )
+
+/** Cuando salen los ficheros de la carpeta privada de la aplicacion. */
+enum class ModoGuardado {
+    /** Cada resultado intermedio se guarda segun se produce. */
+    PASO_A_PASO,
+
+    /** Solo sale lo que el usuario guarda o comparte a proposito. */
+    SOLO_AL_FINAL,
+}

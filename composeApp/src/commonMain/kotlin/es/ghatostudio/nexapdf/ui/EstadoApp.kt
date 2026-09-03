@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import es.ghatostudio.nexapdf.di.ContenedorApp
 import es.ghatostudio.nexapdf.domain.model.Ajustes
+import es.ghatostudio.nexapdf.domain.model.ModoGuardado
 import es.ghatostudio.nexapdf.ui.i18n.Idioma
 import es.ghatostudio.nexapdf.ui.navegacion.Destino
 import kotlinx.coroutines.flow.SharingStarted
@@ -183,6 +184,12 @@ class EstadoApp(private val contenedor: ContenedorApp) : ViewModel() {
 
     fun fijarGuardarEnDescargas(valor: Boolean) =
         viewModelScope.launch { contenedor.ajustes.fijarGuardarEnDescargas(valor) }
+
+    fun fijarModoGuardado(modo: ModoGuardado) =
+        viewModelScope.launch { contenedor.ajustes.fijarModoGuardado(modo.name) }
+
+    fun fijarCarpetaDestino(uri: String?) =
+        viewModelScope.launch { contenedor.ajustes.fijarCarpetaDestino(uri) }
 
     fun fijarNombreParaFirmas(nombre: String) =
         viewModelScope.launch { contenedor.ajustes.fijarNombreParaFirmas(nombre) }

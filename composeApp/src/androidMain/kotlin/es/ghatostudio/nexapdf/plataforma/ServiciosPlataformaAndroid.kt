@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.os.LocaleList
+import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.provider.Settings
 import androidx.browser.customtabs.CustomTabsIntent
@@ -206,6 +207,44 @@ class ServiciosPlataformaAndroid(
                 origen.copyTo(destino, overwrite = true)
                 "Descargas/NexaPDF/$nombre"
             }
+        }.getOrNull()
+    }
+
+    /**
+     * Copia el resultado a la carpeta que el usuario eligio.
+     *
+     * Se escribe con el proveedor de documentos del sistema y el permiso que
+     * se tomo al elegirla, no con acceso directo al sistema de ficheros: por
+     * eso funciona igual en la memoria interna, en la tarjeta o en Drive, y por
+     * eso no hace falta ningun permiso de almacenamiento.
+     */
+    override suspend fun guardarEnCarpeta(
+        rutaOrigen: String,
+        nombre: String,
+        tipoMime: String,
+        uriCarpeta: String,
+    ): String? = withContext(Dispatchers.IO) {
+        val origen = File(rutaOrigen)
+        if (!origen.exists()) return@withContext null
+
+        runCatching {
+            val arbol = Uri.parse(uriCarpeta)
+            val carpeta = DocumentsContract.buildDocumentUriUsingTree(
+                arbol,
+                DocumentsContract.getTreeDocumentId(arbol),
+            )
+            val destino = DocumentsContract.createDocument(
+                contexto.contentResolver,
+                carpeta,
+                tipoMime,
+                nombre,
+            ) ?: return@runCatching null
+
+            contexto.contentResolver.openOutputStream(destino)?.use { salida ->
+                origen.inputStream().use { entrada -> entrada.copyTo(salida) }
+            } ?: return@runCatching null
+
+            nombre
         }.getOrNull()
     }
 

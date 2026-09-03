@@ -27,14 +27,20 @@
     <string name="aj_calidad_equilibrada">Сбалансированно</string>
     <string name="aj_calidad_nitida">Чётко</string>
     <string name="aj_calidad_rapida">Быстро</string>
+    <string name="aj_carpeta_destino">Папка: %1$s</string>
+    <string name="aj_carpeta_predeterminada">Загрузки/NexaPDF</string>
     <string name="aj_compartir_app">Поделиться NexaPDF</string>
     <string name="aj_compartir_texto">NexaPDF: объединяйте, разделяйте, редактируйте и подписывайте PDF на телефоне — офлайн и бесплатно. %1$s</string>
     <string name="aj_confirmar_destructivas">Спрашивать перед удалением</string>
+    <string name="aj_cuando_guardar">Когда сохранять результаты</string>
     <string name="aj_datos">Ваши данные</string>
+    <string name="aj_elegir_carpeta">Выбрать папку</string>
     <string name="aj_exportar">Экспорт настроек</string>
     <string name="aj_exportar_desc">Сохраняет файл %1$s с вашими настройками и подписями. Документы в него не входят: они уже на устройстве.</string>
+    <string name="aj_guardar_al_final">Только в конце</string>
     <string name="aj_guardar_descargas">Сохранять также в «Загрузки»</string>
     <string name="aj_guardar_descargas_desc">Каждый созданный документ копируется в «Загрузки/NexaPDF», чтобы другие приложения его находили.</string>
+    <string name="aj_guardar_paso_a_paso">На каждом шаге</string>
     <string name="aj_idioma">Язык</string>
     <string name="aj_idioma_detalle_fijo">Приложение остаётся на этом языке независимо от языка телефона.</string>
     <string name="aj_idioma_detalle_sistema">Следует за телефоном. Меняется, только если сменить язык телефона.</string>
@@ -82,6 +88,7 @@
     <string name="comun_aceptar">ОК</string>
     <string name="comun_anadir">Добавить</string>
     <string name="comun_atras">Назад</string>
+    <string name="comun_buscar">Поиск</string>
     <string name="comun_cancelar">Отмена</string>
     <string name="comun_cerrar">Закрыть</string>
     <string name="comun_compartir">Поделиться</string>
@@ -96,6 +103,7 @@
     <string name="comun_reintentar">Повторить</string>
     <string name="comun_seleccionar_todo">Выбрать все</string>
     <string name="comun_sin_titulo">Без названия</string>
+    <string name="conv_elige_destino">Конвертировать в…</string>
     <string name="copia_error_formato">Этот файл не является резервной копией NexaPDF</string>
     <string name="copia_error_incompleta">Эта копия неполная или повреждена</string>
     <string name="copia_error_version">Эта копия создана более новой версией NexaPDF</string>
@@ -232,6 +240,8 @@
     <string name="firma_sin_existentes">Документ ещё не подписан</string>
     <string name="firma_titulo">Подписать документ</string>
     <string name="firma_vista_previa">Первая страница документа</string>
+    <string name="herr_convertir_desc">Word, Excel и PowerPoint в PDF и обратно</string>
+    <string name="herr_convertir_titulo">Конвертировать</string>
     <string name="herr_editar_desc">Рисуйте, добавляйте текст, фигуры и изображения</string>
     <string name="herr_editar_titulo">Редактировать PDF</string>
     <string name="herr_firmar_desc">От руки или сертификатом</string>
@@ -244,6 +254,8 @@
     <string name="herr_unir_titulo">Объединить PDF</string>
     <string name="herr_varias_imagenes_desc">По одному на страницу или несколько вместе</string>
     <string name="herr_varias_imagenes_titulo">Изображения в PDF</string>
+    <string name="herr_visor_desc">Читайте, ищите и перемещайтесь по документу</string>
+    <string name="herr_visor_titulo">Читать PDF</string>
     <string name="img_ajustar_a_imagen">По размеру изображения</string>
     <string name="img_anadir_mas">Добавить изображения</string>
     <string name="img_automatica">Автоматически</string>
@@ -285,6 +297,10 @@
     <string name="tour_saltar">Пропустить</string>
     <string name="tour_siguiente">Далее</string>
     <string name="tour_ver_otra_vez">Показать обзор снова</string>
+    <string name="visor_indice">Оглавление</string>
+    <string name="visor_pagina_numero">Страница %1$d</string>
+    <string name="visor_sin_indice">В этом документе нет оглавления. У сканов его обычно не бывает.</string>
+    <string name="visor_sin_resultados">Ничего не найдено</string>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d документ</item>
         <item quantity="few">%1$d документа</item>

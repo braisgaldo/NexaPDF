@@ -27,14 +27,20 @@
     <string name="aj_calidad_equilibrada">Orekatua</string>
     <string name="aj_calidad_nitida">Zorrotza</string>
     <string name="aj_calidad_rapida">Azkarra</string>
+    <string name="aj_carpeta_destino">Karpeta: %1$s</string>
+    <string name="aj_carpeta_predeterminada">Deskargak/NexaPDF</string>
     <string name="aj_compartir_app">Partekatu NexaPDF</string>
     <string name="aj_compartir_texto">NexaPDF: batu, zatitu, editatu eta sinatu PDFak mugikorrean, konexiorik gabe eta doan. %1$s</string>
     <string name="aj_confirmar_destructivas">Galdetu ezabatu aurretik</string>
+    <string name="aj_cuando_guardar">Noiz gorde emaitzak</string>
     <string name="aj_datos">Zure datuak</string>
+    <string name="aj_elegir_carpeta">Aukeratu karpeta</string>
     <string name="aj_exportar">Esportatu ezarpenak</string>
     <string name="aj_exportar_desc">%1$s fitxategi bat gordetzen du zure hobespenekin eta sinadurekin. Zure dokumentuak ez doaz barruan: dagoeneko zure gailuan daude.</string>
+    <string name="aj_guardar_al_final">Amaieran bakarrik</string>
     <string name="aj_guardar_descargas">Gorde Deskargak karpetan ere</string>
     <string name="aj_guardar_descargas_desc">Sortzen duzun dokumentu bakoitza Deskargak/NexaPDF karpetara kopiatzen da, beste aplikazioek aurki dezaten.</string>
+    <string name="aj_guardar_paso_a_paso">Urratsez urrats</string>
     <string name="aj_idioma">Hizkuntza</string>
     <string name="aj_idioma_detalle_fijo">Aplikazioa hizkuntza honetan geratzen da, telefonoak edozein erabilita ere.</string>
     <string name="aj_idioma_detalle_sistema">Telefonoari jarraitzen dio. Telefonoaren hizkuntza aldatzean bakarrik aldatzen da.</string>
@@ -82,6 +88,7 @@
     <string name="comun_aceptar">Ados</string>
     <string name="comun_anadir">Gehitu</string>
     <string name="comun_atras">Atzera</string>
+    <string name="comun_buscar">Bilatu</string>
     <string name="comun_cancelar">Utzi</string>
     <string name="comun_cerrar">Itxi</string>
     <string name="comun_compartir">Partekatu</string>
@@ -96,6 +103,7 @@
     <string name="comun_reintentar">Saiatu berriro</string>
     <string name="comun_seleccionar_todo">Hautatu dena</string>
     <string name="comun_sin_titulo">Izenbururik gabe</string>
+    <string name="conv_elige_destino">Bihurtu hona…</string>
     <string name="copia_error_formato">Fitxategi hori ez da NexaPDF kopia bat</string>
     <string name="copia_error_incompleta">Kopia hori osatugabea edo hondatuta dago</string>
     <string name="copia_error_version">Kopia hori NexaPDFen bertsio berriago batekin egin zen</string>
@@ -232,6 +240,8 @@
     <string name="firma_sin_existentes">Dokumentu hau ez dago oraindik sinatuta</string>
     <string name="firma_titulo">Sinatu dokumentua</string>
     <string name="firma_vista_previa">Dokumentuaren lehen orria</string>
+    <string name="herr_convertir_desc">Word, Excel eta PowerPoint PDFra, eta alderantziz</string>
+    <string name="herr_convertir_titulo">Bihurtu</string>
     <string name="herr_editar_desc">Marraztu, gehitu testua, formak eta irudiak</string>
     <string name="herr_editar_titulo">Editatu PDFa</string>
     <string name="herr_firmar_desc">Eskuz edo zure ziurtagiriarekin</string>
@@ -244,6 +254,8 @@
     <string name="herr_unir_titulo">Batu PDFak</string>
     <string name="herr_varias_imagenes_desc">Bat orriko, edo hainbat elkarrekin</string>
     <string name="herr_varias_imagenes_titulo">Irudiak PDF bihurtu</string>
+    <string name="herr_visor_desc">Irakurri, bilatu eta mugitu dokumentuan</string>
+    <string name="herr_visor_titulo">Irakurri PDFa</string>
     <string name="img_ajustar_a_imagen">Doitu irudira</string>
     <string name="img_anadir_mas">Gehitu irudi gehiago</string>
     <string name="img_automatica">Automatikoa</string>
@@ -285,6 +297,10 @@
     <string name="tour_saltar">Saltatu</string>
     <string name="tour_siguiente">Hurrengoa</string>
     <string name="tour_ver_otra_vez">Ikusi bisita berriro</string>
+    <string name="visor_indice">Aurkibidea</string>
+    <string name="visor_pagina_numero">%1$d. orria</string>
+    <string name="visor_sin_indice">Dokumentu honek ez du aurkibiderik. Eskaneatutakoek normalean ez dute.</string>
+    <string name="visor_sin_resultados">Emaitzarik ez</string>
     <plurals name="plural_documentos">
         <item quantity="one">dokumentu %1$d</item>
         <item quantity="other">%1$d dokumentu</item>

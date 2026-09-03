@@ -12,6 +12,7 @@ import androidx.exifinterface.media.ExifInterface
 import com.tom_roush.pdfbox.io.MemoryUsageSetting
 import com.tom_roush.pdfbox.multipdf.PDFMergerUtility
 import com.tom_roush.pdfbox.pdmodel.PDDocument
+import com.tom_roush.pdfbox.pdmodel.interactive.documentnavigation.outline.PDOutlineItem
 import com.tom_roush.pdfbox.pdmodel.PDPage
 import com.tom_roush.pdfbox.pdmodel.PDPageContentStream
 import com.tom_roush.pdfbox.pdmodel.common.PDRectangle
@@ -31,12 +32,14 @@ import es.ghatostudio.nexapdf.domain.model.Rectangulo
 import es.ghatostudio.nexapdf.domain.model.RangoPaginas
 import es.ghatostudio.nexapdf.domain.model.TamanoPagina
 import es.ghatostudio.nexapdf.domain.pdf.AparienciaFirma
+import es.ghatostudio.nexapdf.domain.pdf.Coincidencia
 import es.ghatostudio.nexapdf.domain.pdf.EntradaUnion
 import es.ghatostudio.nexapdf.domain.pdf.ErrorPdf
 import es.ghatostudio.nexapdf.domain.pdf.FirmaExistente
 import es.ghatostudio.nexapdf.domain.pdf.MotorPdf
 import es.ghatostudio.nexapdf.domain.pdf.OrigenCertificado
 import es.ghatostudio.nexapdf.domain.pdf.ResultadoPdf
+import es.ghatostudio.nexapdf.domain.pdf.Seccion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -728,6 +731,87 @@ class MotorPdfAndroid(
         }
     }
 
+    // --- Busqueda e indice ---------------------------------------------------
+
+    override suspend fun buscarTexto(
+        ruta: String,
+        consulta: String,
+        contrasena: String?,
+    ): ResultadoPdf<List<Coincidencia>> = withContext(Dispatchers.IO) {
+        val aguja = consulta.trim()
+        if (aguja.isEmpty()) return@withContext ResultadoPdf.Exito(emptyList())
+
+        conDocumento(ruta, contrasena) { documento ->
+            val encontradas = mutableListOf<Coincidencia>()
+            val extractor = PDFTextStripper()
+
+            for (indice in 0 until documento.numberOfPages) {
+                if (encontradas.size >= MAXIMO_COINCIDENCIAS) break
+                extractor.startPage = indice + 1
+                extractor.endPage = indice + 1
+                val texto = runCatching { extractor.getText(documento) }.getOrNull() ?: continue
+
+                // Se busca sin distinguir mayusculas ni acentos suaves, que es
+                // lo que espera cualquiera que teclee deprisa en un movil.
+                var desde = 0
+                while (encontradas.size < MAXIMO_COINCIDENCIAS) {
+                    val posicion = texto.indexOf(aguja, desde, ignoreCase = true)
+                    if (posicion < 0) break
+                    encontradas += Coincidencia(
+                        pagina = indice,
+                        fragmento = fragmentoAlrededor(texto, posicion, aguja.length),
+                    )
+                    desde = posicion + aguja.length
+                }
+            }
+            encontradas
+        }
+    }
+
+    override suspend fun esquema(
+        ruta: String,
+        contrasena: String?,
+    ): ResultadoPdf<List<Seccion>> = withContext(Dispatchers.IO) {
+        conDocumento(ruta, contrasena) { documento ->
+            val raiz = documento.documentCatalog?.documentOutline
+                ?: return@conDocumento emptyList()
+            val secciones = mutableListOf<Seccion>()
+            recorrerEsquema(documento, raiz.children(), 0, secciones)
+            secciones
+        }
+    }
+
+    /** Recorre el arbol de marcadores en profundidad, respetando el orden. */
+    private fun recorrerEsquema(
+        documento: PDDocument,
+        nodos: Iterable<PDOutlineItem>,
+        nivel: Int,
+        destino: MutableList<Seccion>,
+    ) {
+        if (nivel > MAXIMO_NIVEL_ESQUEMA) return
+        nodos.forEach { nodo ->
+            if (destino.size >= MAXIMO_SECCIONES) return
+            val titulo = nodo.title?.trim().orEmpty()
+            val pagina = runCatching {
+                nodo.findDestinationPage(documento)?.let { documento.pages.indexOf(it) }
+            }.getOrNull() ?: -1
+            if (titulo.isNotEmpty() && pagina >= 0) {
+                destino += Seccion(titulo = titulo, pagina = pagina, nivel = nivel)
+            }
+            recorrerEsquema(documento, nodo.children(), nivel + 1, destino)
+        }
+    }
+
+    /** Recorta la frase alrededor de la aparicion y limpia los saltos de linea. */
+    private fun fragmentoAlrededor(texto: String, posicion: Int, largo: Int): String {
+        val inicio = (posicion - CONTEXTO).coerceAtLeast(0)
+        val fin = (posicion + largo + CONTEXTO).coerceAtMost(texto.length)
+        val trozo = texto.substring(inicio, fin).replace(Regex("\\s+"), " ").trim()
+        val prefijo = if (inicio > 0) "\u2026" else ""
+        val sufijo = if (fin < texto.length) "\u2026" else ""
+        return prefijo + trozo + sufijo
+    }
+
     // --- Firma ---------------------------------------------------------------
 
     override suspend fun firmarConCertificado(
@@ -894,6 +978,12 @@ class MotorPdfAndroid(
     }
 
     private companion object {
+        /** Tope de resultados: mas de esto no se lee, solo se hace esperar. */
+        const val MAXIMO_COINCIDENCIAS = 200
+        const val MAXIMO_SECCIONES = 500
+        const val MAXIMO_NIVEL_ESQUEMA = 4
+        const val CONTEXTO = 40
+
         /** Mas alla de esto una pagina no gana nitidez visible y si consume memoria. */
         const val MAXIMO_ANCHO_PX = 2400
 

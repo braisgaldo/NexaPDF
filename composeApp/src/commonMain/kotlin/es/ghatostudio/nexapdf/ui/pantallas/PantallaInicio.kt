@@ -1,31 +1,41 @@
 package es.ghatostudio.nexapdf.ui.pantallas
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MergeType
+import androidx.compose.material.icons.filled.ContentCut
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Draw
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.ContentCut
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -43,12 +53,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import es.ghatostudio.nexapdf.resources.Res
 import es.ghatostudio.nexapdf.resources.app_lema
 import es.ghatostudio.nexapdf.resources.app_nombre
 import es.ghatostudio.nexapdf.resources.cd_ajustes
+import es.ghatostudio.nexapdf.resources.herr_convertir_desc
+import es.ghatostudio.nexapdf.resources.herr_convertir_titulo
 import es.ghatostudio.nexapdf.resources.herr_editar_desc
 import es.ghatostudio.nexapdf.resources.herr_editar_titulo
 import es.ghatostudio.nexapdf.resources.herr_firmar_desc
@@ -61,6 +74,8 @@ import es.ghatostudio.nexapdf.resources.herr_unir_desc
 import es.ghatostudio.nexapdf.resources.herr_unir_titulo
 import es.ghatostudio.nexapdf.resources.herr_varias_imagenes_desc
 import es.ghatostudio.nexapdf.resources.herr_varias_imagenes_titulo
+import es.ghatostudio.nexapdf.resources.herr_visor_desc
+import es.ghatostudio.nexapdf.resources.herr_visor_titulo
 import es.ghatostudio.nexapdf.resources.inicio_herramientas
 import es.ghatostudio.nexapdf.resources.inicio_recientes
 import es.ghatostudio.nexapdf.resources.inicio_sin_recientes
@@ -69,6 +84,7 @@ import es.ghatostudio.nexapdf.ui.componentes.EstadoVacio
 import es.ghatostudio.nexapdf.ui.componentes.TituloSeccion
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import androidx.compose.foundation.layout.fillMaxHeight
 
 /** Las seis herramientas del punto 14 del encargo, en el orden en que se pidieron. */
 enum class Herramienta(
@@ -76,6 +92,7 @@ enum class Herramienta(
     val descripcion: StringResource,
     val icono: ImageVector,
 ) {
+    VISOR(Res.string.herr_visor_titulo, Res.string.herr_visor_desc, Icons.Filled.MenuBook),
     UNIR(Res.string.herr_unir_titulo, Res.string.herr_unir_desc, Icons.AutoMirrored.Filled.MergeType),
     SEPARAR(Res.string.herr_separar_titulo, Res.string.herr_separar_desc, Icons.Filled.ContentCut),
     IMAGEN(Res.string.herr_imagen_titulo, Res.string.herr_imagen_desc, Icons.Filled.Image),
@@ -86,6 +103,11 @@ enum class Herramienta(
     ),
     EDITAR(Res.string.herr_editar_titulo, Res.string.herr_editar_desc, Icons.Filled.Edit),
     FIRMAR(Res.string.herr_firmar_titulo, Res.string.herr_firmar_desc, Icons.Filled.Draw),
+    CONVERTIR(
+        Res.string.herr_convertir_titulo,
+        Res.string.herr_convertir_desc,
+        Icons.Filled.SwapHoriz,
+    ),
 }
 
 /** Un documento ya generado, listo para reabrirse. */
@@ -97,43 +119,154 @@ data class DocumentoReciente(
 
 @Composable
 fun PantallaInicio(
-    recientes: List<DocumentoReciente>,
+    numeroRecientes: Int,
     snackbar: SnackbarHostState,
     alElegirHerramienta: (Herramienta) -> Unit,
-    alAbrirReciente: (DocumentoReciente) -> Unit,
+    alAbrirRecientes: () -> Unit,
     alAbrirAjustes: () -> Unit,
 ) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         snackbarHost = { SnackbarHost(snackbar) },
     ) { relleno ->
-        LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(relleno),
-            contentPadding = PaddingValues(bottom = 32.dp),
-        ) {
-            item { Cabecera(alAbrirAjustes) }
+        // Rejilla y no lista: con nueve entradas, una lista con descripcion
+        // obliga a desplazarse para ver la mitad de lo que la aplicacion sabe
+        // hacer, y lo que no se ve no existe.
+        Column(modifier = Modifier.fillMaxSize().padding(relleno)) {
+            Cabecera(alAbrirAjustes)
 
-            item { TituloSeccion(stringResource(Res.string.inicio_herramientas)) }
+            // Rejilla con pesos y no LazyVerticalGrid: son unas pocas entradas
+            // fijas, y repartiendo la altura entre las filas la pantalla queda
+            // llena en cualquier movil en lugar de dejar un tercio vacio.
+            val herramientas = Herramienta.entries.toList()
+            val total = herramientas.size + 1
+            val filas = (total + COLUMNAS - 1) / COLUMNAS
 
-            items(Herramienta.entries.toList(), key = { it.name }) { herramienta ->
-                TarjetaHerramienta(herramienta) { alElegirHerramienta(herramienta) }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                repeat(filas) { fila ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth().weight(1f),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        repeat(COLUMNAS) { columna ->
+                            val indice = fila * COLUMNAS + columna
+                            val hueco = Modifier.weight(1f).fillMaxHeight()
+                            when {
+                                indice < herramientas.size -> {
+                                    val herramienta = herramientas[indice]
+                                    BaldosaHerramienta(herramienta, hueco) {
+                                        alElegirHerramienta(herramienta)
+                                    }
+                                }
+
+                                indice == herramientas.size ->
+                                    BaldosaRecientes(numeroRecientes, hueco, alAbrirRecientes)
+
+                                // Hueco vacio para que la ultima fila no
+                                // estire las baldosas que si tiene.
+                                else -> Spacer(Modifier.weight(1f))
+                            }
+                        }
+                    }
+                }
             }
+        }
+    }
+}
 
-            item { TituloSeccion(stringResource(Res.string.inicio_recientes)) }
+/**
+ * Una herramienta en la rejilla: icono grande y nombre corto.
+ *
+ * Sin la linea de descripcion que tenia la lista. La descripcion es util la
+ * primera vez y estorba las siguientes cien; para la primera vez esta el tour.
+ */
+@Composable
+private fun BaldosaHerramienta(
+    herramienta: Herramienta,
+    modifier: Modifier,
+    alPulsar: () -> Unit,
+) {
+    val titulo = stringResource(herramienta.titulo)
+    val descripcion = stringResource(herramienta.descripcion)
+    Baldosa(
+        modifier = modifier,
+        icono = herramienta.icono,
+        titulo = titulo,
+        // El lector de pantalla si lee la descripcion: ahi no estorba y es la
+        // unica pista que tiene quien no ve el icono.
+        descripcionAccesible = "$titulo. $descripcion",
+        alPulsar = alPulsar,
+    )
+}
 
-            if (recientes.isEmpty()) {
-                item {
-                    EstadoVacio(
-                        icono = Icons.Filled.Description,
-                        titulo = stringResource(Res.string.inicio_sin_recientes),
-                        detalle = stringResource(Res.string.inicio_sin_recientes_ayuda),
+@Composable
+private fun BaldosaRecientes(cuantos: Int, modifier: Modifier, alPulsar: () -> Unit) {
+    val titulo = stringResource(Res.string.inicio_recientes)
+    Baldosa(
+        modifier = modifier,
+        icono = Icons.Filled.History,
+        titulo = titulo,
+        descripcionAccesible = titulo,
+        insignia = cuantos.takeIf { it > 0 },
+        alPulsar = alPulsar,
+    )
+}
+
+@Composable
+private fun Baldosa(
+    modifier: Modifier,
+    icono: ImageVector,
+    titulo: String,
+    descripcionAccesible: String,
+    insignia: Int? = null,
+    alPulsar: () -> Unit,
+) {
+    Card(
+        onClick = alPulsar,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+        ),
+        modifier = modifier
+            .semantics(mergeDescendants = true) { contentDescription = descripcionAccesible },
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize().padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Box(contentAlignment = Alignment.TopEnd) {
+                Icon(
+                    imageVector = icono,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(34.dp),
+                )
+                if (insignia != null) {
+                    Text(
+                        text = insignia.toString(),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier
+                            .offset(x = 10.dp, y = (-6).dp)
+                            .background(MaterialTheme.colorScheme.primary, CircleShape)
+                            .padding(horizontal = 6.dp, vertical = 1.dp),
                     )
                 }
-            } else {
-                items(recientes, key = { it.ruta }) { documento ->
-                    FilaReciente(documento) { alAbrirReciente(documento) }
-                }
             }
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = titulo,
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
         }
     }
 }
@@ -219,7 +352,7 @@ private fun TarjetaHerramienta(herramienta: Herramienta, alPulsar: () -> Unit) {
 }
 
 @Composable
-private fun FilaReciente(documento: DocumentoReciente, alPulsar: () -> Unit) {
+internal fun FilaReciente(documento: DocumentoReciente, alPulsar: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -252,3 +385,6 @@ private fun FilaReciente(documento: DocumentoReciente, alPulsar: () -> Unit) {
     }
     Spacer(Modifier.height(0.dp))
 }
+
+/** Columnas de la rejilla del inicio. */
+private const val COLUMNAS = 3

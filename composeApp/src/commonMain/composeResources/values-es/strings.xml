@@ -27,14 +27,20 @@
     <string name="aj_calidad_equilibrada">Equilibrada</string>
     <string name="aj_calidad_nitida">Nítida</string>
     <string name="aj_calidad_rapida">Rápida</string>
+    <string name="aj_carpeta_destino">Carpeta: %1$s</string>
+    <string name="aj_carpeta_predeterminada">Descargas/NexaPDF</string>
     <string name="aj_compartir_app">Compartir NexaPDF</string>
     <string name="aj_compartir_texto">NexaPDF: une, separa, edita y firma PDF en el móvil, sin conexión y gratis. %1$s</string>
     <string name="aj_confirmar_destructivas">Preguntar antes de borrar</string>
+    <string name="aj_cuando_guardar">Cuándo guardar los resultados</string>
     <string name="aj_datos">Tus datos</string>
+    <string name="aj_elegir_carpeta">Elegir carpeta</string>
     <string name="aj_exportar">Exportar ajustes</string>
     <string name="aj_exportar_desc">Guarda un fichero %1$s con tus preferencias y tus firmas. Tus documentos no van dentro: ya están en tu dispositivo.</string>
+    <string name="aj_guardar_al_final">Sólo al final</string>
     <string name="aj_guardar_descargas">Guardar también en Descargas</string>
     <string name="aj_guardar_descargas_desc">Cada documento que crees se copia a Descargas/NexaPDF para que otras apps puedan encontrarlo.</string>
+    <string name="aj_guardar_paso_a_paso">Paso a paso</string>
     <string name="aj_idioma">Idioma</string>
     <string name="aj_idioma_detalle_fijo">La aplicación se queda en este idioma, use el que use el teléfono.</string>
     <string name="aj_idioma_detalle_sistema">Sigue al teléfono. Solo cambia si cambias el idioma del teléfono.</string>
@@ -82,6 +88,7 @@
     <string name="comun_aceptar">Aceptar</string>
     <string name="comun_anadir">Añadir</string>
     <string name="comun_atras">Atrás</string>
+    <string name="comun_buscar">Buscar</string>
     <string name="comun_cancelar">Cancelar</string>
     <string name="comun_cerrar">Cerrar</string>
     <string name="comun_compartir">Compartir</string>
@@ -96,6 +103,7 @@
     <string name="comun_reintentar">Reintentar</string>
     <string name="comun_seleccionar_todo">Seleccionar todo</string>
     <string name="comun_sin_titulo">Sin título</string>
+    <string name="conv_elige_destino">Convertir a…</string>
     <string name="copia_error_formato">Ese fichero no es una copia de NexaPDF</string>
     <string name="copia_error_incompleta">Esa copia está incompleta o dañada</string>
     <string name="copia_error_version">Esa copia se hizo con una versión más nueva de NexaPDF</string>
@@ -232,6 +240,8 @@
     <string name="firma_sin_existentes">Este documento aún no está firmado</string>
     <string name="firma_titulo">Firmar documento</string>
     <string name="firma_vista_previa">Primera página del documento</string>
+    <string name="herr_convertir_desc">Word, Excel y PowerPoint a PDF, y al revés</string>
+    <string name="herr_convertir_titulo">Convertir</string>
     <string name="herr_editar_desc">Dibuja, añade texto, formas e imágenes</string>
     <string name="herr_editar_titulo">Editar PDF</string>
     <string name="herr_firmar_desc">A mano o con tu certificado</string>
@@ -244,6 +254,8 @@
     <string name="herr_unir_titulo">Unir PDF</string>
     <string name="herr_varias_imagenes_desc">Una por página, o varias juntas</string>
     <string name="herr_varias_imagenes_titulo">Imágenes a PDF</string>
+    <string name="herr_visor_desc">Lee, busca y muévete por el documento</string>
+    <string name="herr_visor_titulo">Leer PDF</string>
     <string name="img_ajustar_a_imagen">Ajustar a la imagen</string>
     <string name="img_anadir_mas">Añadir más imágenes</string>
     <string name="img_automatica">Automática</string>
@@ -285,6 +297,10 @@
     <string name="tour_saltar">Saltar</string>
     <string name="tour_siguiente">Siguiente</string>
     <string name="tour_ver_otra_vez">Ver el tour otra vez</string>
+    <string name="visor_indice">Índice</string>
+    <string name="visor_pagina_numero">Página %1$d</string>
+    <string name="visor_sin_indice">Este documento no trae índice. Los escaneados no suelen tenerlo.</string>
+    <string name="visor_sin_resultados">Sin resultados</string>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d documento</item>
         <item quantity="other">%1$d documentos</item>

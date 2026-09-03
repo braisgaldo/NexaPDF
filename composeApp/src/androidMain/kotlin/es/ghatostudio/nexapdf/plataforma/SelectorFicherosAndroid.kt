@@ -68,6 +68,14 @@ class SelectorFicherosAndroid(
             pendienteGuardar = null
         }
 
+    private var pendienteCarpeta: CompletableDeferred<Uri?>? = null
+
+    private val elegirArbol: ActivityResultLauncher<Uri?> =
+        actividad.registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
+            pendienteCarpeta?.complete(uri)
+            pendienteCarpeta = null
+        }
+
     private var pendienteImagenUna: CompletableDeferred<Uri?>? = null
     private var pendienteImagenVarias: CompletableDeferred<List<Uri>>? = null
 
@@ -212,6 +220,43 @@ class SelectorFicherosAndroid(
         }.onFailure { return null }
         return espera.await()
     }
+
+    override suspend fun elegirCarpeta(): String? {
+        val espera = CompletableDeferred<Uri?>()
+        pendienteCarpeta = espera
+        runCatching { elegirArbol.launch(uriDescargas) }.onFailure {
+            pendienteCarpeta = null
+            return null
+        }
+        val elegida = espera.await() ?: return null
+
+        // Sin esto el permiso se pierde al cerrar la aplicacion y la carpeta
+        // elegida dejaria de servir en el siguiente arranque.
+        runCatching {
+            actividad.contentResolver.takePersistableUriPermission(
+                elegida,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
+            )
+        }
+        return elegida.toString()
+    }
+
+    override fun nombreDeCarpeta(uri: String): String? = runCatching {
+        val arbol = Uri.parse(uri)
+        val documento = DocumentsContract.buildDocumentUriUsingTree(
+            arbol,
+            DocumentsContract.getTreeDocumentId(arbol),
+        )
+        actividad.contentResolver.query(
+            documento,
+            arrayOf(DocumentsContract.Document.COLUMN_DISPLAY_NAME),
+            null,
+            null,
+            null,
+        )?.use { cursor ->
+            if (cursor.moveToFirst()) cursor.getString(0) else null
+        }
+    }.getOrNull()
 
     override suspend fun elegirCopiaSeguridad(): FicheroElegido? =
         elegir(TIPOS_COPIA, multiple = false).firstOrNull()

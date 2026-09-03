@@ -44,6 +44,12 @@ sealed interface Destino {
 
     data object Ajustes : Destino
 
+    /** Lectura de un documento: buscar, indice y firmas. */
+    data class Visor(val ruta: String, val pagina: Int = 0) : Destino
+
+    /** Lista de documentos ya creados. */
+    data object Recientes : Destino
+
     /** Tour guiado de bienvenida. */
     data object Tour : Destino
 

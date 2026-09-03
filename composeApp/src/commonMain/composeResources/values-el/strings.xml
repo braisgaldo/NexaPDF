@@ -27,14 +27,20 @@
     <string name="aj_calidad_equilibrada">Ισορροπημένη</string>
     <string name="aj_calidad_nitida">Ευκρινής</string>
     <string name="aj_calidad_rapida">Γρήγορη</string>
+    <string name="aj_carpeta_destino">Φάκελος: %1$s</string>
+    <string name="aj_carpeta_predeterminada">Λήψεις/NexaPDF</string>
     <string name="aj_compartir_app">Κοινοποίηση του NexaPDF</string>
     <string name="aj_compartir_texto">NexaPDF: ενώστε, χωρίστε, επεξεργαστείτε και υπογράψτε PDF στο κινητό, χωρίς σύνδεση και δωρεάν. %1$s</string>
     <string name="aj_confirmar_destructivas">Ερώτηση πριν τη διαγραφή</string>
+    <string name="aj_cuando_guardar">Πότε αποθηκεύονται τα αποτελέσματα</string>
     <string name="aj_datos">Τα δεδομένα σας</string>
+    <string name="aj_elegir_carpeta">Επιλογή φακέλου</string>
     <string name="aj_exportar">Εξαγωγή ρυθμίσεων</string>
     <string name="aj_exportar_desc">Αποθηκεύει ένα αρχείο %1$s με τις προτιμήσεις και τις υπογραφές σας. Τα έγγραφά σας δεν περιλαμβάνονται: βρίσκονται ήδη στη συσκευή σας.</string>
+    <string name="aj_guardar_al_final">Μόνο στο τέλος</string>
     <string name="aj_guardar_descargas">Αποθήκευση και στις Λήψεις</string>
     <string name="aj_guardar_descargas_desc">Κάθε έγγραφο που δημιουργείτε αντιγράφεται στο Λήψεις/NexaPDF ώστε να το βρίσκουν άλλες εφαρμογές.</string>
+    <string name="aj_guardar_paso_a_paso">Σε κάθε βήμα</string>
     <string name="aj_idioma">Γλώσσα</string>
     <string name="aj_idioma_detalle_fijo">Η εφαρμογή μένει σε αυτή τη γλώσσα, ανεξάρτητα από το τηλέφωνο.</string>
     <string name="aj_idioma_detalle_sistema">Ακολουθεί το τηλέφωνο. Αλλάζει μόνο αν αλλάξετε τη γλώσσα του τηλεφώνου.</string>
@@ -82,6 +88,7 @@
     <string name="comun_aceptar">Εντάξει</string>
     <string name="comun_anadir">Προσθήκη</string>
     <string name="comun_atras">Πίσω</string>
+    <string name="comun_buscar">Αναζήτηση</string>
     <string name="comun_cancelar">Άκυρο</string>
     <string name="comun_cerrar">Κλείσιμο</string>
     <string name="comun_compartir">Κοινοποίηση</string>
@@ -96,6 +103,7 @@
     <string name="comun_reintentar">Επανάληψη</string>
     <string name="comun_seleccionar_todo">Επιλογή όλων</string>
     <string name="comun_sin_titulo">Χωρίς τίτλο</string>
+    <string name="conv_elige_destino">Μετατροπή σε…</string>
     <string name="copia_error_formato">Αυτό το αρχείο δεν είναι αντίγραφο του NexaPDF</string>
     <string name="copia_error_incompleta">Αυτό το αντίγραφο είναι ελλιπές ή κατεστραμμένο</string>
     <string name="copia_error_version">Αυτό το αντίγραφο δημιουργήθηκε με νεότερη έκδοση του NexaPDF</string>
@@ -232,6 +240,8 @@
     <string name="firma_sin_existentes">Αυτό το έγγραφο δεν έχει υπογραφεί ακόμη</string>
     <string name="firma_titulo">Υπογραφή εγγράφου</string>
     <string name="firma_vista_previa">Πρώτη σελίδα του εγγράφου</string>
+    <string name="herr_convertir_desc">Word, Excel και PowerPoint σε PDF, και αντίστροφα</string>
+    <string name="herr_convertir_titulo">Μετατροπή</string>
     <string name="herr_editar_desc">Σχεδιάστε, προσθέστε κείμενο, σχήματα και εικόνες</string>
     <string name="herr_editar_titulo">Επεξεργασία PDF</string>
     <string name="herr_firmar_desc">Με το χέρι ή με το πιστοποιητικό σας</string>
@@ -244,6 +254,8 @@
     <string name="herr_unir_titulo">Συγχώνευση PDF</string>
     <string name="herr_varias_imagenes_desc">Μία ανά σελίδα ή πολλές μαζί</string>
     <string name="herr_varias_imagenes_titulo">Εικόνες σε PDF</string>
+    <string name="herr_visor_desc">Διαβάστε, αναζητήστε και πλοηγηθείτε στο έγγραφο</string>
+    <string name="herr_visor_titulo">Ανάγνωση PDF</string>
     <string name="img_ajustar_a_imagen">Προσαρμογή στην εικόνα</string>
     <string name="img_anadir_mas">Προσθήκη κι άλλων εικόνων</string>
     <string name="img_automatica">Αυτόματος</string>
@@ -285,6 +297,10 @@
     <string name="tour_saltar">Παράλειψη</string>
     <string name="tour_siguiente">Επόμενο</string>
     <string name="tour_ver_otra_vez">Δείτε ξανά την ξενάγηση</string>
+    <string name="visor_indice">Περιεχόμενα</string>
+    <string name="visor_pagina_numero">Σελίδα %1$d</string>
+    <string name="visor_sin_indice">Αυτό το έγγραφο δεν έχει περιεχόμενα. Τα σαρωμένα συνήθως δεν έχουν.</string>
+    <string name="visor_sin_resultados">Κανένα αποτέλεσμα</string>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d έγγραφο</item>
         <item quantity="other">%1$d έγγραφα</item>

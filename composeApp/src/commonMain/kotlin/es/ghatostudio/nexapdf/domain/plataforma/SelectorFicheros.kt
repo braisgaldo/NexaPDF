@@ -63,6 +63,17 @@ interface SelectorFicheros {
     suspend fun elegirCopiaSeguridad(): FicheroElegido?
 
     /**
+     * Deja elegir una carpeta y devuelve su identificador, o `null` si cancela.
+     *
+     * El permiso sobre esa carpeta se conserva entre arranques: si hubiera que
+     * volver a pedirlo cada vez, elegir carpeta no serviria de nada.
+     */
+    suspend fun elegirCarpeta(): String?
+
+    /** Nombre legible de una carpeta elegida, para ensenarlo en los ajustes. */
+    fun nombreDeCarpeta(uri: String): String?
+
+    /**
      * Pide al usuario donde guardar un fichero y escribe alli el contenido de
      * [rutaOrigen]. Devuelve un nombre legible del destino, o `null` si cancela.
      */

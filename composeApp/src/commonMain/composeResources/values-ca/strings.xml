@@ -27,14 +27,20 @@
     <string name="aj_calidad_equilibrada">Equilibrada</string>
     <string name="aj_calidad_nitida">Nítida</string>
     <string name="aj_calidad_rapida">Ràpida</string>
+    <string name="aj_carpeta_destino">Carpeta: %1$s</string>
+    <string name="aj_carpeta_predeterminada">Baixades/NexaPDF</string>
     <string name="aj_compartir_app">Comparteix NexaPDF</string>
     <string name="aj_compartir_texto">NexaPDF: uneix, divideix, edita i signa PDF al mòbil, sense connexió i gratis. %1$s</string>
     <string name="aj_confirmar_destructivas">Pregunta abans d’esborrar</string>
+    <string name="aj_cuando_guardar">Quan desar els resultats</string>
     <string name="aj_datos">Les teves dades</string>
+    <string name="aj_elegir_carpeta">Tria una carpeta</string>
     <string name="aj_exportar">Exporta la configuració</string>
     <string name="aj_exportar_desc">Desa un fitxer %1$s amb les teves preferències i signatures. Els teus documents no hi són: ja són al teu dispositiu.</string>
+    <string name="aj_guardar_al_final">Només al final</string>
     <string name="aj_guardar_descargas">Desa també a Baixades</string>
     <string name="aj_guardar_descargas_desc">Cada document que creïs es copia a Baixades/NexaPDF perquè altres aplicacions el puguin trobar.</string>
+    <string name="aj_guardar_paso_a_paso">Pas a pas</string>
     <string name="aj_idioma">Idioma</string>
     <string name="aj_idioma_detalle_fijo">L’aplicació es queda en aquesta llengua, sigui quina sigui la del telèfon.</string>
     <string name="aj_idioma_detalle_sistema">Segueix el telèfon. Només canvia si canvies l’idioma del telèfon.</string>
@@ -82,6 +88,7 @@
     <string name="comun_aceptar">D’acord</string>
     <string name="comun_anadir">Afegeix</string>
     <string name="comun_atras">Enrere</string>
+    <string name="comun_buscar">Cerca</string>
     <string name="comun_cancelar">Cancel·la</string>
     <string name="comun_cerrar">Tanca</string>
     <string name="comun_compartir">Comparteix</string>
@@ -96,6 +103,7 @@
     <string name="comun_reintentar">Torna-ho a provar</string>
     <string name="comun_seleccionar_todo">Selecciona-ho tot</string>
     <string name="comun_sin_titulo">Sense títol</string>
+    <string name="conv_elige_destino">Converteix a…</string>
     <string name="copia_error_formato">Aquest fitxer no és una còpia de NexaPDF</string>
     <string name="copia_error_incompleta">Aquesta còpia està incompleta o malmesa</string>
     <string name="copia_error_version">Aquesta còpia es va fer amb una versió més nova de NexaPDF</string>
@@ -232,6 +240,8 @@
     <string name="firma_sin_existentes">Aquest document encara no està signat</string>
     <string name="firma_titulo">Signa el document</string>
     <string name="firma_vista_previa">Primera pàgina del document</string>
+    <string name="herr_convertir_desc">Word, Excel i PowerPoint a PDF, i a l’inrevés</string>
+    <string name="herr_convertir_titulo">Converteix</string>
     <string name="herr_editar_desc">Dibuixa, afegeix text, formes i imatges</string>
     <string name="herr_editar_titulo">Edita PDF</string>
     <string name="herr_firmar_desc">A mà o amb el teu certificat</string>
@@ -244,6 +254,8 @@
     <string name="herr_unir_titulo">Uneix PDF</string>
     <string name="herr_varias_imagenes_desc">Una per pàgina, o diverses juntes</string>
     <string name="herr_varias_imagenes_titulo">Imatges a PDF</string>
+    <string name="herr_visor_desc">Llegeix, cerca i mou-te pel document</string>
+    <string name="herr_visor_titulo">Llegeix PDF</string>
     <string name="img_ajustar_a_imagen">Ajusta a la imatge</string>
     <string name="img_anadir_mas">Afegeix més imatges</string>
     <string name="img_automatica">Automàtica</string>
@@ -285,6 +297,10 @@
     <string name="tour_saltar">Omet</string>
     <string name="tour_siguiente">Següent</string>
     <string name="tour_ver_otra_vez">Torna a veure el tour</string>
+    <string name="visor_indice">Índex</string>
+    <string name="visor_pagina_numero">Pàgina %1$d</string>
+    <string name="visor_sin_indice">Aquest document no porta índex. Els escanejats no acostumen a tenir-ne.</string>
+    <string name="visor_sin_resultados">Cap resultat</string>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d document</item>
         <item quantity="other">%1$d documents</item>

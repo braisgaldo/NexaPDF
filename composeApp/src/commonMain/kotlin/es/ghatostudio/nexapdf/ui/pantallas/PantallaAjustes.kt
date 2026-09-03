@@ -31,6 +31,7 @@ import androidx.compose.material.icons.filled.FileUpload
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocalCafe
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -63,6 +64,7 @@ import androidx.compose.ui.unit.dp
 import es.ghatostudio.nexapdf.data.CopiaSeguridad
 import es.ghatostudio.nexapdf.domain.model.Ajustes
 import es.ghatostudio.nexapdf.domain.model.CalidadVista
+import es.ghatostudio.nexapdf.domain.model.ModoGuardado
 import es.ghatostudio.nexapdf.resources.Res
 import es.ghatostudio.nexapdf.resources.aj_acerca_de
 import es.ghatostudio.nexapdf.resources.aj_apoyar_desarrollo
@@ -75,7 +77,13 @@ import es.ghatostudio.nexapdf.resources.aj_calidad_nitida
 import es.ghatostudio.nexapdf.resources.aj_calidad_rapida
 import es.ghatostudio.nexapdf.resources.aj_compartir_app
 import es.ghatostudio.nexapdf.resources.aj_confirmar_destructivas
+import es.ghatostudio.nexapdf.resources.aj_carpeta_destino
+import es.ghatostudio.nexapdf.resources.aj_carpeta_predeterminada
+import es.ghatostudio.nexapdf.resources.aj_cuando_guardar
 import es.ghatostudio.nexapdf.resources.aj_datos
+import es.ghatostudio.nexapdf.resources.aj_elegir_carpeta
+import es.ghatostudio.nexapdf.resources.aj_guardar_al_final
+import es.ghatostudio.nexapdf.resources.aj_guardar_paso_a_paso
 import es.ghatostudio.nexapdf.resources.aj_exportar
 import es.ghatostudio.nexapdf.resources.aj_exportar_desc
 import es.ghatostudio.nexapdf.resources.aj_guardar_descargas
@@ -125,6 +133,10 @@ fun PantallaAjustes(
     alCambiarCalidad: (CalidadVista) -> Unit,
     alCambiarConfirmar: (Boolean) -> Unit,
     alCambiarDescargas: (Boolean) -> Unit,
+    alCambiarModoGuardado: (ModoGuardado) -> Unit,
+    alElegirCarpeta: () -> Unit,
+    alQuitarCarpeta: () -> Unit,
+    nombreCarpeta: String?,
     alCambiarNombreFirmas: (String) -> Unit,
     alExportar: () -> Unit,
     alImportar: () -> Unit,
@@ -190,6 +202,57 @@ fun PantallaAjustes(
 
             // --- Datos --------------------------------------------------------
             item { TituloSeccion(stringResource(Res.string.aj_datos)) }
+            item {
+                Text(
+                    text = stringResource(Res.string.aj_cuando_guardar),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
+                )
+            }
+            item {
+                FilaFiltros(
+                    opciones = listOf(
+                        ModoGuardado.PASO_A_PASO to Res.string.aj_guardar_paso_a_paso,
+                        ModoGuardado.SOLO_AL_FINAL to Res.string.aj_guardar_al_final,
+                    ),
+                    elegida = ajustes.guardado,
+                    alElegir = alCambiarModoGuardado,
+                )
+            }
+            item {
+                Text(
+                    text = stringResource(
+                        Res.string.aj_carpeta_destino,
+                        nombreCarpeta ?: stringResource(Res.string.aj_carpeta_predeterminada),
+                    ),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
+                )
+            }
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    TextButton(
+                        onClick = alElegirCarpeta,
+                        modifier = Modifier.heightIn(min = 48.dp),
+                    ) {
+                        Icon(Icons.Filled.FolderOpen, contentDescription = null)
+                        Spacer(Modifier.width(8.dp))
+                        Text(stringResource(Res.string.aj_elegir_carpeta))
+                    }
+                    if (nombreCarpeta != null) {
+                        TextButton(
+                            onClick = alQuitarCarpeta,
+                            modifier = Modifier.heightIn(min = 48.dp),
+                        ) {
+                            Text(stringResource(Res.string.aj_carpeta_predeterminada))
+                        }
+                    }
+                }
+            }
             item {
                 FilaConmutador(
                     titulo = stringResource(Res.string.aj_guardar_descargas),

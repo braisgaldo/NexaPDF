@@ -27,14 +27,20 @@
     <string name="aj_calidad_equilibrada">標準</string>
     <string name="aj_calidad_nitida">高精細</string>
     <string name="aj_calidad_rapida">速い</string>
+    <string name="aj_carpeta_destino">フォルダー：%1$s</string>
+    <string name="aj_carpeta_predeterminada">ダウンロード/NexaPDF</string>
     <string name="aj_compartir_app">NexaPDF を共有</string>
     <string name="aj_compartir_texto">NexaPDF：スマホで PDF を結合・分割・編集・署名。オフラインで無料です。%1$s</string>
     <string name="aj_confirmar_destructivas">削除する前に確認する</string>
+    <string name="aj_cuando_guardar">結果を保存するタイミング</string>
     <string name="aj_datos">あなたのデータ</string>
+    <string name="aj_elegir_carpeta">フォルダーを選ぶ</string>
     <string name="aj_exportar">設定を書き出す</string>
     <string name="aj_exportar_desc">設定と署名を含む %1$s ファイルを保存します。文書は含まれません。すでに端末にあるからです。</string>
+    <string name="aj_guardar_al_final">最後だけ</string>
     <string name="aj_guardar_descargas">ダウンロードにも保存する</string>
     <string name="aj_guardar_descargas_desc">作成した文書は「ダウンロード/NexaPDF」にコピーされ、他のアプリからも開けます。</string>
+    <string name="aj_guardar_paso_a_paso">工程ごと</string>
     <string name="aj_idioma">言語</string>
     <string name="aj_idioma_detalle_fijo">端末の言語にかかわらず、アプリはこの言語のままです。</string>
     <string name="aj_idioma_detalle_sistema">端末に合わせます。端末の言語を変えたときだけ切り替わります。</string>
@@ -82,6 +88,7 @@
     <string name="comun_aceptar">OK</string>
     <string name="comun_anadir">追加</string>
     <string name="comun_atras">戻る</string>
+    <string name="comun_buscar">検索</string>
     <string name="comun_cancelar">キャンセル</string>
     <string name="comun_cerrar">閉じる</string>
     <string name="comun_compartir">共有</string>
@@ -96,6 +103,7 @@
     <string name="comun_reintentar">再試行</string>
     <string name="comun_seleccionar_todo">すべて選択</string>
     <string name="comun_sin_titulo">無題</string>
+    <string name="conv_elige_destino">変換先…</string>
     <string name="copia_error_formato">そのファイルは NexaPDF のバックアップではありません</string>
     <string name="copia_error_incompleta">そのバックアップは不完全か壊れています</string>
     <string name="copia_error_version">そのバックアップは新しいバージョンの NexaPDF で作成されています</string>
@@ -232,6 +240,8 @@
     <string name="firma_sin_existentes">この文書はまだ署名されていません</string>
     <string name="firma_titulo">文書に署名</string>
     <string name="firma_vista_previa">文書の 1 ページ目</string>
+    <string name="herr_convertir_desc">Word・Excel・PowerPoint と PDF の相互変換</string>
+    <string name="herr_convertir_titulo">変換</string>
     <string name="herr_editar_desc">手書き、文字、図形、画像を追加します</string>
     <string name="herr_editar_titulo">PDF を編集</string>
     <string name="herr_firmar_desc">手書き、または証明書で署名します</string>
@@ -244,6 +254,8 @@
     <string name="herr_unir_titulo">PDF を結合</string>
     <string name="herr_varias_imagenes_desc">1 ページに 1 枚、または複数まとめて</string>
     <string name="herr_varias_imagenes_titulo">複数の画像を PDF に</string>
+    <string name="herr_visor_desc">読む、探す、文書内を移動する</string>
+    <string name="herr_visor_titulo">PDF を読む</string>
     <string name="img_ajustar_a_imagen">画像に合わせる</string>
     <string name="img_anadir_mas">画像を追加</string>
     <string name="img_automatica">自動</string>
@@ -285,6 +297,10 @@
     <string name="tour_saltar">スキップ</string>
     <string name="tour_siguiente">次へ</string>
     <string name="tour_ver_otra_vez">ツアーをもう一度見る</string>
+    <string name="visor_indice">目次</string>
+    <string name="visor_pagina_numero">%1$d ページ</string>
+    <string name="visor_sin_indice">この文書に目次はありません。スキャンした文書にはたいてい入っていません。</string>
+    <string name="visor_sin_resultados">見つかりません</string>
     <plurals name="plural_documentos">
         <item quantity="other">%1$d 個の文書</item>
     </plurals>

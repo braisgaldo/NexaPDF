@@ -63,6 +63,17 @@ interface ServiciosPlataforma {
      */
     suspend fun guardarEnDescargas(rutaOrigen: String, nombre: String, tipoMime: String): String?
 
+    /**
+     * Copia el fichero a la carpeta que el usuario eligio en los ajustes.
+     * Devuelve un nombre legible de donde quedo, o `null` si no se pudo.
+     */
+    suspend fun guardarEnCarpeta(
+        rutaOrigen: String,
+        nombre: String,
+        tipoMime: String,
+        uriCarpeta: String,
+    ): String?
+
     /** Aplica la preferencia de idioma por aplicacion. `null` = la del sistema. */
     fun aplicarIdioma(etiquetaBcp47: String?)
 

@@ -79,6 +79,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
@@ -87,6 +88,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import es.ghatostudio.nexapdf.domain.model.BloqueTexto
 import es.ghatostudio.nexapdf.domain.model.Edicion
@@ -187,6 +189,8 @@ fun PantallaEditor(
     var confirmandoSalida by remember { mutableStateOf(false) }
     // Pagina a la que se quiere ir; se resuelve tras confirmar el descarte.
     var paginaPedida by remember { mutableStateOf<Int?>(null) }
+    val medidorTexto = rememberTextMeasurer()
+    val densidad = LocalDensity.current
 
     val salir = { if (estado.hayCambios) confirmandoSalida = true else alVolver() }
 
@@ -328,7 +332,18 @@ fun PantallaEditor(
             alConfirmar = { contenido, tamano, fondo ->
                 estado.anadirTexto(
                     contenido = contenido,
-                    marco = enEdicion.marco,
+                    // La caja se calcula a partir del texto y del cuerpo de
+                    // letra elegidos, anclada donde el usuario toco. Antes era
+                    // de tamano fijo: con letra grande el texto se salia y con
+                    // dos palabras quedaba un recuadro enorme medio vacio.
+                    marco = marcoParaTexto(
+                        medidor = medidorTexto,
+                        densidad = densidad,
+                        contenido = contenido,
+                        tamano = tamano,
+                        proporcion = proporcion,
+                        ancla = enEdicion.marco,
+                    ),
                     tamano = tamano,
                     taparDebajo = enEdicion.sustituye,
                     fondoArgb = fondo,
@@ -1242,3 +1257,44 @@ private fun colorDeLaPaginaEn(pagina: ImageBitmap?, marco: Rectangulo): Long {
 }
 
 private const val BLANCO_PAGINA = 0xFFFFFFFFL
+
+/**
+ * Calcula la caja que le corresponde a un texto.
+ *
+ * Se mide sobre una pagina de referencia y el resultado se normaliza, de modo
+ * que la caja sale del texto y del cuerpo de letra en lugar de ser un
+ * rectangulo fijo. El anclaje es la esquina superior izquierda de donde el
+ * usuario toco: crecer hacia abajo y a la derecha es lo que uno espera al
+ * escribir.
+ *
+ * Es la mitad de la coherencia; la otra mitad esta en escalarSeleccion, que al
+ * estirar la caja estira tambien la letra.
+ */
+private fun marcoParaTexto(
+    medidor: TextMeasurer,
+    densidad: Density,
+    contenido: String,
+    tamano: Float,
+    proporcion: Float,
+    ancla: Rectangulo,
+): Rectangulo {
+    val altoRef = 2000f
+    val anchoRef = altoRef * proporcion.coerceIn(0.2f, 5f)
+    val izquierda = ancla.normalizado().izquierda
+    val arriba = ancla.normalizado().arriba
+
+    val medida = medidor.measure(
+        text = contenido,
+        style = TextStyle(fontSize = with(densidad) { (tamano * altoRef).toSp() }),
+        constraints = Constraints(
+            maxWidth = ((1f - izquierda) * anchoRef).toInt().coerceAtLeast(1),
+        ),
+    )
+
+    // Un pelin de aire alrededor: el fondo pegado a las letras se ve apretado.
+    val holgura = tamano * 0.35f
+    val ancho = (medida.size.width / anchoRef + holgura).coerceIn(0.02f, 1f - izquierda)
+    val alto = (medida.size.height / altoRef + holgura * 0.5f).coerceIn(0.01f, 1f - arriba)
+
+    return Rectangulo(izquierda, arriba, izquierda + ancho, arriba + alto)
+}

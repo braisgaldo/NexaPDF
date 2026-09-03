@@ -120,9 +120,46 @@ interface MotorPdf {
         rutaSalida: String,
     ): ResultadoPdf<String>
 
+    /**
+     * Busca texto en todo el documento.
+     *
+     * Devuelve una entrada por aparicion, con la pagina y un fragmento de
+     * contexto: en un documento de doscientas paginas, saber que la palabra
+     * esta en la 137 no sirve de nada si no se ve en que frase.
+     */
+    suspend fun buscarTexto(
+        ruta: String,
+        consulta: String,
+        contrasena: String? = null,
+    ): ResultadoPdf<List<Coincidencia>>
+
+    /**
+     * Indice del documento, si lo trae.
+     *
+     * Muchos PDF generados a partir de Word o LaTeX llevan marcadores con la
+     * estructura de secciones; los escaneados no llevan nada, y en ese caso la
+     * lista sale vacia.
+     */
+    suspend fun esquema(ruta: String, contrasena: String? = null): ResultadoPdf<List<Seccion>>
+
     /** Lista las firmas ya presentes en el documento. */
     suspend fun firmasExistentes(ruta: String): ResultadoPdf<List<FirmaExistente>>
 }
+
+/** Una aparicion del texto buscado. */
+data class Coincidencia(
+    val pagina: Int,
+    /** Frase alrededor de la aparicion, para reconocerla de un vistazo. */
+    val fragmento: String,
+)
+
+/** Una entrada del indice del documento. */
+data class Seccion(
+    val titulo: String,
+    val pagina: Int,
+    /** Profundidad en el arbol, para sangrar las subsecciones. */
+    val nivel: Int,
+)
 
 /** Un documento y las paginas suyas que entran en la union. */
 data class EntradaUnion(
