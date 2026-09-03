@@ -13,6 +13,12 @@ import es.ghatostudio.nexapdf.domain.model.TipoFigura
 
 /** Herramienta activa del editor. */
 enum class HerramientaEditor {
+    /** Tapa con el color del fondo, tanto lo anadido como lo impreso. */
+    GOMA,
+
+    /** Recorta la pagina al rectangulo que se marque. */
+    RECORTAR,
+
     MOVER,
     DIBUJAR,
     RESALTAR,
@@ -40,6 +46,19 @@ class EstadoEditor(indicePagina: Int) {
     var opacidad by mutableStateOf(1f)
     var tipoFigura by mutableStateOf(TipoFigura.RECTANGULO)
     var conRelleno by mutableStateOf(false)
+    /**
+     * Color con el que tapa la goma.
+     *
+     * Lo pone la pantalla leyendo el pixel del fondo de la pagina: borrar
+     * pintando de blanco sobre un papel crema deja un parche que se ve mas que
+     * lo que se queria quitar.
+     */
+    var colorDeFondo by mutableStateOf(BLANCO)
+
+    /** Recorte pendiente de aplicar, en coordenadas de pagina. */
+    var recorte by mutableStateOf<Rectangulo?>(null)
+        private set
+
     var filtro by mutableStateOf(FiltroPagina.NINGUNO)
     var intensidadFiltro by mutableStateOf(0.5f)
 
@@ -158,16 +177,51 @@ class EstadoEditor(indicePagina: Int) {
         is Edicion.Texto -> objeto.copy(marco = marco)
         is Edicion.Imagen -> objeto.copy(marco = marco)
         is Edicion.Firma -> objeto.copy(marco = marco)
+        is Edicion.Figura -> objeto.copy(marco = marco)
+        // Un trazo no tiene marco propio: se mueven sus puntos al hueco nuevo.
+        is Edicion.Trazo -> objeto.copy(
+            puntos = recolocar(objeto.puntos, objeto.marco, marco),
+        )
+    }
+
+    /**
+     * Lleva los puntos del marco viejo al nuevo, manteniendo la forma.
+     *
+     * Si el marco original no tiene area (un trazo recto vertical, por
+     * ejemplo), esa dimension se desplaza sin escalar: dividir por cero daria
+     * un trazo en el infinito.
+     */
+    private fun recolocar(
+        puntos: List<Punto>,
+        desde: Rectangulo,
+        hasta: Rectangulo,
+    ): List<Punto> {
+        val viejo = desde.normalizado()
+        val nuevo = hasta.normalizado()
+        val anchoViejo = viejo.derecha - viejo.izquierda
+        val altoViejo = viejo.abajo - viejo.arriba
+        val escalaX = if (anchoViejo > 0.0001f) (nuevo.derecha - nuevo.izquierda) / anchoViejo else 1f
+        val escalaY = if (altoViejo > 0.0001f) (nuevo.abajo - nuevo.arriba) / altoViejo else 1f
+
+        return puntos.map { punto ->
+            Punto(
+                x = nuevo.izquierda + (punto.x - viejo.izquierda) * escalaX,
+                y = nuevo.arriba + (punto.y - viejo.arriba) * escalaY,
+            )
+        }
     }
 
     private fun conRotacion(objeto: Edicion.Colocada, rotacion: Float): Edicion = when (objeto) {
         is Edicion.Texto -> objeto.copy(rotacion = rotacion)
         is Edicion.Imagen -> objeto.copy(rotacion = rotacion)
         is Edicion.Firma -> objeto.copy(rotacion = rotacion)
+        is Edicion.Figura -> objeto.copy(rotacion = rotacion)
+        is Edicion.Trazo -> objeto.copy(rotacion = rotacion)
     }
     val puedeDeshacer: Boolean get() = ediciones.isNotEmpty()
     val puedeRehacer: Boolean get() = deshechas.isNotEmpty()
-    val hayCambios: Boolean get() = ediciones.isNotEmpty() || filtro != FiltroPagina.NINGUNO
+    val hayCambios: Boolean
+        get() = ediciones.isNotEmpty() || filtro != FiltroPagina.NINGUNO || recorte != null
 
     private var contador = 0
 
@@ -281,6 +335,11 @@ class EstadoEditor(indicePagina: Int) {
         seleccionada = nueva.id
     }
 
+    /** Selecciona lo ultimo que se ha anadido, si se puede manipular. */
+    private fun seleccionarUltimo() {
+        seleccionada = (ediciones.lastOrNull() as? Edicion.Colocada)?.id
+    }
+
     fun anadirFirma(trazos: List<List<Punto>>, marco: Rectangulo) {
         if (trazos.isEmpty()) return
         anadir(
@@ -292,6 +351,48 @@ class EstadoEditor(indicePagina: Int) {
                 grosor = 0.004f,
             ),
         )
+    }
+
+    /**
+     * Tapa una zona con el color del fondo.
+     *
+     * Se usa un rectangulo opaco y no un borrado real porque en un PDF no se
+     * puede borrar: el contenido esta en el flujo de la pagina y quitarlo
+     * exigiria reescribirlo entero. Tapar es lo que hacen todos los editores, y
+     * al menos es honesto: el texto de debajo sigue ahi para quien lo busque
+     * con una herramienta, cosa que conviene saber antes de tapar un dato
+     * sensible.
+     */
+    fun taparEn(punto: Punto, radio: Float) {
+        anadir(
+            Edicion.Tapado(
+                id = siguienteId(),
+                marco = Rectangulo(
+                    izquierda = (punto.x - radio).coerceIn(0f, 1f),
+                    arriba = (punto.y - radio).coerceIn(0f, 1f),
+                    derecha = (punto.x + radio).coerceIn(0f, 1f),
+                    abajo = (punto.y + radio).coerceIn(0f, 1f),
+                ),
+                colorArgb = colorDeFondo,
+            ),
+        )
+    }
+
+    /** El rectangulo que se esta arrastrando, si tiene area suficiente. */
+    fun figuraEnCursoComoMarco(): Rectangulo? {
+        val (inicio, fin) = figuraEnCurso ?: return null
+        val marco = Rectangulo.desdeEsquinas(inicio, fin).normalizado()
+        // Un recorte diminuto casi siempre es un toque sin querer.
+        if (marco.ancho < 0.05f || marco.alto < 0.05f) return null
+        return marco
+    }
+
+    fun cancelarFigura() {
+        figuraEnCurso = null
+    }
+
+    fun fijarRecorte(marco: Rectangulo?) {
+        recorte = marco?.normalizado()
     }
 
     /** Quita la ultima edicion que toque el punto: es el borrador. */
@@ -336,6 +437,7 @@ class EstadoEditor(indicePagina: Int) {
         ediciones = ediciones.toList(),
         filtro = filtro,
         intensidadFiltro = intensidadFiltro,
+        recorte = recorte,
     )
 
     companion object {

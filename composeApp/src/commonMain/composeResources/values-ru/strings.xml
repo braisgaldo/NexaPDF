@@ -154,6 +154,7 @@
     <string name="doc_titulo_paginas">Страницы</string>
     <string name="doc_titulo_union">Порядок и объединение</string>
     <string name="doc_unir">Объединить</string>
+    <string name="doc_unir_vacio">Добавьте документы, которые нужно объединить. Можно выбрать сразу несколько.</string>
     <string name="doc_unir_y_seguir">Объединить и упорядочить страницы</string>
     <string name="donar_ahora_no">Не сейчас</string>
     <string name="donar_boton">Угостить кофе · %1$s</string>
@@ -189,6 +190,8 @@
     <string name="ed_filtro_ninguno">Нет</string>
     <string name="ed_firma">Подпись</string>
     <string name="ed_flecha">Стрелка</string>
+    <string name="ed_goma">Ластик</string>
+    <string name="ed_goma_ayuda">Закрывает цветом страницы, в том числе напечатанное. Текст под ним остаётся в файле.</string>
     <string name="ed_grosor">Толщина</string>
     <string name="ed_guardar_cambios">Сохранить изменения</string>
     <string name="ed_imagen">Изображение</string>
@@ -202,6 +205,9 @@
     <string name="ed_pagina_anterior">Предыдущая страница</string>
     <string name="ed_pagina_de">%1$d из %2$d</string>
     <string name="ed_pagina_siguiente">Следующая страница</string>
+    <string name="ed_recortar">Обрезать</string>
+    <string name="ed_recortar_ayuda">Обведите прямоугольник, чтобы оставить только эту часть страницы.</string>
+    <string name="ed_recortar_hecho">Обрезка готова. Применится при сохранении.</string>
     <string name="ed_rectangulo">Прямоугольник</string>
     <string name="ed_relleno">Заливка</string>
     <string name="ed_resaltar">Выделить</string>

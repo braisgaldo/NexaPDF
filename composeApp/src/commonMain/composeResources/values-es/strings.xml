@@ -154,6 +154,7 @@
     <string name="doc_titulo_paginas">Páginas</string>
     <string name="doc_titulo_union">Ordenar y unir</string>
     <string name="doc_unir">Unir</string>
+    <string name="doc_unir_vacio">Añade los documentos que quieras juntar. Puedes elegir varios a la vez.</string>
     <string name="doc_unir_y_seguir">Unir y ordenar páginas</string>
     <string name="donar_ahora_no">Ahora no</string>
     <string name="donar_boton">Invítame a un café · %1$s</string>
@@ -189,6 +190,8 @@
     <string name="ed_filtro_ninguno">Ninguno</string>
     <string name="ed_firma">Firma</string>
     <string name="ed_flecha">Flecha</string>
+    <string name="ed_goma">Goma</string>
+    <string name="ed_goma_ayuda">Tapa con el color de la página, también lo impreso. El texto de debajo sigue en el fichero.</string>
     <string name="ed_grosor">Grosor</string>
     <string name="ed_guardar_cambios">Guardar cambios</string>
     <string name="ed_imagen">Imagen</string>
@@ -202,6 +205,9 @@
     <string name="ed_pagina_anterior">Página anterior</string>
     <string name="ed_pagina_de">%1$d de %2$d</string>
     <string name="ed_pagina_siguiente">Página siguiente</string>
+    <string name="ed_recortar">Recortar</string>
+    <string name="ed_recortar_ayuda">Arrastra un rectángulo para quedarte sólo con esa parte de la página.</string>
+    <string name="ed_recortar_hecho">Recorte listo. Se aplica al guardar.</string>
     <string name="ed_rectangulo">Rectángulo</string>
     <string name="ed_relleno">Relleno</string>
     <string name="ed_resaltar">Resaltar</string>

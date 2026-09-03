@@ -154,6 +154,7 @@
     <string name="doc_titulo_paginas">Seiten</string>
     <string name="doc_titulo_union">Ordnen und zusammenfügen</string>
     <string name="doc_unir">Zusammenfügen</string>
+    <string name="doc_unir_vacio">Fügen Sie die Dokumente hinzu, die Sie zusammenlegen möchten. Mehrere auf einmal sind möglich.</string>
     <string name="doc_unir_y_seguir">Zusammenfügen und Seiten ordnen</string>
     <string name="donar_ahora_no">Jetzt nicht</string>
     <string name="donar_boton">Kaffee spendieren · %1$s</string>
@@ -189,6 +190,8 @@
     <string name="ed_filtro_ninguno">Keiner</string>
     <string name="ed_firma">Unterschrift</string>
     <string name="ed_flecha">Pfeil</string>
+    <string name="ed_goma">Radierer</string>
+    <string name="ed_goma_ayuda">Überdeckt mit der Seitenfarbe, auch Gedrucktes. Der Text darunter bleibt in der Datei.</string>
     <string name="ed_grosor">Stärke</string>
     <string name="ed_guardar_cambios">Änderungen speichern</string>
     <string name="ed_imagen">Bild</string>
@@ -202,6 +205,9 @@
     <string name="ed_pagina_anterior">Vorherige Seite</string>
     <string name="ed_pagina_de">%1$d von %2$d</string>
     <string name="ed_pagina_siguiente">Nächste Seite</string>
+    <string name="ed_recortar">Zuschneiden</string>
+    <string name="ed_recortar_ayuda">Ziehen Sie ein Rechteck, um nur diesen Teil der Seite zu behalten.</string>
+    <string name="ed_recortar_hecho">Zuschnitt bereit. Wird beim Speichern angewendet.</string>
     <string name="ed_rectangulo">Rechteck</string>
     <string name="ed_relleno">Füllung</string>
     <string name="ed_resaltar">Markieren</string>

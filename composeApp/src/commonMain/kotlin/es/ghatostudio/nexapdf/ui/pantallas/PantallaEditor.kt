@@ -142,6 +142,9 @@ import es.ghatostudio.nexapdf.resources.ed_texto
 import es.ghatostudio.nexapdf.resources.ed_mover_asas
 import es.ghatostudio.nexapdf.resources.ed_mover_ayuda
 import es.ghatostudio.nexapdf.resources.ed_tocar_para_sustituir
+import es.ghatostudio.nexapdf.resources.ed_goma_ayuda
+import es.ghatostudio.nexapdf.resources.ed_recortar_ayuda
+import es.ghatostudio.nexapdf.resources.ed_recortar_hecho
 import es.ghatostudio.nexapdf.ui.componentes.BarraSuperior
 import es.ghatostudio.nexapdf.ui.componentes.CirculoRuedaColor
 import es.ghatostudio.nexapdf.ui.componentes.rememberEncuadre
@@ -153,6 +156,10 @@ import kotlin.math.atan2
 import kotlin.math.max
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.material.icons.filled.Crop
+import androidx.compose.material.icons.filled.Deblur
+import es.ghatostudio.nexapdf.resources.ed_goma
+import es.ghatostudio.nexapdf.resources.ed_recortar
 
 /** Lo que el editor necesita del resto de la aplicacion. */
 class AccionesEditor(
@@ -201,6 +208,13 @@ fun PantallaEditor(
     // Al cambiar de pagina se vuelve al 100 %: heredar el encuadre de la
     // anterior deja la nueva a medio ver sin que se entienda por que.
     LaunchedEffect(indicePagina) { encuadre.reiniciar() }
+
+    // La goma tapa con el color que tiene la pagina, no con un blanco supuesto.
+    LaunchedEffect(pagina) {
+        if (pagina != null) {
+            estado.colorDeFondo = colorDeLaPaginaEn(pagina, Rectangulo(0.02f, 0.02f, 0.06f, 0.05f))
+        }
+    }
     val densidad = LocalDensity.current
 
     val salir = { if (estado.hayCambios) confirmandoSalida = true else alVolver() }
@@ -504,7 +518,9 @@ private fun CapaGestos(
                                 estado.empezarTrazo(punto)
 
                             HerramientaEditor.FIGURA -> estado.empezarFigura(punto)
+                            HerramientaEditor.RECORTAR -> estado.empezarFigura(punto)
                             HerramientaEditor.BORRAR -> estado.borrarEn(punto)
+                            HerramientaEditor.GOMA -> estado.taparEn(punto, estado.grosor * 3f)
 
                             // Con "Mover" el arrastre empieza cogiendo un asa
                             // del objeto seleccionado, si el dedo cae sobre
@@ -529,7 +545,9 @@ private fun CapaGestos(
                                 estado.continuarTrazo(punto)
 
                             HerramientaEditor.FIGURA -> estado.continuarFigura(punto)
+                            HerramientaEditor.RECORTAR -> estado.continuarFigura(punto)
                             HerramientaEditor.BORRAR -> estado.borrarEn(punto)
+                            HerramientaEditor.GOMA -> estado.taparEn(punto, estado.grosor * 3f)
 
                             HerramientaEditor.MOVER -> {
                                 val objeto = estado.objetoSeleccionado
@@ -581,6 +599,14 @@ private fun CapaGestos(
                                 estado.terminarTrazo()
 
                             HerramientaEditor.FIGURA -> estado.terminarFigura()
+                            // Al soltar, el rectangulo trazado pasa a ser el
+                            // recorte pendiente en vez de una figura pintada.
+                            HerramientaEditor.RECORTAR -> {
+                                val marco = estado.figuraEnCursoComoMarco()
+                                estado.cancelarFigura()
+                                if (marco != null) estado.fijarRecorte(marco)
+                            }
+
                             HerramientaEditor.MOVER -> asaActiva = null
                             else -> Unit
                         }
@@ -961,6 +987,46 @@ private fun PanelHerramientas(estado: EstadoEditor) {
                     }
                 }
 
+                HerramientaEditor.GOMA -> {
+                    Text(
+                        text = stringResource(Res.string.ed_goma_ayuda),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 6.dp),
+                    )
+                    ControlesTrazo(estado)
+                }
+
+                HerramientaEditor.RECORTAR -> {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 6.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = stringResource(
+                                if (estado.recorte == null) {
+                                    Res.string.ed_recortar_ayuda
+                                } else {
+                                    Res.string.ed_recortar_hecho
+                                },
+                            ),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.weight(1f),
+                        )
+                        if (estado.recorte != null) {
+                            TextButton(
+                                onClick = { estado.fijarRecorte(null) },
+                                modifier = Modifier.heightIn(min = 48.dp),
+                            ) {
+                                Text(stringResource(Res.string.comun_cancelar))
+                            }
+                        }
+                    }
+                }
+
                 HerramientaEditor.BORRAR -> Spacer(Modifier.height(4.dp))
                 else -> ControlesTrazo(estado)
             }
@@ -1216,6 +1282,8 @@ private val HERRAMIENTAS: List<Triple<HerramientaEditor, androidx.compose.ui.gra
         Triple(HerramientaEditor.IMAGEN, Icons.Filled.Image, Res.string.ed_imagen),
         Triple(HerramientaEditor.FIRMA, Icons.Filled.Draw, Res.string.ed_firma),
         Triple(HerramientaEditor.FILTRO, Icons.Filled.AutoFixHigh, Res.string.ed_filtro),
+        Triple(HerramientaEditor.GOMA, Icons.Filled.Deblur, Res.string.ed_goma),
+        Triple(HerramientaEditor.RECORTAR, Icons.Filled.Crop, Res.string.ed_recortar),
         Triple(HerramientaEditor.BORRAR, Icons.Filled.Delete, Res.string.ed_borrar),
     )
 

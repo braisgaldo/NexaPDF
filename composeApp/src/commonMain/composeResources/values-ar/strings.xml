@@ -154,6 +154,7 @@
     <string name="doc_titulo_paginas">الصفحات</string>
     <string name="doc_titulo_union">الترتيب والدمج</string>
     <string name="doc_unir">دمج</string>
+    <string name="doc_unir_vacio">أضف المستندات التي تريد دمجها. يمكنك اختيار عدة ملفات دفعة واحدة.</string>
     <string name="doc_unir_y_seguir">ادمج ورتّب الصفحات</string>
     <string name="donar_ahora_no">ليس الآن</string>
     <string name="donar_boton">ادعُني إلى قهوة · %1$s</string>
@@ -189,6 +190,8 @@
     <string name="ed_filtro_ninguno">بدون</string>
     <string name="ed_firma">توقيع</string>
     <string name="ed_flecha">سهم</string>
+    <string name="ed_goma">ممحاة</string>
+    <string name="ed_goma_ayuda">يغطّي بلون الصفحة، بما في ذلك المطبوع. يبقى النص تحته داخل الملف.</string>
     <string name="ed_grosor">السُمك</string>
     <string name="ed_guardar_cambios">حفظ التغييرات</string>
     <string name="ed_imagen">صورة</string>
@@ -202,6 +205,9 @@
     <string name="ed_pagina_anterior">الصفحة السابقة</string>
     <string name="ed_pagina_de">%1$d من %2$d</string>
     <string name="ed_pagina_siguiente">الصفحة التالية</string>
+    <string name="ed_recortar">اقتصاص</string>
+    <string name="ed_recortar_ayuda">اسحب مستطيلًا للاحتفاظ بذلك الجزء من الصفحة فقط.</string>
+    <string name="ed_recortar_hecho">الاقتصاص جاهز. يُطبَّق عند الحفظ.</string>
     <string name="ed_rectangulo">مستطيل</string>
     <string name="ed_relleno">تعبئة</string>
     <string name="ed_resaltar">تظليل</string>

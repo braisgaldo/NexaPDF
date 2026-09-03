@@ -154,6 +154,7 @@
     <string name="doc_titulo_paginas">Pages</string>
     <string name="doc_titulo_union">Ordonner et fusionner</string>
     <string name="doc_unir">Fusionner</string>
+    <string name="doc_unir_vacio">Ajoutez les documents à réunir. Vous pouvez en choisir plusieurs à la fois.</string>
     <string name="doc_unir_y_seguir">Fusionner et classer les pages</string>
     <string name="donar_ahora_no">Pas maintenant</string>
     <string name="donar_boton">Offrez-moi un café · %1$s</string>
@@ -189,6 +190,8 @@
     <string name="ed_filtro_ninguno">Aucun</string>
     <string name="ed_firma">Signature</string>
     <string name="ed_flecha">Flèche</string>
+    <string name="ed_goma">Gomme</string>
+    <string name="ed_goma_ayuda">Recouvre avec la couleur de la page, y compris le contenu imprimé. Le texte dessous reste dans le fichier.</string>
     <string name="ed_grosor">Épaisseur</string>
     <string name="ed_guardar_cambios">Enregistrer les modifications</string>
     <string name="ed_imagen">Image</string>
@@ -202,6 +205,9 @@
     <string name="ed_pagina_anterior">Page précédente</string>
     <string name="ed_pagina_de">%1$d sur %2$d</string>
     <string name="ed_pagina_siguiente">Page suivante</string>
+    <string name="ed_recortar">Rogner</string>
+    <string name="ed_recortar_ayuda">Tracez un rectangle pour ne garder que cette partie de la page.</string>
+    <string name="ed_recortar_hecho">Rognage prêt. Il s’applique à l’enregistrement.</string>
     <string name="ed_rectangulo">Rectangle</string>
     <string name="ed_relleno">Remplissage</string>
     <string name="ed_resaltar">Surligner</string>

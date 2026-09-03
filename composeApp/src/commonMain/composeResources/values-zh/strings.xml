@@ -154,6 +154,7 @@
     <string name="doc_titulo_paginas">页面</string>
     <string name="doc_titulo_union">排序并合并</string>
     <string name="doc_unir">合并</string>
+    <string name="doc_unir_vacio">添加要合并的文档，可以一次选择多个。</string>
     <string name="doc_unir_y_seguir">合并并排列页面</string>
     <string name="donar_ahora_no">暂时不用</string>
     <string name="donar_boton">请我喝杯咖啡 · %1$s</string>
@@ -189,6 +190,8 @@
     <string name="ed_filtro_ninguno">无</string>
     <string name="ed_firma">签名</string>
     <string name="ed_flecha">箭头</string>
+    <string name="ed_goma">橡皮</string>
+    <string name="ed_goma_ayuda">用页面颜色覆盖，包括已有内容。下方文字仍保留在文件中。</string>
     <string name="ed_grosor">粗细</string>
     <string name="ed_guardar_cambios">保存更改</string>
     <string name="ed_imagen">图片</string>
@@ -202,6 +205,9 @@
     <string name="ed_pagina_anterior">上一页</string>
     <string name="ed_pagina_de">第 %1$d 页，共 %2$d 页</string>
     <string name="ed_pagina_siguiente">下一页</string>
+    <string name="ed_recortar">裁剪</string>
+    <string name="ed_recortar_ayuda">拖出一个矩形，只保留页面的这一部分。</string>
+    <string name="ed_recortar_hecho">裁剪已就绪，保存时生效。</string>
     <string name="ed_rectangulo">矩形</string>
     <string name="ed_relleno">填充</string>
     <string name="ed_resaltar">高亮</string>

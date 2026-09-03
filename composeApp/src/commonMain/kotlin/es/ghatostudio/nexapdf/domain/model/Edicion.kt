@@ -41,7 +41,17 @@ sealed interface Edicion {
         val opacidad: Float = 1f,
         /** Un marcador fluorescente se multiplica sobre el contenido en vez de taparlo. */
         val resaltador: Boolean = false,
-    ) : Edicion
+        override val rotacion: Float = 0f,
+    ) : Colocada {
+        /**
+         * Caja que envuelve el trazo.
+         *
+         * No se guarda: se deduce de los puntos, que son lo unico cierto de un
+         * trazo. Guardarla obligaria a mantener las dos cosas de acuerdo.
+         */
+        override val marco: Rectangulo
+            get() = envolvente(puntos)
+    }
 
     /** Figura geometrica. */
     @Serializable
@@ -49,12 +59,13 @@ sealed interface Edicion {
     data class Figura(
         override val id: String,
         val tipo: TipoFigura,
-        val marco: Rectangulo,
+        override val marco: Rectangulo,
         val colorTrazoArgb: Long,
         val colorRellenoArgb: Long? = null,
         val grosor: Float,
         val opacidad: Float = 1f,
-    ) : Edicion
+        override val rotacion: Float = 0f,
+    ) : Colocada
 
     /** Caja de texto anadida o texto de sustitucion. */
     @Serializable
@@ -151,9 +162,18 @@ data class EdicionPagina(
     val ediciones: List<Edicion> = emptyList(),
     val filtro: FiltroPagina = FiltroPagina.NINGUNO,
     val intensidadFiltro: Float = 0.5f,
+    /**
+     * Recorte de la pagina, en coordenadas normalizadas, o `null` para dejarla
+     * entera.
+     *
+     * Recortar un PDF es mover su caja de recorte, no tirar contenido: lo que
+     * queda fuera sigue en el fichero aunque no se vea. Es como funciona el
+     * formato y como lo hace cualquier otro editor.
+     */
+    val recorte: Rectangulo? = null,
 ) {
     val tieneCambios: Boolean
-        get() = ediciones.isNotEmpty() || filtro != FiltroPagina.NINGUNO
+        get() = ediciones.isNotEmpty() || filtro != FiltroPagina.NINGUNO || recorte != null
 }
 
 /** Conjunto de ediciones pendientes de aplicar sobre un documento. */
@@ -168,4 +188,20 @@ data class BorradorEdicion(
 
     fun conPagina(pagina: EdicionPagina): BorradorEdicion =
         copy(paginas = paginas + (pagina.indice to pagina))
+}
+
+/** Caja minima que contiene todos los puntos. */
+internal fun envolvente(puntos: List<Punto>): Rectangulo {
+    if (puntos.isEmpty()) return Rectangulo(0f, 0f, 0f, 0f)
+    var izquierda = Float.MAX_VALUE
+    var arriba = Float.MAX_VALUE
+    var derecha = -Float.MAX_VALUE
+    var abajo = -Float.MAX_VALUE
+    puntos.forEach { punto ->
+        if (punto.x < izquierda) izquierda = punto.x
+        if (punto.x > derecha) derecha = punto.x
+        if (punto.y < arriba) arriba = punto.y
+        if (punto.y > abajo) abajo = punto.y
+    }
+    return Rectangulo(izquierda, arriba, derecha, abajo)
 }

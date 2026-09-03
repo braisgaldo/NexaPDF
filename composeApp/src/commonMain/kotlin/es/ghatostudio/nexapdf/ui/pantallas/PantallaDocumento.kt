@@ -121,6 +121,9 @@ import es.ghatostudio.nexapdf.ui.componentes.rememberReordenable
 import es.ghatostudio.nexapdf.ui.componentes.reordenable
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
+import androidx.compose.material3.FilledTonalIconButton
+import androidx.compose.ui.text.style.TextAlign
+import es.ghatostudio.nexapdf.resources.doc_unir_vacio
 
 /** Acciones que la pantalla ofrece al resto de la app. */
 class AccionesDocumento(
@@ -234,6 +237,10 @@ fun PantallaDocumento(
         },
         floatingActionButton = {
             when {
+                // Sin documentos no hay nada que unir: el boton estorba y
+                // ademas prometeria algo que no puede hacer.
+                modoUnion && documentos.isEmpty() -> Unit
+
                 modoUnion -> ExtendedFloatingActionButton(
                     onClick = acciones.alUnir,
                     icon = { Icon(Icons.AutoMirrored.Filled.MergeType, contentDescription = null) },
@@ -557,7 +564,7 @@ private fun ListaDocumentos(
         modifier = modifier.fillMaxSize().reordenable(reordenar),
         contentPadding = PaddingValues(bottom = 96.dp),
     ) {
-        item(key = "cabecera") {
+        if (documentos.isNotEmpty()) item(key = "cabecera") {
             Column(modifier = Modifier.padding(start = 20.dp, top = 12.dp, bottom = 4.dp)) {
                 Text(
                     text = pluralStringResource(
@@ -667,16 +674,67 @@ private fun ListaDocumentos(
         }
 
         item(key = "anadir") {
-            TextButton(
-                onClick = acciones.alAnadirDocumento,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 56.dp)
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
+            BotonAnadirDocumentos(
+                destacado = documentos.isEmpty(),
+                alPulsar = acciones.alAnadirDocumento,
+            )
+        }
+    }
+}
+
+/**
+ * Boton de anadir documentos a la union.
+ *
+ * Cuando la lista esta vacia se presenta grande y centrado, porque es lo unico
+ * que se puede hacer en esa pantalla y no tiene sentido esconderlo; en cuanto
+ * hay documentos se encoge a un circulo discreto para no competir con la lista
+ * ni con el boton de unir.
+ */
+@Composable
+private fun BotonAnadirDocumentos(destacado: Boolean, alPulsar: () -> Unit) {
+    val etiqueta = stringResource(Res.string.doc_anadir_pdf)
+
+    if (!destacado) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            FilledTonalIconButton(
+                onClick = alPulsar,
+                modifier = Modifier.size(56.dp).semantics { contentDescription = etiqueta },
             ) {
-                Text(stringResource(Res.string.doc_anadir_pdf))
+                Icon(Icons.Filled.Add, contentDescription = null, modifier = Modifier.size(28.dp))
             }
         }
+        return
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 32.dp, vertical = 48.dp)
+            .semantics(mergeDescendants = true) { contentDescription = etiqueta },
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        FilledTonalIconButton(
+            onClick = alPulsar,
+            modifier = Modifier.size(88.dp),
+        ) {
+            Icon(Icons.Filled.Add, contentDescription = null, modifier = Modifier.size(44.dp))
+        }
+        Spacer(Modifier.height(16.dp))
+        Text(
+            text = etiqueta,
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+        Spacer(Modifier.height(6.dp))
+        Text(
+            text = stringResource(Res.string.doc_unir_vacio),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+        )
     }
 }
 

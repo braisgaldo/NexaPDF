@@ -370,24 +370,14 @@ private fun ContenidoApp(
                             Herramienta.UNIR -> {
                                 // Admite PDF, Word, Excel, PowerPoint e imagenes:
                                 // lo que no sea PDF se convierte antes de unir.
-                                // Basta con uno: la pantalla de union esta
-                                // hecha para ir anadiendo, y exigir dos de
-                                // entrada obligaba a acertar de una vez con
-                                // todos los ficheros en el selector.
-                                val elegidos = contenedor.selector.elegirParaUnir()
-                                if (elegidos.isEmpty()) return@launch
-                                val rutas = convertirTodoAPdf(
-                                    contenedor = contenedor,
-                                    estado = estado,
-                                    ficheros = elegidos,
-                                    textoConvirtiendo = textoConvirtiendo,
-                                    rutaDeSalida = ::rutaDeSalida,
-                                    mensajeDeError = { mensajeDeError(it) },
-                                )
-                                if (rutas.isNotEmpty()) {
-                                    abrirDocumentos(rutas)
-                                    estado.ir(Destino.Documento(rutas, modoUnion = true))
-                                }
+                                // Se entra con la lista vacia y se anade desde
+                                // dentro. Abrir el selector de golpe obliga a
+                                // decidir todos los ficheros antes de ver la
+                                // pantalla, que es justo lo que la pantalla
+                                // esta hecha para evitar.
+                                documentos.clear()
+                                paginas.clear()
+                                estado.ir(Destino.Documento(emptyList(), modoUnion = true))
                             }
 
                             Herramienta.VISOR -> {

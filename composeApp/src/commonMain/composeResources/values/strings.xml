@@ -154,6 +154,7 @@
     <string name="doc_titulo_paginas">Pages</string>
     <string name="doc_titulo_union">Order and merge</string>
     <string name="doc_unir">Merge</string>
+    <string name="doc_unir_vacio">Add the documents you want to join. You can pick several at once.</string>
     <string name="doc_unir_y_seguir">Merge and order pages</string>
     <string name="donar_ahora_no">Not now</string>
     <string name="donar_boton">Buy me a coffee · %1$s</string>
@@ -189,6 +190,8 @@
     <string name="ed_filtro_ninguno">None</string>
     <string name="ed_firma">Signature</string>
     <string name="ed_flecha">Arrow</string>
+    <string name="ed_goma">Eraser</string>
+    <string name="ed_goma_ayuda">Covers with the page colour, including printed content. The text underneath stays in the file.</string>
     <string name="ed_grosor">Thickness</string>
     <string name="ed_guardar_cambios">Save changes</string>
     <string name="ed_imagen">Image</string>
@@ -202,6 +205,9 @@
     <string name="ed_pagina_anterior">Previous page</string>
     <string name="ed_pagina_de">%1$d of %2$d</string>
     <string name="ed_pagina_siguiente">Next page</string>
+    <string name="ed_recortar">Crop</string>
+    <string name="ed_recortar_ayuda">Drag a rectangle to keep only that part of the page.</string>
+    <string name="ed_recortar_hecho">Crop ready. It is applied when you save.</string>
     <string name="ed_rectangulo">Rectangle</string>
     <string name="ed_relleno">Fill</string>
     <string name="ed_resaltar">Highlight</string>

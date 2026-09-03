@@ -154,6 +154,7 @@
     <string name="doc_titulo_paginas">Pàgines</string>
     <string name="doc_titulo_union">Ordena i uneix</string>
     <string name="doc_unir">Uneix</string>
+    <string name="doc_unir_vacio">Afegeix els documents que vulguis ajuntar. En pots triar més d’un alhora.</string>
     <string name="doc_unir_y_seguir">Uneix i ordena les pàgines</string>
     <string name="donar_ahora_no">Ara no</string>
     <string name="donar_boton">Convida’m a un cafè · %1$s</string>
@@ -189,6 +190,8 @@
     <string name="ed_filtro_ninguno">Cap</string>
     <string name="ed_firma">Signatura</string>
     <string name="ed_flecha">Fletxa</string>
+    <string name="ed_goma">Goma</string>
+    <string name="ed_goma_ayuda">Tapa amb el color de la pàgina, també l’imprès. El text de sota continua al fitxer.</string>
     <string name="ed_grosor">Gruix</string>
     <string name="ed_guardar_cambios">Desa els canvis</string>
     <string name="ed_imagen">Imatge</string>
@@ -202,6 +205,9 @@
     <string name="ed_pagina_anterior">Pàgina anterior</string>
     <string name="ed_pagina_de">%1$d de %2$d</string>
     <string name="ed_pagina_siguiente">Pàgina següent</string>
+    <string name="ed_recortar">Retalla</string>
+    <string name="ed_recortar_ayuda">Arrossega un rectangle per quedar-te només amb aquella part de la pàgina.</string>
+    <string name="ed_recortar_hecho">Retall a punt. S’aplica en desar.</string>
     <string name="ed_rectangulo">Rectangle</string>
     <string name="ed_relleno">Emplenat</string>
     <string name="ed_resaltar">Ressalta</string>

@@ -574,6 +574,9 @@ class MotorPdfAndroid(
                         )
                     }
 
+                    // El recorte va despues de pintar: si se hiciera antes,
+                    // el transformador estaria trabajando con una caja que ya
+                    // no es la que se vio al editar.
                     if (edicionPagina.ediciones.isNotEmpty()) {
                         PDPageContentStream(
                             documento,
@@ -587,6 +590,10 @@ class MotorPdfAndroid(
                             pintor.pintar(flujo, transformador, edicionPagina.ediciones)
                             flujo.restoreGraphicsState()
                         }
+                    }
+                    edicionPagina.recorte?.let { marco ->
+                        val caja = transformador.aRectanguloVisible(marco)
+                        pagina.cropBox = PDRectangle(caja.x, caja.y, caja.ancho, caja.alto)
                     }
                 }
 

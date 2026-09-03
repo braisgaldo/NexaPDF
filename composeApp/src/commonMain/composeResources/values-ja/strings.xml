@@ -154,6 +154,7 @@
     <string name="doc_titulo_paginas">ページ</string>
     <string name="doc_titulo_union">並べ替えて結合</string>
     <string name="doc_unir">結合</string>
+    <string name="doc_unir_vacio">まとめたい文書を追加してください。まとめて選べます。</string>
     <string name="doc_unir_y_seguir">結合してページを並べる</string>
     <string name="donar_ahora_no">今はやめておく</string>
     <string name="donar_boton">コーヒーをごちそうする · %1$s</string>
@@ -189,6 +190,8 @@
     <string name="ed_filtro_ninguno">なし</string>
     <string name="ed_firma">署名</string>
     <string name="ed_flecha">矢印</string>
+    <string name="ed_goma">消しゴム</string>
+    <string name="ed_goma_ayuda">ページの色で覆います。元の印字も隠せますが、下の文字はファイルに残ります。</string>
     <string name="ed_grosor">太さ</string>
     <string name="ed_guardar_cambios">変更を保存</string>
     <string name="ed_imagen">画像</string>
@@ -202,6 +205,9 @@
     <string name="ed_pagina_anterior">前のページ</string>
     <string name="ed_pagina_de">%2$d ページ中 %1$d ページ</string>
     <string name="ed_pagina_siguiente">次のページ</string>
+    <string name="ed_recortar">トリミング</string>
+    <string name="ed_recortar_ayuda">四角をドラッグすると、その部分だけを残します。</string>
+    <string name="ed_recortar_hecho">トリミングの準備ができました。保存時に適用されます。</string>
     <string name="ed_rectangulo">四角形</string>
     <string name="ed_relleno">塗りつぶし</string>
     <string name="ed_resaltar">マーカー</string>

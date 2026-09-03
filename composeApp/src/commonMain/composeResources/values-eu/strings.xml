@@ -154,6 +154,7 @@
     <string name="doc_titulo_paginas">Orriak</string>
     <string name="doc_titulo_union">Ordenatu eta batu</string>
     <string name="doc_unir">Batu</string>
+    <string name="doc_unir_vacio">Gehitu batu nahi dituzun dokumentuak. Hainbat batera aukera ditzakezu.</string>
     <string name="doc_unir_y_seguir">Batu eta ordenatu orriak</string>
     <string name="donar_ahora_no">Orain ez</string>
     <string name="donar_boton">Kafe bat gonbidatu · %1$s</string>
@@ -189,6 +190,8 @@
     <string name="ed_filtro_ninguno">Bat ere ez</string>
     <string name="ed_firma">Sinadura</string>
     <string name="ed_flecha">Gezia</string>
+    <string name="ed_goma">Borragoma</string>
+    <string name="ed_goma_ayuda">Orriaren kolorez estaltzen du, inprimatutakoa ere bai. Azpiko testua fitxategian geratzen da.</string>
     <string name="ed_grosor">Lodiera</string>
     <string name="ed_guardar_cambios">Gorde aldaketak</string>
     <string name="ed_imagen">Irudia</string>
@@ -202,6 +205,9 @@
     <string name="ed_pagina_anterior">Aurreko orria</string>
     <string name="ed_pagina_de">%1$d / %2$d</string>
     <string name="ed_pagina_siguiente">Hurrengo orria</string>
+    <string name="ed_recortar">Moztu</string>
+    <string name="ed_recortar_ayuda">Arrastatu laukizuzen bat orriaren zati hori bakarrik gordetzeko.</string>
+    <string name="ed_recortar_hecho">Mozketa prest. Gordetzean aplikatzen da.</string>
     <string name="ed_rectangulo">Laukizuzena</string>
     <string name="ed_relleno">Betegarria</string>
     <string name="ed_resaltar">Nabarmendu</string>
