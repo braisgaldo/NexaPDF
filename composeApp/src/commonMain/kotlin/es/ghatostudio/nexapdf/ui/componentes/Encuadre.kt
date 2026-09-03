@@ -1,5 +1,9 @@
 package es.ghatostudio.nexapdf.ui.componentes
 
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.calculatePan
+import androidx.compose.foundation.gestures.calculateZoom
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -100,5 +104,33 @@ fun Modifier.encuadre(estado: EstadoEncuadre): Modifier =
                 if (zoom != 1f || estado.ampliada) {
                     estado.aplicar(zoom, arrastre)
                 }
+            }
+        }
+
+/**
+ * Igual que [encuadre], pero solo con dos dedos.
+ *
+ * En el editor un dedo esta dibujando. Si el gesto de mover la pagina
+ * respondiera tambien a un dedo, cada trazo movaria el documento en lugar de
+ * pintar; con dos, ampliar y desplazarse conviven con el pincel sin estorbarse.
+ */
+fun Modifier.encuadreDosDedos(estado: EstadoEncuadre): Modifier =
+    this
+        .onSizeChanged { estado.tamano = it }
+        .pointerInput(Unit) {
+            awaitEachGesture {
+                awaitFirstDown(requireUnconsumed = false)
+                do {
+                    val evento = awaitPointerEvent()
+                    val dedos = evento.changes.count { it.pressed }
+                    if (dedos >= 2) {
+                        val zoom = evento.calculateZoom()
+                        val arrastre = evento.calculatePan()
+                        if (zoom != 1f || arrastre != Offset.Zero) {
+                            estado.aplicar(zoom, arrastre)
+                            evento.changes.forEach { it.consume() }
+                        }
+                    }
+                } while (evento.changes.any { it.pressed })
             }
         }

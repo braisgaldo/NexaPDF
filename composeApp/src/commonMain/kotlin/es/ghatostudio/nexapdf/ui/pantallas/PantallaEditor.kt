@@ -71,6 +71,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -142,11 +143,15 @@ import es.ghatostudio.nexapdf.resources.ed_mover_asas
 import es.ghatostudio.nexapdf.resources.ed_mover_ayuda
 import es.ghatostudio.nexapdf.resources.ed_tocar_para_sustituir
 import es.ghatostudio.nexapdf.ui.componentes.BarraSuperior
+import es.ghatostudio.nexapdf.ui.componentes.rememberEncuadre
+import es.ghatostudio.nexapdf.ui.componentes.encuadreDosDedos
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.max
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.ui.text.style.TextOverflow
 
 /** Lo que el editor necesita del resto de la aplicacion. */
 class AccionesEditor(
@@ -190,6 +195,11 @@ fun PantallaEditor(
     // Pagina a la que se quiere ir; se resuelve tras confirmar el descarte.
     var paginaPedida by remember { mutableStateOf<Int?>(null) }
     val medidorTexto = rememberTextMeasurer()
+    val encuadre = rememberEncuadre()
+
+    // Al cambiar de pagina se vuelve al 100 %: heredar el encuadre de la
+    // anterior deja la nueva a medio ver sin que se entienda por que.
+    LaunchedEffect(indicePagina) { encuadre.reiniciar() }
     val densidad = LocalDensity.current
 
     val salir = { if (estado.hayCambios) confirmandoSalida = true else alVolver() }
@@ -285,7 +295,22 @@ fun PantallaEditor(
             }
 
             Box(
-                modifier = Modifier.weight(1f).fillMaxWidth().padding(12.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .padding(12.dp)
+                    // Dos dedos amplian y mueven la pagina; uno sigue siendo
+                    // del pincel. El graphicsLayer va en el mismo nodo que
+                    // recibe los toques, asi que Compose ya devuelve las
+                    // coordenadas deshechas y el trazo cae donde toca aunque
+                    // este ampliado.
+                    .encuadreDosDedos(encuadre)
+                    .graphicsLayer {
+                        scaleX = encuadre.escala
+                        scaleY = encuadre.escala
+                        translationX = encuadre.desplazamiento.x
+                        translationY = encuadre.desplazamiento.y
+                    },
                 contentAlignment = Alignment.Center,
             ) {
                 LienzoPagina(
@@ -835,15 +860,58 @@ private fun PanelHerramientas(estado: EstadoEditor) {
             ) {
                 HERRAMIENTAS.forEach { (herramienta, icono, etiqueta) ->
                     val texto = stringResource(etiqueta)
-                    FilterChip(
-                        selected = estado.herramienta == herramienta,
-                        onClick = { estado.herramienta = herramienta },
-                        label = { Text(texto, maxLines = 1) },
-                        leadingIcon = {
-                            Icon(icono, contentDescription = null, modifier = Modifier.size(18.dp))
-                        },
-                        modifier = Modifier.heightIn(min = 48.dp),
-                    )
+                    val elegida = estado.herramienta == herramienta
+
+                    // Boton alto con el icono encima del nombre en vez de un
+                    // chip: en una fila de nueve herramientas el chip queda
+                    // estrecho, el icono diminuto y el dedo tapa el rotulo
+                    // justo cuando hay que leerlo. Asi la zona sensible es
+                    // cuadrada y de 64 dp, y la seleccionada se distingue por
+                    // fondo y color, no solo por un borde.
+                    Column(
+                        modifier = Modifier
+                            .width(72.dp)
+                            .heightIn(min = 64.dp)
+                            .clip(MaterialTheme.shapes.medium)
+                            .background(
+                                if (elegida) {
+                                    MaterialTheme.colorScheme.primaryContainer
+                                } else {
+                                    MaterialTheme.colorScheme.surfaceContainerHighest
+                                },
+                            )
+                            .selectable(
+                                selected = elegida,
+                                onClick = { estado.herramienta = herramienta },
+                            )
+                            .semantics { contentDescription = texto }
+                            .padding(vertical = 8.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        Icon(
+                            imageVector = icono,
+                            contentDescription = null,
+                            tint = if (elegida) {
+                                MaterialTheme.colorScheme.onPrimaryContainer
+                            } else {
+                                MaterialTheme.colorScheme.primary
+                            },
+                            modifier = Modifier.size(24.dp),
+                        )
+                        Spacer(Modifier.height(4.dp))
+                        Text(
+                            text = texto,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = if (elegida) {
+                                MaterialTheme.colorScheme.onPrimaryContainer
+                            } else {
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            },
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
                 }
             }
 
