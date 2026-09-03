@@ -59,11 +59,17 @@
     <string name="aj_tema">السمة</string>
     <string name="aj_tema_bosque_claro">غابة فاتحة</string>
     <string name="aj_tema_bosque_oscuro">غابة داكنة</string>
+    <string name="aj_tema_grafito_claro">غرافيت فاتح</string>
+    <string name="aj_tema_grafito_oscuro">غرافيت داكن</string>
     <string name="aj_tema_indigo_claro">نيلي فاتح</string>
     <string name="aj_tema_indigo_oscuro">نيلي داكن</string>
     <string name="aj_tema_ocaso_claro">غروب فاتح</string>
     <string name="aj_tema_ocaso_oscuro">غروب داكن</string>
+    <string name="aj_tema_oceano_claro">محيط فاتح</string>
+    <string name="aj_tema_oceano_oscuro">محيط داكن</string>
     <string name="aj_tema_sistema_desc">يستخدم النسخة الفاتحة أو الداكنة من اللوحة التي اخترتها، تبعًا للهاتف.</string>
+    <string name="aj_tema_vino_claro">نبيذي فاتح</string>
+    <string name="aj_tema_vino_oscuro">نبيذي داكن</string>
     <string name="aj_titulo">الإعدادات</string>
     <string name="app_lema">أدوات PDF تعمل دون اتصال بالإنترنت</string>
     <string name="app_nombre">NexaPDF</string>

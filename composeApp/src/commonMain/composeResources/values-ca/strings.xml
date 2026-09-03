@@ -59,11 +59,17 @@
     <string name="aj_tema">Tema</string>
     <string name="aj_tema_bosque_claro">Bosc clar</string>
     <string name="aj_tema_bosque_oscuro">Bosc fosc</string>
+    <string name="aj_tema_grafito_claro">Grafit clar</string>
+    <string name="aj_tema_grafito_oscuro">Grafit fosc</string>
     <string name="aj_tema_indigo_claro">Indi clar</string>
     <string name="aj_tema_indigo_oscuro">Indi fosc</string>
     <string name="aj_tema_ocaso_claro">Capvespre clar</string>
     <string name="aj_tema_ocaso_oscuro">Capvespre fosc</string>
+    <string name="aj_tema_oceano_claro">Oceà clar</string>
+    <string name="aj_tema_oceano_oscuro">Oceà fosc</string>
     <string name="aj_tema_sistema_desc">Fa servir la versió clara o fosca de la paleta que has triat, seguint el telèfon.</string>
+    <string name="aj_tema_vino_claro">Vi clar</string>
+    <string name="aj_tema_vino_oscuro">Vi fosc</string>
     <string name="aj_titulo">Configuració</string>
     <string name="app_lema">Eines PDF que funcionen sense connexió</string>
     <string name="app_nombre">NexaPDF</string>

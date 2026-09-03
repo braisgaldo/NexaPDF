@@ -59,11 +59,17 @@
     <string name="aj_tema">Tema</string>
     <string name="aj_tema_bosque_claro">Bosque claro</string>
     <string name="aj_tema_bosque_oscuro">Bosque escuro</string>
+    <string name="aj_tema_grafito_claro">Grafito claro</string>
+    <string name="aj_tema_grafito_oscuro">Grafito escuro</string>
     <string name="aj_tema_indigo_claro">Índigo claro</string>
     <string name="aj_tema_indigo_oscuro">Índigo escuro</string>
     <string name="aj_tema_ocaso_claro">Ocaso claro</string>
     <string name="aj_tema_ocaso_oscuro">Ocaso escuro</string>
+    <string name="aj_tema_oceano_claro">Océano claro</string>
+    <string name="aj_tema_oceano_oscuro">Océano escuro</string>
     <string name="aj_tema_sistema_desc">Usa a versión clara ou escura da paleta que elixiches, seguindo o teléfono.</string>
+    <string name="aj_tema_vino_claro">Viño claro</string>
+    <string name="aj_tema_vino_oscuro">Viño escuro</string>
     <string name="aj_titulo">Axustes</string>
     <string name="app_lema">Ferramentas PDF que funcionan sen conexión</string>
     <string name="app_nombre">NexaPDF</string>

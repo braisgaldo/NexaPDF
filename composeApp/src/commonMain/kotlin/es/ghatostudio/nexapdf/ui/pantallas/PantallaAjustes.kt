@@ -104,6 +104,12 @@ import es.ghatostudio.nexapdf.resources.aj_tema_indigo_oscuro
 import es.ghatostudio.nexapdf.resources.aj_tema_ocaso_claro
 import es.ghatostudio.nexapdf.resources.aj_tema_ocaso_oscuro
 import es.ghatostudio.nexapdf.resources.aj_tema_sistema_desc
+import es.ghatostudio.nexapdf.resources.aj_tema_grafito_claro
+import es.ghatostudio.nexapdf.resources.aj_tema_grafito_oscuro
+import es.ghatostudio.nexapdf.resources.aj_tema_oceano_claro
+import es.ghatostudio.nexapdf.resources.aj_tema_oceano_oscuro
+import es.ghatostudio.nexapdf.resources.aj_tema_vino_claro
+import es.ghatostudio.nexapdf.resources.aj_tema_vino_oscuro
 import es.ghatostudio.nexapdf.resources.aj_titulo
 import es.ghatostudio.nexapdf.resources.cd_bandera
 import es.ghatostudio.nexapdf.resources.comun_cancelar
@@ -711,7 +717,7 @@ private data class TemaDeLista(
 )
 
 /**
- * Los seis temas del punto 4.2 del encargo: tres claros y tres oscuros.
+ * Los temas disponibles: seis familias, cada una en claro y en oscuro.
  *
  * Van agrupados por familia para que la version clara y la oscura de una misma
  * paleta queden juntas, que es como se comparan.
@@ -723,6 +729,12 @@ private val TEMAS = listOf(
     TemaDeLista(ThemeFamily.BOSQUE, oscuro = true, Res.string.aj_tema_bosque_oscuro),
     TemaDeLista(ThemeFamily.OCASO, oscuro = false, Res.string.aj_tema_ocaso_claro),
     TemaDeLista(ThemeFamily.OCASO, oscuro = true, Res.string.aj_tema_ocaso_oscuro),
+    TemaDeLista(ThemeFamily.OCEANO, oscuro = false, Res.string.aj_tema_oceano_claro),
+    TemaDeLista(ThemeFamily.OCEANO, oscuro = true, Res.string.aj_tema_oceano_oscuro),
+    TemaDeLista(ThemeFamily.VINO, oscuro = false, Res.string.aj_tema_vino_claro),
+    TemaDeLista(ThemeFamily.VINO, oscuro = true, Res.string.aj_tema_vino_oscuro),
+    TemaDeLista(ThemeFamily.GRAFITO, oscuro = false, Res.string.aj_tema_grafito_claro),
+    TemaDeLista(ThemeFamily.GRAFITO, oscuro = true, Res.string.aj_tema_grafito_oscuro),
 )
 
 private val CALIDADES: List<Pair<CalidadVista, StringResource>> = listOf(

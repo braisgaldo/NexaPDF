@@ -59,11 +59,17 @@
     <string name="aj_tema">Gaia</string>
     <string name="aj_tema_bosque_claro">Baso argia</string>
     <string name="aj_tema_bosque_oscuro">Baso iluna</string>
+    <string name="aj_tema_grafito_claro">Grafitoa argia</string>
+    <string name="aj_tema_grafito_oscuro">Grafitoa iluna</string>
     <string name="aj_tema_indigo_claro">Indigo argia</string>
     <string name="aj_tema_indigo_oscuro">Indigo iluna</string>
     <string name="aj_tema_ocaso_claro">Ilunabar argia</string>
     <string name="aj_tema_ocaso_oscuro">Ilunabar iluna</string>
+    <string name="aj_tema_oceano_claro">Ozeanoa argia</string>
+    <string name="aj_tema_oceano_oscuro">Ozeanoa iluna</string>
     <string name="aj_tema_sistema_desc">Aukeratu duzun paletaren bertsio argia edo iluna erabiltzen du, telefonoari jarraituz.</string>
+    <string name="aj_tema_vino_claro">Ardoa argia</string>
+    <string name="aj_tema_vino_oscuro">Ardoa iluna</string>
     <string name="aj_titulo">Ezarpenak</string>
     <string name="app_lema">Konexiorik gabe funtzionatzen duten PDF tresnak</string>
     <string name="app_nombre">NexaPDF</string>

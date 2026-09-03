@@ -59,11 +59,17 @@
     <string name="aj_tema">Θέμα</string>
     <string name="aj_tema_bosque_claro">Δάσος ανοιχτό</string>
     <string name="aj_tema_bosque_oscuro">Δάσος σκούρο</string>
+    <string name="aj_tema_grafito_claro">Γραφίτης ανοιχτό</string>
+    <string name="aj_tema_grafito_oscuro">Γραφίτης σκούρο</string>
     <string name="aj_tema_indigo_claro">Λουλακί ανοιχτό</string>
     <string name="aj_tema_indigo_oscuro">Λουλακί σκούρο</string>
     <string name="aj_tema_ocaso_claro">Ηλιοβασίλεμα ανοιχτό</string>
     <string name="aj_tema_ocaso_oscuro">Ηλιοβασίλεμα σκούρο</string>
+    <string name="aj_tema_oceano_claro">Ωκεανός ανοιχτό</string>
+    <string name="aj_tema_oceano_oscuro">Ωκεανός σκούρο</string>
     <string name="aj_tema_sistema_desc">Χρησιμοποιεί την ανοιχτή ή σκούρα εκδοχή της παλέτας που επιλέξατε, ακολουθώντας το τηλέφωνο.</string>
+    <string name="aj_tema_vino_claro">Κρασί ανοιχτό</string>
+    <string name="aj_tema_vino_oscuro">Κρασί σκούρο</string>
     <string name="aj_titulo">Ρυθμίσεις</string>
     <string name="app_lema">Εργαλεία PDF που λειτουργούν χωρίς σύνδεση</string>
     <string name="app_nombre">NexaPDF</string>

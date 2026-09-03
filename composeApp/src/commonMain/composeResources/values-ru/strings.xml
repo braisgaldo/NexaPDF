@@ -59,11 +59,17 @@
     <string name="aj_tema">Тема</string>
     <string name="aj_tema_bosque_claro">Лес, светлая</string>
     <string name="aj_tema_bosque_oscuro">Лес, тёмная</string>
+    <string name="aj_tema_grafito_claro">Графит светлая</string>
+    <string name="aj_tema_grafito_oscuro">Графит тёмная</string>
     <string name="aj_tema_indigo_claro">Индиго, светлая</string>
     <string name="aj_tema_indigo_oscuro">Индиго, тёмная</string>
     <string name="aj_tema_ocaso_claro">Закат, светлая</string>
     <string name="aj_tema_ocaso_oscuro">Закат, тёмная</string>
+    <string name="aj_tema_oceano_claro">Океан светлая</string>
+    <string name="aj_tema_oceano_oscuro">Океан тёмная</string>
     <string name="aj_tema_sistema_desc">Использует светлый или тёмный вариант выбранной палитры, следуя настройке телефона.</string>
+    <string name="aj_tema_vino_claro">Вино светлая</string>
+    <string name="aj_tema_vino_oscuro">Вино тёмная</string>
     <string name="aj_titulo">Настройки</string>
     <string name="app_lema">Инструменты PDF, работающие без интернета</string>
     <string name="app_nombre">NexaPDF</string>

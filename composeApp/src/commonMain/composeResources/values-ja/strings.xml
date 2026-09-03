@@ -59,11 +59,17 @@
     <string name="aj_tema">テーマ</string>
     <string name="aj_tema_bosque_claro">フォレスト（ライト）</string>
     <string name="aj_tema_bosque_oscuro">フォレスト（ダーク）</string>
+    <string name="aj_tema_grafito_claro">グラファイト ライト</string>
+    <string name="aj_tema_grafito_oscuro">グラファイト ダーク</string>
     <string name="aj_tema_indigo_claro">インディゴ（ライト）</string>
     <string name="aj_tema_indigo_oscuro">インディゴ（ダーク）</string>
     <string name="aj_tema_ocaso_claro">サンセット（ライト）</string>
     <string name="aj_tema_ocaso_oscuro">サンセット（ダーク）</string>
+    <string name="aj_tema_oceano_claro">オーシャン ライト</string>
+    <string name="aj_tema_oceano_oscuro">オーシャン ダーク</string>
     <string name="aj_tema_sistema_desc">端末に合わせて、選んだ配色のライト版かダーク版を使います。</string>
+    <string name="aj_tema_vino_claro">ワイン ライト</string>
+    <string name="aj_tema_vino_oscuro">ワイン ダーク</string>
     <string name="aj_titulo">設定</string>
     <string name="app_lema">オフラインで使える PDF ツール</string>
     <string name="app_nombre">NexaPDF</string>

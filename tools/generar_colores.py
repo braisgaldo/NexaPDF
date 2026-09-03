@@ -112,6 +112,11 @@ FAMILIAS = [
     Familia("INDIGO", "Indigo", hue=290.0, croma=42.0, hue_terciario=340.0),
     Familia("BOSQUE", "Bosque", hue=155.0, croma=38.0, hue_terciario=215.0),
     Familia("OCASO", "Ocaso", hue=50.0, croma=48.0, hue_terciario=350.0),
+    # Grafito: croma bajo a proposito. Es el tema para quien no quiere que la
+    # aplicacion tenga color, solo contraste.
+    Familia("GRAFITO", "Grafito", hue=250.0, croma=8.0, hue_terciario=250.0),
+    Familia("VINO", "Vino", hue=15.0, croma=44.0, hue_terciario=310.0),
+    Familia("OCEANO", "Oceano", hue=215.0, croma=40.0, hue_terciario=170.0),
 ]
 
 

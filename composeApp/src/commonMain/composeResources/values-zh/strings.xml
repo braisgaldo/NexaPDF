@@ -59,11 +59,17 @@
     <string name="aj_tema">主题</string>
     <string name="aj_tema_bosque_claro">森林浅色</string>
     <string name="aj_tema_bosque_oscuro">森林深色</string>
+    <string name="aj_tema_grafito_claro">石墨 浅色</string>
+    <string name="aj_tema_grafito_oscuro">石墨 深色</string>
     <string name="aj_tema_indigo_claro">靛蓝浅色</string>
     <string name="aj_tema_indigo_oscuro">靛蓝深色</string>
     <string name="aj_tema_ocaso_claro">日落浅色</string>
     <string name="aj_tema_ocaso_oscuro">日落深色</string>
+    <string name="aj_tema_oceano_claro">海洋 浅色</string>
+    <string name="aj_tema_oceano_oscuro">海洋 深色</string>
     <string name="aj_tema_sistema_desc">跟随手机，使用你所选配色的浅色或深色版本。</string>
+    <string name="aj_tema_vino_claro">酒红 浅色</string>
+    <string name="aj_tema_vino_oscuro">酒红 深色</string>
     <string name="aj_titulo">设置</string>
     <string name="app_lema">离线可用的 PDF 工具</string>
     <string name="app_nombre">NexaPDF</string>

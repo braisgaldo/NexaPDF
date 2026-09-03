@@ -50,7 +50,16 @@ enum class FormatoDocumento(
 
         /** Tipos MIME que se ofrecen al elegir ficheros para unir. */
         val TIPOS_PARA_UNIR: List<String> =
-            (PDF.tiposMime + DOCX.tiposMime + XLSX.tiposMime + PPTX.tiposMime + IMAGEN.tiposMime)
+            (
+                PDF.tiposMime + DOCX.tiposMime + XLSX.tiposMime + PPTX.tiposMime +
+                    IMAGEN.tiposMime +
+                    // Muchos gestores guardan los .docx y .xlsx que llegan por
+                    // correo o por cable como octet-stream. Sin este comodin el
+                    // selector no deja elegirlos y ofrece "abrir con" otra
+                    // aplicacion, que no es lo que el usuario pidio. El formato
+                    // real se deduce despues por la extension, en desdeNombre.
+                    listOf("application/octet-stream")
+                )
 
         /** Formatos a los que se puede exportar un documento ya en PDF. */
         val EXPORTABLES: List<FormatoDocumento> = listOf(PDF, DOCX, XLSX, PPTX)

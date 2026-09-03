@@ -59,11 +59,17 @@
     <string name="aj_tema">Thème</string>
     <string name="aj_tema_bosque_claro">Forêt claire</string>
     <string name="aj_tema_bosque_oscuro">Forêt sombre</string>
+    <string name="aj_tema_grafito_claro">Graphite clair</string>
+    <string name="aj_tema_grafito_oscuro">Graphite sombre</string>
     <string name="aj_tema_indigo_claro">Indigo clair</string>
     <string name="aj_tema_indigo_oscuro">Indigo sombre</string>
     <string name="aj_tema_ocaso_claro">Crépuscule clair</string>
     <string name="aj_tema_ocaso_oscuro">Crépuscule sombre</string>
+    <string name="aj_tema_oceano_claro">Océan clair</string>
+    <string name="aj_tema_oceano_oscuro">Océan sombre</string>
     <string name="aj_tema_sistema_desc">Utilise la version claire ou sombre de la palette choisie, en suivant le téléphone.</string>
+    <string name="aj_tema_vino_claro">Vin clair</string>
+    <string name="aj_tema_vino_oscuro">Vin sombre</string>
     <string name="aj_titulo">Réglages</string>
     <string name="app_lema">Des outils PDF qui fonctionnent hors ligne</string>
     <string name="app_nombre">NexaPDF</string>

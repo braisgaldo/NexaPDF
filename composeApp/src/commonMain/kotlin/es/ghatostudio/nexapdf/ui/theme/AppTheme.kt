@@ -15,6 +15,9 @@ enum class ThemeFamily {
     INDIGO,
     BOSQUE,
     OCASO,
+    GRAFITO,
+    VINO,
+    OCEANO,
     ;
 
     companion object {
@@ -48,6 +51,9 @@ val TEMAS_CONCRETOS: List<TemaConcreto> = ThemeFamily.entries.flatMap { familia 
 }
 
 internal fun esquemaDe(familia: ThemeFamily, oscuro: Boolean): ColorScheme = when (familia) {
+    ThemeFamily.GRAFITO -> if (oscuro) esquemaGrafitoOscuro else esquemaGrafitoClaro
+    ThemeFamily.VINO -> if (oscuro) esquemaVinoOscuro else esquemaVinoClaro
+    ThemeFamily.OCEANO -> if (oscuro) esquemaOceanoOscuro else esquemaOceanoClaro
     ThemeFamily.INDIGO -> if (oscuro) esquemaIndigoOscuro else esquemaIndigoClaro
     ThemeFamily.BOSQUE -> if (oscuro) esquemaBosqueOscuro else esquemaBosqueClaro
     ThemeFamily.OCASO -> if (oscuro) esquemaOcasoOscuro else esquemaOcasoClaro

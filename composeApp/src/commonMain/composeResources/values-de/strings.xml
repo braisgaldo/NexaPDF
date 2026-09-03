@@ -59,11 +59,17 @@
     <string name="aj_tema">Design</string>
     <string name="aj_tema_bosque_claro">Wald hell</string>
     <string name="aj_tema_bosque_oscuro">Wald dunkel</string>
+    <string name="aj_tema_grafito_claro">Graphit hell</string>
+    <string name="aj_tema_grafito_oscuro">Graphit dunkel</string>
     <string name="aj_tema_indigo_claro">Indigo hell</string>
     <string name="aj_tema_indigo_oscuro">Indigo dunkel</string>
     <string name="aj_tema_ocaso_claro">Sonnenuntergang hell</string>
     <string name="aj_tema_ocaso_oscuro">Sonnenuntergang dunkel</string>
+    <string name="aj_tema_oceano_claro">Ozean hell</string>
+    <string name="aj_tema_oceano_oscuro">Ozean dunkel</string>
     <string name="aj_tema_sistema_desc">Verwendet die helle oder dunkle Fassung der zuletzt gewählten Palette, je nach Telefon.</string>
+    <string name="aj_tema_vino_claro">Wein hell</string>
+    <string name="aj_tema_vino_oscuro">Wein dunkel</string>
     <string name="aj_titulo">Einstellungen</string>
     <string name="app_lema">PDF-Werkzeuge, die offline funktionieren</string>
     <string name="app_nombre">NexaPDF</string>

@@ -59,11 +59,17 @@
     <string name="aj_tema">Tema</string>
     <string name="aj_tema_bosque_claro">Foresta chiara</string>
     <string name="aj_tema_bosque_oscuro">Foresta scura</string>
+    <string name="aj_tema_grafito_claro">Grafite chiaro</string>
+    <string name="aj_tema_grafito_oscuro">Grafite scuro</string>
     <string name="aj_tema_indigo_claro">Indaco chiaro</string>
     <string name="aj_tema_indigo_oscuro">Indaco scuro</string>
     <string name="aj_tema_ocaso_claro">Tramonto chiaro</string>
     <string name="aj_tema_ocaso_oscuro">Tramonto scuro</string>
+    <string name="aj_tema_oceano_claro">Oceano chiaro</string>
+    <string name="aj_tema_oceano_oscuro">Oceano scuro</string>
     <string name="aj_tema_sistema_desc">Usa la versione chiara o scura della tavolozza scelta, seguendo il telefono.</string>
+    <string name="aj_tema_vino_claro">Vino chiaro</string>
+    <string name="aj_tema_vino_oscuro">Vino scuro</string>
     <string name="aj_titulo">Impostazioni</string>
     <string name="app_lema">Strumenti PDF che funzionano offline</string>
     <string name="app_nombre">NexaPDF</string>

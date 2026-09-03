@@ -59,11 +59,17 @@
     <string name="aj_tema">Theme</string>
     <string name="aj_tema_bosque_claro">Forest light</string>
     <string name="aj_tema_bosque_oscuro">Forest dark</string>
+    <string name="aj_tema_grafito_claro">Graphite light</string>
+    <string name="aj_tema_grafito_oscuro">Graphite dark</string>
     <string name="aj_tema_indigo_claro">Indigo light</string>
     <string name="aj_tema_indigo_oscuro">Indigo dark</string>
     <string name="aj_tema_ocaso_claro">Sunset light</string>
     <string name="aj_tema_ocaso_oscuro">Sunset dark</string>
+    <string name="aj_tema_oceano_claro">Ocean light</string>
+    <string name="aj_tema_oceano_oscuro">Ocean dark</string>
     <string name="aj_tema_sistema_desc">Uses the light or dark version of the palette you last chose, following the phone.</string>
+    <string name="aj_tema_vino_claro">Wine light</string>
+    <string name="aj_tema_vino_oscuro">Wine dark</string>
     <string name="aj_titulo">Settings</string>
     <string name="app_lema">PDF tools that work offline</string>
     <string name="app_nombre">NexaPDF</string>
