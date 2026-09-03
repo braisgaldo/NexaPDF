@@ -1,0 +1,509 @@
+/*
+ * Estilos de la documentacion de NexaPDF.
+ *
+ * La paleta es la misma que usa la aplicacion (tema Indigo, claro y oscuro),
+ * tomada de ui/theme/ColorTokens.kt. La idea es que quien lea el manual
+ * reconozca el producto: los mismos azules, las mismas formas redondeadas.
+ *
+ * Sirve para dos medios a la vez. En pantalla, con indice lateral fijo y modo
+ * oscuro automatico. En papel, con portada a sangre, saltos de pagina por
+ * capitulo y las URL impresas detras de los enlaces, que en un PDF que alguien
+ * imprime son la unica forma de seguirlos.
+ */
+
+/* --- Paleta ---------------------------------------------------------------- */
+
+:root {
+    --primario: #4a5a9f;
+    --sobre-primario: #ffffff;
+    --primario-contenedor: #dfe0ff;
+    --sobre-primario-contenedor: #001945;
+    --secundario: #5a5c77;
+    --terciario: #7c4f6a;
+
+    --fondo: #f9f9ff;
+    --superficie: #ffffff;
+    --superficie-variante: #eeeef8;
+    --superficie-tenue: #f2f2fa;
+
+    --texto: #1b1b1f;
+    --texto-tenue: #454652;
+    --borde: #c5c5d4;
+    --borde-tenue: #e1e1f1;
+
+    --aviso: #7c4f6a;
+    --aviso-fondo: #fdeaf4;
+
+    --ancho-texto: 40rem;
+    --ancho-indice: 17rem;
+    --radio: 12px;
+
+    --tipo-texto: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto,
+        "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    --tipo-mono: "Cascadia Code", "JetBrains Mono", Consolas, "SF Mono",
+        "Roboto Mono", "Liberation Mono", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primario: #bdc2fe;
+        --sobre-primario: #0a2d6b;
+        --primario-contenedor: #2e4384;
+        --sobre-primario-contenedor: #dfe0ff;
+        --secundario: #c3c4e2;
+        --terciario: #ecb7d8;
+
+        --fondo: #131317;
+        --superficie: #1b1b1f;
+        --superficie-variante: #292a2e;
+        --superficie-tenue: #1f1f23;
+
+        --texto: #e2e2e8;
+        --texto-tenue: #c5c5d4;
+        --borde: #454652;
+        --borde-tenue: #343439;
+
+        --aviso: #ecb7d8;
+        --aviso-fondo: #2c1f28;
+    }
+}
+
+/* --- Base ------------------------------------------------------------------ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+    margin: 0;
+    background: var(--fondo);
+    color: var(--texto);
+    font-family: var(--tipo-texto);
+    font-size: 17px;
+    line-height: 1.7;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- Portada --------------------------------------------------------------- */
+
+.portada {
+    page: portada;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 4rem 3rem;
+    background: linear-gradient(150deg, #3b4ec4 0%, #4a5a9f 45%, #2e3a75 100%);
+    color: #ffffff;
+    text-align: left;
+}
+
+.portada__logo { width: 108px; height: 108px; margin-bottom: 2.5rem; }
+
+.portada__marca {
+    margin: 0 0 0.4rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.75;
+}
+
+.portada__titulo {
+    margin: 0;
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+
+.portada__version {
+    margin: 1.2rem 0 0;
+    font-size: 1.15rem;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.portada__regla {
+    width: 72px;
+    height: 4px;
+    margin: 2.5rem 0;
+    border: 0;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.55);
+}
+
+.portada__meta {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.9;
+    opacity: 0.85;
+}
+
+.portada__meta strong { font-weight: 600; opacity: 1; }
+
+/* --- Disposicion en pantalla ----------------------------------------------- */
+
+.envoltorio {
+    display: grid;
+    grid-template-columns: var(--ancho-indice) minmax(0, 1fr);
+    gap: 3.5rem;
+    max-width: 68rem;
+    margin: 0 auto;
+    padding: 3.5rem 2rem 6rem;
+}
+
+/* --- Indice ---------------------------------------------------------------- */
+
+#TOC {
+    position: sticky;
+    top: 2rem;
+    align-self: start;
+    max-height: calc(100vh - 4rem);
+    padding-right: 0.75rem;
+    overflow-y: auto;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.indice__titulo {
+    margin: 0 0 1rem;
+    max-width: none;
+    color: var(--texto-tenue);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+#TOC ul { margin: 0; padding: 0; list-style: none; }
+#TOC ul ul { padding-left: 0.9rem; }
+#TOC li { margin: 0.15rem 0; }
+
+#TOC a {
+    display: block;
+    padding: 0.3rem 0.7rem;
+    border-left: 2px solid var(--borde-tenue);
+    border-radius: 0 6px 6px 0;
+    color: var(--texto-tenue);
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+#TOC a:hover {
+    background: var(--superficie-variante);
+    border-left-color: var(--primario);
+    color: var(--texto);
+}
+
+#TOC > ul > li > a { font-weight: 600; color: var(--texto); }
+
+/* --- Titulos --------------------------------------------------------------- */
+
+.contenido h1,
+.contenido h2,
+.contenido h3,
+.contenido h4 {
+    margin: 0 0 0.6rem;
+    color: var(--texto);
+    font-weight: 650;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+}
+
+.contenido h1 {
+    margin-top: 4rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 3px solid var(--primario);
+    font-size: 2.05rem;
+}
+
+.contenido h2 {
+    margin-top: 3rem;
+    font-size: 1.5rem;
+}
+
+.contenido h2::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 0.95em;
+    margin-right: 0.6rem;
+    border-radius: 3px;
+    background: var(--primario);
+    vertical-align: -0.08em;
+}
+
+.contenido h3 {
+    margin-top: 2.2rem;
+    color: var(--texto-tenue);
+    font-size: 1.15rem;
+    text-transform: none;
+}
+
+.contenido > h1:first-child { margin-top: 0; }
+
+/* --- Texto ----------------------------------------------------------------- */
+
+.contenido p { margin: 0 0 1.15rem; max-width: var(--ancho-texto); }
+
+.contenido ul,
+.contenido ol { margin: 0 0 1.15rem; padding-left: 1.4rem; max-width: var(--ancho-texto); }
+.contenido li { margin: 0.35rem 0; }
+.contenido li > p { margin-bottom: 0.5rem; }
+
+strong { font-weight: 650; color: var(--texto); }
+
+a { color: var(--primario); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }
+
+.contenido hr {
+    height: 1px;
+    margin: 3rem 0;
+    border: 0;
+    background: var(--borde-tenue);
+}
+
+/* --- Tablas ---------------------------------------------------------------- */
+
+.contenido table {
+    width: 100%;
+    margin: 0 0 1.8rem;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--borde-tenue);
+    border-radius: var(--radio);
+    overflow: hidden;
+    font-size: 0.95rem;
+}
+
+.contenido thead th {
+    padding: 0.75rem 1rem;
+    background: var(--primario-contenedor);
+    color: var(--sobre-primario-contenedor);
+    font-weight: 650;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.contenido tbody td {
+    padding: 0.7rem 1rem;
+    border-top: 1px solid var(--borde-tenue);
+    vertical-align: top;
+}
+
+.contenido tbody tr:nth-child(even) { background: var(--superficie-tenue); }
+
+.contenido tbody td:first-child { font-weight: 550; }
+
+/* --- Avisos ---------------------------------------------------------------- */
+
+.contenido blockquote {
+    position: relative;
+    margin: 0 0 1.8rem;
+    padding: 1rem 1.25rem 1rem 3.1rem;
+    max-width: var(--ancho-texto);
+    border: 1px solid var(--borde-tenue);
+    border-left: 4px solid var(--aviso);
+    border-radius: var(--radio);
+    background: var(--aviso-fondo);
+    color: var(--texto);
+}
+
+.contenido blockquote::before {
+    content: "!";
+    position: absolute;
+    top: 1.05rem;
+    left: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background: var(--aviso);
+    color: var(--fondo);
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.contenido blockquote > :last-child { margin-bottom: 0; }
+
+/* --- Codigo ---------------------------------------------------------------- */
+
+.contenido code {
+    padding: 0.15em 0.4em;
+    border: 1px solid var(--borde-tenue);
+    border-radius: 5px;
+    background: var(--superficie-variante);
+    font-family: var(--tipo-mono);
+    font-size: 0.88em;
+}
+
+.contenido pre {
+    margin: 0 0 1.8rem;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid var(--borde-tenue);
+    border-radius: var(--radio);
+    background: var(--superficie-tenue);
+    overflow-x: auto;
+    line-height: 1.55;
+}
+
+.contenido pre code {
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: 0.85rem;
+}
+
+/* --- Imagenes -------------------------------------------------------------- */
+
+.contenido img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radio);
+}
+
+/* --- Pantallas estrechas --------------------------------------------------- */
+
+@media (max-width: 60rem) {
+    .envoltorio {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2rem 1.25rem 4rem;
+    }
+
+    #TOC {
+        position: static;
+        max-height: none;
+        padding: 1.25rem;
+        border: 1px solid var(--borde-tenue);
+        border-radius: var(--radio);
+        background: var(--superficie-tenue);
+    }
+
+    body { font-size: 16px; }
+    .contenido h1 { font-size: 1.7rem; margin-top: 2.5rem; }
+    .contenido h2 { font-size: 1.3rem; }
+
+    /* Una tabla de tres columnas no cabe en un movil: que ruede ella sola en
+       lugar de romper el ancho de toda la pagina. */
+    .contenido table { display: block; overflow-x: auto; white-space: normal; }
+}
+
+/* --- Impresion y PDF ------------------------------------------------------- */
+
+@page {
+    size: A4;
+    margin: 18mm 17mm 20mm;
+}
+
+@page portada {
+    margin: 0;
+}
+
+@media print {
+    :root {
+        /* En papel se imprime siempre la version clara: el modo oscuro gasta
+           tinta a espuertas y se lee peor. */
+        --primario: #4a5a9f;
+        --primario-contenedor: #dfe0ff;
+        --sobre-primario-contenedor: #001945;
+        --fondo: #ffffff;
+        --superficie: #ffffff;
+        --superficie-variante: #eeeef8;
+        --superficie-tenue: #f5f5fb;
+        --texto: #1b1b1f;
+        --texto-tenue: #454652;
+        --borde: #c5c5d4;
+        --borde-tenue: #d8d8e6;
+        --aviso: #7c4f6a;
+        --aviso-fondo: #fdeaf4;
+        --ancho-texto: 100%;
+    }
+
+    body {
+        background: #ffffff;
+        font-size: 10.5pt;
+        line-height: 1.55;
+    }
+
+    .portada {
+        min-height: 0;
+        height: 297mm;
+        padding: 32mm 24mm;
+        break-after: page;
+        /* Sin esto el navegador imprime el degradado en blanco. */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .envoltorio {
+        display: block;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    #TOC {
+        position: static;
+        max-height: none;
+        padding: 0;
+        border: 0;
+        background: none;
+        break-after: page;
+        font-size: 10pt;
+    }
+
+    #TOC a { border-left: 0; padding: 0.1rem 0; color: var(--texto); }
+
+    .contenido h1 {
+        break-before: page;
+        margin-top: 0;
+        font-size: 19pt;
+    }
+
+    /* El primer capitulo va justo detras del indice, sin una pagina en blanco
+       de por medio. */
+    .contenido > h1:first-child { break-before: avoid; }
+
+    .contenido h2 { font-size: 14pt; margin-top: 1.4rem; }
+    .contenido h3 { font-size: 11.5pt; }
+
+    .contenido h1,
+    .contenido h2,
+    .contenido h3,
+    .contenido h4 { break-after: avoid; }
+
+    .contenido p,
+    .contenido li,
+    .contenido blockquote,
+    .contenido tr,
+    .contenido img,
+    .contenido pre { break-inside: avoid; }
+    .contenido table { break-inside: auto; }
+    .contenido thead { display: table-header-group; }
+
+    a { color: var(--texto); text-decoration: none; }
+
+    /* En papel un enlace sin su direccion no sirve de nada. Solo los externos:
+       imprimir "#seccion" detras de cada entrada del indice seria ruido. */
+    .contenido a[href^="http"]::after {
+        content: " (" attr(href) ")";
+        color: var(--texto-tenue);
+        font-size: 0.82em;
+        word-break: break-all;
+    }
+
+    .contenido thead th,
+    .contenido tbody tr:nth-child(even),
+    .contenido blockquote,
+    .contenido pre,
+    .contenido code {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}

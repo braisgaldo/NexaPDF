@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="$if(lang)$$lang$$else$es$endif$">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="pandoc">
+  <meta name="color-scheme" content="light dark">
+$for(author-meta)$
+  <meta name="author" content="$author-meta$">
+$endfor$
+$if(date-meta)$
+  <meta name="dcterms.date" content="$date-meta$">
+$endif$
+  <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
+$for(css)$
+  <link rel="stylesheet" href="$css$">
+$endfor$
+$for(header-includes)$
+  $header-includes$
+$endfor$
+</head>
+<body>
+
+<header class="portada">
+  <svg class="portada__logo" viewBox="0 0 108 108" role="img" aria-label="Icono de NexaPDF">
+    <rect width="108" height="108" rx="24" fill="#3b4ec4"/>
+    <path fill="#ffffff" fill-opacity="0.45"
+          d="M33,24 H61 C63.8,24 66,26.2 66,29 V67 C66,69.8 63.8,72 61,72 H33 C30.2,72 28,69.8 28,67 V29 C28,26.2 30.2,24 33,24 Z"/>
+    <path fill="#ffffff"
+          d="M46,34 H70 L80,44 V78 C80,81.3 77.3,84 74,84 H46 C42.7,84 40,81.3 40,78 V40 C40,36.7 42.7,34 46,34 Z"/>
+    <path fill="#1b2a8a" fill-opacity="0.55"
+          d="M70,34 L80,44 H74 C71.8,44 70,42.2 70,40 Z"/>
+    <path fill="#3b4ec4" d="M50,54 H72 A2,2 0 0,1 72,58 H50 A2,2 0 0,1 50,54 Z"/>
+    <path fill="#3b4ec4" d="M50,63 H70 A2,2 0 0,1 70,67 H50 A2,2 0 0,1 50,63 Z"/>
+    <path fill="#3b4ec4" d="M50,72 H62 A2,2 0 0,1 62,76 H50 A2,2 0 0,1 50,72 Z"/>
+  </svg>
+
+  <p class="portada__marca">NexaPDF</p>
+  <h1 class="portada__titulo">$if(documento)$$documento$$else$$pagetitle$$endif$</h1>
+$if(version)$
+  <p class="portada__version">Versión $version$</p>
+$endif$
+
+  <hr class="portada__regla">
+
+  <p class="portada__meta">
+$for(author)$
+    <strong>$author$</strong><br>
+$endfor$
+$if(date)$
+    $date$<br>
+$endif$
+$if(web)$
+    $web$
+$endif$
+  </p>
+</header>
+
+<div class="envoltorio">
+$if(table-of-contents)$
+  <nav id="TOC" role="doc-toc" aria-label="Índice">
+    <p class="indice__titulo">$if(toc-title)$$toc-title$$else$Contenido$endif$</p>
+$table-of-contents$
+  </nav>
+$endif$
+
+  <main class="contenido">
+$body$
+  </main>
+</div>
+
+$for(include-after)$
+$include-after$
+$endfor$
+</body>
+</html>

@@ -30,6 +30,10 @@ docs/out/
 docs/google_play/bundle/
 docs/google_play/claves/
 
+# --- Python ---
+__pycache__/
+*.pyc
+
 # --- Java ---
 *.class
 *.log
