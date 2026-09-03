@@ -7,6 +7,50 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+### Añadido
+
+- **Visor de PDF** como primera herramienta: lectura, búsqueda en todo el
+  documento con las apariciones **resaltadas sobre la página**, contador y
+  navegación entre ellas, índice de secciones si el PDF trae marcadores, lista
+  de firmas digitales, y pellizco para ampliar.
+- **Convertir** como herramienta propia, en los dos sentidos. Las **tablas** del
+  PDF se detectan y salen como tablas reales en Word.
+- **Inicio en rejilla** que cabe entero en la pantalla, con los ficheros
+  recientes como una baldosa más.
+- **Ficheros recientes** con pantalla propia: ordenar por fecha, nombre o
+  tamaño, y verlos en lista, detalle o cuadrícula.
+- **Compartir varios documentos** a la vez, empaquetados en un ZIP, y botón de
+  compartir en el visor.
+- **Unir en dos pasos**: primero los documentos, después las páginas. Empieza
+  con la lista vacía y se van añadiendo de uno en uno o de varios en varios.
+- **Separar en partes** declarando de una vez el rango y el nombre de cada una,
+  propuestos como `documento_part-1`.
+- **Editor**: mover, escalar y girar cualquier cosa añadida; texto visible
+  mientras se coloca, con fondo de color opcional; **goma** que tapa con el
+  color de la página; **recorte** de página; rueda de color; zoom con dos dedos.
+- **Seis familias de tema** (doce con claro y oscuro): se añaden Grafito, Vino
+  y Océano.
+- **Ajuste de guardado**: paso a paso o sólo al final, con carpeta elegible.
+- **Abrir desde otras aplicaciones**: un PDF compartido o abierto con NexaPDF se
+  abre en el visor.
+
+### Corregido
+
+- La rejilla de páginas salía vacía al abrir un documento, sin error ni
+  explicación.
+- El selector de ficheros abría en «Reciente», que en muchos teléfonos está
+  vacío y hacía parecer que no había ningún PDF.
+- Tocar una línea de texto para sustituirla casi nunca acertaba: la zona
+  sensible era la caja exacta de las letras, unos treinta píxeles.
+- «Mover» no cogía trazos ni figuras, justo lo que se acababa de dibujar.
+- Las fotos se elegían con el explorador de archivos en vez de con la galería, y
+  sus miniaturas no llegaban a cargarse nunca.
+- La firma con certificado salía en BER en lugar de DER, y los validadores
+  estrictos la rechazaban sin llegar a comprobarla.
+- Los `.docx` y `.xlsx` guardados como `octet-stream` no se podían elegir y el
+  sistema ofrecía abrirlos con otra aplicación.
+
+
 ## [1.0.0] — 2026-09-03
 
 Primera versión publicable.

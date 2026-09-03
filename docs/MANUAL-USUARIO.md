@@ -16,19 +16,37 @@ a internet, así que tus documentos no pueden salir de él aunque quisieras.
 
 ## La pantalla de inicio
 
-Al abrir NexaPDF ves seis herramientas y, debajo, los ficheros que has ido
-creando.
+Al abrir NexaPDF ves una rejilla con todo lo que sabe hacer. Cabe entera en la
+pantalla: no hay que desplazarse para descubrir nada.
 
 | Herramienta | Para qué sirve |
 |---|---|
+| **Leer PDF** | Leer, buscar dentro y moverse por el documento. |
 | **Unir PDF** | Juntar varios documentos en uno solo. |
-| **Separar PDF** | Partir un documento o sacar algunas páginas. |
+| **Separar PDF** | Partir un documento en las partes que quieras. |
 | **Imagen a PDF** | Convertir una foto en un documento. |
 | **Imágenes a PDF** | Varias fotos, una por página o varias juntas. |
 | **Editar PDF** | Dibujar, escribir y retocar las páginas. |
 | **Firmar PDF** | Firmar a mano o con tu certificado. |
+| **Convertir** | Word, Excel y PowerPoint a PDF, y al revés. |
+| **Ficheros recientes** | Lo que has ido creando. El número indica cuántos. |
 
 Arriba a la derecha, la rueda dentada abre los **Ajustes**.
+
+---
+
+## Leer un documento
+
+**Leer PDF** abre el visor. También se llega tocando cualquier fichero en
+**Ficheros recientes**.
+
+- **La lupa** busca en todo el documento. Las apariciones quedan resaltadas
+  sobre la página, y el contador y las flechas te llevan de una a otra.
+- **El icono de lista** muestra el índice de secciones, si el PDF lo trae. Los
+  documentos escaneados no suelen tenerlo.
+- **El escudo** lista las firmas digitales. Se tiñe de color cuando hay alguna.
+- **Pellizca** para ampliar y **arrastra** para moverte.
+- **Compartir** envía el documento que estás leyendo.
 
 ---
 
@@ -62,10 +80,15 @@ pulsa **Extraer**. Se crea un documento nuevo solo con esas.
 **Para partirlo entero:** pulsa **Un fichero por página**. Cada página se
 convierte en un documento independiente.
 
+**Para partirlo en capítulos:** pulsa **Dividir en partes…** y declara cada
+parte con su rango de páginas y su nombre. Se proponen como
+`documento_part-1`, `documento_part-2`… y puedes cambiar el de cada una.
+Salen todas de una vez.
+
 **Para girar o borrar:** selecciona las páginas y usa **Girar a la izquierda**,
 **Girar a la derecha** o **Eliminar**.
 
-**Para reordenar:** mantén pulsada una página y arrástrala. Cuando el orden te
+**Para reordenar:** arrastra desde el asa de los tres puntos, o mantén pulsada una página y arrástrala. Cuando el orden te
 guste, pulsa **Aplicar el nuevo orden**. Hasta que no lo pulses, el documento no
 cambia.
 
@@ -107,12 +130,29 @@ Abajo tienes las herramientas:
 | **Imagen** | Incrustar una foto en la página. |
 | **Firma** | Colocar tu firma manuscrita. |
 | **Filtro** | Mejorar el aspecto de toda la página. |
+| **Goma** | Tapar con el color de la página, también lo impreso. |
+| **Recortar** | Quedarte sólo con una parte de la página. |
 | **Borrar** | Quitar lo que hayas añadido tocándolo. |
 
-Debajo aparecen el **color** y el **grosor** de lo que estés usando.
+Debajo aparecen el **color** y el **grosor** de lo que estés usando. El último
+círculo de la paleta abre la **rueda de color**, por si necesitas uno concreto.
+
+Con **Mover** puedes coger cualquier cosa que hayas añadido —un trazo, una
+forma, un texto, una imagen o una firma—: sale su marco con dos asas. Arrastra
+para moverla, tira del asa de abajo para escalarla y de la de arriba para
+girarla.
+
+Con dos dedos se amplía y se desplaza la página. Con uno se dibuja.
 
 Arriba tienes **deshacer**, **rehacer** y el botón de **guardar** (la marca de
 verificación). Mientras no guardes, el documento no se toca.
+
+### Añadir texto
+
+Elige **Texto** y toca donde quieras escribir. La caja se ajusta al texto y al
+cuerpo de letra, y al revés: si estiras la caja, crece la letra. Puedes ponerle
+fondo de color; por defecto toma el color que tiene la página debajo, así que
+sobre papel blanco no se nota que hay un recuadro.
 
 ### Cambiar el texto que ya hay
 
@@ -133,6 +173,10 @@ importe, no para reescribir un capítulo.
 - **Alto contraste**, **Aclarar** e **Invertir**.
 
 El deslizador ajusta la intensidad.
+
+> La **goma** tapa, no borra: el texto que quede debajo sigue dentro del
+> fichero. Es como funciona el formato PDF y como lo hacen todos los editores,
+> pero conviene saberlo antes de tapar un dato sensible.
 
 > **Un filtro convierte esa página en una imagen**, así que su texto deja de
 > poder seleccionarse. La aplicación te lo advierte. Solo afecta a las páginas
@@ -208,9 +252,9 @@ Desde el documento puedes:
 
 ### Tema
 
-Siete opciones: **seguir al sistema** más seis temas concretos, tres claros y
-tres oscuros (Índigo, Bosque y Ocaso). Cada uno se muestra con sus colores
-reales, así que se ve lo que se elige antes de aplicarlo.
+Trece opciones: **seguir al sistema** más doce temas, seis familias en claro y
+oscuro (Índigo, Bosque, Ocaso, Océano, Vino y Grafito). Cada uno se muestra con
+sus colores reales, así que se ve lo que se elige antes de aplicarlo.
 
 ### Idioma
 
@@ -227,8 +271,15 @@ de memoria, ponla en rápida.
 
 ### Tus datos
 
+- **Cuándo guardar**: *paso a paso* deja cada resultado intermedio; *sólo al
+  final* mantiene los intermedios dentro de la aplicación y saca únicamente lo
+  que guardes o compartas a propósito.
+- **Carpeta**: por defecto `Descargas/NexaPDF`, pero puedes elegir otra, incluida
+  la tarjeta o una carpeta de la nube.
+- **Preguntar si compartir al terminar**: ofrece enviar cada documento recién
+  creado.
 - **Guardar también en Descargas**: activado, cada documento que crees se copia
-  a `Descargas/NexaPDF` automáticamente.
+  a la carpeta elegida automáticamente.
 - **Preguntar antes de borrar**: pide confirmación antes de eliminar páginas.
 - **Nombre para las firmas**: el que aparecerá por defecto al firmar.
 - **Exportar ajustes**: guarda un fichero `.nexaPDF.bak` con tus preferencias y
