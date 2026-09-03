@@ -149,6 +149,7 @@
     <string name="ed_alineacion">Alineació</string>
     <string name="ed_anadir_texto">Afegeix text</string>
     <string name="ed_borrar">Esborra</string>
+    <string name="ed_coloca_la_firma">Marca amb el dit el requadre on va la signatura.</string>
     <string name="ed_color">Color</string>
     <string name="ed_cursiva">Cursiva</string>
     <string name="ed_descartar_texto">El que has dibuixat en aquesta pàgina es perdrà.</string>
@@ -176,7 +177,9 @@
     <string name="ed_mover">Mou</string>
     <string name="ed_negrita">Negreta</string>
     <string name="ed_opacidad">Opacitat</string>
+    <string name="ed_pagina_anterior">Pàgina anterior</string>
     <string name="ed_pagina_de">%1$d de %2$d</string>
+    <string name="ed_pagina_siguiente">Pàgina següent</string>
     <string name="ed_rectangulo">Rectangle</string>
     <string name="ed_relleno">Emplenat</string>
     <string name="ed_resaltar">Ressalta</string>
@@ -262,6 +265,18 @@
     <string name="inicio_recientes">Fitxers recents</string>
     <string name="inicio_sin_recientes">Encara no hi ha res</string>
     <string name="inicio_sin_recientes_ayuda">Els documents que creïs apareixeran aquí.</string>
+    <string name="tour_1_texto">NexaPDF no demana permís d’internet, així que no pot pujar res. Tot passa al teu dispositiu, sense compte ni registre.</string>
+    <string name="tour_1_titulo">Els teus PDF no surten del telèfon</string>
+    <string name="tour_2_texto">Unir, separar, convertir fotos en documents, editar pàgines i signar. Unir admet també Word, Excel, PowerPoint i imatges: es converteixen a PDF abans.</string>
+    <string name="tour_2_titulo">Sis eines a la pantalla d’inici</string>
+    <string name="tour_3_texto">L’editor porta dibuix a mà alçada, marcador, formes, text i filtres per deixar llegible la foto d’un paper. Pots signar a mà o amb el teu certificat, des d’un fitxer o des del que tinguis instal·lat al dispositiu.</string>
+    <string name="tour_3_titulo">Dibuixa, escriu i signa sobre la pàgina</string>
+    <string name="tour_4_texto">Els resultats es desen a la carpeta NexaPDF de Baixades, i l’original no es toca mai. A Configuració tens sis temes, tretze llengües i una còpia de les teves preferències.</string>
+    <string name="tour_4_titulo">Els teus fitxers, a la teva manera</string>
+    <string name="tour_empezar">Comencem</string>
+    <string name="tour_saltar">Omet</string>
+    <string name="tour_siguiente">Següent</string>
+    <string name="tour_ver_otra_vez">Torna a veure el tour</string>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d document</item>
         <item quantity="other">%1$d documents</item>

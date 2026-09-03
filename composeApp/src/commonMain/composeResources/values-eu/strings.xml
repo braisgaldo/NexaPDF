@@ -149,6 +149,7 @@
     <string name="ed_alineacion">Lerrokatzea</string>
     <string name="ed_anadir_texto">Gehitu testua</string>
     <string name="ed_borrar">Ezabatu</string>
+    <string name="ed_coloca_la_firma">Marraztu sinadura joango den laukia.</string>
     <string name="ed_color">Kolorea</string>
     <string name="ed_cursiva">Etzana</string>
     <string name="ed_descartar_texto">Orri honetan marraztu duzuna galduko da.</string>
@@ -176,7 +177,9 @@
     <string name="ed_mover">Mugitu</string>
     <string name="ed_negrita">Lodia</string>
     <string name="ed_opacidad">Opakutasuna</string>
+    <string name="ed_pagina_anterior">Aurreko orria</string>
     <string name="ed_pagina_de">%1$d / %2$d</string>
+    <string name="ed_pagina_siguiente">Hurrengo orria</string>
     <string name="ed_rectangulo">Laukizuzena</string>
     <string name="ed_relleno">Betegarria</string>
     <string name="ed_resaltar">Nabarmendu</string>
@@ -262,6 +265,18 @@
     <string name="inicio_recientes">Azken fitxategiak</string>
     <string name="inicio_sin_recientes">Oraindik ez dago ezer</string>
     <string name="inicio_sin_recientes_ayuda">Sortzen dituzun dokumentuak hemen agertuko dira.</string>
+    <string name="tour_1_texto">NexaPDFk ez du interneterako baimenik eskatzen, beraz ezin du ezer igo. Dena zure gailuan gertatzen da, konturik eta izen-ematerik gabe.</string>
+    <string name="tour_1_titulo">Zure PDFak ez dira telefonotik ateratzen</string>
+    <string name="tour_2_texto">Batu, banandu, argazkiak dokumentu bihurtu, orriak editatu eta sinatu. Batzeak Word, Excel, PowerPoint eta irudiak ere onartzen ditu: PDFra bihurtzen dira lehenik.</string>
+    <string name="tour_2_titulo">Sei tresna hasierako pantailan</string>
+    <string name="tour_3_texto">Editoreak esku hutsezko marrazkia, markatzailea, formak, testua eta paper baten argazkia irakurgarri uzteko iragazkiak ditu. Eskuz edo zure ziurtagiriarekin sina dezakezu, fitxategi batetik edo gailuan instalatuta duzunetik.</string>
+    <string name="tour_3_titulo">Marraztu, idatzi eta sinatu orrian</string>
+    <string name="tour_4_texto">Emaitzak Deskargak barruko NexaPDF karpetan gordetzen dira, eta jatorrizkoa ez da inoiz ukitzen. Ezarpenetan sei gai, hamahiru hizkuntza eta zure hobespenen kopia dituzu.</string>
+    <string name="tour_4_titulo">Zure fitxategiak, zure erara</string>
+    <string name="tour_empezar">Hasi</string>
+    <string name="tour_saltar">Saltatu</string>
+    <string name="tour_siguiente">Hurrengoa</string>
+    <string name="tour_ver_otra_vez">Ikusi bisita berriro</string>
     <plurals name="plural_documentos">
         <item quantity="one">dokumentu %1$d</item>
         <item quantity="other">%1$d dokumentu</item>

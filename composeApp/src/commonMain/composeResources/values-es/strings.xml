@@ -149,6 +149,7 @@
     <string name="ed_alineacion">Alineación</string>
     <string name="ed_anadir_texto">Añadir texto</string>
     <string name="ed_borrar">Borrar</string>
+    <string name="ed_coloca_la_firma">Marca con el dedo el recuadro donde va la firma.</string>
     <string name="ed_color">Color</string>
     <string name="ed_cursiva">Cursiva</string>
     <string name="ed_descartar_texto">Lo que has dibujado en esta página se perderá.</string>
@@ -176,7 +177,9 @@
     <string name="ed_mover">Mover</string>
     <string name="ed_negrita">Negrita</string>
     <string name="ed_opacidad">Opacidad</string>
+    <string name="ed_pagina_anterior">Página anterior</string>
     <string name="ed_pagina_de">%1$d de %2$d</string>
+    <string name="ed_pagina_siguiente">Página siguiente</string>
     <string name="ed_rectangulo">Rectángulo</string>
     <string name="ed_relleno">Relleno</string>
     <string name="ed_resaltar">Resaltar</string>
@@ -262,6 +265,18 @@
     <string name="inicio_recientes">Ficheros recientes</string>
     <string name="inicio_sin_recientes">Aún no hay nada aquí</string>
     <string name="inicio_sin_recientes_ayuda">Los documentos que crees aparecerán aquí.</string>
+    <string name="tour_1_texto">NexaPDF no pide permiso de internet, así que no puede subir nada. Todo ocurre en tu dispositivo, sin cuenta y sin registro.</string>
+    <string name="tour_1_titulo">Tus PDF no salen del teléfono</string>
+    <string name="tour_2_texto">Unir, separar, convertir fotos en documentos, editar páginas y firmar. Unir admite además Word, Excel, PowerPoint e imágenes: se convierten a PDF antes.</string>
+    <string name="tour_2_titulo">Seis herramientas en la pantalla de inicio</string>
+    <string name="tour_3_texto">El editor trae dibujo a mano alzada, marcador, formas, texto y filtros para dejar legible la foto de un papel. Puedes firmar a mano o con tu certificado electrónico, desde un fichero o desde el que tengas instalado en el dispositivo.</string>
+    <string name="tour_3_titulo">Dibuja, escribe y firma sobre la página</string>
+    <string name="tour_4_texto">Los resultados se guardan en la carpeta NexaPDF de Descargas, y el original no se toca nunca. En Ajustes tienes seis temas, trece idiomas y una copia de seguridad de tus preferencias.</string>
+    <string name="tour_4_titulo">Tus ficheros, a tu manera</string>
+    <string name="tour_empezar">Empezar</string>
+    <string name="tour_saltar">Saltar</string>
+    <string name="tour_siguiente">Siguiente</string>
+    <string name="tour_ver_otra_vez">Ver el tour otra vez</string>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d documento</item>
         <item quantity="other">%1$d documentos</item>

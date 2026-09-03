@@ -14,9 +14,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.Explore
 import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material3.Icon
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -57,13 +59,18 @@ import es.ghatostudio.nexapdf.resources.ayuda_que_es_c
 import es.ghatostudio.nexapdf.resources.ayuda_que_es_t
 import es.ghatostudio.nexapdf.resources.ayuda_titulo
 import es.ghatostudio.nexapdf.ui.componentes.BarraSuperior
+import es.ghatostudio.nexapdf.resources.tour_ver_otra_vez
 import es.ghatostudio.nexapdf.ui.componentes.SeparadorSuave
 import es.ghatostudio.nexapdf.ui.donacion.IlustracionCafe
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun PantallaAyuda(snackbar: SnackbarHostState, alVolver: () -> Unit) {
+fun PantallaAyuda(
+    snackbar: SnackbarHostState,
+    alVerTour: () -> Unit,
+    alVolver: () -> Unit,
+) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         snackbarHost = { SnackbarHost(snackbar) },
@@ -75,6 +82,21 @@ fun PantallaAyuda(snackbar: SnackbarHostState, alVolver: () -> Unit) {
             modifier = Modifier.fillMaxSize().padding(relleno),
             contentPadding = PaddingValues(bottom = 40.dp),
         ) {
+            // El tour se ve una vez y se olvida; aqui esta para volver a el.
+            item {
+                TextButton(
+                    onClick = alVerTour,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 48.dp)
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                ) {
+                    Icon(Icons.Filled.Explore, contentDescription = null)
+                    Spacer(Modifier.width(8.dp))
+                    Text(stringResource(Res.string.tour_ver_otra_vez))
+                }
+            }
+
             items(APARTADOS.size) { posicion ->
                 val (titulo, cuerpo, conContacto) = APARTADOS[posicion]
                 Column(

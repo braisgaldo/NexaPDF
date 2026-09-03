@@ -149,6 +149,7 @@
     <string name="ed_alineacion">Aliñamento</string>
     <string name="ed_anadir_texto">Engadir texto</string>
     <string name="ed_borrar">Borrar</string>
+    <string name="ed_coloca_la_firma">Marca co dedo o recadro onde vai a sinatura.</string>
     <string name="ed_color">Cor</string>
     <string name="ed_cursiva">Cursiva</string>
     <string name="ed_descartar_texto">O que debuxaches nesta páxina perderase.</string>
@@ -176,7 +177,9 @@
     <string name="ed_mover">Mover</string>
     <string name="ed_negrita">Grosa</string>
     <string name="ed_opacidad">Opacidade</string>
+    <string name="ed_pagina_anterior">Páxina anterior</string>
     <string name="ed_pagina_de">%1$d de %2$d</string>
+    <string name="ed_pagina_siguiente">Páxina seguinte</string>
     <string name="ed_rectangulo">Rectángulo</string>
     <string name="ed_relleno">Recheo</string>
     <string name="ed_resaltar">Resaltar</string>
@@ -262,6 +265,18 @@
     <string name="inicio_recientes">Ficheiros recentes</string>
     <string name="inicio_sin_recientes">Aínda non hai nada aquí</string>
     <string name="inicio_sin_recientes_ayuda">Os documentos que crees aparecerán aquí.</string>
+    <string name="tour_1_texto">NexaPDF non pide permiso de internet, así que non pode subir nada. Todo ocorre no teu dispositivo, sen conta e sen rexistro.</string>
+    <string name="tour_1_titulo">Os teus PDF non saen do teléfono</string>
+    <string name="tour_2_texto">Unir, separar, converter fotos en documentos, editar páxinas e asinar. Unir admite tamén Word, Excel, PowerPoint e imaxes: convértense a PDF antes.</string>
+    <string name="tour_2_titulo">Seis ferramentas na pantalla de inicio</string>
+    <string name="tour_3_texto">O editor trae debuxo a man alzada, marcador, formas, texto e filtros para deixar lexible a foto dun papel. Podes asinar a man ou co teu certificado, desde un ficheiro ou desde o instalado no dispositivo.</string>
+    <string name="tour_3_titulo">Debuxa, escribe e asina sobre a páxina</string>
+    <string name="tour_4_texto">Os resultados gárdanse na carpeta NexaPDF de Descargas, e o orixinal non se toca nunca. En Axustes tes seis temas, trece idiomas e unha copia das túas preferencias.</string>
+    <string name="tour_4_titulo">Os teus ficheiros, á túa maneira</string>
+    <string name="tour_empezar">Comezar</string>
+    <string name="tour_saltar">Saltar</string>
+    <string name="tour_siguiente">Seguinte</string>
+    <string name="tour_ver_otra_vez">Ver o tour outra vez</string>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d documento</item>
         <item quantity="other">%1$d documentos</item>

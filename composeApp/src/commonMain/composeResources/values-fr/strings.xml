@@ -149,6 +149,7 @@
     <string name="ed_alineacion">Alignement</string>
     <string name="ed_anadir_texto">Ajouter du texte</string>
     <string name="ed_borrar">Effacer</string>
+    <string name="ed_coloca_la_firma">Tracez le cadre où placer la signature.</string>
     <string name="ed_color">Couleur</string>
     <string name="ed_cursiva">Italique</string>
     <string name="ed_descartar_texto">Ce que vous avez dessiné sur cette page sera perdu.</string>
@@ -176,7 +177,9 @@
     <string name="ed_mover">Déplacer</string>
     <string name="ed_negrita">Gras</string>
     <string name="ed_opacidad">Opacité</string>
+    <string name="ed_pagina_anterior">Page précédente</string>
     <string name="ed_pagina_de">%1$d sur %2$d</string>
+    <string name="ed_pagina_siguiente">Page suivante</string>
     <string name="ed_rectangulo">Rectangle</string>
     <string name="ed_relleno">Remplissage</string>
     <string name="ed_resaltar">Surligner</string>
@@ -262,6 +265,18 @@
     <string name="inicio_recientes">Fichiers récents</string>
     <string name="inicio_sin_recientes">Rien pour l’instant</string>
     <string name="inicio_sin_recientes_ayuda">Les documents que vous créez apparaîtront ici.</string>
+    <string name="tour_1_texto">NexaPDF ne demande pas la permission d’accès à internet : il ne peut rien envoyer. Tout se passe sur votre appareil, sans compte ni inscription.</string>
+    <string name="tour_1_titulo">Vos PDF ne quittent pas le téléphone</string>
+    <string name="tour_2_texto">Fusionner, diviser, transformer des photos en documents, modifier des pages et signer. La fusion accepte aussi Word, Excel, PowerPoint et images : ils sont d’abord convertis en PDF.</string>
+    <string name="tour_2_titulo">Six outils sur l’écran d’accueil</string>
+    <string name="tour_3_texto">L’éditeur propose le dessin à main levée, le surligneur, des formes, du texte et des filtres pour rendre lisible la photo d’un papier. Vous pouvez signer à la main ou avec votre certificat électronique, depuis un fichier ou depuis celui installé sur l’appareil.</string>
+    <string name="tour_3_titulo">Dessinez, écrivez et signez sur la page</string>
+    <string name="tour_4_texto">Les résultats sont enregistrés dans le dossier NexaPDF des téléchargements, et l’original n’est jamais modifié. Dans les réglages : six thèmes, treize langues et une sauvegarde de vos préférences.</string>
+    <string name="tour_4_titulo">Vos fichiers, à votre façon</string>
+    <string name="tour_empezar">Commencer</string>
+    <string name="tour_saltar">Passer</string>
+    <string name="tour_siguiente">Suivant</string>
+    <string name="tour_ver_otra_vez">Revoir la visite guidée</string>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d document</item>
         <item quantity="other">%1$d documents</item>

@@ -44,6 +44,9 @@ data class Ajustes(
     /** La sesion actual ya ha producido un documento. */
     val sesionConUsoReal: Boolean = false,
 
+    /** El tour guiado ya se vio; no se vuelve a ensenar solo. */
+    val tourVisto: Boolean = false,
+
     // --- Datos del usuario ---
     val firmasGuardadas: List<FirmaGuardada> = emptyList(),
     val nombreParaFirmas: String = "",

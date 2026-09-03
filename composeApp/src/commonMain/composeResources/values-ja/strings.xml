@@ -149,6 +149,7 @@
     <string name="ed_alineacion">配置</string>
     <string name="ed_anadir_texto">文字を追加</string>
     <string name="ed_borrar">消しゴム</string>
+    <string name="ed_coloca_la_firma">署名を置く枠を指でなぞってください。</string>
     <string name="ed_color">色</string>
     <string name="ed_cursiva">斜体</string>
     <string name="ed_descartar_texto">このページに描いた内容は失われます。</string>
@@ -176,7 +177,9 @@
     <string name="ed_mover">移動</string>
     <string name="ed_negrita">太字</string>
     <string name="ed_opacidad">不透明度</string>
+    <string name="ed_pagina_anterior">前のページ</string>
     <string name="ed_pagina_de">%2$d ページ中 %1$d ページ</string>
+    <string name="ed_pagina_siguiente">次のページ</string>
     <string name="ed_rectangulo">四角形</string>
     <string name="ed_relleno">塗りつぶし</string>
     <string name="ed_resaltar">マーカー</string>
@@ -262,6 +265,18 @@
     <string name="inicio_recientes">最近のファイル</string>
     <string name="inicio_sin_recientes">まだ何もありません</string>
     <string name="inicio_sin_recientes_ayuda">作成した文書がここに表示されます。</string>
+    <string name="tour_1_texto">NexaPDF はインターネット権限を要求しないため、何もアップロードできません。すべて端末内で完結し、アカウント登録も不要です。</string>
+    <string name="tour_1_titulo">PDF は端末から出ません</string>
+    <string name="tour_2_texto">結合、分割、写真から文書の作成、ページ編集、署名。結合では Word・Excel・PowerPoint・画像も扱え、先に PDF へ変換されます。</string>
+    <string name="tour_2_titulo">ホーム画面の 6 つの道具</string>
+    <string name="tour_3_texto">エディターには手描き、蛍光ペン、図形、文字、そして紙の写真を読みやすくするフィルターがあります。手書きでも、電子証明書でも署名できます。証明書はファイルからでも、端末に入っているものからでも構いません。</string>
+    <string name="tour_3_titulo">ページに描き、書き、署名する</string>
+    <string name="tour_4_texto">結果はダウンロード内の NexaPDF フォルダーに保存され、元のファイルは決して変更されません。設定にはテーマ 6 種類、言語 13 種類、設定のバックアップがあります。</string>
+    <string name="tour_4_titulo">ファイルも設定も自分好みに</string>
+    <string name="tour_empezar">はじめる</string>
+    <string name="tour_saltar">スキップ</string>
+    <string name="tour_siguiente">次へ</string>
+    <string name="tour_ver_otra_vez">ツアーをもう一度見る</string>
     <plurals name="plural_documentos">
         <item quantity="other">%1$d 個の文書</item>
     </plurals>

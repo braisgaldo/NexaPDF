@@ -39,6 +39,7 @@ class RepositorioAjustes(
         val usosAlAplazar = intPreferencesKey("usos_al_aplazar")
         val aplazadaEn = longPreferencesKey("aplazada_en")
         val sesionConUsoReal = booleanPreferencesKey("sesion_con_uso_real")
+        val tourVisto = booleanPreferencesKey("tour_visto")
         val firmas = stringPreferencesKey("firmas_guardadas")
         val nombreFirmas = stringPreferencesKey("nombre_para_firmas")
     }
@@ -54,6 +55,7 @@ class RepositorioAjustes(
                 ?: porDefecto.confirmarAccionesDestructivas,
             guardarEnDescargasAlTerminar = preferencias[Claves.guardarEnDescargas]
                 ?: porDefecto.guardarEnDescargasAlTerminar,
+            tourVisto = preferencias[Claves.tourVisto] ?: porDefecto.tourVisto,
             estadoDonacion = preferencias[Claves.estadoDonacion] ?: porDefecto.estadoDonacion,
             usosReales = preferencias[Claves.usosReales] ?: 0,
             usosAlAplazar = preferencias[Claves.usosAlAplazar] ?: 0,
@@ -112,6 +114,8 @@ class RepositorioAjustes(
 
     suspend fun reiniciarSesion() = editar { it[Claves.sesionConUsoReal] = false }
 
+    suspend fun marcarTourVisto() = editar { it[Claves.tourVisto] = true }
+
     suspend fun aplazarDonacion(ahora: Long) = editar { preferencias ->
         preferencias[Claves.estadoDonacion] = EstadoDonacion.APLAZADA.name
         preferencias[Claves.aplazadaEn] = ahora
@@ -133,6 +137,7 @@ class RepositorioAjustes(
         preferencias[Claves.calidadVista] = nuevos.calidadVista
         preferencias[Claves.confirmarDestructivas] = nuevos.confirmarAccionesDestructivas
         preferencias[Claves.guardarEnDescargas] = nuevos.guardarEnDescargasAlTerminar
+        preferencias[Claves.tourVisto] = nuevos.tourVisto
         preferencias[Claves.estadoDonacion] = nuevos.estadoDonacion
         preferencias[Claves.usosReales] = nuevos.usosReales
         preferencias[Claves.usosAlAplazar] = nuevos.usosAlAplazar

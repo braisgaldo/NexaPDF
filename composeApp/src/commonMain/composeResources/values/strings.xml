@@ -149,6 +149,7 @@
     <string name="ed_alineacion">Alignment</string>
     <string name="ed_anadir_texto">Add text</string>
     <string name="ed_borrar">Erase</string>
+    <string name="ed_coloca_la_firma">Draw a box where the signature should go.</string>
     <string name="ed_color">Colour</string>
     <string name="ed_cursiva">Italic</string>
     <string name="ed_descartar_texto">What you have drawn on this page will be lost.</string>
@@ -176,7 +177,9 @@
     <string name="ed_mover">Pan</string>
     <string name="ed_negrita">Bold</string>
     <string name="ed_opacidad">Opacity</string>
+    <string name="ed_pagina_anterior">Previous page</string>
     <string name="ed_pagina_de">%1$d of %2$d</string>
+    <string name="ed_pagina_siguiente">Next page</string>
     <string name="ed_rectangulo">Rectangle</string>
     <string name="ed_relleno">Fill</string>
     <string name="ed_resaltar">Highlight</string>
@@ -262,6 +265,18 @@
     <string name="inicio_recientes">Recent files</string>
     <string name="inicio_sin_recientes">Nothing here yet</string>
     <string name="inicio_sin_recientes_ayuda">The documents you create will show up here.</string>
+    <string name="tour_1_texto">NexaPDF does not ask for internet permission, so it cannot upload anything. Everything happens on your device, with no account and no sign-up.</string>
+    <string name="tour_1_titulo">Your PDFs never leave the phone</string>
+    <string name="tour_2_texto">Merge, split, turn photos into documents, edit pages and sign. Merging also accepts Word, Excel, PowerPoint and images: they are converted to PDF first.</string>
+    <string name="tour_2_titulo">Six tools on the home screen</string>
+    <string name="tour_3_texto">The editor has freehand drawing, highlighter, shapes, text and filters to clean up a photographed document. You can sign by hand or with your electronic certificate, either from a file or from the one installed on the device.</string>
+    <string name="tour_3_titulo">Draw, write and sign on the page</string>
+    <string name="tour_4_texto">Results are saved to the NexaPDF folder in Downloads, and the original is never modified. In Settings you have six themes, thirteen languages and a backup of your preferences.</string>
+    <string name="tour_4_titulo">Your files, your settings</string>
+    <string name="tour_empezar">Get started</string>
+    <string name="tour_saltar">Skip</string>
+    <string name="tour_siguiente">Next</string>
+    <string name="tour_ver_otra_vez">Show the tour again</string>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d document</item>
         <item quantity="other">%1$d documents</item>

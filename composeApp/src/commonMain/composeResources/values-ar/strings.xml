@@ -149,6 +149,7 @@
     <string name="ed_alineacion">المحاذاة</string>
     <string name="ed_anadir_texto">إضافة نص</string>
     <string name="ed_borrar">مسح</string>
+    <string name="ed_coloca_la_firma">ارسم المربع الذي ستوضع فيه الشهادة.</string>
     <string name="ed_color">اللون</string>
     <string name="ed_cursiva">مائل</string>
     <string name="ed_descartar_texto">سيُفقد ما رسمته في هذه الصفحة.</string>
@@ -176,7 +177,9 @@
     <string name="ed_mover">تحريك</string>
     <string name="ed_negrita">عريض</string>
     <string name="ed_opacidad">العتامة</string>
+    <string name="ed_pagina_anterior">الصفحة السابقة</string>
     <string name="ed_pagina_de">%1$d من %2$d</string>
+    <string name="ed_pagina_siguiente">الصفحة التالية</string>
     <string name="ed_rectangulo">مستطيل</string>
     <string name="ed_relleno">تعبئة</string>
     <string name="ed_resaltar">تظليل</string>
@@ -262,6 +265,18 @@
     <string name="inicio_recientes">الملفات الأخيرة</string>
     <string name="inicio_sin_recientes">لا يوجد شيء بعد</string>
     <string name="inicio_sin_recientes_ayuda">ستظهر هنا المستندات التي تنشئها.</string>
+    <string name="tour_1_texto">لا يطلب NexaPDF إذن الإنترنت، لذا لا يمكنه رفع أي شيء. كل شيء يجري على جهازك، بلا حساب ولا تسجيل.</string>
+    <string name="tour_1_titulo">ملفات PDF لا تغادر هاتفك</string>
+    <string name="tour_2_texto">الدمج والفصل وتحويل الصور إلى مستندات وتحرير الصفحات والتوقيع. يقبل الدمج أيضًا ملفات Word و Excel و PowerPoint والصور: تُحوَّل إلى PDF أولًا.</string>
+    <string name="tour_2_titulo">ست أدوات في الشاشة الرئيسية</string>
+    <string name="tour_3_texto">يوفّر المحرّر الرسم الحر وقلم التظليل والأشكال والنصوص ومرشّحات تجعل صورة الورقة مقروءة. ويمكنك التوقيع بخط اليد أو بشهادتك الإلكترونية، من ملف أو من المثبّتة على الجهاز.</string>
+    <string name="tour_3_titulo">ارسم واكتب ووقّع على الصفحة</string>
+    <string name="tour_4_texto">تُحفظ النتائج في مجلد NexaPDF داخل التنزيلات، والملف الأصلي لا يُمسّ أبدًا. في الإعدادات ستة سمات وثلاث عشرة لغة ونسخة احتياطية لتفضيلاتك.</string>
+    <string name="tour_4_titulo">ملفاتك على طريقتك</string>
+    <string name="tour_empezar">لنبدأ</string>
+    <string name="tour_saltar">تخطٍّ</string>
+    <string name="tour_siguiente">التالي</string>
+    <string name="tour_ver_otra_vez">إعادة عرض الجولة</string>
     <plurals name="plural_documentos">
         <item quantity="zero">لا مستندات</item>
         <item quantity="one">مستند واحد</item>

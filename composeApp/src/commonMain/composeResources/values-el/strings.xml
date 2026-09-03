@@ -149,6 +149,7 @@
     <string name="ed_alineacion">Στοίχιση</string>
     <string name="ed_anadir_texto">Προσθήκη κειμένου</string>
     <string name="ed_borrar">Σβήσιμο</string>
+    <string name="ed_coloca_la_firma">Σχεδιάστε το πλαίσιο όπου θα μπει η υπογραφή.</string>
     <string name="ed_color">Χρώμα</string>
     <string name="ed_cursiva">Πλάγια</string>
     <string name="ed_descartar_texto">Ό,τι σχεδιάσατε σε αυτή τη σελίδα θα χαθεί.</string>
@@ -176,7 +177,9 @@
     <string name="ed_mover">Μετακίνηση</string>
     <string name="ed_negrita">Έντονα</string>
     <string name="ed_opacidad">Αδιαφάνεια</string>
+    <string name="ed_pagina_anterior">Προηγούμενη σελίδα</string>
     <string name="ed_pagina_de">%1$d από %2$d</string>
+    <string name="ed_pagina_siguiente">Επόμενη σελίδα</string>
     <string name="ed_rectangulo">Ορθογώνιο</string>
     <string name="ed_relleno">Γέμισμα</string>
     <string name="ed_resaltar">Επισήμανση</string>
@@ -262,6 +265,18 @@
     <string name="inicio_recientes">Πρόσφατα αρχεία</string>
     <string name="inicio_sin_recientes">Δεν υπάρχει τίποτα ακόμη</string>
     <string name="inicio_sin_recientes_ayuda">Τα έγγραφα που δημιουργείτε θα εμφανίζονται εδώ.</string>
+    <string name="tour_1_texto">Το NexaPDF δεν ζητά άδεια για internet, οπότε δεν μπορεί να ανεβάσει τίποτα. Όλα γίνονται στη συσκευή σας, χωρίς λογαριασμό και χωρίς εγγραφή.</string>
+    <string name="tour_1_titulo">Τα PDF σας δεν φεύγουν από το τηλέφωνο</string>
+    <string name="tour_2_texto">Ένωση, διαχωρισμός, φωτογραφίες σε έγγραφα, επεξεργασία σελίδων και υπογραφή. Η ένωση δέχεται και Word, Excel, PowerPoint και εικόνες: μετατρέπονται πρώτα σε PDF.</string>
+    <string name="tour_2_titulo">Έξι εργαλεία στην αρχική οθόνη</string>
+    <string name="tour_3_texto">Ο επεξεργαστής έχει ελεύθερο σχέδιο, μαρκαδόρο, σχήματα, κείμενο και φίλτρα για να γίνει ευανάγνωστη η φωτογραφία ενός χαρτιού. Μπορείτε να υπογράψετε με το χέρι ή με το πιστοποιητικό σας, από αρχείο ή από αυτό που έχετε στη συσκευή.</string>
+    <string name="tour_3_titulo">Σχεδιάστε, γράψτε και υπογράψτε πάνω στη σελίδα</string>
+    <string name="tour_4_texto">Τα αποτελέσματα αποθηκεύονται στον φάκελο NexaPDF των λήψεων και το πρωτότυπο δεν αλλάζει ποτέ. Στις ρυθμίσεις: έξι θέματα, δεκατρείς γλώσσες και αντίγραφο των προτιμήσεών σας.</string>
+    <string name="tour_4_titulo">Τα αρχεία σας, όπως τα θέλετε</string>
+    <string name="tour_empezar">Ξεκινάμε</string>
+    <string name="tour_saltar">Παράλειψη</string>
+    <string name="tour_siguiente">Επόμενο</string>
+    <string name="tour_ver_otra_vez">Δείτε ξανά την ξενάγηση</string>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d έγγραφο</item>
         <item quantity="other">%1$d έγγραφα</item>

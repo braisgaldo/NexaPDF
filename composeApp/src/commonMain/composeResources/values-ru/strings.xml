@@ -149,6 +149,7 @@
     <string name="ed_alineacion">Выравнивание</string>
     <string name="ed_anadir_texto">Добавить текст</string>
     <string name="ed_borrar">Стереть</string>
+    <string name="ed_coloca_la_firma">Обведите рамку, где будет подпись.</string>
     <string name="ed_color">Цвет</string>
     <string name="ed_cursiva">Курсив</string>
     <string name="ed_descartar_texto">Всё, что вы нарисовали на этой странице, будет потеряно.</string>
@@ -176,7 +177,9 @@
     <string name="ed_mover">Перемещение</string>
     <string name="ed_negrita">Полужирный</string>
     <string name="ed_opacidad">Непрозрачность</string>
+    <string name="ed_pagina_anterior">Предыдущая страница</string>
     <string name="ed_pagina_de">%1$d из %2$d</string>
+    <string name="ed_pagina_siguiente">Следующая страница</string>
     <string name="ed_rectangulo">Прямоугольник</string>
     <string name="ed_relleno">Заливка</string>
     <string name="ed_resaltar">Выделить</string>
@@ -262,6 +265,18 @@
     <string name="inicio_recientes">Недавние файлы</string>
     <string name="inicio_sin_recientes">Пока пусто</string>
     <string name="inicio_sin_recientes_ayuda">Созданные документы появятся здесь.</string>
+    <string name="tour_1_texto">NexaPDF не запрашивает разрешение на доступ в интернет, поэтому ничего не может отправить. Всё происходит на вашем устройстве, без аккаунта и регистрации.</string>
+    <string name="tour_1_titulo">Ваши PDF не покидают телефон</string>
+    <string name="tour_2_texto">Объединить, разделить, превратить фото в документ, редактировать страницы и подписать. Объединение принимает также Word, Excel, PowerPoint и изображения: они сначала конвертируются в PDF.</string>
+    <string name="tour_2_titulo">Шесть инструментов на главном экране</string>
+    <string name="tour_3_texto">В редакторе есть рисование от руки, маркер, фигуры, текст и фильтры, чтобы снимок бумаги стал читаемым. Подписать можно от руки или сертификатом — из файла или из установленного на устройстве.</string>
+    <string name="tour_3_titulo">Рисуйте, пишите и подписывайте прямо на странице</string>
+    <string name="tour_4_texto">Результаты сохраняются в папку NexaPDF в «Загрузках», а оригинал никогда не изменяется. В настройках — шесть тем, тринадцать языков и резервная копия предпочтений.</string>
+    <string name="tour_4_titulo">Ваши файлы, ваши настройки</string>
+    <string name="tour_empezar">Начать</string>
+    <string name="tour_saltar">Пропустить</string>
+    <string name="tour_siguiente">Далее</string>
+    <string name="tour_ver_otra_vez">Показать обзор снова</string>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d документ</item>
         <item quantity="few">%1$d документа</item>

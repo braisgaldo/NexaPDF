@@ -149,6 +149,7 @@
     <string name="ed_alineacion">对齐</string>
     <string name="ed_anadir_texto">添加文字</string>
     <string name="ed_borrar">擦除</string>
+    <string name="ed_coloca_la_firma">拖出一个方框，确定签名的位置。</string>
     <string name="ed_color">颜色</string>
     <string name="ed_cursiva">斜体</string>
     <string name="ed_descartar_texto">你在这一页上画的内容会丢失。</string>
@@ -176,7 +177,9 @@
     <string name="ed_mover">移动</string>
     <string name="ed_negrita">加粗</string>
     <string name="ed_opacidad">不透明度</string>
+    <string name="ed_pagina_anterior">上一页</string>
     <string name="ed_pagina_de">第 %1$d 页，共 %2$d 页</string>
+    <string name="ed_pagina_siguiente">下一页</string>
     <string name="ed_rectangulo">矩形</string>
     <string name="ed_relleno">填充</string>
     <string name="ed_resaltar">高亮</string>
@@ -262,6 +265,18 @@
     <string name="inicio_recientes">最近的文件</string>
     <string name="inicio_sin_recientes">这里还没有内容</string>
     <string name="inicio_sin_recientes_ayuda">你创建的文档会出现在这里。</string>
+    <string name="tour_1_texto">NexaPDF 不申请联网权限，因此无法上传任何内容。一切都在您的设备上完成，无需账号和注册。</string>
+    <string name="tour_1_titulo">您的 PDF 不会离开手机</string>
+    <string name="tour_2_texto">合并、拆分、把照片变成文档、编辑页面和签名。合并还支持 Word、Excel、PowerPoint 和图片，会先转换为 PDF。</string>
+    <string name="tour_2_titulo">主屏幕上的六个工具</string>
+    <string name="tour_3_texto">编辑器提供手绘、荧光笔、形状、文字和滤镜，可让拍摄的纸张变清晰。您可以手写签名，也可以使用电子证书签名，来自文件或设备中已安装的证书。</string>
+    <string name="tour_3_titulo">在页面上绘制、书写和签名</string>
+    <string name="tour_4_texto">结果保存在下载中的 NexaPDF 文件夹，原文件绝不会被修改。设置中有六种主题、十三种语言和偏好备份。</string>
+    <string name="tour_4_titulo">你的文件，按你的方式</string>
+    <string name="tour_empezar">开始使用</string>
+    <string name="tour_saltar">跳过</string>
+    <string name="tour_siguiente">下一步</string>
+    <string name="tour_ver_otra_vez">重新查看导览</string>
     <plurals name="plural_documentos">
         <item quantity="other">%1$d 个文档</item>
     </plurals>
