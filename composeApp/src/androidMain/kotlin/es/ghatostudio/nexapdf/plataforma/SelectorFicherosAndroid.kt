@@ -3,8 +3,12 @@ package es.ghatostudio.nexapdf.plataforma
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Environment
+import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.provider.OpenableColumns
+import android.security.KeyChain
+import android.security.KeyChainAliasCallback
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,6 +19,16 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+
+/** Uri de la carpeta Descargas del almacenamiento principal. */
+private val uriDescargas: Uri = DocumentsContract.buildDocumentUri(
+    "com.android.externalstorage.documents",
+    "primary:${Environment.DIRECTORY_DOWNLOADS}",
+)
+
+private fun Intent.empezandoEnDescargas(): Intent = apply {
+    putExtra(DocumentsContract.EXTRA_INITIAL_URI, uriDescargas)
+}
 
 /**
  * Seleccion de ficheros con el Storage Access Framework.
@@ -36,21 +50,19 @@ class SelectorFicherosAndroid(
     private var pendienteGuardar: CompletableDeferred<Uri?>? = null
 
     private val abrirVarios: ActivityResultLauncher<Array<String>> =
-        actividad.registerForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { uris ->
+        actividad.registerForActivityResult(AbrirVariosEnDescargas()) { uris ->
             pendienteVarios?.complete(uris)
             pendienteVarios = null
         }
 
     private val abrirUno: ActivityResultLauncher<Array<String>> =
-        actividad.registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        actividad.registerForActivityResult(AbrirUnoEnDescargas()) { uri ->
             pendienteUno?.complete(uri)
             pendienteUno = null
         }
 
     private val crearDocumento: ActivityResultLauncher<String> =
-        actividad.registerForActivityResult(
-            ActivityResultContracts.CreateDocument("application/octet-stream"),
-        ) { uri ->
+        actividad.registerForActivityResult(GuardarEnDescargas()) { uri ->
             pendienteGuardar?.complete(uri)
             pendienteGuardar = null
         }
@@ -123,6 +135,34 @@ class SelectorFicherosAndroid(
 
     override suspend fun elegirCertificado(): FicheroElegido? =
         elegir(TIPOS_CERTIFICADO, multiple = false).firstOrNull()
+
+    override fun hayAlmacenDeClaves(): Boolean = true
+
+    /**
+     * Abre el dialogo del sistema para elegir un certificado instalado.
+     *
+     * Lo pinta Android, no la aplicacion: aqui solo llega el alias del que el
+     * usuario haya decidido conceder acceso. Si no tiene ninguno instalado, el
+     * propio dialogo se lo dice y ofrece instalarlo.
+     */
+    override suspend fun elegirDelAlmacenDeClaves(): String? {
+        val espera = CompletableDeferred<String?>()
+        val respuesta = KeyChainAliasCallback { alias -> espera.complete(alias) }
+        runCatching {
+            KeyChain.choosePrivateKeyAlias(
+                actividad,
+                respuesta,
+                // Sin filtro de tipo de clave ni de emisor: los certificados de
+                // firma espanoles son RSA, pero limitarlo dejaria fuera los de
+                // curva eliptica que ya empiezan a emitirse.
+                null,
+                null,
+                null,
+                null,
+            )
+        }.onFailure { return null }
+        return espera.await()
+    }
 
     override suspend fun elegirCopiaSeguridad(): FicheroElegido? =
         elegir(TIPOS_COPIA, multiple = false).firstOrNull()
@@ -203,6 +243,35 @@ class SelectorFicherosAndroid(
     /** Quita del nombre lo que no puede ir en un fichero del sistema. */
     private fun nombreSeguro(nombre: String): String =
         nombre.replace(Regex("""[\\/:*?"<>|]"""), "_").take(120)
+
+    /**
+     * Contratos que abren el selector en la carpeta Descargas.
+     *
+     * El selector del sistema arranca por defecto en "Reciente", que solo
+     * enseña documentos abiertos hace poco *por alguna aplicacion*. En un
+     * telefono recien estrenado, o con ficheros que llegaron por cable o desde
+     * otra app, esa pantalla sale vacia y da toda la impresion de que no hay
+     * ningun PDF en el telefono. Con EXTRA_INITIAL_URI se abre en Descargas,
+     * que es donde esta casi todo lo que la gente quiere firmar o unir.
+     *
+     * Es una sugerencia, no una carcel: el usuario sigue teniendo el menu
+     * lateral para irse a Drive, a la tarjeta SD o a donde quiera.
+     */
+    private class AbrirVariosEnDescargas : ActivityResultContracts.OpenMultipleDocuments() {
+        override fun createIntent(context: Context, input: Array<String>): Intent =
+            super.createIntent(context, input).empezandoEnDescargas()
+    }
+
+    private class AbrirUnoEnDescargas : ActivityResultContracts.OpenDocument() {
+        override fun createIntent(context: Context, input: Array<String>): Intent =
+            super.createIntent(context, input).empezandoEnDescargas()
+    }
+
+    private class GuardarEnDescargas :
+        ActivityResultContracts.CreateDocument("application/octet-stream") {
+        override fun createIntent(context: Context, input: String): Intent =
+            super.createIntent(context, input).empezandoEnDescargas()
+    }
 
     private companion object {
         val TIPOS_PDF = arrayOf("application/pdf")
