@@ -40,6 +40,15 @@ interface MotorPdf {
     ): ResultadoPdf<ImageBitmap>
 
     /** Libera el documento cacheado. Se llama al salir de la pantalla. */
+    /**
+     * Rasteriza una imagen del disco para ensenarla en pantalla.
+     *
+     * Se pide con el ancho que de verdad ocupa: una foto de movil son veinte
+     * megapixeles y cargarla entera para una miniatura de 104 dp es la forma
+     * mas rapida de quedarse sin memoria.
+     */
+    suspend fun renderizarImagen(ruta: String, anchoPx: Int): ResultadoPdf<ImageBitmap>
+
     suspend fun cerrar(ruta: String)
 
     /** Une varios documentos en el orden dado. */

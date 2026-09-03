@@ -11,6 +11,7 @@ import android.security.KeyChain
 import android.security.KeyChainAliasCallback
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import es.ghatostudio.nexapdf.domain.plataforma.FicheroElegido
@@ -67,6 +68,35 @@ class SelectorFicherosAndroid(
             pendienteGuardar = null
         }
 
+    private var pendienteImagenUna: CompletableDeferred<Uri?>? = null
+    private var pendienteImagenVarias: CompletableDeferred<List<Uri>>? = null
+
+    /**
+     * Selector de fotos del sistema.
+     *
+     * No es el mismo que el de documentos. El de documentos ensena un
+     * explorador de carpetas, que para buscar una foto entre miles es
+     * inservible: el usuario espera su galeria, con las miniaturas y los
+     * albumes. Ademas este selector no necesita ningun permiso de
+     * almacenamiento, porque solo entrega lo que el usuario toca.
+     *
+     * En los telefonos sin selector de fotos, el propio contrato recae en
+     * ACTION_OPEN_DOCUMENT sin que haya que hacer nada aqui.
+     */
+    private val elegirImagenUna: ActivityResultLauncher<PickVisualMediaRequest> =
+        actividad.registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            pendienteImagenUna?.complete(uri)
+            pendienteImagenUna = null
+        }
+
+    private val elegirImagenVarias: ActivityResultLauncher<PickVisualMediaRequest> =
+        actividad.registerForActivityResult(
+            ActivityResultContracts.PickMultipleVisualMedia(),
+        ) { uris ->
+            pendienteImagenVarias?.complete(uris)
+            pendienteImagenVarias = null
+        }
+
     private var pendienteFoto: CompletableDeferred<Boolean>? = null
     private var destinoFoto: File? = null
 
@@ -79,8 +109,27 @@ class SelectorFicherosAndroid(
     override suspend fun elegirPdf(multiple: Boolean): List<FicheroElegido> =
         elegir(TIPOS_PDF, multiple)
 
-    override suspend fun elegirImagenes(multiple: Boolean): List<FicheroElegido> =
-        elegir(TIPOS_IMAGEN, multiple)
+    override suspend fun elegirImagenes(multiple: Boolean): List<FicheroElegido> {
+        val peticion = PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+        val uris = if (multiple) {
+            val espera = CompletableDeferred<List<Uri>>()
+            pendienteImagenVarias = espera
+            runCatching { elegirImagenVarias.launch(peticion) }.onFailure {
+                pendienteImagenVarias = null
+                return emptyList()
+            }
+            espera.await()
+        } else {
+            val espera = CompletableDeferred<Uri?>()
+            pendienteImagenUna = espera
+            runCatching { elegirImagenUna.launch(peticion) }.onFailure {
+                pendienteImagenUna = null
+                return emptyList()
+            }
+            listOfNotNull(espera.await())
+        }
+        return uris.mapNotNull { copiarAlEspacioDeTrabajo(it) }
+    }
 
     override suspend fun elegirParaUnir(): List<FicheroElegido> =
         elegir(TIPOS_PARA_UNIR, multiple = true)
@@ -283,7 +332,6 @@ class SelectorFicherosAndroid(
          */
         val TIPOS_PARA_UNIR =
             es.ghatostudio.nexapdf.domain.pdf.FormatoDocumento.TIPOS_PARA_UNIR.toTypedArray()
-        val TIPOS_IMAGEN = arrayOf("image/*")
 
         // Muchos gestores de archivos no reconocen el tipo de un .p12 y lo
         // presentan como octet-stream; sin ese comodin el fichero saldria en gris.

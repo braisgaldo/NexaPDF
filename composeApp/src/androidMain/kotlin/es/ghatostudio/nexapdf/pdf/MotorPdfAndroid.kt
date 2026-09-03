@@ -197,6 +197,15 @@ class MotorPdfAndroid(
         return abierto
     }
 
+    override suspend fun renderizarImagen(
+        ruta: String,
+        anchoPx: Int,
+    ): ResultadoPdf<ImageBitmap> = withContext(Dispatchers.IO) {
+        val mapa = cargarImagen(ruta, anchoPx.coerceIn(64, MAXIMO_LADO_IMAGEN))
+            ?: return@withContext ResultadoPdf.Fallo(ErrorPdf.FICHERO_INVALIDO, ruta)
+        ResultadoPdf.Exito(mapa.asImageBitmap())
+    }
+
     override suspend fun cerrar(ruta: String) {
         cerrojo.withLock { renderizadores.remove(ruta)?.cerrar() }
     }
@@ -391,7 +400,7 @@ class MotorPdfAndroid(
      * telefono; sin lo segundo, las fotos hechas en vertical salen tumbadas,
      * porque la camara guarda el sensor en horizontal y anota el giro aparte.
      */
-    private fun cargarImagen(ruta: String): Bitmap? {
+    private fun cargarImagen(ruta: String, ladoMaximo: Int = MAXIMO_LADO_IMAGEN): Bitmap? {
         val fichero = File(ruta)
         if (!fichero.exists()) return null
 
@@ -401,8 +410,8 @@ class MotorPdfAndroid(
 
         var muestreo = 1
         while (
-            (medidas.outWidth / muestreo) > MAXIMO_LADO_IMAGEN ||
-            (medidas.outHeight / muestreo) > MAXIMO_LADO_IMAGEN
+            (medidas.outWidth / muestreo) > ladoMaximo ||
+            (medidas.outHeight / muestreo) > ladoMaximo
         ) {
             muestreo *= 2
         }
