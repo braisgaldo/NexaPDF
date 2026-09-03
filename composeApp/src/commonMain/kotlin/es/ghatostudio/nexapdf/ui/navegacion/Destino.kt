@@ -19,7 +19,16 @@ sealed interface Destino {
      * separarlas o abrir el editor. Con varios, ordenarlos y unirlos. Es la
      * misma pantalla porque es la misma tarea vista de cerca o de lejos.
      */
-    data class Documento(val rutas: List<String>) : Destino
+    /**
+     * @param modoUnion la pantalla se abrio para unir documentos. Se lleva
+     *   explicito y no se deduce de `rutas.size` porque una union puede
+     *   empezar con un solo fichero e ir creciendo, y sin este dato la
+     *   pantalla ensenaria la rejilla de paginas en lugar de la lista.
+     */
+    data class Documento(
+        val rutas: List<String>,
+        val modoUnion: Boolean = false,
+    ) : Destino
 
     data class Imagenes(val rutas: List<String>) : Destino
 
@@ -28,6 +37,9 @@ sealed interface Destino {
     data class Firma(val ruta: String) : Destino
 
     data object Ajustes : Destino
+
+    /** Tour guiado de bienvenida. */
+    data object Tour : Destino
 
     data object Ayuda : Destino
 

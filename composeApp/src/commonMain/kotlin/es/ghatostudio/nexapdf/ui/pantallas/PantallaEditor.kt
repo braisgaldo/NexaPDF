@@ -24,6 +24,8 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Redo
+import androidx.compose.material.icons.automirrored.filled.NavigateBefore
+import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material.icons.automirrored.filled.Undo
 import androidx.compose.material.icons.filled.AutoFixHigh
 import androidx.compose.material.icons.filled.Brush
@@ -109,7 +111,9 @@ import es.ghatostudio.nexapdf.resources.ed_imagen
 import es.ghatostudio.nexapdf.resources.ed_intensidad
 import es.ghatostudio.nexapdf.resources.ed_linea
 import es.ghatostudio.nexapdf.resources.ed_mover
+import es.ghatostudio.nexapdf.resources.ed_pagina_anterior
 import es.ghatostudio.nexapdf.resources.ed_pagina_de
+import es.ghatostudio.nexapdf.resources.ed_pagina_siguiente
 import es.ghatostudio.nexapdf.resources.ed_rectangulo
 import es.ghatostudio.nexapdf.resources.ed_relleno
 import es.ghatostudio.nexapdf.resources.ed_resaltar
@@ -126,6 +130,8 @@ class AccionesEditor(
     val alGuardar: (es.ghatostudio.nexapdf.domain.model.EdicionPagina) -> Unit,
     val alElegirImagen: (aplicar: (String) -> Unit) -> Unit,
     val alPedirFirma: (aplicar: (List<List<Punto>>) -> Unit) -> Unit,
+    /** Ir a otra pagina del mismo documento sin salir del editor. */
+    val alIrAPagina: (Int) -> Unit,
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -137,13 +143,29 @@ fun PantallaEditor(
     proporcion: Float,
     pagina: ImageBitmap?,
     bloquesTexto: List<BloqueTexto>,
+    /**
+     * Firma ya dibujada que falta por situar.
+     *
+     * Llega asi cuando se entro por "Firmar PDF" desde el inicio: alli se
+     * dibuja primero y se coloca despues, al reves que dentro del editor. Con
+     * un valor aqui, la herramienta de firma arranca seleccionada y el marco
+     * que trace el usuario decide donde cae, en lugar de estamparla en una
+     * esquina fija.
+     */
+    firmaPendiente: List<List<Punto>>? = null,
     snackbar: SnackbarHostState,
     acciones: AccionesEditor,
     alVolver: () -> Unit,
 ) {
     val estado = remember(ruta, indicePagina) { EstadoEditor(indicePagina) }
+
+    LaunchedEffect(firmaPendiente) {
+        if (firmaPendiente != null) estado.herramienta = HerramientaEditor.FIRMA
+    }
     var textoEnEdicion by remember { mutableStateOf<TextoEnEdicion?>(null) }
     var confirmandoSalida by remember { mutableStateOf(false) }
+    // Pagina a la que se quiere ir; se resuelve tras confirmar el descarte.
+    var paginaPedida by remember { mutableStateOf<Int?>(null) }
 
     val salir = { if (estado.hayCambios) confirmandoSalida = true else alVolver() }
 
@@ -158,6 +180,35 @@ fun PantallaEditor(
                 titulo = stringResource(Res.string.ed_pagina_de, indicePagina + 1, totalPaginas),
                 alVolver = salir,
                 acciones = {
+                    // Cambiar de pagina con cambios sin guardar los tiraria,
+                    // asi que se pregunta igual que al salir.
+                    val irA = { destino: Int ->
+                        if (estado.hayCambios) {
+                            paginaPedida = destino
+                        } else {
+                            acciones.alIrAPagina(destino)
+                        }
+                    }
+                    IconButton(
+                        onClick = { irA(indicePagina - 1) },
+                        enabled = indicePagina > 0,
+                        modifier = Modifier.size(48.dp),
+                    ) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.NavigateBefore,
+                            contentDescription = stringResource(Res.string.ed_pagina_anterior),
+                        )
+                    }
+                    IconButton(
+                        onClick = { irA(indicePagina + 1) },
+                        enabled = indicePagina < totalPaginas - 1,
+                        modifier = Modifier.size(48.dp),
+                    ) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.NavigateNext,
+                            contentDescription = stringResource(Res.string.ed_pagina_siguiente),
+                        )
+                    }
                     IconButton(
                         onClick = estado::deshacer,
                         enabled = estado.puedeDeshacer,
@@ -216,7 +267,11 @@ fun PantallaEditor(
                         acciones.alElegirImagen { ruta -> estado.anadirImagen(ruta, marco) }
                     },
                     alPedirFirma = { marco ->
-                        acciones.alPedirFirma { trazos -> estado.anadirFirma(trazos, marco) }
+                        if (firmaPendiente != null) {
+                            estado.anadirFirma(firmaPendiente, marco)
+                        } else {
+                            acciones.alPedirFirma { trazos -> estado.anadirFirma(trazos, marco) }
+                        }
                     },
                 )
             }
@@ -233,6 +288,24 @@ fun PantallaEditor(
                 textoEnEdicion = null
             },
             alCancelar = { textoEnEdicion = null },
+        )
+    }
+
+    paginaPedida?.let { destino ->
+        AlertDialog(
+            onDismissRequest = { paginaPedida = null },
+            title = { Text(stringResource(Res.string.ed_descartar_titulo)) },
+            text = { Text(stringResource(Res.string.ed_descartar_texto)) },
+            confirmButton = {
+                TextButton(onClick = { paginaPedida = null; acciones.alIrAPagina(destino) }) {
+                    Text(stringResource(Res.string.comun_aceptar))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { paginaPedida = null }) {
+                    Text(stringResource(Res.string.comun_cancelar))
+                }
+            },
         )
     }
 

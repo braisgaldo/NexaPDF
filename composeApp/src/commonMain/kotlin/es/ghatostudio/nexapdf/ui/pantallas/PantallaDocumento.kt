@@ -2,8 +2,8 @@ package es.ghatostudio.nexapdf.ui.pantallas
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,7 +22,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MergeType
 import androidx.compose.material.icons.filled.ArrowDownward
@@ -141,13 +140,19 @@ fun PantallaDocumento(
     documentos: List<DocumentoPdf>,
     paginas: List<PaginaPdf>,
     rutaActiva: String?,
+    /**
+     * Se llego aqui para unir. Lo dice quien navega y no se deduce del numero
+     * de documentos: una union puede empezar con uno solo e ir creciendo, y
+     * antes esa lista de un elemento se confundia con abrir un documento
+     * suelto y se ensenaba la rejilla de paginas.
+     */
+    modoUnion: Boolean,
     necesitaContrasena: Boolean,
     confirmarBorrado: Boolean,
     snackbar: SnackbarHostState,
     acciones: AccionesDocumento,
     alVolver: () -> Unit,
 ) {
-    val modoUnion = documentos.size > 1
     var seleccion by remember(rutaActiva) { mutableStateOf(emptySet<Int>()) }
     var pidiendoBorrado by remember { mutableStateOf(false) }
     var eligiendoFormato by remember { mutableStateOf(false) }
@@ -311,13 +316,12 @@ private fun BarraAcciones(
     alPedirExportar: () -> Unit,
     confirmarBorrado: Boolean,
 ) {
-    Row(
+    FlowRow(
         modifier = Modifier
             .fillMaxWidth()
-            .horizontalScroll(rememberScrollState())
             .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         if (seleccion.isNotEmpty()) {
             Text(

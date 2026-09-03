@@ -83,10 +83,12 @@ import es.ghatostudio.nexapdf.ui.pantallas.PantallaEditor
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaFirma
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaImagenes
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaInicio
+import es.ghatostudio.nexapdf.ui.pantallas.PantallaTour
 import es.ghatostudio.nexapdf.ui.pantallas.PeticionFirmaCertificado
 import es.ghatostudio.nexapdf.ui.componentes.DialogoOrigenImagen
 import es.ghatostudio.nexapdf.ui.componentes.VeloDeTrabajo
 import es.ghatostudio.nexapdf.ui.theme.NexaTheme
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
@@ -139,6 +141,20 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
     val paginas = remember { mutableStateListOf<PaginaPdf>() }
     val imagenes = remember { mutableStateListOf<String>() }
     val miniaturasImagen = remember { mutableStateMapOf<String, ImageBitmap>() }
+
+    // Las miniaturas se cargan aqui y no en la pantalla porque sobreviven a
+    // ir y volver de la camara: si se recalcularan al recomponer, cada foto
+    // nueva volveria a decodificar todas las anteriores.
+    LaunchedEffect(imagenes.toList()) {
+        imagenes.toList().forEach { ruta ->
+            if (miniaturasImagen.containsKey(ruta)) return@forEach
+            val resultado = contenedor.motorPdf.renderizarImagen(ruta, ANCHO_MINIATURA_IMAGEN)
+            if (resultado is ResultadoPdf.Exito) miniaturasImagen[ruta] = resultado.valor
+        }
+        // Las que ya no estan en la lista dejan de ocupar memoria.
+        val vivas = imagenes.toSet()
+        miniaturasImagen.keys.retainAll(vivas)
+    }
     var necesitaContrasena by remember { mutableStateOf(false) }
     var contrasenaActual by remember { mutableStateOf<String?>(null) }
     var recientes by remember { mutableStateOf(emptyList<DocumentoReciente>()) }
@@ -148,6 +164,8 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
     var bloquesEditor by remember { mutableStateOf(emptyList<BloqueTexto>()) }
     var aplicarImagen by remember { mutableStateOf<((String) -> Unit)?>(null) }
     var aplicarFirma by remember { mutableStateOf<((List<List<Punto>>) -> Unit)?>(null) }
+    // Firma dibujada desde "Firmar PDF" que falta por situar en la pagina.
+    var firmaParaColocar by remember { mutableStateOf<List<List<Punto>>?>(null) }
 
     // Estado de la firma
     var firmasExistentes by remember { mutableStateOf(emptyList<FirmaExistente>()) }
@@ -294,6 +312,17 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
         estado.avisoMostrado()
     }
 
+    var ajustesLeidos by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        contenedor.ajustes.ajustes.first()
+        ajustesLeidos = true
+    }
+    LaunchedEffect(ajustesLeidos, ajustes.tourVisto) {
+        if (ajustesLeidos && !ajustes.tourVisto && estado.destinoActual == Destino.Inicio) {
+            estado.ir(Destino.Tour)
+        }
+    }
+
     // --- Navegacion ----------------------------------------------------------
     Box(Modifier.fillMaxSize()) {
         when (val destino = estado.destinoActual) {
@@ -306,30 +335,42 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
                             Herramienta.UNIR -> {
                                 // Admite PDF, Word, Excel, PowerPoint e imagenes:
                                 // lo que no sea PDF se convierte antes de unir.
+                                // Basta con uno: la pantalla de union esta
+                                // hecha para ir anadiendo, y exigir dos de
+                                // entrada obligaba a acertar de una vez con
+                                // todos los ficheros en el selector.
                                 val elegidos = contenedor.selector.elegirParaUnir()
-                                if (elegidos.size < 2) {
-                                    estado.avisar(getString(Res.string.error_faltan_documentos))
-                                } else {
-                                    val rutas = convertirTodoAPdf(
-                                        contenedor = contenedor,
-                                        estado = estado,
-                                        ficheros = elegidos,
-                                        textoConvirtiendo = textoConvirtiendo,
-                                        rutaDeSalida = ::rutaDeSalida,
-                                        mensajeDeError = { mensajeDeError(it) },
-                                    )
-                                    if (rutas.size >= 2) {
-                                        abrirDocumentos(rutas)
-                                        estado.ir(Destino.Documento(rutas))
-                                    }
+                                if (elegidos.isEmpty()) return@launch
+                                val rutas = convertirTodoAPdf(
+                                    contenedor = contenedor,
+                                    estado = estado,
+                                    ficheros = elegidos,
+                                    textoConvirtiendo = textoConvirtiendo,
+                                    rutaDeSalida = ::rutaDeSalida,
+                                    mensajeDeError = { mensajeDeError(it) },
+                                )
+                                if (rutas.isNotEmpty()) {
+                                    abrirDocumentos(rutas)
+                                    estado.ir(Destino.Documento(rutas, modoUnion = true))
                                 }
                             }
 
-                            Herramienta.SEPARAR, Herramienta.EDITAR -> {
+                            Herramienta.SEPARAR -> {
                                 val elegido = contenedor.selector.elegirPdf(multiple = false)
                                     .firstOrNull() ?: return@launch
                                 abrirDocumentos(listOf(elegido.ruta))
                                 estado.ir(Destino.Documento(listOf(elegido.ruta)))
+                            }
+
+                            Herramienta.EDITAR -> {
+                                // Quien pulsa "Editar PDF" quiere dibujar, no
+                                // ver una rejilla de miniaturas: se entra
+                                // directo al editor por la primera pagina y
+                                // desde ahi se navega entre ellas.
+                                val elegido = contenedor.selector.elegirPdf(multiple = false)
+                                    .firstOrNull() ?: return@launch
+                                abrirDocumentos(listOf(elegido.ruta))
+                                estado.ir(Destino.Editor(elegido.ruta, 0))
                             }
 
                             Herramienta.FIRMAR -> {
@@ -362,6 +403,7 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
                 documentos = documentos,
                 paginas = paginas,
                 rutaActiva = rutaActiva,
+                modoUnion = destino.modoUnion,
                 necesitaContrasena = necesitaContrasena,
                 confirmarBorrado = ajustes.confirmarAccionesDestructivas,
                 snackbar = snackbar,
@@ -655,8 +697,9 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
                     proporcion = pagina?.proporcion ?: 0.707f,
                     pagina = paginaEditor,
                     bloquesTexto = bloquesEditor,
+                    firmaPendiente = firmaParaColocar,
                     snackbar = snackbar,
-                    alVolver = { estado.volver() },
+                    alVolver = { firmaParaColocar = null; estado.volver() },
                     acciones = AccionesEditor(
                         alGuardar = { edicion ->
                             alcance.launch {
@@ -693,6 +736,11 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
                             aplicarFirma = aplicar
                             estado.ir(Destino.Firma(destino.ruta))
                         },
+                        alIrAPagina = { indice ->
+                            if (indice in paginas.indices) {
+                                estado.reemplazar(Destino.Editor(destino.ruta, indice))
+                            }
+                        },
                     ),
                 )
             }
@@ -711,46 +759,19 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
                 alColocarManuscrita = { trazos ->
                     val aplicar = aplicarFirma
                     if (aplicar != null) {
+                        // Se venia del editor: alli ya se habia marcado donde
+                        // va la firma antes de dibujarla.
                         aplicar(trazos)
                         aplicarFirma = null
                         estado.volver()
                     } else {
-                        // Sin editor detras, la firma se coloca abajo a la
-                        // derecha de la primera pagina, que es donde se firma.
-                        alcance.launch {
-                            estado.empezarTrabajo(textoProcesando)
-                            val borrador = BorradorEdicion(
-                                rutaDocumento = destino.ruta,
-                                paginas = mapOf(
-                                    0 to EdicionPagina(
-                                        indice = 0,
-                                        ediciones = listOf(
-                                            es.ghatostudio.nexapdf.domain.model.Edicion.Firma(
-                                                id = "firma-directa",
-                                                trazos = trazos,
-                                                marco = Rectangulo(0.52f, 0.76f, 0.94f, 0.90f),
-                                                colorArgb = 0xFF1A1A1AL,
-                                                grosor = 0.004f,
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            )
-                            val salida = rutaDeSalida("${nombreBase(destino.ruta)} firmado.pdf")
-                            val resultado = contenedor.motorPdf
-                                .aplicarEdiciones(borrador, salida, contrasenaActual)
-                            estado.terminarTrabajo()
-                            when (resultado) {
-                                is ResultadoPdf.Exito -> {
-                                    registrarResultado(resultado.valor)
-                                    abrirDocumentos(listOf(resultado.valor))
-                                    estado.reemplazar(Destino.Documento(listOf(resultado.valor)))
-                                }
-
-                                is ResultadoPdf.Fallo ->
-                                    estado.avisar(mensajeDeError(resultado.causa))
-                            }
-                        }
+                        // Se entro por "Firmar PDF" desde el inicio. Antes la
+                        // firma se estampaba siempre abajo a la derecha de la
+                        // primera pagina y no habia forma de moverla; ahora se
+                        // abre el editor con la firma en la mano para que el
+                        // usuario marque donde cae y en que pagina.
+                        firmaParaColocar = trazos
+                        estado.reemplazar(Destino.Editor(destino.ruta, 0))
                     }
                 },
                 alElegirCertificadoDeFichero = {
@@ -815,6 +836,13 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
                 },
             )
 
+            Destino.Tour -> PantallaTour(
+                alTerminar = {
+                    alcance.launch { contenedor.ajustes.marcarTourVisto() }
+                    estado.volver()
+                },
+            )
+
             Destino.Ajustes -> PantallaAjustes(
                 ajustes = ajustes,
                 donacionesDisponibles = contenedor.servicios.donacionesDisponibles,
@@ -850,7 +878,11 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
                 alVolver = { estado.volver() },
             )
 
-            Destino.Ayuda -> PantallaAyuda(snackbar = snackbar, alVolver = { estado.volver() })
+            Destino.Ayuda -> PantallaAyuda(
+                snackbar = snackbar,
+                alVerTour = { estado.ir(Destino.Tour) },
+                alVolver = { estado.volver() },
+            )
 
             Destino.AcercaDe -> PantallaAcercaDe(
                 plataforma = contenedor.servicios.nombrePlataforma,
@@ -1099,3 +1131,6 @@ private suspend fun importarCopia(contenedor: ContenedorApp, estado: EstadoApp) 
         )
     }
 }
+
+/** Ancho en pixeles de las miniaturas de la pantalla de imagenes. */
+private const val ANCHO_MINIATURA_IMAGEN = 320
