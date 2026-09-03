@@ -391,7 +391,14 @@ private fun RejillaPaginas(
 ) {
     if (ruta == null) return
     val etiquetaEditar = stringResource(Res.string.doc_editar_pagina)
-    val porIndice = remember(paginas) { paginas.associateBy { it.indice } }
+    // La clave es una copia inmutable y no `paginas` en si. `paginas` es una
+    // lista observable cuya identidad no cambia al rellenarse: al abrir un
+    // documento la rejilla se compone antes de que termine la lectura, este
+    // mapa se quedaba calculado sobre la lista vacia y ya no se recalculaba
+    // nunca, asi que `porIndice[indice]` devolvia null para todas las paginas y
+    // la rejilla salia en blanco sin dar ningun error. Una List normal compara
+    // por contenido y el memo se rehace cuando toca.
+    val porIndice = remember(paginas.toList()) { paginas.associateBy { it.indice } }
 
     val estadoRejilla = rememberLazyGridState()
     val reordenar = rememberReordenable(estadoRejilla) { desde, hasta ->
