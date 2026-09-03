@@ -143,6 +143,7 @@ import es.ghatostudio.nexapdf.resources.ed_mover_asas
 import es.ghatostudio.nexapdf.resources.ed_mover_ayuda
 import es.ghatostudio.nexapdf.resources.ed_tocar_para_sustituir
 import es.ghatostudio.nexapdf.ui.componentes.BarraSuperior
+import es.ghatostudio.nexapdf.ui.componentes.CirculoRuedaColor
 import es.ghatostudio.nexapdf.ui.componentes.rememberEncuadre
 import es.ghatostudio.nexapdf.ui.componentes.encuadreDosDedos
 import org.jetbrains.compose.resources.StringResource
@@ -1098,6 +1099,11 @@ private fun Paleta(estado: EstadoEditor) {
                 )
             }
         }
+
+        // Ultimo circulo: el disco de color, para cuando la paleta se queda
+        // corta. Va al final porque es la salida de emergencia, no la opcion
+        // habitual.
+        CirculoRuedaColor { elegido -> estado.color = elegido }
     }
 }
 
@@ -1177,6 +1183,7 @@ private fun DialogoTexto(
                                         .clickable { fondo = opcion },
                                 )
                             }
+                        CirculoRuedaColor(tamano = 36.dp) { elegido -> fondo = elegido }
                     }
                 }
                 if (inicial.sustituye) {

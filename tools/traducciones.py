@@ -35,6 +35,21 @@ CARPETAS = {
 }
 
 TEXTOS = {
+    "color_personalizado": {
+        "en": "Custom colour",
+        "es": "Color personalizado",
+        "fr": "Couleur personnalisée",
+        "de": "Eigene Farbe",
+        "zh": "自定义颜色",
+        "ja": "自由な色",
+        "ru": "Свой цвет",
+        "it": "Colore personalizzato",
+        "el": "Προσαρμοσμένο χρώμα",
+        "ar": "لون مخصّص",
+        "gl": "Cor personalizada",
+        "ca": "Color personalitzat",
+        "eu": "Kolore pertsonalizatua",
+    },
     # --- Visor, conversor y recientes ----------------------------------------
     "comun_buscar": {
         "en": "Search",

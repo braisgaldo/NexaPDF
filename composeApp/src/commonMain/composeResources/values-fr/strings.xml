@@ -90,6 +90,7 @@
     <string name="cd_bandera">Drapeau pour %1$s</string>
     <string name="cd_pagina_numero">Page %1$d</string>
     <string name="cd_volver">Revenir</string>
+    <string name="color_personalizado">Couleur personnalisée</string>
     <string name="comun_abrir">Ouvrir</string>
     <string name="comun_aceptar">OK</string>
     <string name="comun_anadir">Ajouter</string>

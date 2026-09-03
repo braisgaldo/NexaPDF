@@ -90,6 +90,7 @@
     <string name="cd_bandera">Bandera de %1$s</string>
     <string name="cd_pagina_numero">Pàgina %1$d</string>
     <string name="cd_volver">Torna</string>
+    <string name="color_personalizado">Color personalitzat</string>
     <string name="comun_abrir">Obre</string>
     <string name="comun_aceptar">D’acord</string>
     <string name="comun_anadir">Afegeix</string>

@@ -90,6 +90,7 @@
     <string name="cd_bandera">%1$s 的旗帜</string>
     <string name="cd_pagina_numero">第 %1$d 页</string>
     <string name="cd_volver">返回</string>
+    <string name="color_personalizado">自定义颜色</string>
     <string name="comun_abrir">打开</string>
     <string name="comun_aceptar">确定</string>
     <string name="comun_anadir">添加</string>

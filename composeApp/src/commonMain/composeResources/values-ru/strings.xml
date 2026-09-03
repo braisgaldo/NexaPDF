@@ -90,6 +90,7 @@
     <string name="cd_bandera">Флаг для %1$s</string>
     <string name="cd_pagina_numero">Страница %1$d</string>
     <string name="cd_volver">Назад</string>
+    <string name="color_personalizado">Свой цвет</string>
     <string name="comun_abrir">Открыть</string>
     <string name="comun_aceptar">ОК</string>
     <string name="comun_anadir">Добавить</string>

@@ -90,6 +90,7 @@
     <string name="cd_bandera">Flag for %1$s</string>
     <string name="cd_pagina_numero">Page %1$d</string>
     <string name="cd_volver">Go back</string>
+    <string name="color_personalizado">Custom colour</string>
     <string name="comun_abrir">Open</string>
     <string name="comun_aceptar">OK</string>
     <string name="comun_anadir">Add</string>
