@@ -241,7 +241,13 @@ class EstadoEditor(indicePagina: Int) {
 
     // --- Otras ediciones -----------------------------------------------------
 
-    fun anadirTexto(contenido: String, marco: Rectangulo, tamano: Float, taparDebajo: Boolean) {
+    fun anadirTexto(
+        contenido: String,
+        marco: Rectangulo,
+        tamano: Float,
+        taparDebajo: Boolean,
+        fondoArgb: Long? = null,
+    ) {
         if (contenido.isBlank()) return
         if (taparDebajo) {
             anadir(
@@ -264,6 +270,7 @@ class EstadoEditor(indicePagina: Int) {
                 marco = marco,
                 colorArgb = color,
                 tamano = tamano,
+                fondoArgb = fondoArgb,
             ),
         )
     }

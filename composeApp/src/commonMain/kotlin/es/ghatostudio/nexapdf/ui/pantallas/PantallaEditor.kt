@@ -3,6 +3,7 @@ package es.ghatostudio.nexapdf.ui.pantallas
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -50,6 +51,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -67,6 +69,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -130,6 +133,7 @@ import es.ghatostudio.nexapdf.resources.ed_rectangulo
 import es.ghatostudio.nexapdf.resources.ed_relleno
 import es.ghatostudio.nexapdf.resources.ed_resaltar
 import es.ghatostudio.nexapdf.resources.ed_sustituir_aviso
+import es.ghatostudio.nexapdf.resources.ed_texto_fondo
 import es.ghatostudio.nexapdf.resources.ed_sustituir_texto
 import es.ghatostudio.nexapdf.resources.ed_texto
 import es.ghatostudio.nexapdf.resources.ed_mover_asas
@@ -290,10 +294,16 @@ fun PantallaEditor(
                             contenido = bloque.texto,
                             marco = bloque.marco,
                             sustituye = true,
+                            colorDeLaPagina = colorDeLaPaginaEn(pagina, bloque.marco),
                         )
                     },
                     alPedirTextoNuevo = { marco ->
-                        textoEnEdicion = TextoEnEdicion("", marco, sustituye = false)
+                        textoEnEdicion = TextoEnEdicion(
+                            contenido = "",
+                            marco = marco,
+                            sustituye = false,
+                            colorDeLaPagina = colorDeLaPaginaEn(pagina, marco),
+                        )
                     },
                     alPedirImagen = { marco ->
                         acciones.alElegirImagen { ruta -> estado.anadirImagen(ruta, marco) }
@@ -315,8 +325,14 @@ fun PantallaEditor(
     textoEnEdicion?.let { enEdicion ->
         DialogoTexto(
             inicial = enEdicion,
-            alConfirmar = { contenido, tamano ->
-                estado.anadirTexto(contenido, enEdicion.marco, tamano, enEdicion.sustituye)
+            alConfirmar = { contenido, tamano, fondo ->
+                estado.anadirTexto(
+                    contenido = contenido,
+                    marco = enEdicion.marco,
+                    tamano = tamano,
+                    taparDebajo = enEdicion.sustituye,
+                    fondoArgb = fondo,
+                )
                 textoEnEdicion = null
             },
             alCancelar = { textoEnEdicion = null },
@@ -364,6 +380,8 @@ private data class TextoEnEdicion(
     val contenido: String,
     val marco: Rectangulo,
     val sustituye: Boolean,
+    /** Color que tiene la pagina debajo del texto, para usarlo de fondo. */
+    val colorDeLaPagina: Long,
 )
 
 // --- Lienzo -----------------------------------------------------------------
@@ -659,6 +677,13 @@ private fun DrawScope.dibujarEdicionSinGirar(edicion: Edicion, medidor: TextMeas
             // al guardar con la fuente que corresponda, pero lo que se ve aqui
             // ya es el texto y no un hueco gris.
             val r = edicion.marco.normalizado()
+            edicion.fondoArgb?.let { fondo ->
+                drawRect(
+                    color = Color(fondo.toInt()),
+                    topLeft = Offset(r.izquierda * size.width, r.arriba * size.height),
+                    size = Size(r.ancho * size.width, r.alto * size.height),
+                )
+            }
             val medida = medidor.measure(
                 text = edicion.contenido,
                 style = TextStyle(
@@ -996,13 +1021,16 @@ private fun Paleta(estado: EstadoEditor) {
 @Composable
 private fun DialogoTexto(
     inicial: TextoEnEdicion,
-    alConfirmar: (String, Float) -> Unit,
+    alConfirmar: (String, Float, Long?) -> Unit,
     alCancelar: () -> Unit,
 ) {
     var contenido by remember { mutableStateOf(inicial.contenido) }
     var tamano by remember {
         mutableStateOf(if (inicial.sustituye) inicial.marco.alto.coerceIn(0.012f, 0.08f) else 0.025f)
     }
+    // Por defecto, el color que tiene la pagina justo debajo.
+    var conFondo by remember { mutableStateOf(true) }
+    var fondo by remember { mutableStateOf(inicial.colorDeLaPagina) }
 
     AlertDialog(
         onDismissRequest = alCancelar,
@@ -1029,6 +1057,45 @@ private fun DialogoTexto(
                     onValueChange = { tamano = it },
                     valueRange = 0.008f..0.09f,
                 )
+                Spacer(Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(Res.string.ed_texto_fondo),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.weight(1f),
+                    )
+                    Switch(checked = conFondo, onCheckedChange = { conFondo = it })
+                }
+                if (conFondo) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    ) {
+                        (listOf(inicial.colorDeLaPagina) + EstadoEditor.COLORES).distinct().take(7)
+                            .forEach { opcion ->
+                                val elegido = opcion == fondo
+                                Box(
+                                    modifier = Modifier
+                                        .size(36.dp)
+                                        .clip(CircleShape)
+                                        .background(Color(opcion.toInt()))
+                                        .border(
+                                            width = if (elegido) 3.dp else 1.dp,
+                                            color = if (elegido) {
+                                                MaterialTheme.colorScheme.primary
+                                            } else {
+                                                MaterialTheme.colorScheme.outlineVariant
+                                            },
+                                            shape = CircleShape,
+                                        )
+                                        .clickable { fondo = opcion },
+                                )
+                            }
+                    }
+                }
                 if (inicial.sustituye) {
                     Text(
                         text = stringResource(Res.string.ed_sustituir_aviso),
@@ -1039,7 +1106,7 @@ private fun DialogoTexto(
             }
         },
         confirmButton = {
-            TextButton(onClick = { alConfirmar(contenido, tamano) }) {
+            TextButton(onClick = { alConfirmar(contenido, tamano, fondo.takeIf { conFondo }) }) {
                 Text(stringResource(Res.string.comun_aceptar))
             }
         },
@@ -1150,3 +1217,28 @@ private fun DrawScope.dibujarMarcoSeleccion(marco: Rectangulo, color: Color) {
         drawCircle(color = color, radius = radio, center = centro, style = Stroke(width = grosor))
     }
 }
+
+/**
+ * Color que tiene la pagina en el centro de [marco].
+ *
+ * Se lee un unico pixel del mapa ya renderizado, no la pagina entera: el PDF
+ * de un movil puede ser una imagen de veinte megapixeles y copiarla para mirar
+ * un punto seria absurdo. Si aun no hay pagina dibujada se supone blanco, que
+ * es el fondo de practicamente cualquier PDF.
+ */
+private fun colorDeLaPaginaEn(pagina: ImageBitmap?, marco: Rectangulo): Long {
+    val mapa = pagina ?: return BLANCO_PAGINA
+    val m = marco.normalizado()
+    val x = (((m.izquierda + m.derecha) / 2f) * mapa.width).toInt().coerceIn(0, mapa.width - 1)
+    val y = (((m.arriba + m.abajo) / 2f) * mapa.height).toInt().coerceIn(0, mapa.height - 1)
+    return runCatching {
+        val pixel = mapa.toPixelMap(startX = x, startY = y, width = 1, height = 1)[0, 0]
+        // Opaco siempre: un fondo semitransparente dejaria ver el texto viejo.
+        val r = (pixel.red * 255f).toLong().coerceIn(0, 255)
+        val g = (pixel.green * 255f).toLong().coerceIn(0, 255)
+        val b = (pixel.blue * 255f).toLong().coerceIn(0, 255)
+        0xFF000000L or (r shl 16) or (g shl 8) or b
+    }.getOrDefault(BLANCO_PAGINA)
+}
+
+private const val BLANCO_PAGINA = 0xFFFFFFFFL

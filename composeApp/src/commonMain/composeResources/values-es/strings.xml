@@ -192,6 +192,7 @@
     <string name="ed_sustituir_texto">Sustituir texto</string>
     <string name="ed_tamano_texto">Tamaño del texto</string>
     <string name="ed_texto">Texto</string>
+    <string name="ed_texto_fondo">Fondo</string>
     <string name="ed_tocar_para_sustituir">Toca una línea de texto para sustituirla</string>
     <string name="error_certificado">No se ha podido abrir el certificado. Revisa la contraseña y que el fichero sea .p12 o .pfx.</string>
     <string name="error_contrasena">Contraseña incorrecta</string>

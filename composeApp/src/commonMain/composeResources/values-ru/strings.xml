@@ -192,6 +192,7 @@
     <string name="ed_sustituir_texto">Заменить текст</string>
     <string name="ed_tamano_texto">Размер текста</string>
     <string name="ed_texto">Текст</string>
+    <string name="ed_texto_fondo">Фон</string>
     <string name="ed_tocar_para_sustituir">Коснитесь строки текста, чтобы заменить её</string>
     <string name="error_certificado">Не удалось открыть сертификат. Проверьте пароль и что файл имеет формат .p12 или .pfx.</string>
     <string name="error_contrasena">Неверный пароль</string>

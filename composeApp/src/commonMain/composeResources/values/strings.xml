@@ -192,6 +192,7 @@
     <string name="ed_sustituir_texto">Replace text</string>
     <string name="ed_tamano_texto">Text size</string>
     <string name="ed_texto">Text</string>
+    <string name="ed_texto_fondo">Background</string>
     <string name="ed_tocar_para_sustituir">Tap a line of text to replace it</string>
     <string name="error_certificado">The certificate could not be opened. Check the password and that the file is a .p12 or .pfx.</string>
     <string name="error_contrasena">Wrong password</string>

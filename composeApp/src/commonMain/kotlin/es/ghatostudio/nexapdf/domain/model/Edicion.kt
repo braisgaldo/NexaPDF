@@ -66,6 +66,14 @@ sealed interface Edicion {
         val colorArgb: Long,
         /** Tamano de fuente como fraccion del alto de pagina. */
         val tamano: Float,
+        /**
+         * Color de fondo de la caja, o `null` para dejarla transparente.
+         *
+         * Por defecto se toma el color que tiene el PDF justo debajo, de modo
+         * que el texto anadido se funde con la pagina en vez de aparecer sobre
+         * un recuadro que canta.
+         */
+        val fondoArgb: Long? = null,
         val negrita: Boolean = false,
         val cursiva: Boolean = false,
         val alineacion: AlineacionTexto = AlineacionTexto.INICIO,

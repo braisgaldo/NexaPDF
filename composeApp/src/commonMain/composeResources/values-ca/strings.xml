@@ -192,6 +192,7 @@
     <string name="ed_sustituir_texto">Substitueix el text</string>
     <string name="ed_tamano_texto">Mida del text</string>
     <string name="ed_texto">Text</string>
+    <string name="ed_texto_fondo">Fons</string>
     <string name="ed_tocar_para_sustituir">Toca una línia de text per substituir-la</string>
     <string name="error_certificado">No s’ha pogut obrir el certificat. Revisa la contrasenya i que el fitxer sigui .p12 o .pfx.</string>
     <string name="error_contrasena">Contrasenya incorrecta</string>

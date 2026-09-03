@@ -192,6 +192,7 @@
     <string name="ed_sustituir_texto">استبدال النص</string>
     <string name="ed_tamano_texto">حجم النص</string>
     <string name="ed_texto">نص</string>
+    <string name="ed_texto_fondo">الخلفية</string>
     <string name="ed_tocar_para_sustituir">المس سطرًا من النص لاستبداله</string>
     <string name="error_certificado">تعذّر فتح الشهادة. تحقّق من كلمة المرور ومن أن الملف بصيغة ‎.p12 أو ‎.pfx.</string>
     <string name="error_contrasena">كلمة المرور غير صحيحة</string>

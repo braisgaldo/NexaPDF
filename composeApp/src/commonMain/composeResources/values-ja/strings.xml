@@ -192,6 +192,7 @@
     <string name="ed_sustituir_texto">文字を置き換える</string>
     <string name="ed_tamano_texto">文字サイズ</string>
     <string name="ed_texto">テキスト</string>
+    <string name="ed_texto_fondo">背景</string>
     <string name="ed_tocar_para_sustituir">文字の行をタップすると置き換えられます</string>
     <string name="error_certificado">証明書を開けませんでした。パスワードと、ファイルが .p12 か .pfx かを確認してください。</string>
     <string name="error_contrasena">パスワードが違います</string>

@@ -192,6 +192,7 @@
     <string name="ed_sustituir_texto">Ordeztu testua</string>
     <string name="ed_tamano_texto">Testu-tamaina</string>
     <string name="ed_texto">Testua</string>
+    <string name="ed_texto_fondo">Atzeko planoa</string>
     <string name="ed_tocar_para_sustituir">Ukitu testu-lerro bat ordezteko</string>
     <string name="error_certificado">Ezin izan da ziurtagiria ireki. Egiaztatu pasahitza eta fitxategia .p12 edo .pfx dela.</string>
     <string name="error_contrasena">Pasahitz okerra</string>

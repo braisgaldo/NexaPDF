@@ -192,6 +192,7 @@
     <string name="ed_sustituir_texto">Remplacer le texte</string>
     <string name="ed_tamano_texto">Taille du texte</string>
     <string name="ed_texto">Texte</string>
+    <string name="ed_texto_fondo">Arrière-plan</string>
     <string name="ed_tocar_para_sustituir">Touchez une ligne de texte pour la remplacer</string>
     <string name="error_certificado">Le certificat n’a pas pu être ouvert. Vérifiez le mot de passe et que le fichier est un .p12 ou .pfx.</string>
     <string name="error_contrasena">Mot de passe incorrect</string>

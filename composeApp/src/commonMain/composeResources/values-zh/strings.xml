@@ -192,6 +192,7 @@
     <string name="ed_sustituir_texto">替换文字</string>
     <string name="ed_tamano_texto">文字大小</string>
     <string name="ed_texto">文字</string>
+    <string name="ed_texto_fondo">背景</string>
     <string name="ed_tocar_para_sustituir">点按一行文字即可替换</string>
     <string name="error_certificado">无法打开证书。请检查密码，并确认文件是 .p12 或 .pfx。</string>
     <string name="error_contrasena">密码不正确</string>

@@ -237,6 +237,14 @@ class PintorEdiciones(
     ) {
         if (texto.contenido.isBlank()) return
         val marco = t.aRectanguloVisible(texto.marco)
+
+        // El fondo va antes que las letras, evidentemente.
+        texto.fondoArgb?.let { fondo ->
+            colorRelleno(flujo, fondo)
+            flujo.addRect(marco.x, marco.y, marco.ancho, marco.alto)
+            flujo.fill()
+        }
+
         val tamanoPt = (texto.tamano * t.altoVisible).coerceIn(4f, 400f)
 
         when (val eleccion = fuentes.elegir(texto.contenido, texto.negrita, texto.cursiva)) {
@@ -459,3 +467,4 @@ class PintorEdiciones(
         (argb and 0xFF).toFloat() / 255f,
     )
 }
+
