@@ -8,13 +8,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -85,7 +88,12 @@ fun PantallaTour(alTerminar: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .background(MaterialTheme.colorScheme.background)
+            // Esta pantalla no usa Scaffold, asi que los margenes del sistema
+            // hay que pedirlos a mano: sin esto "Saltar" se solapa con el reloj
+            // de la barra de estado y el boton de abajo queda medio tapado por
+            // la barra de navegacion.
+            .windowInsetsPadding(WindowInsets.safeDrawing),
     ) {
         // Saltar arriba y siempre visible: quien ya conoce la app no tiene por
         // que pasar cuatro pantallas para empezar a usarla.

@@ -74,6 +74,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import es.ghatostudio.nexapdf.domain.model.BloqueTexto
 import es.ghatostudio.nexapdf.domain.model.Edicion
@@ -92,6 +93,7 @@ import es.ghatostudio.nexapdf.resources.ed_borrar
 import es.ghatostudio.nexapdf.resources.ed_color
 import es.ghatostudio.nexapdf.resources.ed_descartar_texto
 import es.ghatostudio.nexapdf.resources.ed_descartar_titulo
+import es.ghatostudio.nexapdf.resources.ed_coloca_la_firma
 import es.ghatostudio.nexapdf.resources.ed_dibujar
 import es.ghatostudio.nexapdf.resources.ed_elipse
 import es.ghatostudio.nexapdf.resources.ed_figuras
@@ -244,6 +246,21 @@ fun PantallaEditor(
         },
     ) { relleno ->
         Column(modifier = Modifier.fillMaxSize().padding(relleno)) {
+            // Quien llega aqui desde "Firmar PDF" trae la firma dibujada pero
+            // no tiene forma de adivinar que ahora hay que tocar la pagina.
+            if (firmaPendiente != null) {
+                Text(
+                    text = stringResource(Res.string.ed_coloca_la_firma),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.primaryContainer)
+                        .padding(horizontal = 20.dp, vertical = 12.dp),
+                )
+            }
+
             Box(
                 modifier = Modifier.weight(1f).fillMaxWidth().padding(12.dp),
                 contentAlignment = Alignment.Center,
