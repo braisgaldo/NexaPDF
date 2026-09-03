@@ -81,6 +81,8 @@ import es.ghatostudio.nexapdf.resources.aj_exportar_desc
 import es.ghatostudio.nexapdf.resources.aj_guardar_descargas
 import es.ghatostudio.nexapdf.resources.aj_guardar_descargas_desc
 import es.ghatostudio.nexapdf.resources.aj_idioma
+import es.ghatostudio.nexapdf.resources.aj_idioma_detalle_fijo
+import es.ghatostudio.nexapdf.resources.aj_idioma_detalle_sistema
 import es.ghatostudio.nexapdf.resources.aj_idioma_sistema
 import es.ghatostudio.nexapdf.resources.aj_importar
 import es.ghatostudio.nexapdf.resources.aj_importar_desc
@@ -419,6 +421,11 @@ private fun <T> Combo(
             expanded = abierto,
             onDismissRequest = { abierto = false },
             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            // Con catorce idiomas la lista se salia de la pantalla y tapaba el
+            // resto de los ajustes: parecia que la pantalla habia cambiado en
+            // vez de haberse abierto un desplegable. Acotada, se desplaza
+            // dentro y se sigue viendo la caja de la que sale.
+            modifier = Modifier.heightIn(max = 340.dp),
         ) {
             opciones.forEach { opcion ->
                 val elegida = esActual(opcion)
@@ -521,7 +528,10 @@ private fun ComboIdioma(etiquetaActual: String?, alElegir: (Idioma?) -> Unit) {
 
     Combo(
         nombreActual = actual?.nombreNativo ?: nombreSistema,
-        detalleActual = null,
+        detalleActual = stringResource(
+            if (actual == null) Res.string.aj_idioma_detalle_sistema
+            else Res.string.aj_idioma_detalle_fijo,
+        ),
         muestraActual = {
             if (actual == null) IconoIdiomaSistema() else BanderaIdioma(actual)
         },

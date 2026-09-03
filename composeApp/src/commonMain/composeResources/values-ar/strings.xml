@@ -36,6 +36,8 @@
     <string name="aj_guardar_descargas">الحفظ أيضًا في مجلد التنزيلات</string>
     <string name="aj_guardar_descargas_desc">يُنسخ كل مستند تنشئه إلى مجلد التنزيلات/NexaPDF لتتمكن التطبيقات الأخرى من العثور عليه.</string>
     <string name="aj_idioma">اللغة</string>
+    <string name="aj_idioma_detalle_fijo">يبقى التطبيق بهذه اللغة مهما كانت لغة الهاتف.</string>
+    <string name="aj_idioma_detalle_sistema">يتبع الهاتف. لا يتغيّر إلا إذا غيّرت لغة الهاتف.</string>
     <string name="aj_idioma_sistema">لغة النظام</string>
     <string name="aj_importar">استيراد الإعدادات</string>
     <string name="aj_importar_desc">يستعيد ملف %1$s سبق أن صدّرته.</string>

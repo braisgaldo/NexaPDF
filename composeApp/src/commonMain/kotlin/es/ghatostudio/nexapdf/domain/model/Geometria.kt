@@ -49,6 +49,31 @@ data class Rectangulo(
             punto.y >= n.arriba && punto.y <= n.abajo
     }
 
+    /**
+     * Como [contiene], pero ensanchando el rectangulo [margen] por cada lado.
+     *
+     * Existe porque una linea de texto de un PDF mide dos centesimas del alto
+     * de la pagina: en un movil son treinta pixeles, menos de la mitad de la
+     * yema de un dedo. Exigiendo que el toque cayera dentro de la caja exacta
+     * de las letras, tocar una linea para sustituirla no funcionaba casi nunca
+     * y la accion se iba a "anadir texto nuevo" sin decir por que.
+     */
+    fun contieneConMargen(punto: Punto, margen: Float): Boolean {
+        val n = normalizado()
+        return punto.x >= n.izquierda - margen && punto.x <= n.derecha + margen &&
+            punto.y >= n.arriba - margen && punto.y <= n.abajo + margen
+    }
+
+    /** Distancia del punto al centro, para desempatar entre varios candidatos. */
+    fun distanciaAlCentro(punto: Punto): Float {
+        val n = normalizado()
+        val cx = (n.izquierda + n.derecha) / 2f
+        val cy = (n.arriba + n.abajo) / 2f
+        val dx = punto.x - cx
+        val dy = punto.y - cy
+        return dx * dx + dy * dy
+    }
+
     companion object {
         val COMPLETO = Rectangulo(0f, 0f, 1f, 1f)
 

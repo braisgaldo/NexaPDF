@@ -36,6 +36,8 @@
     <string name="aj_guardar_descargas">ダウンロードにも保存する</string>
     <string name="aj_guardar_descargas_desc">作成した文書は「ダウンロード/NexaPDF」にコピーされ、他のアプリからも開けます。</string>
     <string name="aj_idioma">言語</string>
+    <string name="aj_idioma_detalle_fijo">端末の言語にかかわらず、アプリはこの言語のままです。</string>
+    <string name="aj_idioma_detalle_sistema">端末に合わせます。端末の言語を変えたときだけ切り替わります。</string>
     <string name="aj_idioma_sistema">システムの言語</string>
     <string name="aj_importar">設定を読み込む</string>
     <string name="aj_importar_desc">以前に書き出した %1$s ファイルを復元します。</string>

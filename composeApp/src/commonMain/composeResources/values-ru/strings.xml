@@ -36,6 +36,8 @@
     <string name="aj_guardar_descargas">Сохранять также в «Загрузки»</string>
     <string name="aj_guardar_descargas_desc">Каждый созданный документ копируется в «Загрузки/NexaPDF», чтобы другие приложения его находили.</string>
     <string name="aj_idioma">Язык</string>
+    <string name="aj_idioma_detalle_fijo">Приложение остаётся на этом языке независимо от языка телефона.</string>
+    <string name="aj_idioma_detalle_sistema">Следует за телефоном. Меняется, только если сменить язык телефона.</string>
     <string name="aj_idioma_sistema">Язык системы</string>
     <string name="aj_importar">Импорт настроек</string>
     <string name="aj_importar_desc">Восстанавливает ранее экспортированный файл %1$s.</string>

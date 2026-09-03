@@ -36,6 +36,8 @@
     <string name="aj_guardar_descargas">Also save to Downloads</string>
     <string name="aj_guardar_descargas_desc">Every document you create is copied to Downloads/NexaPDF so other apps can find it.</string>
     <string name="aj_idioma">Language</string>
+    <string name="aj_idioma_detalle_fijo">The app stays in this language, whatever the phone uses.</string>
+    <string name="aj_idioma_detalle_sistema">Follows the phone. Changes only if you change the phone’s language.</string>
     <string name="aj_idioma_sistema">System language</string>
     <string name="aj_importar">Import settings</string>
     <string name="aj_importar_desc">Restores a %1$s file you exported before.</string>

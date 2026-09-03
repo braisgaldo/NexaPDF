@@ -36,6 +36,8 @@
     <string name="aj_guardar_descargas">Gorde Deskargak karpetan ere</string>
     <string name="aj_guardar_descargas_desc">Sortzen duzun dokumentu bakoitza Deskargak/NexaPDF karpetara kopiatzen da, beste aplikazioek aurki dezaten.</string>
     <string name="aj_idioma">Hizkuntza</string>
+    <string name="aj_idioma_detalle_fijo">Aplikazioa hizkuntza honetan geratzen da, telefonoak edozein erabilita ere.</string>
+    <string name="aj_idioma_detalle_sistema">Telefonoari jarraitzen dio. Telefonoaren hizkuntza aldatzean bakarrik aldatzen da.</string>
     <string name="aj_idioma_sistema">Sistemaren hizkuntza</string>
     <string name="aj_importar">Inportatu ezarpenak</string>
     <string name="aj_importar_desc">Lehenago esportatu duzun %1$s fitxategi bat leheneratzen du.</string>

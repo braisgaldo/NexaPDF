@@ -36,6 +36,8 @@
     <string name="aj_guardar_descargas">Desa també a Baixades</string>
     <string name="aj_guardar_descargas_desc">Cada document que creïs es copia a Baixades/NexaPDF perquè altres aplicacions el puguin trobar.</string>
     <string name="aj_idioma">Idioma</string>
+    <string name="aj_idioma_detalle_fijo">L’aplicació es queda en aquesta llengua, sigui quina sigui la del telèfon.</string>
+    <string name="aj_idioma_detalle_sistema">Segueix el telèfon. Només canvia si canvies l’idioma del telèfon.</string>
     <string name="aj_idioma_sistema">Idioma del sistema</string>
     <string name="aj_importar">Importa la configuració</string>
     <string name="aj_importar_desc">Restaura un fitxer %1$s que has exportat abans.</string>

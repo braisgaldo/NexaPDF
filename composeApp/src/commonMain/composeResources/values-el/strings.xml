@@ -36,6 +36,8 @@
     <string name="aj_guardar_descargas">Αποθήκευση και στις Λήψεις</string>
     <string name="aj_guardar_descargas_desc">Κάθε έγγραφο που δημιουργείτε αντιγράφεται στο Λήψεις/NexaPDF ώστε να το βρίσκουν άλλες εφαρμογές.</string>
     <string name="aj_idioma">Γλώσσα</string>
+    <string name="aj_idioma_detalle_fijo">Η εφαρμογή μένει σε αυτή τη γλώσσα, ανεξάρτητα από το τηλέφωνο.</string>
+    <string name="aj_idioma_detalle_sistema">Ακολουθεί το τηλέφωνο. Αλλάζει μόνο αν αλλάξετε τη γλώσσα του τηλεφώνου.</string>
     <string name="aj_idioma_sistema">Γλώσσα συστήματος</string>
     <string name="aj_importar">Εισαγωγή ρυθμίσεων</string>
     <string name="aj_importar_desc">Επαναφέρει ένα αρχείο %1$s που εξάγατε νωρίτερα.</string>

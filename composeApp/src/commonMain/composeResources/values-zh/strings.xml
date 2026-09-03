@@ -36,6 +36,8 @@
     <string name="aj_guardar_descargas">同时保存到“下载”</string>
     <string name="aj_guardar_descargas_desc">你创建的每个文档都会复制到“下载/NexaPDF”，方便其他应用找到。</string>
     <string name="aj_idioma">语言</string>
+    <string name="aj_idioma_detalle_fijo">无论手机使用哪种语言，应用都保持此语言。</string>
+    <string name="aj_idioma_detalle_sistema">跟随手机设置，仅在您更改手机语言时才变化。</string>
     <string name="aj_idioma_sistema">系统语言</string>
     <string name="aj_importar">导入设置</string>
     <string name="aj_importar_desc">恢复你之前导出的 %1$s 文件。</string>

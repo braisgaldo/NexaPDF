@@ -460,7 +460,11 @@ private fun CapaGestos(
                     val punto = aNormalizado(posicion, size.width, size.height)
                     when (herramienta) {
                         HerramientaEditor.TEXTO -> {
-                            val bloque = bloquesTexto.firstOrNull { it.marco.contiene(punto) }
+                            // Se admite fallar por poco y, si varias lineas
+                            // caen dentro del margen, gana la mas cercana.
+                            val bloque = bloquesTexto
+                                .filter { it.marco.contieneConMargen(punto, MARGEN_TOQUE) }
+                                .minByOrNull { it.marco.distanciaAlCentro(punto) }
                             if (bloque != null) {
                                 alTocarBloque(bloque)
                             } else {
@@ -932,3 +936,10 @@ private val FILTROS: List<Pair<FiltroPagina, StringResource>> = listOf(
     FiltroPagina.ACLARAR to Res.string.ed_filtro_aclarar,
     FiltroPagina.INVERTIR to Res.string.ed_filtro_invertir,
 )
+
+/**
+ * Cuanto se ensancha la zona sensible de una linea de texto, en fraccion de
+ * pagina. 2,5 % de 842 puntos son unos 21 puntos por lado: suficiente para que
+ * el dedo acierte sin que dos lineas seguidas se pisen.
+ */
+private const val MARGEN_TOQUE = 0.025f
