@@ -64,17 +64,26 @@ import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import es.ghatostudio.nexapdf.domain.model.BloqueTexto
 import es.ghatostudio.nexapdf.domain.model.Edicion
@@ -86,6 +95,7 @@ import es.ghatostudio.nexapdf.resources.Res
 import es.ghatostudio.nexapdf.resources.comun_aceptar
 import es.ghatostudio.nexapdf.resources.comun_cancelar
 import es.ghatostudio.nexapdf.resources.comun_deshacer
+import es.ghatostudio.nexapdf.resources.comun_eliminar
 import es.ghatostudio.nexapdf.resources.comun_guardar
 import es.ghatostudio.nexapdf.resources.comun_rehacer
 import es.ghatostudio.nexapdf.resources.ed_anadir_texto
@@ -122,10 +132,15 @@ import es.ghatostudio.nexapdf.resources.ed_resaltar
 import es.ghatostudio.nexapdf.resources.ed_sustituir_aviso
 import es.ghatostudio.nexapdf.resources.ed_sustituir_texto
 import es.ghatostudio.nexapdf.resources.ed_texto
+import es.ghatostudio.nexapdf.resources.ed_mover_asas
+import es.ghatostudio.nexapdf.resources.ed_mover_ayuda
 import es.ghatostudio.nexapdf.resources.ed_tocar_para_sustituir
 import es.ghatostudio.nexapdf.ui.componentes.BarraSuperior
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import kotlin.math.PI
+import kotlin.math.atan2
+import kotlin.math.max
 
 /** Lo que el editor necesita del resto de la aplicacion. */
 class AccionesEditor(
@@ -413,13 +428,15 @@ private fun CapaGestos(
 ) {
     val herramienta = estado.herramienta
     val etiquetaLienzo = stringResource(Res.string.ed_dibujar)
+    var asaActiva by remember { mutableStateOf<Asa?>(null) }
+    val medidor = rememberTextMeasurer()
+    val colorSeleccion = MaterialTheme.colorScheme.primary
 
     Canvas(
         modifier = Modifier
             .fillMaxSize()
             .semantics { contentDescription = etiquetaLienzo }
             .pointerInput(herramienta) {
-                if (herramienta == HerramientaEditor.MOVER) return@pointerInput
                 detectDragGestures(
                     onDragStart = { posicion ->
                         val punto = aNormalizado(posicion, size.width, size.height)
@@ -429,10 +446,24 @@ private fun CapaGestos(
 
                             HerramientaEditor.FIGURA -> estado.empezarFigura(punto)
                             HerramientaEditor.BORRAR -> estado.borrarEn(punto)
+
+                            // Con "Mover" el arrastre empieza cogiendo un asa
+                            // del objeto seleccionado, si el dedo cae sobre
+                            // ella, y si no el objeto entero.
+                            HerramientaEditor.MOVER -> {
+                                val objeto = estado.objetoSeleccionado
+                                asaActiva = if (objeto == null) {
+                                    null
+                                } else {
+                                    asaBajoElDedo(objeto.marco, punto)
+                                }
+                                if (asaActiva == null) estado.seleccionarEn(punto)
+                            }
+
                             else -> Unit
                         }
                     },
-                    onDrag = { cambio, _ ->
+                    onDrag = { cambio, desplazamiento ->
                         val punto = aNormalizado(cambio.position, size.width, size.height)
                         when (herramienta) {
                             HerramientaEditor.DIBUJAR, HerramientaEditor.RESALTAR ->
@@ -440,6 +471,47 @@ private fun CapaGestos(
 
                             HerramientaEditor.FIGURA -> estado.continuarFigura(punto)
                             HerramientaEditor.BORRAR -> estado.borrarEn(punto)
+
+                            HerramientaEditor.MOVER -> {
+                                val objeto = estado.objetoSeleccionado
+                                if (objeto != null) {
+                                    when (asaActiva) {
+                                        Asa.ESCALAR -> {
+                                            // El asa esta abajo a la derecha:
+                                            // alejarla del centro agranda.
+                                            val m = objeto.marco.normalizado()
+                                            val diagonal = max(
+                                                m.derecha - m.izquierda,
+                                                m.abajo - m.arriba,
+                                            ).coerceAtLeast(0.01f)
+                                            val avance =
+                                                (desplazamiento.x / size.width +
+                                                    desplazamiento.y / size.height) / 2f
+                                            estado.escalarSeleccion(1f + avance / diagonal)
+                                        }
+
+                                        Asa.ROTAR -> {
+                                            val m = objeto.marco.normalizado()
+                                            val cx = (m.izquierda + m.derecha) / 2f
+                                            val cy = (m.arriba + m.abajo) / 2f
+                                            val antes = atan2(
+                                                punto.y - desplazamiento.y / size.height - cy,
+                                                punto.x - desplazamiento.x / size.width - cx,
+                                            )
+                                            val ahora = atan2(punto.y - cy, punto.x - cx)
+                                            estado.rotarSeleccion(
+                                                ((ahora - antes) * 180f / PI).toFloat(),
+                                            )
+                                        }
+
+                                        null -> estado.moverSeleccion(
+                                            desplazamiento.x / size.width,
+                                            desplazamiento.y / size.height,
+                                        )
+                                    }
+                                }
+                            }
+
                             else -> Unit
                         }
                         cambio.consume()
@@ -450,6 +522,7 @@ private fun CapaGestos(
                                 estado.terminarTrazo()
 
                             HerramientaEditor.FIGURA -> estado.terminarFigura()
+                            HerramientaEditor.MOVER -> asaActiva = null
                             else -> Unit
                         }
                     },
@@ -479,12 +552,30 @@ private fun CapaGestos(
                             alPedirFirma(marcoAlrededor(punto, 0.45f, 0.14f))
 
                         HerramientaEditor.BORRAR -> estado.borrarEn(punto)
+                        HerramientaEditor.MOVER -> estado.seleccionarEn(punto)
                         else -> Unit
                     }
                 }
             },
     ) {
-        estado.listaEdiciones.forEach { dibujarEdicion(it) }
+        estado.listaEdiciones.forEach { dibujarEdicion(it, medidor) }
+
+        // Marco y asas del objeto seleccionado.
+        if (herramienta == HerramientaEditor.MOVER) {
+            estado.objetoSeleccionado?.let { objeto ->
+                val marco = objeto.marco.normalizado()
+                val centro = Offset(
+                    ((marco.izquierda + marco.derecha) / 2f) * size.width,
+                    ((marco.arriba + marco.abajo) / 2f) * size.height,
+                )
+                // El marco acompana al giro del objeto: si se queda recto
+                // mientras el contenido esta torcido, parece que la seleccion
+                // no es de lo que se acaba de girar.
+                rotate(degrees = objeto.rotacion, pivot = centro) {
+                    dibujarMarcoSeleccion(objeto.marco, colorSeleccion)
+                }
+            }
+        }
 
         // Lo que se esta dibujando ahora mismo, aun sin confirmar.
         if (estado.trazoEnCurso.size >= 2) {
@@ -517,7 +608,24 @@ private fun marcoAlrededor(centro: Punto, ancho: Float, alto: Float): Rectangulo
     abajo = (centro.y + alto / 2f).coerceIn(alto, 1f),
 ).normalizado()
 
-private fun DrawScope.dibujarEdicion(edicion: Edicion) {
+private fun DrawScope.dibujarEdicion(edicion: Edicion, medidor: TextMeasurer) {
+    // Los objetos girados se pintan con el lienzo rotado alrededor de su
+    // centro: asi el dibujo de cada tipo no tiene que saber nada del giro.
+    val giro = (edicion as? Edicion.Colocada)?.rotacion ?: 0f
+    if (giro != 0f) {
+        val m = edicion as Edicion.Colocada
+        val marco = m.marco.normalizado()
+        val centro = Offset(
+            ((marco.izquierda + marco.derecha) / 2f) * size.width,
+            ((marco.arriba + marco.abajo) / 2f) * size.height,
+        )
+        rotate(degrees = giro, pivot = centro) { dibujarEdicionSinGirar(edicion, medidor) }
+        return
+    }
+    dibujarEdicionSinGirar(edicion, medidor)
+}
+
+private fun DrawScope.dibujarEdicionSinGirar(edicion: Edicion, medidor: TextMeasurer) {
     when (edicion) {
         is Edicion.Trazo -> dibujarTrazo(
             puntos = edicion.puntos,
@@ -545,19 +653,25 @@ private fun DrawScope.dibujarEdicion(edicion: Edicion) {
         }
 
         is Edicion.Texto -> {
-            // La vista previa marca donde ira el texto; el texto real lo compone
-            // el motor de PDF, que es quien sabe con que fuente cabe.
+            // Se compone el texto de verdad y no un recuadro que marque donde
+            // ira: si lo que se anade es texto sobre el documento, hay que
+            // verlo para poder colocarlo. El motor de PDF lo vuelve a componer
+            // al guardar con la fuente que corresponda, pero lo que se ve aqui
+            // ya es el texto y no un hueco gris.
             val r = edicion.marco.normalizado()
-            drawRect(
-                color = Color(edicion.colorArgb.toInt()).copy(alpha = 0.18f),
-                topLeft = Offset(r.izquierda * size.width, r.arriba * size.height),
-                size = Size(r.ancho * size.width, r.alto * size.height),
+            val medida = medidor.measure(
+                text = edicion.contenido,
+                style = TextStyle(
+                    color = Color(edicion.colorArgb.toInt()),
+                    fontSize = (edicion.tamano * size.height).toSp(),
+                    fontWeight = if (edicion.negrita) FontWeight.Bold else FontWeight.Normal,
+                    fontStyle = if (edicion.cursiva) FontStyle.Italic else FontStyle.Normal,
+                ),
+                constraints = Constraints(maxWidth = (r.ancho * size.width).toInt().coerceAtLeast(1)),
             )
-            drawRect(
-                color = Color(edicion.colorArgb.toInt()),
+            drawText(
+                textLayoutResult = medida,
                 topLeft = Offset(r.izquierda * size.width, r.arriba * size.height),
-                size = Size(r.ancho * size.width, r.alto * size.height),
-                style = Stroke(width = 2f),
             )
         }
 
@@ -710,7 +824,35 @@ private fun PanelHerramientas(estado: EstadoEditor) {
                     Paleta(estado)
                 }
 
-                HerramientaEditor.MOVER, HerramientaEditor.BORRAR -> Spacer(Modifier.height(4.dp))
+                HerramientaEditor.MOVER -> {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 6.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = stringResource(
+                                if (estado.objetoSeleccionado == null) {
+                                    Res.string.ed_mover_ayuda
+                                } else {
+                                    Res.string.ed_mover_asas
+                                },
+                            ),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.weight(1f),
+                        )
+                        if (estado.objetoSeleccionado != null) {
+                            TextButton(
+                                onClick = { estado.borrarSeleccion() },
+                                modifier = Modifier.heightIn(min = 48.dp),
+                            ) {
+                                Text(stringResource(Res.string.comun_eliminar))
+                            }
+                        }
+                    }
+                }
+
+                HerramientaEditor.BORRAR -> Spacer(Modifier.height(4.dp))
                 else -> ControlesTrazo(estado)
             }
         }
@@ -943,3 +1085,68 @@ private val FILTROS: List<Pair<FiltroPagina, StringResource>> = listOf(
  * el dedo acierte sin que dos lineas seguidas se pisen.
  */
 private const val MARGEN_TOQUE = 0.025f
+
+/** Las dos asas del marco de seleccion. */
+private enum class Asa { ESCALAR, ROTAR }
+
+/**
+ * Radio de las asas en fraccion de pagina.
+ *
+ * Se pintan mas pequenas de lo que responden al tacto: un circulo de 48 dp
+ * encima del documento taparia justo lo que el usuario intenta colocar.
+ */
+private const val RADIO_ASA = 0.030f
+
+/** Que asa hay bajo el dedo, si hay alguna. */
+private fun asaBajoElDedo(marco: Rectangulo, punto: Punto): Asa? {
+    val m = marco.normalizado()
+    val escalar = Punto(m.derecha, m.abajo)
+    val rotar = Punto(m.derecha, m.arriba)
+    return when {
+        cercaDe(punto, escalar) -> Asa.ESCALAR
+        cercaDe(punto, rotar) -> Asa.ROTAR
+        else -> null
+    }
+}
+
+private fun cercaDe(a: Punto, b: Punto): Boolean {
+    val dx = a.x - b.x
+    val dy = a.y - b.y
+    return dx * dx + dy * dy <= RADIO_ASA * RADIO_ASA
+}
+
+/**
+ * Pinta el marco del objeto seleccionado con sus dos asas.
+ *
+ * Escalar abajo a la derecha y girar arriba a la derecha, que es donde las
+ * pone todo el mundo y donde la mano no tapa el objeto al usarlas.
+ */
+private fun DrawScope.dibujarMarcoSeleccion(marco: Rectangulo, color: Color) {
+    val m = marco.normalizado()
+    val izquierda = m.izquierda * size.width
+    val arriba = m.arriba * size.height
+    val ancho = (m.derecha - m.izquierda) * size.width
+    val alto = (m.abajo - m.arriba) * size.height
+    val grosor = size.minDimension * 0.004f
+
+    drawRect(
+        color = color,
+        topLeft = Offset(izquierda, arriba),
+        size = Size(ancho, alto),
+        style = Stroke(
+            width = grosor,
+            pathEffect = PathEffect.dashPathEffect(
+                floatArrayOf(size.minDimension * 0.02f, size.minDimension * 0.015f),
+            ),
+        ),
+    )
+
+    val radio = size.minDimension * 0.018f
+    listOf(
+        Offset(izquierda + ancho, arriba + alto),
+        Offset(izquierda + ancho, arriba),
+    ).forEach { centro ->
+        drawCircle(color = Color.White, radius = radio, center = centro)
+        drawCircle(color = color, radius = radio, center = centro, style = Stroke(width = grosor))
+    }
+}

@@ -177,6 +177,8 @@
     <string name="ed_intensidad">Stärke</string>
     <string name="ed_linea">Linie</string>
     <string name="ed_mover">Verschieben</string>
+    <string name="ed_mover_asas">Zum Verschieben ziehen. Der untere Griff skaliert, der obere dreht.</string>
+    <string name="ed_mover_ayuda">Tippen Sie etwas Hinzugefügtes an, um es auszuwählen.</string>
     <string name="ed_negrita">Fett</string>
     <string name="ed_opacidad">Deckkraft</string>
     <string name="ed_pagina_anterior">Vorherige Seite</string>

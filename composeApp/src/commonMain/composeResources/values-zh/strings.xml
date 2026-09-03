@@ -177,6 +177,8 @@
     <string name="ed_intensidad">强度</string>
     <string name="ed_linea">直线</string>
     <string name="ed_mover">移动</string>
+    <string name="ed_mover_asas">拖动可移动。右下角手柄缩放，右上角手柄旋转。</string>
+    <string name="ed_mover_ayuda">点按您添加的内容即可选中。</string>
     <string name="ed_negrita">加粗</string>
     <string name="ed_opacidad">不透明度</string>
     <string name="ed_pagina_anterior">上一页</string>

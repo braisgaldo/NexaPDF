@@ -177,6 +177,8 @@
     <string name="ed_intensidad">Intensitat</string>
     <string name="ed_linea">Línia</string>
     <string name="ed_mover">Mou</string>
+    <string name="ed_mover_asas">Arrossega per moure’l. La nansa de baix escala i la de dalt gira.</string>
+    <string name="ed_mover_ayuda">Toca alguna cosa que hagis afegit per seleccionar-la.</string>
     <string name="ed_negrita">Negreta</string>
     <string name="ed_opacidad">Opacitat</string>
     <string name="ed_pagina_anterior">Pàgina anterior</string>

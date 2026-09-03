@@ -177,6 +177,8 @@
     <string name="ed_intensidad">Сила</string>
     <string name="ed_linea">Линия</string>
     <string name="ed_mover">Перемещение</string>
+    <string name="ed_mover_asas">Перетащите, чтобы переместить. Нижний маркер масштабирует, верхний поворачивает.</string>
+    <string name="ed_mover_ayuda">Коснитесь добавленного элемента, чтобы выбрать его.</string>
     <string name="ed_negrita">Полужирный</string>
     <string name="ed_opacidad">Непрозрачность</string>
     <string name="ed_pagina_anterior">Предыдущая страница</string>

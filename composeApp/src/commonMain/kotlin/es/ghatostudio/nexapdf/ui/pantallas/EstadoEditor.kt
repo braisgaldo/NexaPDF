@@ -56,7 +56,115 @@ class EstadoEditor(indicePagina: Int) {
     var figuraEnCurso by mutableStateOf<Pair<Punto, Punto>?>(null)
         private set
 
+    /** Id del objeto seleccionado, o `null` si no hay ninguno. */
+    var seleccionada by mutableStateOf<String?>(null)
+        private set
+
     val listaEdiciones: List<Edicion> get() = ediciones
+
+    /** El objeto seleccionado, si sigue existiendo. */
+    val objetoSeleccionado: Edicion.Colocada?
+        get() = seleccionada?.let { id ->
+            ediciones.firstOrNull { it.id == id } as? Edicion.Colocada
+        }
+
+    /**
+     * Selecciona el objeto que hay bajo el punto, o deselecciona si no hay
+     * ninguno. Se recorre de arriba abajo porque lo ultimo colocado es lo que
+     * se ve encima y lo que el usuario cree estar tocando.
+     */
+    fun seleccionarEn(punto: Punto): Boolean {
+        val encontrado = ediciones
+            .asReversed()
+            .filterIsInstance<Edicion.Colocada>()
+            .firstOrNull { it.marco.contieneConMargen(punto, MARGEN_SELECCION) }
+        seleccionada = encontrado?.id
+        return encontrado != null
+    }
+
+    fun deseleccionar() {
+        seleccionada = null
+    }
+
+    /** Desplaza el objeto seleccionado, sin dejar que se salga de la pagina. */
+    fun moverSeleccion(dx: Float, dy: Float) {
+        transformarSeleccion { objeto ->
+            val m = objeto.marco.normalizado()
+            val despX = dx.coerceIn(-m.izquierda, 1f - m.derecha)
+            val despY = dy.coerceIn(-m.arriba, 1f - m.abajo)
+            conMarco(
+                objeto,
+                Rectangulo(
+                    izquierda = m.izquierda + despX,
+                    arriba = m.arriba + despY,
+                    derecha = m.derecha + despX,
+                    abajo = m.abajo + despY,
+                ),
+            )
+        }
+    }
+
+    /**
+     * Escala el objeto desde su centro.
+     *
+     * Desde el centro y no desde una esquina porque con el dedo encima de la
+     * esquina no se ve lo que se esta haciendo; creciendo hacia los dos lados
+     * el objeto no se escapa de debajo del dedo.
+     */
+    fun escalarSeleccion(factor: Float) {
+        transformarSeleccion { objeto ->
+            val m = objeto.marco.normalizado()
+            val cx = (m.izquierda + m.derecha) / 2f
+            val cy = (m.arriba + m.abajo) / 2f
+            val semiAncho = ((m.derecha - m.izquierda) / 2f * factor).coerceIn(0.01f, 0.5f)
+            val semiAlto = ((m.abajo - m.arriba) / 2f * factor).coerceIn(0.005f, 0.5f)
+            val nuevo = Rectangulo(cx - semiAncho, cy - semiAlto, cx + semiAncho, cy + semiAlto)
+            when (objeto) {
+                // El texto escala tambien su cuerpo de letra: un marco mas
+                // grande con la misma fuente solo anade aire alrededor.
+                is Edicion.Texto -> objeto.copy(
+                    marco = nuevo,
+                    tamano = (objeto.tamano * factor).coerceIn(0.008f, 0.25f),
+                )
+
+                else -> conMarco(objeto, nuevo)
+            }
+        }
+    }
+
+    fun rotarSeleccion(grados: Float) {
+        transformarSeleccion { objeto ->
+            conRotacion(objeto, (objeto.rotacion + grados).mod(360f))
+        }
+    }
+
+    /** Quita el objeto seleccionado. */
+    fun borrarSeleccion() {
+        val id = seleccionada ?: return
+        val indiceObjeto = ediciones.indexOfFirst { it.id == id }
+        if (indiceObjeto >= 0) deshechas.add(ediciones.removeAt(indiceObjeto))
+        seleccionada = null
+    }
+
+    private inline fun transformarSeleccion(cambio: (Edicion.Colocada) -> Edicion) {
+        val id = seleccionada ?: return
+        val indiceObjeto = ediciones.indexOfFirst { it.id == id }
+        if (indiceObjeto < 0) return
+        val objeto = ediciones[indiceObjeto] as? Edicion.Colocada ?: return
+        ediciones[indiceObjeto] = cambio(objeto)
+    }
+
+    private fun conMarco(objeto: Edicion.Colocada, marco: Rectangulo): Edicion = when (objeto) {
+        is Edicion.Texto -> objeto.copy(marco = marco)
+        is Edicion.Imagen -> objeto.copy(marco = marco)
+        is Edicion.Firma -> objeto.copy(marco = marco)
+    }
+
+    private fun conRotacion(objeto: Edicion.Colocada, rotacion: Float): Edicion = when (objeto) {
+        is Edicion.Texto -> objeto.copy(rotacion = rotacion)
+        is Edicion.Imagen -> objeto.copy(rotacion = rotacion)
+        is Edicion.Firma -> objeto.copy(rotacion = rotacion)
+    }
     val puedeDeshacer: Boolean get() = ediciones.isNotEmpty()
     val puedeRehacer: Boolean get() = deshechas.isNotEmpty()
     val hayCambios: Boolean get() = ediciones.isNotEmpty() || filtro != FiltroPagina.NINGUNO
@@ -161,7 +269,9 @@ class EstadoEditor(indicePagina: Int) {
     }
 
     fun anadirImagen(ruta: String, marco: Rectangulo) {
-        anadir(Edicion.Imagen(id = siguienteId(), rutaImagen = ruta, marco = marco))
+        val nueva = Edicion.Imagen(id = siguienteId(), rutaImagen = ruta, marco = marco)
+        anadir(nueva)
+        seleccionada = nueva.id
     }
 
     fun anadirFirma(trazos: List<List<Punto>>, marco: Rectangulo) {
@@ -244,3 +354,11 @@ class EstadoEditor(indicePagina: Int) {
         )
     }
 }
+
+/**
+ * Holgura al tocar para seleccionar un objeto, en fraccion de pagina.
+ *
+ * Mas generosa que la de las lineas de texto del documento: aqui el objeto lo
+ * ha colocado el propio usuario y espera poder cogerlo sin apuntar.
+ */
+private const val MARGEN_SELECCION = 0.02f

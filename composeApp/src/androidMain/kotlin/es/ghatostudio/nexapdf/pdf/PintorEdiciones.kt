@@ -15,6 +15,7 @@ import com.tom_roush.pdfbox.pdmodel.graphics.blend.BlendMode
 import com.tom_roush.pdfbox.pdmodel.graphics.image.LosslessFactory
 import com.tom_roush.pdfbox.pdmodel.graphics.image.PDImageXObject
 import com.tom_roush.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState
+import com.tom_roush.pdfbox.util.Matrix
 import es.ghatostudio.nexapdf.domain.model.AlineacionTexto
 import es.ghatostudio.nexapdf.domain.model.Edicion
 import es.ghatostudio.nexapdf.domain.model.Punto
@@ -45,6 +46,23 @@ class PintorEdiciones(
         ediciones.forEach { edicion ->
             flujo.saveGraphicsState()
             runCatching {
+                // El giro se aplica al sistema de coordenadas y no a cada punto:
+                // se lleva el origen al centro del objeto, se gira, y se vuelve.
+                // Asi el resto del pintado sigue trabajando en coordenadas de
+                // pagina sin enterarse de que hay una rotacion en medio.
+                val colocada = edicion as? Edicion.Colocada
+                if (colocada != null && colocada.rotacion != 0f) {
+                    val marco = colocada.marco.normalizado()
+                    val cx = transformador.x((marco.izquierda + marco.derecha) / 2f)
+                    val cy = transformador.y((marco.arriba + marco.abajo) / 2f)
+                    // En pantalla el eje Y baja y en el PDF sube, asi que el
+                    // mismo giro tiene el signo contrario aqui.
+                    val radianes = Math.toRadians(-colocada.rotacion.toDouble())
+                    flujo.transform(Matrix.getTranslateInstance(cx, cy))
+                    flujo.transform(Matrix.getRotateInstance(radianes, 0f, 0f))
+                    flujo.transform(Matrix.getTranslateInstance(-cx, -cy))
+                }
+
                 when (edicion) {
                     is Edicion.Trazo -> pintarTrazo(flujo, transformador, edicion)
                     is Edicion.Figura -> pintarFigura(flujo, transformador, edicion)

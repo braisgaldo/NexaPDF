@@ -177,6 +177,8 @@
     <string name="ed_intensidad">Ένταση</string>
     <string name="ed_linea">Γραμμή</string>
     <string name="ed_mover">Μετακίνηση</string>
+    <string name="ed_mover_asas">Σύρετε για μετακίνηση. Η κάτω λαβή αλλάζει μέγεθος, η πάνω περιστρέφει.</string>
+    <string name="ed_mover_ayuda">Πατήστε κάτι που προσθέσατε για να το επιλέξετε.</string>
     <string name="ed_negrita">Έντονα</string>
     <string name="ed_opacidad">Αδιαφάνεια</string>
     <string name="ed_pagina_anterior">Προηγούμενη σελίδα</string>

@@ -177,6 +177,8 @@
     <string name="ed_intensidad">Intentsitatea</string>
     <string name="ed_linea">Lerroa</string>
     <string name="ed_mover">Mugitu</string>
+    <string name="ed_mover_asas">Arrastatu mugitzeko. Beheko heldulekuak eskalatzen du eta goikoak biratzen.</string>
+    <string name="ed_mover_ayuda">Ukitu gehitu duzun zerbait hautatzeko.</string>
     <string name="ed_negrita">Lodia</string>
     <string name="ed_opacidad">Opakutasuna</string>
     <string name="ed_pagina_anterior">Aurreko orria</string>

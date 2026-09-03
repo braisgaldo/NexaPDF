@@ -15,6 +15,20 @@ import kotlinx.serialization.Serializable
 sealed interface Edicion {
     val id: String
 
+    /**
+     * Edicion que ocupa un marco y se puede seleccionar para moverla,
+     * escalarla o girarla, como un objeto de cualquier editor.
+     *
+     * No todas lo son: un trazo a mano alzada son puntos sueltos, y un tapado
+     * es la mitad de una sustitucion de texto, no algo que se coloque aparte.
+     */
+    sealed interface Colocada : Edicion {
+        val marco: Rectangulo
+
+        /** Giro en grados alrededor del centro del marco. */
+        val rotacion: Float
+    }
+
     /** Trazo a mano alzada (dedo o lapiz). */
     @Serializable
     @SerialName("trazo")
@@ -48,14 +62,15 @@ sealed interface Edicion {
     data class Texto(
         override val id: String,
         val contenido: String,
-        val marco: Rectangulo,
+        override val marco: Rectangulo,
         val colorArgb: Long,
         /** Tamano de fuente como fraccion del alto de pagina. */
         val tamano: Float,
         val negrita: Boolean = false,
         val cursiva: Boolean = false,
         val alineacion: AlineacionTexto = AlineacionTexto.INICIO,
-    ) : Edicion
+        override val rotacion: Float = 0f,
+    ) : Colocada
 
     /** Imagen incrustada. */
     @Serializable
@@ -63,9 +78,10 @@ sealed interface Edicion {
     data class Imagen(
         override val id: String,
         val rutaImagen: String,
-        val marco: Rectangulo,
+        override val marco: Rectangulo,
         val opacidad: Float = 1f,
-    ) : Edicion
+        override val rotacion: Float = 0f,
+    ) : Colocada
 
     /**
      * Rectangulo opaco que tapa contenido. Se usa para sustituir texto: se cubre
@@ -85,10 +101,11 @@ sealed interface Edicion {
     data class Firma(
         override val id: String,
         val trazos: List<List<Punto>>,
-        val marco: Rectangulo,
+        override val marco: Rectangulo,
         val colorArgb: Long,
         val grosor: Float,
-    ) : Edicion
+        override val rotacion: Float = 0f,
+    ) : Colocada
 }
 
 enum class TipoFigura {

@@ -177,6 +177,8 @@
     <string name="ed_intensidad">Intensidad</string>
     <string name="ed_linea">Línea</string>
     <string name="ed_mover">Mover</string>
+    <string name="ed_mover_asas">Arrastra para moverlo. El asa de abajo escala y la de arriba gira.</string>
+    <string name="ed_mover_ayuda">Toca algo que hayas añadido para seleccionarlo.</string>
     <string name="ed_negrita">Negrita</string>
     <string name="ed_opacidad">Opacidad</string>
     <string name="ed_pagina_anterior">Página anterior</string>

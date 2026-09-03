@@ -177,6 +177,8 @@
     <string name="ed_intensidad">Strength</string>
     <string name="ed_linea">Line</string>
     <string name="ed_mover">Pan</string>
+    <string name="ed_mover_asas">Drag to move. Bottom-right handle resizes, top-right one rotates.</string>
+    <string name="ed_mover_ayuda">Tap something you added to select it.</string>
     <string name="ed_negrita">Bold</string>
     <string name="ed_opacidad">Opacity</string>
     <string name="ed_pagina_anterior">Previous page</string>

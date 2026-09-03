@@ -177,6 +177,8 @@
     <string name="ed_intensidad">الشدة</string>
     <string name="ed_linea">خط</string>
     <string name="ed_mover">تحريك</string>
+    <string name="ed_mover_asas">اسحب للتحريك. المقبض السفلي يغيّر الحجم والعلوي يدوّر.</string>
+    <string name="ed_mover_ayuda">المس عنصرًا أضفته لتحديده.</string>
     <string name="ed_negrita">عريض</string>
     <string name="ed_opacidad">العتامة</string>
     <string name="ed_pagina_anterior">الصفحة السابقة</string>

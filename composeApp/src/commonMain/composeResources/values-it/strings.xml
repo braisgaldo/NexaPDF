@@ -177,6 +177,8 @@
     <string name="ed_intensidad">Intensità</string>
     <string name="ed_linea">Linea</string>
     <string name="ed_mover">Sposta</string>
+    <string name="ed_mover_asas">Trascina per spostare. La maniglia in basso ridimensiona, quella in alto ruota.</string>
+    <string name="ed_mover_ayuda">Tocca un elemento che hai aggiunto per selezionarlo.</string>
     <string name="ed_negrita">Grassetto</string>
     <string name="ed_opacidad">Opacità</string>
     <string name="ed_pagina_anterior">Pagina precedente</string>

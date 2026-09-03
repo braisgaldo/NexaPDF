@@ -177,6 +177,8 @@
     <string name="ed_intensidad">Intensité</string>
     <string name="ed_linea">Ligne</string>
     <string name="ed_mover">Déplacer</string>
+    <string name="ed_mover_asas">Faites glisser pour déplacer. La poignée du bas redimensionne, celle du haut fait pivoter.</string>
+    <string name="ed_mover_ayuda">Touchez un élément que vous avez ajouté pour le sélectionner.</string>
     <string name="ed_negrita">Gras</string>
     <string name="ed_opacidad">Opacité</string>
     <string name="ed_pagina_anterior">Page précédente</string>
