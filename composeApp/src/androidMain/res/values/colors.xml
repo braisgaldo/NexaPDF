@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Espejo del token surface del tema claro por defecto (NexaTheme). -->
+    <color name="nexa_window_background">#FBF9FE</color>
+    <color name="ic_launcher_background">#3B4EC4</color>
+</resources>

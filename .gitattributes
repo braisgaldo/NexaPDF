@@ -1,0 +1,23 @@
+# Normaliza los finales de linea: el repositorio guarda LF siempre, y cada
+# maquina se lo encuentra como le corresponda al clonar. Sin esto, trabajar
+# desde Windows meteria un CRLF en cada fichero y el primer commit de otro
+# sistema apareceria como "todo el fichero ha cambiado".
+* text=auto eol=lf
+
+# El script de Gradle para Windows tiene que llevar CRLF a la fuerza.
+*.bat text eol=crlf
+
+# Binarios: git no debe tocarlos ni intentar hacer diff de su contenido.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.pdf  binary
+*.p12  binary
+*.pfx  binary
+*.jks  binary
+*.aab  binary
+*.apk  binary
+*.jar  binary
+*.docx binary
+*.xlsx binary
+*.pptx binary

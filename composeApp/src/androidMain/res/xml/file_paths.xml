@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Espacio de trabajo interno: PDFs importados y resultados intermedios. -->
+    <files-path
+        name="espacio_trabajo"
+        path="workspace/" />
+    <!-- Resultados listos para compartir con otras apps. -->
+    <files-path
+        name="salidas"
+        path="output/" />
+    <!-- Copias de seguridad .nexaPDF.bak generadas por la app. -->
+    <files-path
+        name="copias"
+        path="backups/" />
+    <cache-path
+        name="cache_compartida"
+        path="shared/" />
+</paths>

@@ -1,0 +1,137 @@
+name: CI
+
+# Compila, comprueba y prueba en cada cambio. Los generadores de recursos se
+# ejecutan en modo comprobacion: fallan si un color no llega al contraste
+# minimo o si a un texto le falta alguno de los trece idiomas, con lo que
+# sirven de verificacion sin necesidad de una prueba aparte.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verificar:
+    name: Compilar, comprobar y probar
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Descargar el codigo
+        uses: actions/checkout@v4
+
+      - name: Preparar JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: temurin
+
+      - name: Preparar Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Comprobar el contraste de los seis temas
+        run: python tools/generar_colores.py --comprobar
+
+      - name: Comprobar que los trece idiomas estan completos
+        run: python tools/generar_traducciones.py --comprobar
+
+      - name: Comprobar que los recursos generados estan al dia
+        run: |
+          python tools/generar_colores.py
+          python tools/generar_traducciones.py
+          python tools/generar_sitio.py
+          if ! git diff --quiet; then
+            echo "::error::Hay recursos generados sin regenerar. Ejecuta los scripts de tools/ y vuelve a commitear."
+            git --no-pager diff --stat
+            exit 1
+          fi
+
+      - name: Pruebas unitarias
+        run: ./gradlew :composeApp:desktopTest --no-daemon
+
+      - name: Compilar el APK de depuracion
+        run: ./gradlew :composeApp:assembleDebug --no-daemon
+
+      - name: Lint de Android
+        run: ./gradlew :composeApp:lintRelease --no-daemon
+
+      - name: Comprobar que no hay bibliotecas de facturacion
+        run: |
+          ./gradlew :composeApp:dependencies --configuration releaseRuntimeClasspath \
+            --no-daemon > dependencias.txt
+          if grep -qiE "billingclient|com\.android\.billing" dependencias.txt; then
+            echo "::error::Se ha colado una biblioteca de facturacion. Ver CONTRIBUTING.md."
+            grep -iE "billingclient|com\.android\.billing" dependencias.txt
+            exit 1
+          fi
+          echo "Sin bibliotecas de facturacion."
+
+      - name: Comprobar que la app no declara permisos
+        run: |
+          MANIFIESTO=composeApp/src/androidMain/AndroidManifest.xml
+          if grep -q "uses-permission" "$MANIFIESTO"; then
+            echo "::error::El manifiesto declara permisos. Requiere un ADR y actualizar la politica de privacidad."
+            grep "uses-permission" "$MANIFIESTO"
+            exit 1
+          fi
+          echo "Sin permisos declarados."
+
+      - name: Guardar los informes si algo falla
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: informes
+          path: |
+            composeApp/build/reports/
+            composeApp/build/test-results/
+          retention-days: 7
+
+  dispositivo:
+    name: Pruebas en emulador
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    # Solo en main: arrancar un emulador es lento y no compensa en cada
+    # propuesta de cambio.
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: temurin
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Habilitar la aceleracion por hardware
+        run: |
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Pruebas instrumentadas
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          target: google_apis
+          arch: x86_64
+          script: ./gradlew :composeApp:connectedDebugAndroidTest --no-daemon
+
+      - name: Guardar los informes si algo falla
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: informes-dispositivo
+          path: composeApp/build/reports/androidTests/
+          retention-days: 7

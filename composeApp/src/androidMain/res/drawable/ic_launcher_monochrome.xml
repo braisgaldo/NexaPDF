@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Version monocroma para los iconos tematizados de Android 13+. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <path
+        android:fillAlpha="0.4"
+        android:fillColor="#FFFFFF"
+        android:pathData="M33,24 H61 C63.8,24 66,26.2 66,29 V67 C66,69.8 63.8,72 61,72 H33 C30.2,72 28,69.8 28,67 V29 C28,26.2 30.2,24 33,24 Z" />
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M46,34 H70 L80,44 V78 C80,81.3 77.3,84 74,84 H46 C42.7,84 40,81.3 40,78 V40 C40,36.7 42.7,34 46,34 Z" />
+
+    <path
+        android:fillAlpha="0.35"
+        android:fillColor="#000000"
+        android:pathData="M70,34 L80,44 H74 C71.8,44 70,42.2 70,40 Z" />
+
+    <path
+        android:fillAlpha="0.7"
+        android:fillColor="#000000"
+        android:pathData="M50,54 H72 A2,2 0 0,1 72,58 H50 A2,2 0 0,1 50,54 Z M50,63 H70 A2,2 0 0,1 70,67 H50 A2,2 0 0,1 50,63 Z M50,72 H62 A2,2 0 0,1 62,76 H50 A2,2 0 0,1 50,72 Z" />
+</vector>

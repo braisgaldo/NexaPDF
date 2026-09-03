@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Espejo del token surface del tema oscuro por defecto (NexaTheme). -->
+    <color name="nexa_window_background">#121318</color>
+</resources>

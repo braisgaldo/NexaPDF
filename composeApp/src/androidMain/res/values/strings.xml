@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        Unica cadena en recursos de Android: el nombre del lanzador. Es un nombre
+        de marca, no se traduce. Todo el texto de la interfaz vive en
+        commonMain/composeResources para poder compartirse con iOS y escritorio.
+    -->
+    <string name="app_name" translatable="false">NexaPDF</string>
+</resources>

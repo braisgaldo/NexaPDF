@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Solo se respaldan las preferencias.
+
+    En cuanto se declara un <include>, todo lo que no aparezca queda fuera por
+    definicion, asi que no hacen falta exclusiones: el espacio de trabajo, los
+    documentos generados y las copias de seguridad no se respaldan porque no
+    estan aqui. Es lo que se quiere: son copias de ficheros que el usuario ya
+    tiene en su telefono, y subirlas a la nube de Google seria mover datos
+    personales sin ninguna necesidad.
+-->
+<full-backup-content>
+    <include
+        domain="file"
+        path="datastore/" />
+</full-backup-content>

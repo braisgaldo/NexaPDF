@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de privacidad · NexaPDF</title>
+<meta name="description" content="NexaPDF no recoge ningún dato: no tiene permiso de internet.">
+<style>
+  :root {
+    color-scheme: light dark;
+    --fondo: #F9F9FF;
+    --superficie: #FFFFFF;
+    --texto: #1B1B1F;
+    --suave: #46464F;
+    --primario: #4A5A9F;
+    --borde: #C6C5D0;
+    --contenedor: #DFE0FF;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fondo: #121318;
+      --superficie: #1E1F25;
+      --texto: #E4E1E9;
+      --suave: #C7C5D0;
+      --primario: #BDC2FE;
+      --borde: #46464F;
+      --contenedor: #323563;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--fondo);
+    color: var(--texto);
+    font: 16px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .barra {
+    background: var(--contenedor);
+    border-bottom: 1px solid var(--borde);
+    padding: 18px 24px;
+  }
+  .barra a {
+    color: var(--texto);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 18px;
+  }
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+  h1 { font-size: 30px; line-height: 1.25; margin: 8px 0 4px; }
+  h2 { font-size: 22px; margin-top: 40px; color: var(--primario); }
+  h3 { font-size: 18px; margin-top: 28px; }
+  a { color: var(--primario); }
+  code {
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: 5px;
+    padding: 1px 5px;
+    font-size: 0.9em;
+  }
+  table { border-collapse: collapse; width: 100%; margin: 18px 0; }
+  th, td {
+    border: 1px solid var(--borde);
+    padding: 9px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th { background: var(--superficie); }
+  hr { border: 0; border-top: 1px solid var(--borde); margin: 32px 0; }
+  blockquote {
+    margin: 18px 0;
+    padding: 12px 18px;
+    border-left: 4px solid var(--primario);
+    background: var(--superficie);
+  }
+  footer {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 24px;
+    color: var(--suave);
+    font-size: 14px;
+    border-top: 1px solid var(--borde);
+  }
+  .tarjetas { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .tarjeta {
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: 14px;
+    padding: 16px 18px;
+  }
+  .tarjeta h3 { margin: 0 0 6px; font-size: 16px; }
+  .tarjeta p { margin: 0; color: var(--suave); font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="barra"><a href="./">NexaPDF</a></div>
+<main>
+<h1>Política de privacidad de NexaPDF</h1>
+<p><strong>Última actualización: 3 de septiembre de 2026</strong></p>
+<p><strong>Aplicación:</strong> NexaPDF · <strong>Identificador:</strong> <code>es.ghatostudio.nexapdf</code></p>
+<p><strong>Responsable:</strong> Brais Castiñeiras Galdo (Ghato Studio) · ghatostudio@proton.me</p>
+<hr>
+<h2>Resumen en una frase</h2>
+<p>NexaPDF no recoge, no almacena y no transmite ningún dato personal, porque no</p>
+<p>puede: la aplicación no declara el permiso de acceso a internet.</p>
+<hr>
+<h2>Qué datos se recogen</h2>
+<p><strong>Ninguno.</strong></p>
+<p>NexaPDF no recoge datos de uso, ni identificadores de dispositivo, ni de</p>
+<p>publicidad, ni datos de localización, ni contactos, ni información de la cuenta.</p>
+<p>No hay analítica, no hay telemetría, no hay informes de fallos automáticos y no</p>
+<p>hay publicidad.</p>
+<h2>Qué pasa con tus documentos</h2>
+<p>Los PDF, imágenes y documentos de ofimática que abres con NexaPDF **no salen de</p>
+<p>tu dispositivo**. Todo el procesado (unir, separar, convertir, editar y firmar)</p>
+<p>se hace con el procesador de tu teléfono.</p>
+<p>Cuando eliges un fichero, NexaPDF hace una copia de trabajo en su carpeta</p>
+<p>privada. Esa carpeta <strong>se vacía cada vez que arrancas la aplicación</strong>: solo</p>
+<p>existe mientras dura la tarea.</p>
+<p>Los documentos que generas se guardan en <code>Descargas/NexaPDF</code>, en tu propio</p>
+<p>teléfono, para que puedas encontrarlos con cualquier gestor de archivos.</p>
+<h2>Certificados de firma electrónica</h2>
+<p>Si firmas un documento con un certificado, NexaPDF lee el fichero <code>.p12</code> o</p>
+<p><code>.pfx</code> que elijas, lo usa para firmar en el momento y **lo descarta al</p>
+<p>terminar**. Ni el certificado ni su contraseña se guardan en ningún sitio, ni</p>
+<p>dentro de la aplicación ni fuera de ella.</p>
+<h2>Permisos que solicita la aplicación</h2>
+<p>NexaPDF declara <strong>cero permisos</strong> en su manifiesto. En concreto:</p>
+<table><thead><tr>
+<th>Permiso</th>
+<th>¿Se solicita?</th>
+<th>Por qué</th>
+</tr></thead><tbody>
+<tr>
+<td><code>INTERNET</code></td>
+<td><strong>No</strong></td>
+<td>La aplicación no se conecta a ninguna red.</td>
+</tr>
+<tr>
+<td><code>CAMERA</code></td>
+<td><strong>No</strong></td>
+<td>Al hacer una foto se abre la app de cámara del sistema, que tiene sus propios permisos.</td>
+</tr>
+<tr>
+<td><code>READ_EXTERNAL_STORAGE</code></td>
+<td><strong>No</strong></td>
+<td>Los ficheros se eligen con el selector del sistema, que concede acceso solo a lo que elijas.</td>
+</tr>
+<tr>
+<td><code>WRITE_EXTERNAL_STORAGE</code></td>
+<td><strong>No</strong></td>
+<td>Los resultados se guardan mediante MediaStore, que no requiere permiso.</td>
+</tr>
+<tr>
+<td><code>ACCESS_*_LOCATION</code></td>
+<td><strong>No</strong></td>
+<td>La aplicación no usa la ubicación.</td>
+</tr>
+</tbody></table>
+<p>Puedes comprobarlo tú mismo sobre el APK publicado:</p>
+<p>```</p>
+<p>aapt2 dump permissions NexaPDF-1.0.0-release.apk</p>
+<p>```</p>
+<p>La única línea que aparece es</p>
+<p><code>es.ghatostudio.nexapdf.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION</code>. No es un</p>
+<p>permiso del sistema ni se te pide nunca: la biblioteca <code>androidx.core</code> la define</p>
+<p>y la usa la propia aplicación para hablar consigo misma, es de nivel <em>signature</em></p>
+<p>(solo la concede el sistema a apps firmadas con la misma clave) y no da acceso a</p>
+<p>nada del teléfono. Google Play no la muestra en la ficha por ese motivo.</p>
+<h2>Enlaces externos</h2>
+<p>La aplicación tiene tres enlaces que abren el <strong>navegador del sistema</strong>, nunca</p>
+<p>una ventana dentro de la aplicación:</p>
+<p>1. Esta misma política de privacidad.</p>
+<p>2. El código fuente del proyecto en GitHub.</p>
+<p>3. El enlace de donación voluntaria (Revolut).</p>
+<p>Al pulsarlos sales de NexaPDF. Lo que ocurra en esos sitios se rige por sus</p>
+<p>propias políticas de privacidad, sobre las que NexaPDF no tiene control ni</p>
+<p>información.</p>
+<h2>Donaciones</h2>
+<p>La donación es <strong>voluntaria y no desbloquea nada</strong>: todas las funciones de</p>
+<p>NexaPDF son gratuitas y lo seguirán siendo. Si decides donar, el pago se realiza</p>
+<p>íntegramente en Revolut, fuera de la aplicación. NexaPDF **no recibe, no procesa</p>
+<p>y no ve** ningún dato de pago: ni tarjetas, ni importes, ni si has donado o no.</p>
+<h2>Copias de seguridad de Android</h2>
+<p>Si tienes activada la copia de seguridad de Android, se respalda únicamente el</p>
+<p>fichero de preferencias de la aplicación (tema, idioma y firmas manuscritas que</p>
+<p>hayas guardado). Los documentos <strong>quedan excluidos expresamente</strong> de la copia:</p>
+<p>son ficheros tuyos y no tiene sentido subirlos a la nube de Google sin</p>
+<p>necesidad. Puedes revisarlo en <code>backup_rules.xml</code> del código fuente.</p>
+<h2>Menores de edad</h2>
+<p>NexaPDF no está dirigida específicamente a menores, pero tampoco recoge ningún</p>
+<p>dato de nadie, con lo que no existe tratamiento de datos de menores.</p>
+<h2>Tus derechos</h2>
+<p>El Reglamento General de Protección de Datos reconoce los derechos de acceso,</p>
+<p>rectificación, supresión, oposición, limitación y portabilidad. En el caso de</p>
+<p>NexaPDF <strong>no hay ningún dato que ejercer sobre él</strong>, porque no existe ningún</p>
+<p>tratamiento de datos personales. Si quieres confirmarlo por ti mismo, el código</p>
+<p>fuente es público y puedes revisar el manifiesto y el código de red (que no</p>
+<p>existe).</p>
+<h2>Cambios en esta política</h2>
+<p>Si en el futuro alguna versión de NexaPDF tratara algún dato, esta política se</p>
+<p>actualizaría <strong>antes</strong> de publicar esa versión, y el cambio se recogería en el</p>
+<p><code>CHANGELOG.md</code> del proyecto. La fecha de la parte superior indica la última</p>
+<p>revisión.</p>
+<h2>Contacto</h2>
+<p>Para cualquier duda sobre privacidad: <strong>ghatostudio@proton.me</strong></p>
+<hr>
+<p><em>Código fuente: <a href="https://github.com/braisgaldo/NexaPDF">https://github.com/braisgaldo/NexaPDF</a></em></p>
+</main>
+<footer>
+  NexaPDF · <a href="https://github.com/braisgaldo/NexaPDF">Código fuente</a> ·
+  <a href="./privacidad.html">Privacidad</a> ·
+  <a href="mailto:ghatostudio@proton.me">ghatostudio@proton.me</a>
+</footer>
+</body>
+</html>

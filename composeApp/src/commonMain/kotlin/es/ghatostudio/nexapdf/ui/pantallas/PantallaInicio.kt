@@ -1,0 +1,254 @@
+package es.ghatostudio.nexapdf.ui.pantallas
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.MergeType
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Draw
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.PhotoLibrary
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ContentCut
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import es.ghatostudio.nexapdf.resources.Res
+import es.ghatostudio.nexapdf.resources.app_lema
+import es.ghatostudio.nexapdf.resources.app_nombre
+import es.ghatostudio.nexapdf.resources.cd_ajustes
+import es.ghatostudio.nexapdf.resources.herr_editar_desc
+import es.ghatostudio.nexapdf.resources.herr_editar_titulo
+import es.ghatostudio.nexapdf.resources.herr_firmar_desc
+import es.ghatostudio.nexapdf.resources.herr_firmar_titulo
+import es.ghatostudio.nexapdf.resources.herr_imagen_desc
+import es.ghatostudio.nexapdf.resources.herr_imagen_titulo
+import es.ghatostudio.nexapdf.resources.herr_separar_desc
+import es.ghatostudio.nexapdf.resources.herr_separar_titulo
+import es.ghatostudio.nexapdf.resources.herr_unir_desc
+import es.ghatostudio.nexapdf.resources.herr_unir_titulo
+import es.ghatostudio.nexapdf.resources.herr_varias_imagenes_desc
+import es.ghatostudio.nexapdf.resources.herr_varias_imagenes_titulo
+import es.ghatostudio.nexapdf.resources.inicio_herramientas
+import es.ghatostudio.nexapdf.resources.inicio_recientes
+import es.ghatostudio.nexapdf.resources.inicio_sin_recientes
+import es.ghatostudio.nexapdf.resources.inicio_sin_recientes_ayuda
+import es.ghatostudio.nexapdf.ui.componentes.EstadoVacio
+import es.ghatostudio.nexapdf.ui.componentes.TituloSeccion
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
+
+/** Las seis herramientas del punto 14 del encargo, en el orden en que se pidieron. */
+enum class Herramienta(
+    val titulo: StringResource,
+    val descripcion: StringResource,
+    val icono: ImageVector,
+) {
+    UNIR(Res.string.herr_unir_titulo, Res.string.herr_unir_desc, Icons.AutoMirrored.Filled.MergeType),
+    SEPARAR(Res.string.herr_separar_titulo, Res.string.herr_separar_desc, Icons.Filled.ContentCut),
+    IMAGEN(Res.string.herr_imagen_titulo, Res.string.herr_imagen_desc, Icons.Filled.Image),
+    VARIAS_IMAGENES(
+        Res.string.herr_varias_imagenes_titulo,
+        Res.string.herr_varias_imagenes_desc,
+        Icons.Filled.PhotoLibrary,
+    ),
+    EDITAR(Res.string.herr_editar_titulo, Res.string.herr_editar_desc, Icons.Filled.Edit),
+    FIRMAR(Res.string.herr_firmar_titulo, Res.string.herr_firmar_desc, Icons.Filled.Draw),
+}
+
+/** Un documento ya generado, listo para reabrirse. */
+data class DocumentoReciente(
+    val ruta: String,
+    val nombre: String,
+    val detalle: String,
+)
+
+@Composable
+fun PantallaInicio(
+    recientes: List<DocumentoReciente>,
+    snackbar: SnackbarHostState,
+    alElegirHerramienta: (Herramienta) -> Unit,
+    alAbrirReciente: (DocumentoReciente) -> Unit,
+    alAbrirAjustes: () -> Unit,
+) {
+    Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
+        snackbarHost = { SnackbarHost(snackbar) },
+    ) { relleno ->
+        LazyColumn(
+            modifier = Modifier.fillMaxSize().padding(relleno),
+            contentPadding = PaddingValues(bottom = 32.dp),
+        ) {
+            item { Cabecera(alAbrirAjustes) }
+
+            item { TituloSeccion(stringResource(Res.string.inicio_herramientas)) }
+
+            items(Herramienta.entries.toList(), key = { it.name }) { herramienta ->
+                TarjetaHerramienta(herramienta) { alElegirHerramienta(herramienta) }
+            }
+
+            item { TituloSeccion(stringResource(Res.string.inicio_recientes)) }
+
+            if (recientes.isEmpty()) {
+                item {
+                    EstadoVacio(
+                        icono = Icons.Filled.Description,
+                        titulo = stringResource(Res.string.inicio_sin_recientes),
+                        detalle = stringResource(Res.string.inicio_sin_recientes_ayuda),
+                    )
+                }
+            } else {
+                items(recientes, key = { it.ruta }) { documento ->
+                    FilaReciente(documento) { alAbrirReciente(documento) }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun Cabecera(alAbrirAjustes: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 8.dp, top = 24.dp, bottom = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = stringResource(Res.string.app_nombre),
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            Text(
+                text = stringResource(Res.string.app_lema),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        IconButton(onClick = alAbrirAjustes, modifier = Modifier.size(48.dp)) {
+            Icon(
+                imageVector = Icons.Filled.Settings,
+                contentDescription = stringResource(Res.string.cd_ajustes),
+            )
+        }
+    }
+}
+
+@Composable
+private fun TarjetaHerramienta(herramienta: Herramienta, alPulsar: () -> Unit) {
+    val titulo = stringResource(herramienta.titulo)
+    val descripcion = stringResource(herramienta.descripcion)
+
+    Card(
+        onClick = alPulsar,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 5.dp)
+            .heightIn(min = 76.dp)
+            // El lector de pantalla anuncia una sola cosa por tarjeta, no el
+            // icono, el titulo y la descripcion por separado.
+            .semantics(mergeDescendants = true) { contentDescription = "$titulo. $descripcion" },
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+        ),
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Surface(
+                shape = RoundedCornerShape(14.dp),
+                color = MaterialTheme.colorScheme.primaryContainer,
+                modifier = Modifier.size(48.dp),
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        imageVector = herramienta.icono,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.size(24.dp),
+                    )
+                }
+            }
+            Spacer(Modifier.width(16.dp))
+            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
+                Text(text = titulo, style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = descripcion,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun FilaReciente(documento: DocumentoReciente, alPulsar: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 64.dp)
+            .clickable(onClick = alPulsar)
+            .padding(horizontal = 20.dp, vertical = 12.dp)
+            .semantics(mergeDescendants = true) { },
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Description,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(24.dp).clearAndSetSemantics { },
+        )
+        Spacer(Modifier.width(16.dp))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = documento.nombre,
+                style = MaterialTheme.typography.bodyLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                text = documento.detalle,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+    Spacer(Modifier.height(0.dp))
+}
