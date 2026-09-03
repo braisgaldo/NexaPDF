@@ -567,6 +567,36 @@ class MotorPdfAndroidTest {
         // El guardado incremental conserva el contenido anterior intacto.
         assertEquals(2, paginasDe(salida))
         assertTrue(textoDe(salida).contains("Pagina 1"))
+
+        // El sobre PKCS#7 tiene que ir en DER, con longitudes explicitas.
+        // BouncyCastle, al firmar en flujo, devuelve por defecto BER con
+        // longitudes indefinidas (empieza por 30 80): Acrobat lo acepta, pero
+        // la norma exige DER para la firma de un PDF y un validador estricto
+        // rechaza el sobre entero antes siquiera de mirar la firma.
+        val sobre = sobrePkcs7De(salida)
+        assertEquals(
+            "El sobre PKCS#7 deberia ir en DER (30 82...), no en BER indefinido (30 80...)",
+            0x82,
+            sobre[1].toInt() and 0xFF,
+        )
+    }
+
+    /** Saca de un PDF firmado el sobre PKCS#7 que guarda en /Contents. */
+    private fun sobrePkcs7De(fichero: File): ByteArray {
+        val datos = fichero.readBytes()
+        val rango = Regex("""/ByteRange\s*\[\s*(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s*\]""")
+            .find(String(datos, Charsets.ISO_8859_1))
+            ?: error("El PDF firmado no declara /ByteRange")
+        val (a, b, c) = rango.destructured.toList().take(3).map { it.toInt() }
+
+        val hueco = String(datos, a + b, c - (a + b), Charsets.ISO_8859_1)
+        val hexa = hueco.substringAfter('<').substringBeforeLast('>')
+            .filter { !it.isWhitespace() }
+        return hexa.chunked(2)
+            .map { it.toInt(16).toByte() }
+            .toByteArray()
+            .dropLastWhile { it == 0.toByte() }
+            .toByteArray()
     }
 
     @Test

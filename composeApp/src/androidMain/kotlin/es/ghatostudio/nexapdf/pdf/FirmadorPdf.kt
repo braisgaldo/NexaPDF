@@ -12,6 +12,7 @@ import org.bouncycastle.cms.jcajce.JcaSignerInfoGeneratorBuilder
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder
 import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder
+import org.bouncycastle.asn1.ASN1Encoding
 import org.bouncycastle.asn1.ASN1ObjectIdentifier
 import org.bouncycastle.asn1.cms.CMSObjectIdentifiers
 import java.io.File
@@ -162,7 +163,15 @@ class FirmadorPdf {
 
             // El contenido firmado va aparte (detached), asi que se genera con
             // encapsulate = false.
-            return generador.generate(ContenidoFlujo(contenido), false).encoded
+            //
+            // Se pide DER explicitamente. `encoded` a secas devuelve BER con
+            // longitudes indefinidas, porque el contenido se ha firmado en
+            // flujo; Acrobat lo traga, pero la norma exige DER para la firma de
+            // un PDF y los validadores estrictos (openssl entre ellos) rechazan
+            // el sobre entero antes de mirar la firma.
+            return generador.generate(ContenidoFlujo(contenido), false)
+                .toASN1Structure()
+                .getEncoded(ASN1Encoding.DER)
         }
     }
 
