@@ -19,6 +19,9 @@ import es.ghatostudio.nexapdf.plataforma.AlmacenFicherosAndroid
 import es.ghatostudio.nexapdf.plataforma.SelectorFicherosAndroid
 import es.ghatostudio.nexapdf.plataforma.ServiciosPlataformaAndroid
 import java.util.Locale
+import android.content.Intent
+import android.net.Uri
+import androidx.core.content.IntentCompat
 
 class MainActivity : ComponentActivity() {
 
@@ -63,8 +66,33 @@ class MainActivity : ComponentActivity() {
             ajustes = RepositorioAjustes(almacenPreferencias),
         )
 
-        setContent { App(contenedor) }
+        setContent { App(contenedor, documentoDeEntrada) }
     }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        // Con launchMode singleTask el sistema reutiliza la actividad viva, y
+        // sin esto el segundo PDF que se abriera desde fuera no llegaria.
+        setIntent(intent)
+        recreate()
+    }
+
+    /**
+     * El documento con el que se ha abierto la aplicacion, si viene de fuera.
+     *
+     * Llega de dos sitios: al pulsar "abrir con" sobre un PDF en el gestor de
+     * archivos (ACTION_VIEW) y al compartirlo desde otra aplicacion
+     * (ACTION_SEND).
+     */
+    private val documentoDeEntrada: String?
+        get() = when (intent?.action) {
+            Intent.ACTION_VIEW -> intent?.data?.toString()
+            Intent.ACTION_SEND -> IntentCompat
+                .getParcelableExtra(intent, Intent.EXTRA_STREAM, Uri::class.java)
+                ?.toString()
+
+            else -> null
+        }
 
     private val almacenPreferencias: DataStore<Preferences> by lazy {
         PreferenceDataStoreFactory.create(

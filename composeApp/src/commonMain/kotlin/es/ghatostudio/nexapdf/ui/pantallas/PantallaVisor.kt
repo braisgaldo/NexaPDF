@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.NavigateBefore
 import androidx.compose.material.icons.automirrored.filled.NavigateNext
@@ -347,8 +348,46 @@ private fun ListaResultados(
     }
 }
 
+/** Encabezado comun de los paneles: titulo, icono y cuenta. */
+@Composable
+private fun CabeceraPanel(
+    icono: androidx.compose.ui.graphics.vector.ImageVector,
+    titulo: String,
+    cuenta: Int?,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 20.dp, top = 4.dp, bottom = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(icono, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+        Spacer(Modifier.width(12.dp))
+        Text(
+            text = titulo,
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.weight(1f),
+        )
+        if (cuenta != null && cuenta > 0) {
+            Text(
+                text = cuenta.toString(),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.primaryContainer, CircleShape)
+                    .padding(horizontal = 10.dp, vertical = 3.dp),
+            )
+        }
+    }
+}
+
 @Composable
 private fun PanelIndice(secciones: List<Seccion>, alElegir: (Int) -> Unit) {
+    CabeceraPanel(
+        icono = Icons.AutoMirrored.Filled.ListAlt,
+        titulo = stringResource(Res.string.visor_indice),
+        cuenta = secciones.size,
+    )
     if (secciones.isEmpty()) {
         Text(
             text = stringResource(Res.string.visor_sin_indice),
@@ -364,7 +403,7 @@ private fun PanelIndice(secciones: List<Seccion>, alElegir: (Int) -> Unit) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 48.dp)
+                    .heightIn(min = 52.dp)
                     .clickable { alElegir(seccion.pagina) }
                     // La sangria dice de un vistazo que es capitulo y que es
                     // apartado, sin necesidad de numerarlo.
@@ -396,12 +435,12 @@ private fun PanelIndice(secciones: List<Seccion>, alElegir: (Int) -> Unit) {
 
 @Composable
 private fun PanelFirmas(firmas: List<FirmaExistente>) {
-    Column(modifier = Modifier.fillMaxWidth().padding(20.dp)) {
-        Text(
-            text = stringResource(Res.string.firma_existentes),
-            style = MaterialTheme.typography.titleMedium,
-        )
-        Spacer(Modifier.height(12.dp))
+    CabeceraPanel(
+        icono = Icons.Filled.VerifiedUser,
+        titulo = stringResource(Res.string.firma_existentes),
+        cuenta = firmas.size,
+    )
+    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
         if (firmas.isEmpty()) {
             Text(
                 text = stringResource(Res.string.firma_sin_existentes),
@@ -411,7 +450,14 @@ private fun PanelFirmas(firmas: List<FirmaExistente>) {
         } else {
             firmas.forEach { firma ->
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 6.dp)
+                        .background(
+                            MaterialTheme.colorScheme.surfaceContainerHigh,
+                            MaterialTheme.shapes.medium,
+                        )
+                        .padding(14.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Icon(

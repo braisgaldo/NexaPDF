@@ -68,6 +68,12 @@ interface SelectorFicheros {
      * El permiso sobre esa carpeta se conserva entre arranques: si hubiera que
      * volver a pedirlo cada vez, elegir carpeta no serviria de nada.
      */
+    /**
+     * Copia al espacio de trabajo un fichero que llega de fuera, por ejemplo
+     * al abrir un PDF desde el gestor de archivos.
+     */
+    suspend fun adoptarExterno(identificador: String): FicheroElegido?
+
     suspend fun elegirCarpeta(): String?
 
     /** Nombre legible de una carpeta elegida, para ensenarlo en los ajustes. */

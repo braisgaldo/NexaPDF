@@ -221,6 +221,9 @@ class SelectorFicherosAndroid(
         return espera.await()
     }
 
+    override suspend fun adoptarExterno(identificador: String): FicheroElegido? =
+        runCatching { copiarAlEspacioDeTrabajo(Uri.parse(identificador)) }.getOrNull()
+
     override suspend fun elegirCarpeta(): String? {
         val espera = CompletableDeferred<Uri?>()
         pendienteCarpeta = espera

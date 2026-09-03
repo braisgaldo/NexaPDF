@@ -108,7 +108,7 @@ import org.jetbrains.compose.resources.stringResource
  * sea cuestion de dar otra implementacion del contenedor.
  */
 @Composable
-fun NexaPdfApp(contenedor: ContenedorApp) {
+fun NexaPdfApp(contenedor: ContenedorApp, documentoDeEntrada: String? = null) {
     CompositionLocalProvider(LocalContenedor provides contenedor) {
         val estado = remember { EstadoApp(contenedor) }
         val ajustes by estado.ajustes.collectAsState()
@@ -122,14 +122,18 @@ fun NexaPdfApp(contenedor: ContenedorApp) {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background,
             ) {
-                ContenidoApp(contenedor, estado)
+                ContenidoApp(contenedor, estado, documentoDeEntrada)
             }
         }
     }
 }
 
 @Composable
-private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
+private fun ContenidoApp(
+    contenedor: ContenedorApp,
+    estado: EstadoApp,
+    documentoDeEntrada: String?,
+) {
     val alcance = rememberCoroutineScope()
     // Se usa la retroalimentacion haptica de Compose y no el Vibrator del
     // sistema: esta respeta los ajustes de vibracion del usuario y, sobre
@@ -331,6 +335,16 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
         )
         if (resultado == SnackbarResult.ActionPerformed) aviso.alPulsar?.invoke()
         estado.avisoMostrado()
+    }
+
+    // Un PDF que llega desde el gestor de archivos o desde otra aplicacion se
+    // copia al espacio de trabajo y se abre para leer, que es lo que espera
+    // quien pulsa "abrir con".
+    LaunchedEffect(documentoDeEntrada) {
+        val entrada = documentoDeEntrada ?: return@LaunchedEffect
+        val adoptado = contenedor.selector.adoptarExterno(entrada) ?: return@LaunchedEffect
+        abrirDocumentos(listOf(adoptado.ruta))
+        estado.ir(Destino.Visor(adoptado.ruta))
     }
 
     var ajustesLeidos by remember { mutableStateOf(false) }

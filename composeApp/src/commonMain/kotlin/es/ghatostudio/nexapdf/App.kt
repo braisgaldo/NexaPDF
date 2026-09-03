@@ -12,6 +12,6 @@ import es.ghatostudio.nexapdf.ui.NexaPdfApp
  * interfaces dentro, que es mas facil de sustituir en pruebas.
  */
 @Composable
-fun App(contenedor: ContenedorApp) {
-    NexaPdfApp(contenedor)
+fun App(contenedor: ContenedorApp, documentoDeEntrada: String? = null) {
+    NexaPdfApp(contenedor, documentoDeEntrada)
 }

@@ -52,6 +52,8 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -382,16 +384,36 @@ private fun Accion(
     etiqueta: String,
     alPulsar: () -> Unit,
 ) {
-    AssistChip(
+    // Tarjeta y no chip: el chip de Material es una etiqueta con borde fino,
+    // pensada para filtrar, y como boton de accion se lee mal y se acierta
+    // peor. Con superficie propia, icono grande y 56 dp de alto la fila pasa a
+    // parecer lo que es, una barra de acciones.
+    Card(
         onClick = alPulsar,
-        label = { Text(etiqueta, maxLines = 1) },
-        leadingIcon = { Icon(icono, contentDescription = null, modifier = Modifier.size(18.dp)) },
-        colors = AssistChipDefaults.assistChipColors(
-            labelColor = MaterialTheme.colorScheme.onSurface,
-            leadingIconContentColor = MaterialTheme.colorScheme.primary,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            contentColor = MaterialTheme.colorScheme.onSurface,
         ),
-        modifier = Modifier.heightIn(min = 48.dp),
-    )
+        modifier = Modifier.heightIn(min = 56.dp),
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                imageVector = icono,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(22.dp),
+            )
+            Spacer(Modifier.width(10.dp))
+            Text(
+                text = etiqueta,
+                style = MaterialTheme.typography.labelLarge,
+                maxLines = 1,
+            )
+        }
+    }
 }
 
 /**

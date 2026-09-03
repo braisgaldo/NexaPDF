@@ -31,6 +31,15 @@ import kotlin.math.roundToInt
 class PdfAOfimatica {
 
     private companion object {
+        /** Columnas minimas para considerar que una fila es de tabla. */
+        const val MINIMO_COLUMNAS = 2
+
+        /** Filas seguidas con la misma forma para llamarlo tabla. */
+        const val MINIMO_FILAS_TABLA = 3
+
+        /** Ancho util de un A4 con los margenes de esta clase, en vigesimas. */
+        const val ANCHO_UTIL_TWIPS = 9638
+
         /** Puntos de separacion vertical a partir de los cuales hay otra fila. */
         const val TOLERANCIA_FILA = 6f
 
@@ -44,21 +53,30 @@ class PdfAOfimatica {
     // --- DOCX ----------------------------------------------------------------
 
     fun aDocx(origen: File, destino: File, titulo: String) {
-        val paginas = textoPorPagina(origen)
+        val paginas = filasPorPagina(origen)
 
         val cuerpo = buildString {
-            paginas.forEachIndexed { indice, lineas ->
+            paginas.forEachIndexed { indice, filas ->
                 if (indice > 0) {
                     // Salto de pagina explicito entre paginas del PDF original.
                     append(
                         "<w:p><w:r><w:br w:type=\"page\"/></w:r></w:p>",
                     )
                 }
-                if (lineas.isEmpty()) append("<w:p/>")
-                lineas.forEach { linea ->
-                    append("<w:p><w:r><w:t xml:space=\"preserve\">")
-                    append(PaqueteOoxml.escapar(linea))
-                    append("</w:t></w:r></w:p>")
+                if (filas.isEmpty()) {
+                    append("<w:p/>")
+                    return@forEachIndexed
+                }
+                agruparEnBloques(filas).forEach { bloque ->
+                    when (bloque) {
+                        is Bloque.Parrafos -> bloque.lineas.forEach { linea ->
+                            append("<w:p><w:r><w:t xml:space=\"preserve\">")
+                            append(PaqueteOoxml.escapar(linea))
+                            append("</w:t></w:r></w:p>")
+                        }
+
+                        is Bloque.Tabla -> append(tablaWord(bloque.filas))
+                    }
                 }
             }
         }
@@ -330,8 +348,10 @@ class PdfAOfimatica {
         }
 
     /** Una linea de texto con la posicion de cada uno de sus fragmentos. */
+    private class Fragmento(val x: Float, val fin: Float, val texto: String)
+
     private class LineaConPosicion(val y: Float) {
-        val fragmentos = mutableListOf<Pair<Float, String>>()
+        val fragmentos = mutableListOf<Fragmento>()
     }
 
     /**
@@ -342,11 +362,22 @@ class PdfAOfimatica {
      * Es la forma habitual de recuperar una tabla de un PDF, y acierta con las
      * tablas alineadas; con las que no lo estan, el resultado es aproximado.
      */
-    private fun filasDetectadas(origen: File): List<List<String>> {
-        val filas = mutableListOf<List<String>>()
+    private fun filasDetectadas(origen: File): List<List<String>> =
+        filasPorPagina(origen).flatten()
+
+    /**
+     * Como [filasDetectadas], pero sin mezclar paginas.
+     *
+     * Word necesita el corte: una tabla que termina al pie de una pagina y otra
+     * distinta que empieza en la siguiente tienen a veces el mismo numero de
+     * columnas, y unidas saldrian como una sola tabla que no existe.
+     */
+    private fun filasPorPagina(origen: File): List<List<List<String>>> {
+        val paginas = mutableListOf<List<List<String>>>()
 
         PDDocument.load(origen).use { documento ->
             (1..documento.numberOfPages).forEach { numero ->
+                val filas = mutableListOf<List<String>>()
                 val lineas = mutableListOf<LineaConPosicion>()
 
                 val extractor = object : PDFTextStripper() {
@@ -358,7 +389,15 @@ class PdfAOfimatica {
                         val y = posiciones.first().yDirAdj
                         val linea = lineas.firstOrNull { abs(it.y - y) < TOLERANCIA_FILA }
                             ?: LineaConPosicion(y).also { lineas += it }
-                        linea.fragmentos += posiciones.first().xDirAdj to texto.trim()
+                        // Se guarda tambien donde acaba: con el ancho real de
+                        // los glifos, el hueco entre columnas se mide bien y
+                        // deja de partir palabras largas en dos celdas.
+                        val ultima = posiciones.last()
+                        linea.fragmentos += Fragmento(
+                            x = posiciones.first().xDirAdj,
+                            fin = ultima.xDirAdj + ultima.widthDirAdj,
+                            texto = texto.trim(),
+                        )
                     }
                 }.apply {
                     sortByPosition = true
@@ -368,29 +407,126 @@ class PdfAOfimatica {
                 extractor.getText(documento)
 
                 lineas.sortedBy { it.y }.forEach { linea ->
-                    val ordenados = linea.fragmentos.sortedBy { it.first }
+                    val ordenados = linea.fragmentos.sortedBy { it.x }
                     val celdas = mutableListOf<String>()
                     var acumulado = StringBuilder()
                     var finAnterior = Float.NaN
 
-                    ordenados.forEach { (x, texto) ->
-                        val hayHueco = !finAnterior.isNaN() && x - finAnterior > SEPARACION_COLUMNA
+                    ordenados.forEach { fragmento ->
+                        val hayHueco = !finAnterior.isNaN() &&
+                            fragmento.x - finAnterior > SEPARACION_COLUMNA
                         if (hayHueco && acumulado.isNotEmpty()) {
                             celdas += acumulado.toString().trim()
                             acumulado = StringBuilder()
                         }
                         if (acumulado.isNotEmpty()) acumulado.append(' ')
-                        acumulado.append(texto)
-                        // Aproximacion suficiente del final del fragmento: el
-                        // ancho exacto exigiria medir glifo a glifo.
-                        finAnterior = x + texto.length * 5f
+                        acumulado.append(fragmento.texto)
+                        finAnterior = fragmento.fin
                     }
                     if (acumulado.isNotEmpty()) celdas += acumulado.toString().trim()
                     if (celdas.any { it.isNotBlank() }) filas += celdas
                 }
+                paginas += filas
             }
         }
-        return filas
+        return paginas
+    }
+
+    /** Lo que sale de una pagina: parrafos sueltos o una tabla. */
+    private sealed interface Bloque {
+        class Parrafos(val lineas: List<String>) : Bloque
+        class Tabla(val filas: List<List<String>>) : Bloque
+    }
+
+    /**
+     * Separa las filas de una pagina en parrafos y tablas.
+     *
+     * Una tabla se reconoce por lo mismo que la reconoce el ojo: varias filas
+     * seguidas partidas en el mismo numero de columnas. Con dos filas no basta
+     * (dos lineas con un hueco en medio son un texto con sangria, no una
+     * tabla), asi que se exige un minimo de tres.
+     *
+     * No se intenta adivinar mas: sin bordes ni etiquetas de estructura, un PDF
+     * no dice donde empieza una tabla, y pasarse de listo convierte parrafos
+     * normales en tablas de una columna.
+     */
+    private fun agruparEnBloques(filas: List<List<String>>): List<Bloque> {
+        val bloques = mutableListOf<Bloque>()
+        val sueltas = mutableListOf<String>()
+        var indice = 0
+
+        fun volcarSueltas() {
+            if (sueltas.isNotEmpty()) {
+                bloques += Bloque.Parrafos(sueltas.toList())
+                sueltas.clear()
+            }
+        }
+
+        while (indice < filas.size) {
+            val columnas = filas[indice].size
+            if (columnas < MINIMO_COLUMNAS) {
+                sueltas += filas[indice].joinToString(" ").trim()
+                indice++
+                continue
+            }
+
+            var fin = indice
+            while (fin < filas.size && filas[fin].size == columnas) fin++
+            val cuantas = fin - indice
+
+            if (cuantas >= MINIMO_FILAS_TABLA) {
+                volcarSueltas()
+                bloques += Bloque.Tabla(filas.subList(indice, fin).toList())
+            } else {
+                // Pocas filas para ser tabla: se escriben como texto normal.
+                (indice until fin).forEach { sueltas += filas[it].joinToString(" ").trim() }
+            }
+            indice = fin
+        }
+        volcarSueltas()
+        return bloques
+    }
+
+    /**
+     * Una tabla de Word con bordes finos y ancho repartido.
+     *
+     * El ancho va en vigesimas de punto sobre el area util de un A4 con los
+     * margenes que pone esta misma clase: 11906 - 1134 - 1134 = 9638.
+     */
+    private fun tablaWord(filas: List<List<String>>): String {
+        val columnas = filas.first().size
+        val ancho = ANCHO_UTIL_TWIPS / columnas
+
+        return buildString {
+            append("<w:tbl><w:tblPr>")
+            append("<w:tblW w:w=\"$ANCHO_UTIL_TWIPS\" w:type=\"dxa\"/>")
+            append("<w:tblBorders>")
+            listOf("top", "left", "bottom", "right", "insideH", "insideV").forEach { lado ->
+                append("<w:$lado w:val=\"single\" w:sz=\"4\" w:color=\"BFBFBF\"/>")
+            }
+            append("</w:tblBorders></w:tblPr><w:tblGrid>")
+            repeat(columnas) { append("<w:gridCol w:w=\"$ancho\"/>") }
+            append("</w:tblGrid>")
+
+            filas.forEachIndexed { numero, fila ->
+                append("<w:tr>")
+                fila.forEach { celda ->
+                    append("<w:tc><w:tcPr><w:tcW w:w=\"$ancho\" w:type=\"dxa\"/></w:tcPr>")
+                    append("<w:p><w:r>")
+                    // La primera fila se pone en negrita: en una tabla sacada
+                    // de un PDF casi siempre es la cabecera.
+                    if (numero == 0) append("<w:rPr><w:b/></w:rPr>")
+                    append("<w:t xml:space=\"preserve\">")
+                    append(PaqueteOoxml.escapar(celda))
+                    append("</w:t></w:r></w:p></w:tc>")
+                }
+                append("</w:tr>")
+            }
+            append("</w:tbl>")
+            // Word necesita un parrafo detras de una tabla; sin el, dos tablas
+            // seguidas se funden en una.
+            append("<w:p/>")
+        }
     }
 
     // --- Partes fijas de los paquetes ----------------------------------------
