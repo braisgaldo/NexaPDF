@@ -24,9 +24,13 @@ Primera versión publicable.
   sustitución del texto existente, imágenes incrustadas, firma manuscrita y
   filtros de mejora (documento nítido, escala de grises, blanco y negro con
   umbral de Otsu, alto contraste, aclarar e invertir).
-- **Firma electrónica** con certificado PKCS#12, incrustada mediante guardado
+- **Firma electrónica** con certificado, incrustada mediante guardado
   incremental y verificable por cualquier lector, además de la firma manuscrita
-  como sello visible.
+  como sello visible. El certificado puede venir de un fichero `.p12` o `.pfx`,
+  o del **almacén de claves del dispositivo**: en ese caso la clave privada no
+  sale del sistema y no hace falta contraseña, que es el caso habitual de los
+  certificados de la FNMT. El sobre PKCS#7 se codifica en DER, comprobado
+  contra un validador externo.
 - **Reordenación de páginas** arrastrando, con vista previa y confirmación
   explícita antes de aplicar.
 - **Conversión** entre PDF y Word, Excel y PowerPoint en ambos sentidos.
@@ -37,6 +41,8 @@ Primera versión publicable.
   con su bandera dibujada en Compose, y soporte RTL para el árabe.
 - **Exportación e importación** de preferencias y firmas en ficheros
   `.nexaPDF.bak`, con copia de seguridad automática previa a cada importación.
+- Vista previa del documento antes de firmarlo, y selector de ficheros que
+  abre en la carpeta **Descargas**.
 - **Ayuda** y **Acerca de** con versión, compilación, commit, licencias de
   terceros y enlace a la política de privacidad.
 - Aviso de donación, mostrado una sola vez tras la primera sesión con uso real y
