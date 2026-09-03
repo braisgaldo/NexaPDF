@@ -130,6 +130,8 @@
     <string name="doc_girar_derecha">Rotate right</string>
     <string name="doc_girar_izquierda">Rotate left</string>
     <string name="doc_guardar_como">Save as…</string>
+    <string name="doc_paso_documentos">Step 1 of 2 · Order the documents</string>
+    <string name="doc_paso_paginas">Step 2 of 2 · Order the pages</string>
     <string name="doc_quitar">Remove</string>
     <string name="doc_resultado_guardado">Saved to %1$s</string>
     <string name="doc_separar_una_por_fichero">One file per page</string>
@@ -137,6 +139,7 @@
     <string name="doc_titulo_paginas">Pages</string>
     <string name="doc_titulo_union">Order and merge</string>
     <string name="doc_unir">Merge</string>
+    <string name="doc_unir_y_seguir">Merge and order pages</string>
     <string name="donar_ahora_no">Not now</string>
     <string name="donar_boton">Buy me a coffee · %1$s</string>
     <string name="donar_copiar_enlace">Copy link</string>

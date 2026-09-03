@@ -130,6 +130,8 @@
     <string name="doc_girar_derecha">Biratu eskuinera</string>
     <string name="doc_girar_izquierda">Biratu ezkerrera</string>
     <string name="doc_guardar_como">Gorde honela…</string>
+    <string name="doc_paso_documentos">1. urratsa / 2 · Ordenatu dokumentuak</string>
+    <string name="doc_paso_paginas">2. urratsa / 2 · Ordenatu orriak</string>
     <string name="doc_quitar">Kendu</string>
     <string name="doc_resultado_guardado">%1$s-n gordeta</string>
     <string name="doc_separar_una_por_fichero">Fitxategi bat orriko</string>
@@ -137,6 +139,7 @@
     <string name="doc_titulo_paginas">Orriak</string>
     <string name="doc_titulo_union">Ordenatu eta batu</string>
     <string name="doc_unir">Batu</string>
+    <string name="doc_unir_y_seguir">Batu eta ordenatu orriak</string>
     <string name="donar_ahora_no">Orain ez</string>
     <string name="donar_boton">Kafe bat gonbidatu · %1$s</string>
     <string name="donar_copiar_enlace">Kopiatu esteka</string>

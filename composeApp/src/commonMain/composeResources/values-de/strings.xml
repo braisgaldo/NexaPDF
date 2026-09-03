@@ -130,6 +130,8 @@
     <string name="doc_girar_derecha">Nach rechts drehen</string>
     <string name="doc_girar_izquierda">Nach links drehen</string>
     <string name="doc_guardar_como">Speichern unter…</string>
+    <string name="doc_paso_documentos">Schritt 1 von 2 · Dokumente ordnen</string>
+    <string name="doc_paso_paginas">Schritt 2 von 2 · Seiten ordnen</string>
     <string name="doc_quitar">Entfernen</string>
     <string name="doc_resultado_guardado">Gespeichert unter %1$s</string>
     <string name="doc_separar_una_por_fichero">Eine Datei pro Seite</string>
@@ -137,6 +139,7 @@
     <string name="doc_titulo_paginas">Seiten</string>
     <string name="doc_titulo_union">Ordnen und zusammenfügen</string>
     <string name="doc_unir">Zusammenfügen</string>
+    <string name="doc_unir_y_seguir">Zusammenfügen und Seiten ordnen</string>
     <string name="donar_ahora_no">Jetzt nicht</string>
     <string name="donar_boton">Kaffee spendieren · %1$s</string>
     <string name="donar_copiar_enlace">Link kopieren</string>

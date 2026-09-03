@@ -130,6 +130,8 @@
     <string name="doc_girar_derecha">Gira a la dreta</string>
     <string name="doc_girar_izquierda">Gira a l’esquerra</string>
     <string name="doc_guardar_como">Desa com a…</string>
+    <string name="doc_paso_documentos">Pas 1 de 2 · Ordena els documents</string>
+    <string name="doc_paso_paginas">Pas 2 de 2 · Ordena les pàgines</string>
     <string name="doc_quitar">Treu</string>
     <string name="doc_resultado_guardado">Desat a %1$s</string>
     <string name="doc_separar_una_por_fichero">Un fitxer per pàgina</string>
@@ -137,6 +139,7 @@
     <string name="doc_titulo_paginas">Pàgines</string>
     <string name="doc_titulo_union">Ordena i uneix</string>
     <string name="doc_unir">Uneix</string>
+    <string name="doc_unir_y_seguir">Uneix i ordena les pàgines</string>
     <string name="donar_ahora_no">Ara no</string>
     <string name="donar_boton">Convida’m a un cafè · %1$s</string>
     <string name="donar_copiar_enlace">Copia l’enllaç</string>

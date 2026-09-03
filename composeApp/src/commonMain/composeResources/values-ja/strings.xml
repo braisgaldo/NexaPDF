@@ -130,6 +130,8 @@
     <string name="doc_girar_derecha">右に回転</string>
     <string name="doc_girar_izquierda">左に回転</string>
     <string name="doc_guardar_como">名前を付けて保存…</string>
+    <string name="doc_paso_documentos">ステップ 1／2 · 文書の順番</string>
+    <string name="doc_paso_paginas">ステップ 2／2 · ページの順番</string>
     <string name="doc_quitar">取り除く</string>
     <string name="doc_resultado_guardado">%1$s に保存しました</string>
     <string name="doc_separar_una_por_fichero">1 ページごとに 1 ファイル</string>
@@ -137,6 +139,7 @@
     <string name="doc_titulo_paginas">ページ</string>
     <string name="doc_titulo_union">並べ替えて結合</string>
     <string name="doc_unir">結合</string>
+    <string name="doc_unir_y_seguir">結合してページを並べる</string>
     <string name="donar_ahora_no">今はやめておく</string>
     <string name="donar_boton">コーヒーをごちそうする · %1$s</string>
     <string name="donar_copiar_enlace">リンクをコピー</string>

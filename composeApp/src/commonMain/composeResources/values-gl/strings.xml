@@ -130,6 +130,8 @@
     <string name="doc_girar_derecha">Xirar á dereita</string>
     <string name="doc_girar_izquierda">Xirar á esquerda</string>
     <string name="doc_guardar_como">Gardar como…</string>
+    <string name="doc_paso_documentos">Paso 1 de 2 · Ordena os documentos</string>
+    <string name="doc_paso_paginas">Paso 2 de 2 · Ordena as páxinas</string>
     <string name="doc_quitar">Quitar</string>
     <string name="doc_resultado_guardado">Gardado en %1$s</string>
     <string name="doc_separar_una_por_fichero">Un ficheiro por páxina</string>
@@ -137,6 +139,7 @@
     <string name="doc_titulo_paginas">Páxinas</string>
     <string name="doc_titulo_union">Ordenar e unir</string>
     <string name="doc_unir">Unir</string>
+    <string name="doc_unir_y_seguir">Unir e ordenar páxinas</string>
     <string name="donar_ahora_no">Agora non</string>
     <string name="donar_boton">Convídame a un café · %1$s</string>
     <string name="donar_copiar_enlace">Copiar ligazón</string>

@@ -130,6 +130,8 @@
     <string name="doc_girar_derecha">تدوير لليمين</string>
     <string name="doc_girar_izquierda">تدوير لليسار</string>
     <string name="doc_guardar_como">حفظ باسم…</string>
+    <string name="doc_paso_documentos">الخطوة ١ من ٢ · رتّب المستندات</string>
+    <string name="doc_paso_paginas">الخطوة ٢ من ٢ · رتّب الصفحات</string>
     <string name="doc_quitar">إزالة</string>
     <string name="doc_resultado_guardado">تم الحفظ في %1$s</string>
     <string name="doc_separar_una_por_fichero">ملف لكل صفحة</string>
@@ -137,6 +139,7 @@
     <string name="doc_titulo_paginas">الصفحات</string>
     <string name="doc_titulo_union">الترتيب والدمج</string>
     <string name="doc_unir">دمج</string>
+    <string name="doc_unir_y_seguir">ادمج ورتّب الصفحات</string>
     <string name="donar_ahora_no">ليس الآن</string>
     <string name="donar_boton">ادعُني إلى قهوة · %1$s</string>
     <string name="donar_copiar_enlace">نسخ الرابط</string>

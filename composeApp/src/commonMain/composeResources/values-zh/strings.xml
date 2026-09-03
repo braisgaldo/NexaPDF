@@ -130,6 +130,8 @@
     <string name="doc_girar_derecha">向右旋转</string>
     <string name="doc_girar_izquierda">向左旋转</string>
     <string name="doc_guardar_como">另存为…</string>
+    <string name="doc_paso_documentos">第 1 步，共 2 步 · 排列文档顺序</string>
+    <string name="doc_paso_paginas">第 2 步，共 2 步 · 排列页面顺序</string>
     <string name="doc_quitar">移除</string>
     <string name="doc_resultado_guardado">已保存到 %1$s</string>
     <string name="doc_separar_una_por_fichero">每页一个文件</string>
@@ -137,6 +139,7 @@
     <string name="doc_titulo_paginas">页面</string>
     <string name="doc_titulo_union">排序并合并</string>
     <string name="doc_unir">合并</string>
+    <string name="doc_unir_y_seguir">合并并排列页面</string>
     <string name="donar_ahora_no">暂时不用</string>
     <string name="donar_boton">请我喝杯咖啡 · %1$s</string>
     <string name="donar_copiar_enlace">复制链接</string>

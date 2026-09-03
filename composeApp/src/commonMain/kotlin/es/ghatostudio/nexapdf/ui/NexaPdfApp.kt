@@ -404,6 +404,7 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
                 paginas = paginas,
                 rutaActiva = rutaActiva,
                 modoUnion = destino.modoUnion,
+                desdeUnion = destino.desdeUnion,
                 necesitaContrasena = necesitaContrasena,
                 confirmarBorrado = ajustes.confirmarAccionesDestructivas,
                 snackbar = snackbar,
@@ -422,7 +423,14 @@ private fun ContenidoApp(contenedor: ContenedorApp, estado: EstadoApp) {
                                 is ResultadoPdf.Exito -> {
                                     registrarResultado(resultado.valor)
                                     abrirDocumentos(listOf(resultado.valor))
-                                    estado.reemplazar(Destino.Documento(listOf(resultado.valor)))
+                                    // Segundo paso de la union: ya se puede
+                                    // ordenar el conjunto pagina a pagina.
+                                    estado.reemplazar(
+                                        Destino.Documento(
+                                            rutas = listOf(resultado.valor),
+                                            desdeUnion = true,
+                                        ),
+                                    )
                                 }
 
                                 is ResultadoPdf.Fallo ->

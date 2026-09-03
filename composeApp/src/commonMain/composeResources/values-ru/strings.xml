@@ -130,6 +130,8 @@
     <string name="doc_girar_derecha">Повернуть вправо</string>
     <string name="doc_girar_izquierda">Повернуть влево</string>
     <string name="doc_guardar_como">Сохранить как…</string>
+    <string name="doc_paso_documentos">Шаг 1 из 2 · Порядок документов</string>
+    <string name="doc_paso_paginas">Шаг 2 из 2 · Порядок страниц</string>
     <string name="doc_quitar">Убрать</string>
     <string name="doc_resultado_guardado">Сохранено в %1$s</string>
     <string name="doc_separar_una_por_fichero">Один файл на страницу</string>
@@ -137,6 +139,7 @@
     <string name="doc_titulo_paginas">Страницы</string>
     <string name="doc_titulo_union">Порядок и объединение</string>
     <string name="doc_unir">Объединить</string>
+    <string name="doc_unir_y_seguir">Объединить и упорядочить страницы</string>
     <string name="donar_ahora_no">Не сейчас</string>
     <string name="donar_boton">Угостить кофе · %1$s</string>
     <string name="donar_copiar_enlace">Копировать ссылку</string>

@@ -28,6 +28,12 @@ sealed interface Destino {
     data class Documento(
         val rutas: List<String>,
         val modoUnion: Boolean = false,
+        /**
+         * Se llego aqui despues de unir. Sirve para presentar la rejilla de
+         * paginas como el segundo paso de la union en lugar de como una
+         * pantalla suelta.
+         */
+        val desdeUnion: Boolean = false,
     ) : Destino
 
     data class Imagenes(val rutas: List<String>) : Destino

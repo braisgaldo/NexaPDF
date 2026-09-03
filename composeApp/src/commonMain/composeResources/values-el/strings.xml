@@ -130,6 +130,8 @@
     <string name="doc_girar_derecha">Περιστροφή δεξιά</string>
     <string name="doc_girar_izquierda">Περιστροφή αριστερά</string>
     <string name="doc_guardar_como">Αποθήκευση ως…</string>
+    <string name="doc_paso_documentos">Βήμα 1 από 2 · Σειρά των εγγράφων</string>
+    <string name="doc_paso_paginas">Βήμα 2 από 2 · Σειρά των σελίδων</string>
     <string name="doc_quitar">Αφαίρεση</string>
     <string name="doc_resultado_guardado">Αποθηκεύτηκε στο %1$s</string>
     <string name="doc_separar_una_por_fichero">Ένα αρχείο ανά σελίδα</string>
@@ -137,6 +139,7 @@
     <string name="doc_titulo_paginas">Σελίδες</string>
     <string name="doc_titulo_union">Ταξινόμηση και συγχώνευση</string>
     <string name="doc_unir">Συγχώνευση</string>
+    <string name="doc_unir_y_seguir">Ένωση και σειρά σελίδων</string>
     <string name="donar_ahora_no">Όχι τώρα</string>
     <string name="donar_boton">Κεράστε μου έναν καφέ · %1$s</string>
     <string name="donar_copiar_enlace">Αντιγραφή συνδέσμου</string>

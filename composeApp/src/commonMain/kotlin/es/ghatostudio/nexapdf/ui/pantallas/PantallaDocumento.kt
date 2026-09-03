@@ -26,6 +26,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MergeType
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ContentCut
 import androidx.compose.material.icons.filled.Delete
@@ -105,7 +106,10 @@ import es.ghatostudio.nexapdf.resources.doc_separar_una_por_fichero
 import es.ghatostudio.nexapdf.resources.doc_subir
 import es.ghatostudio.nexapdf.resources.doc_titulo_paginas
 import es.ghatostudio.nexapdf.resources.doc_titulo_union
+import es.ghatostudio.nexapdf.resources.doc_paso_documentos
+import es.ghatostudio.nexapdf.resources.doc_paso_paginas
 import es.ghatostudio.nexapdf.resources.doc_unir
+import es.ghatostudio.nexapdf.resources.doc_unir_y_seguir
 import es.ghatostudio.nexapdf.resources.plural_documentos
 import es.ghatostudio.nexapdf.resources.plural_paginas
 import es.ghatostudio.nexapdf.resources.plural_seleccionadas
@@ -147,6 +151,8 @@ fun PantallaDocumento(
      * suelto y se ensenaba la rejilla de paginas.
      */
     modoUnion: Boolean,
+    /** Se llego a la rejilla de paginas despues de unir. */
+    desdeUnion: Boolean = false,
     necesitaContrasena: Boolean,
     confirmarBorrado: Boolean,
     snackbar: SnackbarHostState,
@@ -204,6 +210,17 @@ fun PantallaDocumento(
                             )
                         }
                     }
+                    if (modoUnion) {
+                        IconButton(
+                            onClick = acciones.alAnadirDocumento,
+                            modifier = Modifier.size(48.dp),
+                        ) {
+                            Icon(
+                                Icons.Filled.Add,
+                                contentDescription = stringResource(Res.string.doc_anadir_pdf),
+                            )
+                        }
+                    }
                     IconButton(onClick = acciones.alCompartir, modifier = Modifier.size(48.dp)) {
                         Icon(
                             Icons.Filled.Share,
@@ -218,7 +235,7 @@ fun PantallaDocumento(
                 modoUnion -> ExtendedFloatingActionButton(
                     onClick = acciones.alUnir,
                     icon = { Icon(Icons.AutoMirrored.Filled.MergeType, contentDescription = null) },
-                    text = { Text(stringResource(Res.string.doc_unir)) },
+                    text = { Text(stringResource(Res.string.doc_unir_y_seguir)) },
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
@@ -258,6 +275,7 @@ fun PantallaDocumento(
                 )
                 RejillaPaginas(
                     ruta = rutaActiva,
+                    segundoPaso = desdeUnion,
                     orden = orden,
                     paginas = paginas,
                     seleccion = seleccion,
@@ -386,6 +404,7 @@ private fun Accion(
 @Composable
 private fun RejillaPaginas(
     ruta: String?,
+    segundoPaso: Boolean,
     orden: androidx.compose.runtime.snapshots.SnapshotStateList<Int>,
     paginas: List<PaginaPdf>,
     seleccion: Set<Int>,
@@ -412,6 +431,14 @@ private fun RejillaPaginas(
     }
 
     Column(modifier = modifier.fillMaxSize()) {
+        if (segundoPaso) {
+            Text(
+                text = stringResource(Res.string.doc_paso_paginas),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 2.dp),
+            )
+        }
         Text(
             text = stringResource(Res.string.doc_arrastrar_ayuda),
             style = MaterialTheme.typography.bodySmall,
@@ -518,6 +545,11 @@ private fun ListaDocumentos(
                     ),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Text(
+                    text = stringResource(Res.string.doc_paso_documentos),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary,
                 )
                 Text(
                     text = stringResource(Res.string.doc_arrastrar_documentos),
