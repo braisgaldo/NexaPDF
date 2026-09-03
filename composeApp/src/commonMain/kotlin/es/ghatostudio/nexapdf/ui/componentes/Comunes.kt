@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import es.ghatostudio.nexapdf.resources.Res
 import es.ghatostudio.nexapdf.resources.cd_volver
 import org.jetbrains.compose.resources.stringResource
+import androidx.compose.material3.HorizontalDivider
 
 /** Barra superior con el boton de volver ya accesible. */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,13 +80,39 @@ fun BarraSuperior(
 
 /** Encabezado de una seccion dentro de una lista de ajustes. */
 @Composable
-fun TituloSeccion(texto: String, modifier: Modifier = Modifier) {
-    Text(
-        text = texto,
-        style = MaterialTheme.typography.titleSmall,
-        color = MaterialTheme.colorScheme.primary,
-        modifier = modifier.padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 8.dp),
-    )
+fun TituloSeccion(
+    texto: String,
+    modifier: Modifier = Modifier,
+    icono: androidx.compose.ui.graphics.vector.ImageVector? = null,
+) {
+    // Con icono y una linea encima, cada apartado se lee como un bloque
+    // aparte en vez de como un rotulo perdido entre filas. En una pantalla de
+    // ajustes larga es la diferencia entre encontrar algo y recorrerla entera.
+    Column(modifier = modifier.fillMaxWidth()) {
+        HorizontalDivider(
+            color = MaterialTheme.colorScheme.outlineVariant,
+            modifier = Modifier.padding(top = 16.dp),
+        )
+        Row(
+            modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            if (icono != null) {
+                Icon(
+                    imageVector = icono,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(20.dp),
+                )
+                Spacer(Modifier.width(10.dp))
+            }
+            Text(
+                text = texto,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.primary,
+            )
+        }
+    }
 }
 
 /**

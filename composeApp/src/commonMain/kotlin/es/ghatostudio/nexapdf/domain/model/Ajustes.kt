@@ -53,6 +53,9 @@ data class Ajustes(
      */
     val carpetaDestino: String? = null,
 
+    /** Preguntar si se quiere compartir cada documento recien creado. */
+    val preguntarCompartir: Boolean = false,
+
     // --- Aviso de donacion ---
     val estadoDonacion: String = EstadoDonacion.SIN_MOSTRAR.name,
     /** Sesiones en las que el usuario ha completado alguna operacion real. */

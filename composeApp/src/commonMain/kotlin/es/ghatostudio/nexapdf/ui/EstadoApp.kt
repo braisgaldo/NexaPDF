@@ -188,6 +188,9 @@ class EstadoApp(private val contenedor: ContenedorApp) : ViewModel() {
     fun fijarModoGuardado(modo: ModoGuardado) =
         viewModelScope.launch { contenedor.ajustes.fijarModoGuardado(modo.name) }
 
+    fun fijarPreguntarCompartir(valor: Boolean) =
+        viewModelScope.launch { contenedor.ajustes.fijarPreguntarCompartir(valor) }
+
     fun fijarCarpetaDestino(uri: String?) =
         viewModelScope.launch { contenedor.ajustes.fijarCarpetaDestino(uri) }
 

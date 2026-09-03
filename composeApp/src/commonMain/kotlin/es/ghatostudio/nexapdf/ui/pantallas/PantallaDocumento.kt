@@ -115,6 +115,7 @@ import es.ghatostudio.nexapdf.resources.doc_unir_y_seguir
 import es.ghatostudio.nexapdf.resources.plural_documentos
 import es.ghatostudio.nexapdf.resources.plural_paginas
 import es.ghatostudio.nexapdf.resources.plural_seleccionadas
+import es.ghatostudio.nexapdf.ui.componentes.AsaArrastre
 import es.ghatostudio.nexapdf.ui.componentes.BarraSuperior
 import es.ghatostudio.nexapdf.ui.componentes.MiniaturaPagina
 import es.ghatostudio.nexapdf.ui.componentes.rememberReordenable
@@ -124,12 +125,15 @@ import org.jetbrains.compose.resources.stringResource
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.ui.text.style.TextAlign
 import es.ghatostudio.nexapdf.resources.doc_unir_vacio
+import es.ghatostudio.nexapdf.domain.model.RangoPaginas
+import es.ghatostudio.nexapdf.resources.doc_separar_partes
 
 /** Acciones que la pantalla ofrece al resto de la app. */
 class AccionesDocumento(
     val alUnir: () -> Unit,
     val alExtraer: (List<Int>) -> Unit,
     val alSepararTodo: () -> Unit,
+    val alSepararEnPartes: (List<Pair<RangoPaginas, String>>) -> Unit,
     val alGirar: (List<Int>, Int) -> Unit,
     val alEliminar: (List<Int>) -> Unit,
     val alReordenarPaginas: (List<Int>) -> Unit,
@@ -167,6 +171,7 @@ fun PantallaDocumento(
     var seleccion by remember(rutaActiva) { mutableStateOf(emptySet<Int>()) }
     var pidiendoBorrado by remember { mutableStateOf(false) }
     var eligiendoFormato by remember { mutableStateOf(false) }
+    var partiendo by remember { mutableStateOf(false) }
 
     // Orden de las paginas mientras se reordena. Se mantiene aparte de la lista
     // real: el documento no se toca hasta que el usuario aplica el cambio.
@@ -280,6 +285,7 @@ fun PantallaDocumento(
                     acciones = acciones,
                     alPedirBorrado = { pidiendoBorrado = true },
                     alPedirExportar = { eligiendoFormato = true },
+                    alPedirPartes = { partiendo = true },
                     confirmarBorrado = confirmarBorrado,
                 )
                 RejillaPaginas(
@@ -296,6 +302,18 @@ fun PantallaDocumento(
                 )
             }
         }
+    }
+
+    if (partiendo && rutaActiva != null) {
+        DialogoSeparar(
+            nombreBase = rutaActiva.substringAfterLast('/').removeSuffix(".pdf"),
+            totalPaginas = paginas.size.coerceAtLeast(1),
+            alConfirmar = { partes ->
+                partiendo = false
+                acciones.alSepararEnPartes(partes)
+            },
+            alCancelar = { partiendo = false },
+        )
     }
 
     if (necesitaContrasena) {
@@ -341,6 +359,7 @@ private fun BarraAcciones(
     acciones: AccionesDocumento,
     alPedirBorrado: () -> Unit,
     alPedirExportar: () -> Unit,
+    alPedirPartes: () -> Unit,
     confirmarBorrado: Boolean,
 ) {
     FlowRow(
@@ -373,6 +392,9 @@ private fun BarraAcciones(
         } else {
             Accion(Icons.Filled.ContentCut, stringResource(Res.string.doc_separar_una_por_fichero)) {
                 acciones.alSepararTodo()
+            }
+            Accion(Icons.Filled.ContentCut, stringResource(Res.string.doc_separar_partes)) {
+                alPedirPartes()
             }
             Accion(Icons.Filled.Draw, stringResource(Res.string.doc_firmar), acciones.alFirmar)
             Accion(Icons.Filled.FileDownload, stringResource(Res.string.doc_guardar_como)) {
@@ -616,6 +638,8 @@ private fun ListaDocumentos(
                     .padding(horizontal = 12.dp, vertical = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+                AsaArrastre(reordenar, posicion + 1)
+                Spacer(Modifier.width(4.dp))
                 MiniaturaPagina(
                     ruta = documento.ruta,
                     indice = 0,

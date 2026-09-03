@@ -11,6 +11,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DragIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.unit.dp
+import es.ghatostudio.nexapdf.resources.Res
+import es.ghatostudio.nexapdf.resources.comun_reordenar
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * Reordenar arrastrando, para listas y rejillas perezosas.
@@ -59,6 +70,19 @@ class EstadoReordenable internal constructor(
         return posicionDedo - elemento.centro
     }
 
+    /**
+     * Empieza a arrastrar un elemento concreto.
+     *
+     * Lo usa el asa, que si sabe a que fila pertenece; deducirlo de la posicion
+     * del dedo, como hace el gesto del contenedor, sobra cuando el indice ya se
+     * conoce y ademas fallaria con la lista a medio desplazar.
+     */
+    fun empezarEn(indice: Int) {
+        val elemento = posicionesVisibles().firstOrNull { it.indice == indice } ?: return
+        posicionDedo = elemento.centro
+        indiceArrastrado = indice
+    }
+
     internal fun empezar(punto: Offset) {
         posicionDedo = punto
         indiceArrastrado = posicionesVisibles().firstOrNull { it.contiene(punto) }?.indice
@@ -80,6 +104,38 @@ class EstadoReordenable internal constructor(
         indiceArrastrado = null
         posicionDedo = Offset.Zero
     }
+}
+
+/**
+ * Asa de arrastre para un elemento de una lista ordenable.
+ *
+ * Los tres puntos son la convencion universal de "esto se puede arrastrar", y
+ * con ellos el gesto empieza al tocar en lugar de despues de mantener pulsado:
+ * la pulsacion larga funciona, pero hay que saber que existe, y quien no lo
+ * sabe concluye que la lista no se puede ordenar.
+ */
+@Composable
+fun AsaArrastre(estado: EstadoReordenable, indice: Int, modifier: Modifier = Modifier) {
+    val etiqueta = stringResource(Res.string.comun_reordenar)
+    Icon(
+        imageVector = Icons.Filled.DragIndicator,
+        contentDescription = etiqueta,
+        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = modifier
+            .size(44.dp)
+            .padding(10.dp)
+            .pointerInput(estado) {
+                detectDragGestures(
+                    onDragStart = { estado.empezarEn(indice) },
+                    onDrag = { cambio, desplazamiento ->
+                        cambio.consume()
+                        estado.arrastrar(desplazamiento)
+                    },
+                    onDragEnd = { estado.terminar() },
+                    onDragCancel = { estado.terminar() },
+                )
+            },
+    )
 }
 
 /** Modificador que instala el gesto de arrastre sobre el contenedor. */

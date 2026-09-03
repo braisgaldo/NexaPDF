@@ -750,28 +750,92 @@ class MotorPdfAndroid(
 
         conDocumento(ruta, contrasena) { documento ->
             val encontradas = mutableListOf<Coincidencia>()
-            val extractor = PDFTextStripper()
 
             for (indice in 0 until documento.numberOfPages) {
                 if (encontradas.size >= MAXIMO_COINCIDENCIAS) break
-                extractor.startPage = indice + 1
-                extractor.endPage = indice + 1
-                val texto = runCatching { extractor.getText(documento) }.getOrNull() ?: continue
-
-                // Se busca sin distinguir mayusculas ni acentos suaves, que es
-                // lo que espera cualquiera que teclee deprisa en un movil.
-                var desde = 0
-                while (encontradas.size < MAXIMO_COINCIDENCIAS) {
-                    val posicion = texto.indexOf(aguja, desde, ignoreCase = true)
-                    if (posicion < 0) break
-                    encontradas += Coincidencia(
-                        pagina = indice,
-                        fragmento = fragmentoAlrededor(texto, posicion, aguja.length),
-                    )
-                    desde = posicion + aguja.length
-                }
+                val pagina = documento.getPage(indice)
+                val transformador = TransformadorPagina(pagina)
+                val buscador = BuscadorPosicional(aguja, indice, transformador, encontradas)
+                buscador.setStartPage(indice + 1)
+                buscador.setEndPage(indice + 1)
+                runCatching { buscador.getText(documento) }
             }
             encontradas
+        }
+    }
+
+    /**
+     * Encuentra el texto y ademas dice donde esta.
+     *
+     * PDFTextStripper entrega cada linea junto con la posicion de cada
+     * caracter. Buscando dentro de la linea y quedandose con las posiciones que
+     * abarca la coincidencia sale el rectangulo exacto, que es lo que hace
+     * falta para resaltarla sobre la pagina.
+     */
+    private class BuscadorPosicional(
+        private val aguja: String,
+        private val indicePagina: Int,
+        private val transformador: TransformadorPagina,
+        private val destino: MutableList<Coincidencia>,
+    ) : PDFTextStripper() {
+
+        init {
+            sortByPosition = true
+        }
+
+        override fun writeString(texto: String, posiciones: MutableList<TextPosition>) {
+            if (texto.isBlank() || posiciones.isEmpty()) return
+
+            var desde = 0
+            while (destino.size < MAXIMO_COINCIDENCIAS) {
+                val encontrado = texto.indexOf(aguja, desde, ignoreCase = true)
+                if (encontrado < 0) break
+
+                val primera = encontrado.coerceIn(0, posiciones.lastIndex)
+                val ultima = (encontrado + aguja.length - 1).coerceIn(0, posiciones.lastIndex)
+                val abarcadas = posiciones.subList(primera, ultima + 1)
+
+                var izquierda = Float.MAX_VALUE
+                var derecha = -Float.MAX_VALUE
+                var arriba = Float.MAX_VALUE
+                var abajo = -Float.MAX_VALUE
+                abarcadas.forEach { posicion ->
+                    izquierda = min(izquierda, posicion.xDirAdj)
+                    derecha = max(derecha, posicion.xDirAdj + posicion.widthDirAdj)
+                    arriba = min(arriba, posicion.yDirAdj - posicion.heightDir)
+                    abajo = max(abajo, posicion.yDirAdj)
+                }
+
+                val ancho = transformador.anchoVisible
+                val alto = transformador.altoVisible
+                if (ancho > 0f && alto > 0f) {
+                    destino += Coincidencia(
+                        pagina = indicePagina,
+                        fragmento = fragmento(texto, encontrado),
+                        marco = Rectangulo(
+                            izquierda = (izquierda / ancho).coerceIn(0f, 1f),
+                            arriba = (arriba / alto).coerceIn(0f, 1f),
+                            derecha = (derecha / ancho).coerceIn(0f, 1f),
+                            abajo = (abajo / alto).coerceIn(0f, 1f),
+                        ),
+                    )
+                }
+                desde = encontrado + aguja.length
+            }
+        }
+
+        private fun fragmento(texto: String, posicion: Int): String {
+            val inicio = (posicion - CONTEXTO).coerceAtLeast(0)
+            val fin = (posicion + aguja.length + CONTEXTO).coerceAtMost(texto.length)
+            val trozo = texto.substring(inicio, fin).replace(Regex("\\s+"), " ").trim()
+            val prefijo = if (inicio > 0) "\u2026" else ""
+            val sufijo = if (fin < texto.length) "\u2026" else ""
+            return prefijo + trozo + sufijo
+        }
+
+        private companion object {
+            const val MAXIMO_COINCIDENCIAS = 200
+            const val CONTEXTO = 40
         }
     }
 
@@ -807,16 +871,6 @@ class MotorPdfAndroid(
             }
             recorrerEsquema(documento, nodo.children(), nivel + 1, destino)
         }
-    }
-
-    /** Recorta la frase alrededor de la aparicion y limpia los saltos de linea. */
-    private fun fragmentoAlrededor(texto: String, posicion: Int, largo: Int): String {
-        val inicio = (posicion - CONTEXTO).coerceAtLeast(0)
-        val fin = (posicion + largo + CONTEXTO).coerceAtMost(texto.length)
-        val trozo = texto.substring(inicio, fin).replace(Regex("\\s+"), " ").trim()
-        val prefijo = if (inicio > 0) "\u2026" else ""
-        val sufijo = if (fin < texto.length) "\u2026" else ""
-        return prefijo + trozo + sufijo
     }
 
     // --- Firma ---------------------------------------------------------------

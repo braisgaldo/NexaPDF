@@ -2,11 +2,14 @@ package es.ghatostudio.nexapdf.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -49,6 +52,9 @@ import es.ghatostudio.nexapdf.domain.pdf.ResultadoPdf
 import es.ghatostudio.nexapdf.domain.pdf.Seccion
 import es.ghatostudio.nexapdf.resources.Res
 import es.ghatostudio.nexapdf.resources.aj_compartir_texto
+import es.ghatostudio.nexapdf.resources.comp_pregunta_titulo
+import es.ghatostudio.nexapdf.resources.comun_cancelar
+import es.ghatostudio.nexapdf.resources.comun_compartir
 import es.ghatostudio.nexapdf.resources.comun_procesando
 import es.ghatostudio.nexapdf.resources.copia_error_formato
 import es.ghatostudio.nexapdf.resources.copia_error_incompleta
@@ -70,28 +76,29 @@ import es.ghatostudio.nexapdf.resources.error_nada_seleccionado
 import es.ghatostudio.nexapdf.resources.error_sin_memoria
 import es.ghatostudio.nexapdf.resources.firma_hecha
 import es.ghatostudio.nexapdf.resources.img_sin_camara
+import es.ghatostudio.nexapdf.ui.componentes.DialogoOrigenImagen
+import es.ghatostudio.nexapdf.ui.componentes.VeloDeTrabajo
 import es.ghatostudio.nexapdf.ui.donacion.HojaDonacion
 import es.ghatostudio.nexapdf.ui.navegacion.Destino
 import es.ghatostudio.nexapdf.ui.pantallas.AccionesDocumento
 import es.ghatostudio.nexapdf.ui.pantallas.AccionesEditor
+import es.ghatostudio.nexapdf.ui.pantallas.AccionesVisor
 import es.ghatostudio.nexapdf.ui.pantallas.DocumentoReciente
 import es.ghatostudio.nexapdf.ui.pantallas.Herramienta
 import es.ghatostudio.nexapdf.ui.pantallas.OpcionesImagenes
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaAcercaDe
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaAjustes
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaAyuda
+import es.ghatostudio.nexapdf.ui.pantallas.PantallaCompartir
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaDocumento
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaEditor
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaFirma
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaImagenes
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaInicio
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaRecientes
-import es.ghatostudio.nexapdf.ui.pantallas.AccionesVisor
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaTour
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaVisor
 import es.ghatostudio.nexapdf.ui.pantallas.PeticionFirmaCertificado
-import es.ghatostudio.nexapdf.ui.componentes.DialogoOrigenImagen
-import es.ghatostudio.nexapdf.ui.componentes.VeloDeTrabajo
 import es.ghatostudio.nexapdf.ui.theme.NexaTheme
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -176,6 +183,9 @@ private fun ContenidoApp(
     // Firma dibujada desde "Firmar PDF" que falta por situar en la pagina.
     var firmaParaColocar by remember { mutableStateOf<List<List<Punto>>?>(null) }
 
+    // Documento recien creado sobre el que preguntar si se comparte.
+    var compartirRecienCreado by remember { mutableStateOf<String?>(null) }
+
     // Estado del visor
     var paginaVisor by remember { mutableStateOf<ImageBitmap?>(null) }
     var seccionesVisor by remember { mutableStateOf(emptyList<Seccion>()) }
@@ -209,12 +219,12 @@ private fun ContenidoApp(
                 .filter { it.endsWith(".pdf", ignoreCase = true) }
                 .take(20)
                 .map { ruta ->
+                    val bytes = contenedor.ficheros.tamano(ruta)
                     DocumentoReciente(
                         ruta = ruta,
+                        tamanoBytes = bytes,
                         nombre = contenedor.ficheros.nombre(ruta),
-                        detalle = contenedor.servicios.formatearTamano(
-                            contenedor.ficheros.tamano(ruta),
-                        ),
+                        detalle = contenedor.servicios.formatearTamano(bytes),
                     )
                 }
         }
@@ -298,6 +308,7 @@ private fun ContenidoApp(
         estado.avisar(
             getString(Res.string.doc_resultado_guardado, contenedor.ficheros.nombre(rutaResultado)),
         )
+        if (ajustes.preguntarCompartir) compartirRecienCreado = rutaResultado
     }
 
     fun rutaDeSalida(nombre: String): String {
@@ -449,6 +460,18 @@ private fun ContenidoApp(
                 alAbrirAjustes = { estado.ir(Destino.Ajustes) },
             )
 
+            Destino.Compartir -> PantallaCompartir(
+                documentos = recientes,
+                snackbar = snackbar,
+                alCompartir = { rutas ->
+                    alcance.launch {
+                        contenedor.servicios.compartirVarios(rutas, "NexaPDF.zip")
+                        estado.volver()
+                    }
+                },
+                alVolver = { estado.volver() },
+            )
+
             Destino.Recientes -> PantallaRecientes(
                 recientes = recientes,
                 snackbar = snackbar,
@@ -493,6 +516,13 @@ private fun ContenidoApp(
                             if (indice in paginas.indices) {
                                 estado.reemplazar(Destino.Visor(destino.ruta, indice))
                             }
+                        },
+                        alCompartir = {
+                            contenedor.servicios.compartirFichero(
+                                destino.ruta,
+                                "application/pdf",
+                                contenedor.ficheros.nombre(destino.ruta),
+                            )
                         },
                     ),
                     alVolver = { estado.volver() },
@@ -554,6 +584,32 @@ private fun ContenidoApp(
                                 is ResultadoPdf.Exito -> registrarResultado(resultado.valor)
                                 is ResultadoPdf.Fallo ->
                                     estado.avisar(mensajeDeError(resultado.causa))
+                            }
+                        }
+                    },
+                    alSepararEnPartes = { partes ->
+                        alcance.launch {
+                            val ruta = rutaActiva ?: return@launch
+                            estado.empezarTrabajo(textoProcesando)
+                            var creados = 0
+                            // Una llamada por parte, porque cada una lleva su
+                            // propio nombre y el motor nombra por lote.
+                            partes.forEach { (rango, nombre) ->
+                                val resultado = contenedor.motorPdf.separar(
+                                    ruta,
+                                    listOf(rango),
+                                    contenedor.servicios.directorioSalida,
+                                    nombre,
+                                )
+                                if (resultado is ResultadoPdf.Exito) creados += resultado.valor.size
+                            }
+                            estado.terminarTrabajo()
+                            if (creados > 0) {
+                                estado.registrarUsoReal()
+                                refrescarRecientes()
+                                estado.avisar(getString(Res.string.doc_ficheros_creados, creados))
+                            } else {
+                                estado.avisar(mensajeDeError(ErrorPdf.ERROR_ESCRITURA))
                             }
                         }
                     },
@@ -962,6 +1018,7 @@ private fun ContenidoApp(
                 alCambiarConfirmar = { estado.fijarConfirmarDestructivas(it) },
                 alCambiarDescargas = { estado.fijarGuardarEnDescargas(it) },
                 alCambiarModoGuardado = { estado.fijarModoGuardado(it) },
+                alCambiarPreguntarCompartir = { estado.fijarPreguntarCompartir(it) },
                 alElegirCarpeta = {
                     alcance.launch {
                         val elegida = contenedor.selector.elegirCarpeta()
@@ -1040,6 +1097,33 @@ private fun ContenidoApp(
                     if (estado.destinoActual !is Destino.Imagenes) {
                         estado.ir(Destino.Imagenes(imagenes.toList()))
                     }
+                }
+            },
+        )
+    }
+
+    compartirRecienCreado?.let { ruta ->
+        AlertDialog(
+            onDismissRequest = { compartirRecienCreado = null },
+            title = { Text(stringResource(Res.string.comp_pregunta_titulo)) },
+            text = { Text(contenedor.ficheros.nombre(ruta)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        compartirRecienCreado = null
+                        contenedor.servicios.compartirFichero(
+                            ruta,
+                            "application/pdf",
+                            contenedor.ficheros.nombre(ruta),
+                        )
+                    },
+                ) {
+                    Text(stringResource(Res.string.comun_compartir))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { compartirRecienCreado = null }) {
+                    Text(stringResource(Res.string.comun_cancelar))
                 }
             },
         )

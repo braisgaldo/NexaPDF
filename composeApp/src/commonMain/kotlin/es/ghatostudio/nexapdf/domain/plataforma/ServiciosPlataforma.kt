@@ -50,6 +50,16 @@ interface ServiciosPlataforma {
     /** Comparte un fichero generado con otras aplicaciones. */
     fun compartirFichero(ruta: String, tipoMime: String, asunto: String?)
 
+    /**
+     * Comparte varios ficheros a la vez.
+     *
+     * Con uno se comparte tal cual. Con varios se empaquetan en un ZIP: casi
+     * ninguna aplicacion de mensajeria acepta varios adjuntos de golpe, y
+     * compartirlos uno a uno obliga a elegir destino tantas veces como
+     * ficheros haya.
+     */
+    suspend fun compartirVarios(rutas: List<String>, nombreZip: String)
+
     /** Comparte texto plano (por ejemplo el enlace a la ficha de la tienda). */
     fun compartirTexto(texto: String, asunto: String?)
 

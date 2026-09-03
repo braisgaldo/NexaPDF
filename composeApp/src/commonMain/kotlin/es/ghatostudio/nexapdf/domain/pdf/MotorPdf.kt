@@ -7,6 +7,7 @@ import es.ghatostudio.nexapdf.domain.model.DisposicionImagenes
 import es.ghatostudio.nexapdf.domain.model.DocumentoPdf
 import es.ghatostudio.nexapdf.domain.model.Orientacion
 import es.ghatostudio.nexapdf.domain.model.PaginaPdf
+import es.ghatostudio.nexapdf.domain.model.Rectangulo
 import es.ghatostudio.nexapdf.domain.model.RangoPaginas
 import es.ghatostudio.nexapdf.domain.model.TamanoPagina
 
@@ -151,6 +152,14 @@ data class Coincidencia(
     val pagina: Int,
     /** Frase alrededor de la aparicion, para reconocerla de un vistazo. */
     val fragmento: String,
+    /**
+     * Donde esta, en coordenadas normalizadas de la pagina.
+     *
+     * Sin esto solo se puede decir en que pagina cae; con esto se puede pintar
+     * encima, que es lo que convierte una lista de resultados en una busqueda
+     * util de verdad.
+     */
+    val marco: Rectangulo,
 )
 
 /** Una entrada del indice del documento. */

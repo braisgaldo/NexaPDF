@@ -27,6 +27,7 @@ import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.automirrored.filled.ListAlt
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -60,6 +61,7 @@ import es.ghatostudio.nexapdf.resources.Res
 import es.ghatostudio.nexapdf.resources.cd_volver
 import es.ghatostudio.nexapdf.resources.comun_buscar
 import es.ghatostudio.nexapdf.resources.comun_cerrar
+import es.ghatostudio.nexapdf.resources.comun_compartir
 import es.ghatostudio.nexapdf.resources.ed_pagina_anterior
 import es.ghatostudio.nexapdf.resources.ed_pagina_de
 import es.ghatostudio.nexapdf.resources.ed_pagina_siguiente
@@ -73,11 +75,20 @@ import es.ghatostudio.nexapdf.ui.componentes.BarraSuperior
 import es.ghatostudio.nexapdf.ui.componentes.encuadre
 import es.ghatostudio.nexapdf.ui.componentes.rememberEncuadre
 import org.jetbrains.compose.resources.stringResource
+import androidx.compose.foundation.Canvas
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import es.ghatostudio.nexapdf.resources.vis_anterior
+import es.ghatostudio.nexapdf.resources.vis_siguiente
 
 /** Lo que el visor necesita del resto de la aplicacion. */
 class AccionesVisor(
     val alBuscar: suspend (String) -> List<Coincidencia>,
     val alIrAPagina: (Int) -> Unit,
+    val alCompartir: () -> Unit,
 )
 
 /**
@@ -107,6 +118,8 @@ fun PantallaVisor(
     var consulta by remember { mutableStateOf("") }
     var resultados by remember { mutableStateOf<List<Coincidencia>?>(null) }
     var buscandoAhora by remember { mutableStateOf(false) }
+    // Indice de la aparicion en la que se esta, dentro de todos los resultados.
+    var actual by remember { mutableStateOf(0) }
     var panel by remember { mutableStateOf<Panel?>(null) }
     val encuadre = rememberEncuadre()
 
@@ -122,7 +135,11 @@ fun PantallaVisor(
         }
         buscandoAhora = true
         resultados = acciones.alBuscar(consulta)
+        actual = 0
         buscandoAhora = false
+        // Se salta a la primera aparicion: quien busca quiere verla, no leer
+        // una lista y tener que elegir.
+        resultados?.firstOrNull()?.let { acciones.alIrAPagina(it.pagina) }
     }
 
     Scaffold(
@@ -148,8 +165,44 @@ fun PantallaVisor(
                         singleLine = true,
                         modifier = Modifier.weight(1f),
                     )
+                    val cuantos = resultados?.size ?: 0
+                    if (cuantos > 0) {
+                        Text(
+                            text = "${actual + 1}/$cuantos",
+                            style = MaterialTheme.typography.labelLarge,
+                            modifier = Modifier.padding(horizontal = 6.dp),
+                        )
+                        IconButton(
+                            onClick = {
+                                actual = (actual - 1 + cuantos) % cuantos
+                                resultados?.getOrNull(actual)?.let {
+                                    acciones.alIrAPagina(it.pagina)
+                                }
+                            },
+                            modifier = Modifier.size(44.dp),
+                        ) {
+                            Icon(
+                                Icons.Filled.KeyboardArrowUp,
+                                contentDescription = stringResource(Res.string.vis_anterior),
+                            )
+                        }
+                        IconButton(
+                            onClick = {
+                                actual = (actual + 1) % cuantos
+                                resultados?.getOrNull(actual)?.let {
+                                    acciones.alIrAPagina(it.pagina)
+                                }
+                            },
+                            modifier = Modifier.size(44.dp),
+                        ) {
+                            Icon(
+                                Icons.Filled.KeyboardArrowDown,
+                                contentDescription = stringResource(Res.string.vis_siguiente),
+                            )
+                        }
+                    }
                     IconButton(
-                        onClick = { buscando = false; consulta = "" },
+                        onClick = { buscando = false; consulta = ""; actual = 0 },
                         modifier = Modifier.size(48.dp),
                     ) {
                         Icon(
@@ -179,6 +232,15 @@ fun PantallaVisor(
                             Icon(
                                 Icons.AutoMirrored.Filled.ListAlt,
                                 contentDescription = stringResource(Res.string.visor_indice),
+                            )
+                        }
+                        IconButton(
+                            onClick = acciones.alCompartir,
+                            modifier = Modifier.size(48.dp),
+                        ) {
+                            Icon(
+                                Icons.Filled.Share,
+                                contentDescription = stringResource(Res.string.comun_compartir),
                             )
                         }
                         IconButton(
@@ -247,16 +309,9 @@ fun PantallaVisor(
     ) { relleno ->
         Box(modifier = Modifier.fillMaxSize().padding(relleno)) {
             when {
-                resultados != null -> ListaResultados(
-                    resultados = resultados.orEmpty(),
-                    buscando = buscandoAhora,
-                    alElegir = { pagina2 ->
-                        acciones.alIrAPagina(pagina2)
-                        buscando = false
-                        consulta = ""
-                    },
-                )
-
+                // Mientras se busca se sigue viendo la pagina, con las
+                // apariciones marcadas encima: una lista de resultados a
+                // pantalla completa tapa justo lo que se quiere leer.
                 pagina != null -> androidx.compose.foundation.Image(
                     bitmap = pagina,
                     contentDescription = stringResource(
@@ -278,6 +333,24 @@ fun PantallaVisor(
 
                 else -> CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
+
+            val enEstaPagina = resultados
+                ?.withIndex()
+                ?.filter { it.value.pagina == paginaActual }
+                .orEmpty()
+            if (enEstaPagina.isNotEmpty() && pagina != null) {
+                CapaResaltados(
+                    coincidencias = enEstaPagina,
+                    activa = actual,
+                    proporcion = proporcion,
+                    escala = encuadre.escala,
+                    desplazamiento = encuadre.desplazamiento,
+                )
+            }
+
+            if (buscandoAhora) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.TopCenter))
+            }
         }
     }
 
@@ -296,6 +369,70 @@ fun PantallaVisor(
 }
 
 private enum class Panel { INDICE, FIRMAS }
+
+/**
+ * Marca sobre la pagina donde estan las apariciones.
+ *
+ * La activa va en un tono mas fuerte para poder seguirla al pasar de una a
+ * otra; el resto quedan en amarillo suave, como un subrayado. Se pinta con el
+ * mismo encuadre que la pagina para que las marcas no se despeguen al ampliar.
+ */
+@Composable
+private fun CapaResaltados(
+    coincidencias: List<IndexedValue<Coincidencia>>,
+    activa: Int,
+    proporcion: Float,
+    escala: Float,
+    desplazamiento: Offset,
+) {
+    val colorActiva = MaterialTheme.colorScheme.primary
+    Canvas(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(12.dp)
+            .graphicsLayer {
+                scaleX = escala
+                scaleY = escala
+                translationX = desplazamiento.x
+                translationY = desplazamiento.y
+            },
+    ) {
+        // La imagen se dibuja con ContentScale.Fit: hay que recomponer el mismo
+        // encaje para que las marcas caigan sobre las palabras y no al lado.
+        val anchoDisponible = size.width
+        val altoDisponible = size.height
+        val anchoPagina: Float
+        val altoPagina: Float
+        if (anchoDisponible / altoDisponible > proporcion) {
+            altoPagina = altoDisponible
+            anchoPagina = altoDisponible * proporcion
+        } else {
+            anchoPagina = anchoDisponible
+            altoPagina = anchoDisponible / proporcion
+        }
+        val margenX = (anchoDisponible - anchoPagina) / 2f
+        val margenY = (altoDisponible - altoPagina) / 2f
+
+        coincidencias.forEach { (indice, coincidencia) ->
+            val marco = coincidencia.marco.normalizado()
+            val esActiva = indice == activa
+            drawRect(
+                color = if (esActiva) colorActiva.copy(alpha = 0.45f) else AMARILLO_BUSQUEDA,
+                topLeft = Offset(
+                    margenX + marco.izquierda * anchoPagina,
+                    margenY + marco.arriba * altoPagina,
+                ),
+                size = Size(
+                    (marco.derecha - marco.izquierda) * anchoPagina,
+                    (marco.abajo - marco.arriba) * altoPagina,
+                ),
+            )
+        }
+    }
+}
+
+/** Amarillo de subrayado, con transparencia para dejar leer debajo. */
+private val AMARILLO_BUSQUEDA = Color(0x66FFD54F)
 
 @Composable
 private fun ListaResultados(

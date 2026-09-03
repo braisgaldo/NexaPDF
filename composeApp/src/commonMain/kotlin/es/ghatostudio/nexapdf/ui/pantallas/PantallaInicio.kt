@@ -113,6 +113,8 @@ enum class Herramienta(
 /** Un documento ya generado, listo para reabrirse. */
 data class DocumentoReciente(
     val ruta: String,
+    /** Tamano en bytes, para poder ordenar por el. */
+    val tamanoBytes: Long = 0L,
     val nombre: String,
     val detalle: String,
 )

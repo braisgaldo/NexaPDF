@@ -32,6 +32,11 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocalCafe
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.FolderOpen
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.HighQuality
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -111,6 +116,7 @@ import es.ghatostudio.nexapdf.resources.aj_tema_oceano_oscuro
 import es.ghatostudio.nexapdf.resources.aj_tema_vino_claro
 import es.ghatostudio.nexapdf.resources.aj_tema_vino_oscuro
 import es.ghatostudio.nexapdf.resources.aj_titulo
+import es.ghatostudio.nexapdf.resources.aj_preguntar_compartir
 import es.ghatostudio.nexapdf.resources.cd_bandera
 import es.ghatostudio.nexapdf.resources.comun_cancelar
 import es.ghatostudio.nexapdf.resources.comun_continuar
@@ -140,6 +146,7 @@ fun PantallaAjustes(
     alCambiarConfirmar: (Boolean) -> Unit,
     alCambiarDescargas: (Boolean) -> Unit,
     alCambiarModoGuardado: (ModoGuardado) -> Unit,
+    alCambiarPreguntarCompartir: (Boolean) -> Unit,
     alElegirCarpeta: () -> Unit,
     alQuitarCarpeta: () -> Unit,
     nombreCarpeta: String?,
@@ -173,7 +180,7 @@ fun PantallaAjustes(
             // y los catorce idiomas ocupaban casi toda la pantalla de Ajustes y
             // dejaban el resto de opciones fuera de la vista. Cada desplegable
             // muestra lo elegido con su muestra de color o su bandera.
-            item { TituloSeccion(stringResource(Res.string.aj_tema)) }
+            item { TituloSeccion(stringResource(Res.string.aj_tema), icono = Icons.Filled.Palette) }
             item {
                 ComboTema(
                     familia = ajustes.familia,
@@ -186,7 +193,7 @@ fun PantallaAjustes(
                 )
             }
 
-            item { TituloSeccion(stringResource(Res.string.aj_idioma)) }
+            item { TituloSeccion(stringResource(Res.string.aj_idioma), icono = Icons.Filled.Language) }
             item {
                 ComboIdioma(
                     etiquetaActual = ajustes.idioma,
@@ -195,7 +202,7 @@ fun PantallaAjustes(
             }
 
             // --- Vista --------------------------------------------------------
-            item { TituloSeccion(stringResource(Res.string.aj_calidad)) }
+            item { TituloSeccion(stringResource(Res.string.aj_calidad), icono = Icons.Filled.HighQuality) }
             item {
                 FilaFiltros(CALIDADES, ajustes.calidad, alCambiarCalidad)
                 Text(
@@ -207,7 +214,7 @@ fun PantallaAjustes(
             }
 
             // --- Datos --------------------------------------------------------
-            item { TituloSeccion(stringResource(Res.string.aj_datos)) }
+            item { TituloSeccion(stringResource(Res.string.aj_datos), icono = Icons.Filled.Folder) }
             item {
                 Text(
                     text = stringResource(Res.string.aj_cuando_guardar),
@@ -269,6 +276,14 @@ fun PantallaAjustes(
             }
             item {
                 FilaConmutador(
+                    titulo = stringResource(Res.string.aj_preguntar_compartir),
+                    detalle = null,
+                    valor = ajustes.preguntarCompartir,
+                    alCambiar = alCambiarPreguntarCompartir,
+                )
+            }
+            item {
+                FilaConmutador(
                     titulo = stringResource(Res.string.aj_confirmar_destructivas),
                     detalle = null,
                     valor = ajustes.confirmarAccionesDestructivas,
@@ -305,7 +320,7 @@ fun PantallaAjustes(
             }
 
             // --- Apoyo --------------------------------------------------------
-            item { TituloSeccion(stringResource(Res.string.aj_apoyo)) }
+            item { TituloSeccion(stringResource(Res.string.aj_apoyo), icono = Icons.Filled.FavoriteBorder) }
             if (donacionesDisponibles) {
                 item {
                     FilaAccion(

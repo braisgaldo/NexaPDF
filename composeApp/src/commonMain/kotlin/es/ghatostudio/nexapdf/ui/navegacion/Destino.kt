@@ -50,6 +50,9 @@ sealed interface Destino {
     /** Lista de documentos ya creados. */
     data object Recientes : Destino
 
+    /** Eleccion de que documentos compartir. */
+    data object Compartir : Destino
+
     /** Tour guiado de bienvenida. */
     data object Tour : Destino
 

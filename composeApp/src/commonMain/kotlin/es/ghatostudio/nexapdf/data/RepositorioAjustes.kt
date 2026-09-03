@@ -42,6 +42,7 @@ class RepositorioAjustes(
         val tourVisto = booleanPreferencesKey("tour_visto")
         val modoGuardado = stringPreferencesKey("modo_guardado")
         val carpetaDestino = stringPreferencesKey("carpeta_destino")
+        val preguntarCompartir = booleanPreferencesKey("preguntar_compartir")
         val firmas = stringPreferencesKey("firmas_guardadas")
         val nombreFirmas = stringPreferencesKey("nombre_para_firmas")
     }
@@ -60,6 +61,8 @@ class RepositorioAjustes(
             tourVisto = preferencias[Claves.tourVisto] ?: porDefecto.tourVisto,
             modoGuardado = preferencias[Claves.modoGuardado] ?: porDefecto.modoGuardado,
             carpetaDestino = preferencias[Claves.carpetaDestino],
+            preguntarCompartir = preferencias[Claves.preguntarCompartir]
+                ?: porDefecto.preguntarCompartir,
             estadoDonacion = preferencias[Claves.estadoDonacion] ?: porDefecto.estadoDonacion,
             usosReales = preferencias[Claves.usosReales] ?: 0,
             usosAlAplazar = preferencias[Claves.usosAlAplazar] ?: 0,
@@ -122,6 +125,9 @@ class RepositorioAjustes(
 
     suspend fun fijarModoGuardado(clave: String) = editar { it[Claves.modoGuardado] = clave }
 
+    suspend fun fijarPreguntarCompartir(valor: Boolean) =
+        editar { it[Claves.preguntarCompartir] = valor }
+
     suspend fun fijarCarpetaDestino(uri: String?) = editar {
         if (uri == null) it.remove(Claves.carpetaDestino) else it[Claves.carpetaDestino] = uri
     }
@@ -149,6 +155,7 @@ class RepositorioAjustes(
         preferencias[Claves.guardarEnDescargas] = nuevos.guardarEnDescargasAlTerminar
         preferencias[Claves.tourVisto] = nuevos.tourVisto
         preferencias[Claves.modoGuardado] = nuevos.modoGuardado
+        preferencias[Claves.preguntarCompartir] = nuevos.preguntarCompartir
         if (nuevos.carpetaDestino == null) preferencias.remove(Claves.carpetaDestino)
         else preferencias[Claves.carpetaDestino] = nuevos.carpetaDestino
         preferencias[Claves.estadoDonacion] = nuevos.estadoDonacion

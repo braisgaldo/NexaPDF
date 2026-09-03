@@ -16,6 +16,7 @@ import android.provider.Settings
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.FileProvider
 import es.ghatostudio.nexapdf.domain.plataforma.ServiciosPlataforma
+import es.ghatostudio.nexapdf.pdf.EmpaquetadorZip
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -139,6 +140,20 @@ class ServiciosPlataformaAndroid(
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
         actividad.startActivity(Intent.createChooser(intent, asunto))
+    }
+
+    override suspend fun compartirVarios(rutas: List<String>, nombreZip: String) {
+        if (rutas.isEmpty()) return
+        if (rutas.size == 1) {
+            compartirFichero(rutas.first(), "application/pdf", null)
+            return
+        }
+
+        val zip = withContext(Dispatchers.IO) {
+            val destino = File(File(directorioSalida), nombreZip)
+            EmpaquetadorZip.empaquetar(rutas.map { File(it) }, destino)
+        } ?: return
+        compartirFichero(zip.absolutePath, "application/zip", null)
     }
 
     override fun compartirTexto(texto: String, asunto: String?) {
