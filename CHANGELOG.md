@@ -16,6 +16,11 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
   y la pantalla dice sin adornos lo que valen: son peticiones que el lector
   respeta si quiere, no un candado.
 - El **recorrido guiado** tiene un paso más para la herramienta nueva.
+- **Detalle de cada firma en el visor**: se toca una firma y se despliega
+  debajo, en la misma tarjeta, lo que trae el certificado — firmante, autoridad
+  emisora, fecha, validez, número de serie, algoritmo, formato y si cubre todo
+  el documento o una versión anterior. Al abrir una se cierra la anterior.
+  Antes sólo se veía el nombre de quien firmó.
 - El botón de acciones del documento arranca en **«Guardar como…»**. El orden
   del desplegable no cambia —separar y dividir siguen primero, que es como se
   lee la pantalla—, pero lo que uno hace al terminar casi siempre es guardar, y

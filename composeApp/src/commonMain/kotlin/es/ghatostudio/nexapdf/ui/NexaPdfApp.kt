@@ -694,6 +694,7 @@ private fun ContenidoApp(
                     lectura = ajustes.lectura,
                     secciones = seccionesVisor,
                     firmas = firmasExistentes,
+                    formatearFecha = { contenedor.servicios.formatearFecha(it, conHora = true) },
                     snackbar = snackbar,
                     acciones = AccionesVisor(
                         alBuscar = { consulta ->

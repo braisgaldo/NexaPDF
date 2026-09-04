@@ -125,6 +125,26 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.graphics.SolidColor
 import kotlinx.coroutines.delay
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
+import es.ghatostudio.nexapdf.resources.firma_cubre_todo
+import es.ghatostudio.nexapdf.resources.firma_det_alcance
+import es.ghatostudio.nexapdf.resources.firma_det_algoritmo
+import es.ghatostudio.nexapdf.resources.firma_det_emisor
+import es.ghatostudio.nexapdf.resources.firma_det_fecha
+import es.ghatostudio.nexapdf.resources.firma_det_firmante
+import es.ghatostudio.nexapdf.resources.firma_det_formato
+import es.ghatostudio.nexapdf.resources.firma_det_no_consta
+import es.ghatostudio.nexapdf.resources.firma_det_rango
+import es.ghatostudio.nexapdf.resources.firma_det_revision
+import es.ghatostudio.nexapdf.resources.firma_det_sello
+import es.ghatostudio.nexapdf.resources.firma_det_serie
+import es.ghatostudio.nexapdf.resources.firma_det_sin_sello
+import es.ghatostudio.nexapdf.resources.firma_det_validez
+import es.ghatostudio.nexapdf.resources.firma_lugar
+import es.ghatostudio.nexapdf.resources.firma_ver_detalle
+import es.ghatostudio.nexapdf.resources.firma_det_con_sello
 
 /** Lo que el visor necesita del resto de la aplicacion. */
 class AccionesVisor(
@@ -156,6 +176,8 @@ fun PantallaVisor(
     lectura: DireccionLectura,
     secciones: List<Seccion>,
     firmas: List<FirmaExistente>,
+    /** Para las fechas de la ficha de cada firma, en el formato del telefono. */
+    formatearFecha: (Long) -> String,
     snackbar: SnackbarHostState,
     acciones: AccionesVisor,
     alVolver: () -> Unit,
@@ -460,7 +482,7 @@ fun PantallaVisor(
                     panel = null
                 }
 
-                Panel.FIRMAS -> PanelFirmas(firmas)
+                Panel.FIRMAS -> PanelFirmas(firmas, formatearFecha)
             }
         }
     }
@@ -939,12 +961,20 @@ private fun PanelIndice(secciones: List<Seccion>, alElegir: (Int) -> Unit) {
 }
 
 @Composable
-private fun PanelFirmas(firmas: List<FirmaExistente>) {
+private fun PanelFirmas(
+    firmas: List<FirmaExistente>,
+    formatearFecha: (Long) -> String,
+) {
     CabeceraPanel(
         icono = Icons.Filled.VerifiedUser,
         titulo = stringResource(Res.string.firma_existentes),
         cuenta = firmas.size,
     )
+    // Solo una ficha abierta a la vez. Con dos o tres firmas y ocho datos cada
+    // una, tenerlas todas desplegadas obliga a desplazarse para comparar lo que
+    // deberia verse de un vistazo.
+    var abierta by remember { mutableStateOf<Int?>(null) }
+
     Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
         if (firmas.isEmpty()) {
             Text(
@@ -953,37 +983,137 @@ private fun PanelFirmas(firmas: List<FirmaExistente>) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         } else {
-            firmas.forEach { firma ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 6.dp)
-                        .background(
-                            MaterialTheme.colorScheme.surfaceContainerHigh,
-                            MaterialTheme.shapes.medium,
-                        )
-                        .padding(14.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        Icons.Filled.VerifiedUser,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                    )
-                    Spacer(Modifier.width(12.dp))
-                    Column {
-                        Text(firma.nombre, style = MaterialTheme.typography.bodyLarge)
-                        firma.motivo?.takeIf { it.isNotBlank() }?.let {
-                            Text(
-                                text = it,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
-                }
+            firmas.forEachIndexed { indice, firma ->
+                FichaDeFirma(
+                    firma = firma,
+                    abierta = abierta == indice,
+                    alPulsar = { abierta = if (abierta == indice) null else indice },
+                    formatearFecha = formatearFecha,
+                )
             }
         }
         Spacer(Modifier.height(24.dp))
+    }
+}
+
+/**
+ * Una firma del documento, con su detalle plegado debajo.
+ *
+ * Cerrada ensena lo que se busca al abrir el panel: quien firmo. Abierta, todo
+ * lo que trae el sobre. Antes solo estaba lo primero, y para saber con que
+ * certificado se habia firmado o hasta cuando vale habia que sacar el documento
+ * del telefono.
+ */
+@Composable
+private fun FichaDeFirma(
+    firma: FirmaExistente,
+    abierta: Boolean,
+    alPulsar: () -> Unit,
+    formatearFecha: (Long) -> String,
+) {
+    val noConsta = stringResource(Res.string.firma_det_no_consta)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp)
+            .background(
+                MaterialTheme.colorScheme.surfaceContainerHigh,
+                MaterialTheme.shapes.medium,
+            )
+            .clip(MaterialTheme.shapes.medium)
+            .clickable(onClick = alPulsar)
+            .semantics { contentDescription = firma.nombre }
+            .padding(14.dp),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                Icons.Filled.VerifiedUser,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+            )
+            Spacer(Modifier.width(12.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = firma.nombre.ifBlank { firma.firmante ?: noConsta },
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+                firma.motivo?.takeIf { it.isNotBlank() }?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+            Icon(
+                imageVector = if (abierta) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+                contentDescription = stringResource(Res.string.firma_ver_detalle),
+            )
+        }
+
+        AnimatedVisibility(abierta) {
+            Column(modifier = Modifier.padding(top = 12.dp)) {
+                HorizontalDivider()
+                Spacer(Modifier.height(8.dp))
+                DatoDeFirma(stringResource(Res.string.firma_det_firmante), firma.firmante ?: noConsta)
+                DatoDeFirma(stringResource(Res.string.firma_det_emisor), firma.emisor ?: noConsta)
+                firma.fechaEpochMillis?.let {
+                    DatoDeFirma(stringResource(Res.string.firma_det_fecha), formatearFecha(it))
+                }
+                DatoDeFirma(
+                    etiqueta = stringResource(Res.string.firma_det_validez),
+                    valor = if (firma.validoDesdeEpochMillis != null &&
+                        firma.validoHastaEpochMillis != null
+                    ) {
+                        stringResource(
+                            Res.string.firma_det_rango,
+                            formatearFecha(firma.validoDesdeEpochMillis),
+                            formatearFecha(firma.validoHastaEpochMillis),
+                        )
+                    } else {
+                        noConsta
+                    },
+                )
+                DatoDeFirma(stringResource(Res.string.firma_det_serie), firma.numeroSerie ?: noConsta)
+                DatoDeFirma(stringResource(Res.string.firma_det_algoritmo), firma.algoritmo ?: noConsta)
+                DatoDeFirma(stringResource(Res.string.firma_det_formato), firma.formato ?: noConsta)
+                DatoDeFirma(
+                    etiqueta = stringResource(Res.string.firma_det_sello),
+                    valor = if (firma.conSelloDeTiempo) {
+                        stringResource(Res.string.firma_det_con_sello)
+                    } else {
+                        stringResource(Res.string.firma_det_sin_sello)
+                    },
+                )
+                DatoDeFirma(
+                    etiqueta = stringResource(Res.string.firma_det_alcance),
+                    valor = if (firma.cubreTodoElDocumento) {
+                        stringResource(Res.string.firma_cubre_todo)
+                    } else {
+                        stringResource(Res.string.firma_det_revision)
+                    },
+                )
+                firma.lugar?.takeIf { it.isNotBlank() }?.let {
+                    DatoDeFirma(stringResource(Res.string.firma_lugar), it)
+                }
+            }
+        }
+    }
+}
+
+/** Una linea de la ficha: rotulo arriba y dato debajo, para que quepan los largos. */
+@Composable
+private fun DatoDeFirma(etiqueta: String, valor: String) {
+    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)) {
+        Text(
+            text = etiqueta,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Text(
+            text = valor,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
     }
 }

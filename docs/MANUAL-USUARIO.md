@@ -270,6 +270,22 @@ ordenador.
 > usan y se descartan. Y como la aplicación no tiene acceso a internet, tampoco
 > pueden salir del teléfono.
 
+### Firmas encadenadas
+
+Un documento puede llevar **varias firmas**. Al firmar uno que ya estaba
+firmado, la firma nueva se añade detrás sin tocar lo anterior: la primera sigue
+siendo válida y cubre la versión que existía cuando se hizo, y la última cubre
+el documento entero. Es como firman un contrato dos partes, una detrás de otra.
+
+### Ver el detalle de una firma
+
+En el visor, el icono del **escudo** abre la lista de firmas del documento.
+Toca una y se despliega debajo, en la misma tarjeta, todo lo que trae: quién
+firmó, qué autoridad emitió el certificado, la fecha, hasta cuándo vale el
+certificado, su número de serie, el algoritmo, el formato y si la firma cubre
+todo el documento o sólo una versión anterior. Al abrir una se cierra la que
+estuviera abierta, para no acabar con tres fichas largas a la vez.
+
 Si el documento ya venía firmado, NexaPDF te lo dice arriba, con el nombre de
 quien firmó.
 

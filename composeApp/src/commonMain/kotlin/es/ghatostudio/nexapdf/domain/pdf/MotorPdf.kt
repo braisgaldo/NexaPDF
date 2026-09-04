@@ -252,6 +252,25 @@ data class FirmaExistente(
     val lugar: String?,
     val fechaEpochMillis: Long?,
     val cubreTodoElDocumento: Boolean,
+    /**
+     * Lo que dice el certificado que firmo, leido del sobre CMS.
+     *
+     * Va aqui y no se calcula en la pantalla porque abrir el sobre es trabajo
+     * de disco y de criptografia, no de interfaz. Todo es opcional: un PDF puede
+     * traer una firma que no se sepa interpretar, y en ese caso es mejor
+     * ensenar lo que se tenga que no ensenar nada.
+     */
+    val firmante: String? = null,
+    val emisor: String? = null,
+    val numeroSerie: String? = null,
+    val validoDesdeEpochMillis: Long? = null,
+    val validoHastaEpochMillis: Long? = null,
+    /** Ya legible: "SHA-256 con RSA", no un OID. */
+    val algoritmo: String? = null,
+    /** El subfiltro del PDF, que es lo que dice si es PAdES o el PKCS#7 viejo. */
+    val formato: String? = null,
+    /** Lleva sello de tiempo de una autoridad. */
+    val conSelloDeTiempo: Boolean = false,
 )
 
 /**

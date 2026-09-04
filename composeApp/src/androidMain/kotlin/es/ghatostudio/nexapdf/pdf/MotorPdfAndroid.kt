@@ -54,6 +54,11 @@ import com.tom_roush.pdfbox.pdmodel.encryption.AccessPermission
 import com.tom_roush.pdfbox.pdmodel.encryption.InvalidPasswordException
 import com.tom_roush.pdfbox.pdmodel.encryption.StandardProtectionPolicy
 import es.ghatostudio.nexapdf.domain.pdf.PermisosPdf
+import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers
+import org.bouncycastle.cert.X509CertificateHolder
+import org.bouncycastle.cms.CMSSignedData
+import org.bouncycastle.util.Selector
+import org.bouncycastle.util.Store
 
 /**
  * Motor de PDF para Android.
@@ -1119,6 +1124,7 @@ class MotorPdfAndroid(
         withContext(Dispatchers.IO) {
             conDocumento(ruta, null) { documento ->
                 documento.signatureDictionaries.map { firma: PDSignature ->
+                    val delCertificado = datosDelSobre(firma)
                     FirmaExistente(
                         nombre = firma.name ?: "",
                         motivo = firma.reason,
@@ -1130,10 +1136,100 @@ class MotorPdfAndroid(
                             rango.size == 4 &&
                                 (rango[2] + rango[3]).toLong() >= File(ruta).length() - 2
                         },
+                        firmante = delCertificado?.firmante,
+                        emisor = delCertificado?.emisor,
+                        numeroSerie = delCertificado?.numeroSerie,
+                        validoDesdeEpochMillis = delCertificado?.desde,
+                        validoHastaEpochMillis = delCertificado?.hasta,
+                        algoritmo = delCertificado?.algoritmo,
+                        formato = formatoLegible(firma.subFilter),
+                        conSelloDeTiempo = delCertificado?.conSello == true,
                     )
                 }
             }
         }
+
+    /** Lo que se saca de abrir el sobre CMS de una firma. */
+    private class DatosDelSobre(
+        val firmante: String?,
+        val emisor: String?,
+        val numeroSerie: String?,
+        val desde: Long?,
+        val hasta: Long?,
+        val algoritmo: String?,
+        val conSello: Boolean,
+    )
+
+    /**
+     * Abre el PKCS#7 de una firma y saca de el lo que interesa ensenar.
+     *
+     * Devuelve `null` sin quejarse si el sobre no se puede leer: un PDF puede
+     * traer una firma en un formato que esta biblioteca no entienda, y eso no es
+     * motivo para que la lista de firmas deje de funcionar.
+     */
+    private fun datosDelSobre(firma: PDSignature): DatosDelSobre? = runCatching {
+        val sobre = CMSSignedData(firma.contents ?: return@runCatching null)
+        val firmanteCms = sobre.signerInfos.signers.firstOrNull() ?: return@runCatching null
+        // `sid` identifica al firmante por emisor y numero de serie; el
+        // almacen del sobre lo admite como selector, pero hay que decirle de
+        // que tipo son los certificados que guarda.
+        @Suppress("UNCHECKED_CAST")
+        val almacen = sobre.certificates as Store<X509CertificateHolder>
+        val certificado = almacen.getMatches(firmanteCms.sid as Selector<X509CertificateHolder>)
+            .firstOrNull()
+
+        DatosDelSobre(
+            firmante = certificado?.subject?.let { nombreComunDe(it.toString()) },
+            emisor = certificado?.issuer?.let { nombreComunDe(it.toString()) },
+            numeroSerie = certificado?.serialNumber?.toString(16)?.uppercase(),
+            desde = certificado?.notBefore?.time,
+            hasta = certificado?.notAfter?.time,
+            algoritmo = algoritmoLegible(firmanteCms.digestAlgOID, firmanteCms.encryptionAlgOID),
+            conSello = firmanteCms.unsignedAttributes
+                ?.get(PKCSObjectIdentifiers.id_aa_signatureTimeStampToken) != null,
+        )
+    }.getOrNull()
+
+    /** El CN de un nombre distinguido, que es lo unico que se lee de un tiron. */
+    private fun nombreComunDe(distinguido: String): String =
+        distinguido.split(',')
+            .map { it.trim() }
+            .firstOrNull { it.startsWith("CN=", ignoreCase = true) }
+            ?.removeRange(0, 3)
+            ?: distinguido
+
+    /**
+     * Traduce los OID a algo que se pueda leer.
+     *
+     * Ensenar "1.2.840.113549.1.1.11" no le dice nada a nadie, y ademas los
+     * certificados espanoles usan siempre los mismos tres o cuatro.
+     */
+    private fun algoritmoLegible(oidResumen: String, oidClave: String): String {
+        val resumen = when (oidResumen) {
+            "2.16.840.1.101.3.4.2.1" -> "SHA-256"
+            "2.16.840.1.101.3.4.2.2" -> "SHA-384"
+            "2.16.840.1.101.3.4.2.3" -> "SHA-512"
+            "1.3.14.3.2.26" -> "SHA-1"
+            else -> oidResumen
+        }
+        val clave = when {
+            oidClave.startsWith("1.2.840.113549.1.1") -> "RSA"
+            oidClave.startsWith("1.2.840.10045") -> "ECDSA"
+            oidClave.startsWith("1.2.840.113549.1.1.10") -> "RSA-PSS"
+            else -> oidClave
+        }
+        return "$resumen / $clave"
+    }
+
+    /** El subfiltro, dicho en los terminos de la norma en vez de en los del PDF. */
+    private fun formatoLegible(subFiltro: String?): String? = when (subFiltro) {
+        null -> null
+        "ETSI.CAdES.detached" -> "PAdES (ETSI.CAdES.detached)"
+        "ETSI.RFC3161" -> "Sello de tiempo (ETSI.RFC3161)"
+        "adbe.pkcs7.detached" -> "PKCS#7 (adbe.pkcs7.detached)"
+        "adbe.pkcs7.sha1" -> "PKCS#7 SHA-1 (adbe.pkcs7.sha1)"
+        else -> subFiltro
+    }
 
     // --- Utilidades ----------------------------------------------------------
 
