@@ -390,7 +390,18 @@ class SelectorFicherosAndroid(
         )
 
         // El .nexaPDF.bak no tiene tipo registrado en el sistema.
-        val TIPOS_COPIA = arrayOf("application/octet-stream", "application/json", "text/plain")
+        /**
+         * Cualquier tipo, para poder elegir la copia de seguridad.
+         *
+         * Android mapea la extension .bak a un tipo propio que no es
+         * octet-stream, asi que con una lista de tipos concretos el fichero
+         * salia atenuado en el selector y la copia no habia forma de
+         * importarla. Filtrar aqui no aportaba seguridad: quien elige el
+         * fichero equivocado se entera igual, porque `CodecCopiaSeguridad`
+         * comprueba la cabecera y el esquema antes de tocar nada y avisa de
+         * lo que ha pasado.
+         */
+        val TIPOS_COPIA = arrayOf("*/*")
 
         fun nombreDeUri(contexto: Context, uri: Uri): String? =
             runCatching {

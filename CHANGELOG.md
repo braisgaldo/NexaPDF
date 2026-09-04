@@ -85,6 +85,10 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
   como los documentos.
 - Los nombres de los documentos a unir se partían a mitad de palabra en dos
   líneas.
+- **Importar ajustes no funcionaba**: Android da a la extensión `.bak` un tipo
+  propio que el selector no aceptaba, así que la copia salía atenuada y no
+  había forma de elegirla. El filtro de tipos no aportaba seguridad, porque la
+  cabecera y el esquema ya se comprueban al leer.
 
 
 ## [1.0.0] — 2026-09-03
