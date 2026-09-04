@@ -95,6 +95,8 @@ import es.ghatostudio.nexapdf.ui.componentes.TituloSeccion
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.LaunchedEffect
 
 /** Datos que la pantalla devuelve al pedir una firma con certificado. */
 data class PeticionFirmaCertificado(
@@ -146,6 +148,16 @@ fun PantallaFirma(
     var lugar by remember { mutableStateOf("") }
     var nombreVisible by remember(nombreSugerido) { mutableStateOf(nombreSugerido) }
 
+    // Al elegir un certificado, lo que confirma cual es y el boton de firmar
+    // aparecen al final de la lista, fuera de la pantalla: parecia que elegirlo
+    // no habia servido de nada. Se baja hasta ellos en cuanto hay certificado.
+    val listaFirma = rememberLazyListState()
+    LaunchedEffect(nombreCertificado) {
+        if (nombreCertificado == null) return@LaunchedEffect
+        val ultimo = (listaFirma.layoutInfo.totalItemsCount - 1).coerceAtLeast(0)
+        listaFirma.animateScrollToItem(ultimo)
+    }
+
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         snackbarHost = { SnackbarHost(snackbar) },
@@ -154,6 +166,7 @@ fun PantallaFirma(
         },
     ) { relleno ->
         LazyColumn(
+            state = listaFirma,
             modifier = Modifier.fillMaxSize().padding(relleno),
             contentPadding = PaddingValues(bottom = 40.dp),
         ) {

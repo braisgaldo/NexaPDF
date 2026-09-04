@@ -441,11 +441,12 @@ private fun BarraAcciones(
             AccionDeDocumento(
                 Icons.Filled.Draw,
                 stringResource(Res.string.doc_firmar),
-                acciones.alFirmar,
+                alPulsar = acciones.alFirmar,
             ),
             AccionDeDocumento(
                 Icons.Filled.FileDownload,
                 stringResource(Res.string.doc_guardar_como),
+                porDefecto = true,
             ) { acciones.alGuardarComo() },
             AccionDeDocumento(
                 Icons.Filled.SaveAlt,
@@ -454,10 +455,13 @@ private fun BarraAcciones(
         )
     }
 
-    // Con y sin seleccion las acciones son otras, asi que la elegida vuelve a
-    // la primera: dejar apuntando a "Girar" cuando ya no hay nada seleccionado
-    // seria ensenar un boton que no hace nada.
-    var elegida by remember(conSeleccion) { mutableIntStateOf(0) }
+    // Con y sin seleccion las acciones son otras, asi que la elegida se
+    // recalcula: dejar apuntando a "Girar" cuando ya no hay nada seleccionado
+    // seria ensenar un boton que no hace nada. Se parte de la marcada como
+    // preferida, y si esa lista no tiene ninguna, de la primera.
+    var elegida by remember(conSeleccion) {
+        mutableIntStateOf(lista.indexOfFirst { it.porDefecto }.coerceAtLeast(0))
+    }
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -489,6 +493,15 @@ private fun BarraAcciones(
 private data class AccionDeDocumento(
     val icono: androidx.compose.ui.graphics.vector.ImageVector,
     val etiqueta: String,
+    /**
+     * Con cual arranca el boton.
+     *
+     * El orden de la lista es el del desplegable y no se toca: separar y
+     * dividir van primero porque es como se lee la pantalla. Pero lo que uno
+     * hace al terminar, la mayoria de las veces, es guardar el documento, y esa
+     * merece estar a un toque en lugar de a dos.
+     */
+    val porDefecto: Boolean = false,
     val alPulsar: () -> Unit,
 )
 

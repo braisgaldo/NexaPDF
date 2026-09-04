@@ -16,6 +16,10 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
   y la pantalla dice sin adornos lo que valen: son peticiones que el lector
   respeta si quiere, no un candado.
 - El **recorrido guiado** tiene un paso más para la herramienta nueva.
+- El botón de acciones del documento arranca en **«Guardar como…»**. El orden
+  del desplegable no cambia —separar y dividir siguen primero, que es como se
+  lee la pantalla—, pero lo que uno hace al terminar casi siempre es guardar, y
+  eso merece estar a un toque en lugar de a dos.
 
 ### Corregido
 
@@ -27,6 +31,9 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
   es **PAdES-B-B** (`ETSI.CAdES.detached`), como la de AutoFirma. Se quita
   además el atributo `signingTime`, que en PAdES no debe estar porque la hora va
   en la entrada `/M` del diccionario de la firma.
+- Al elegir un certificado del almacén del sistema no cambiaba nada a la vista:
+  el nombre del certificado y el botón de firmar quedaban al final de la lista,
+  fuera de la pantalla. Ahora la pantalla baja sola hasta ellos.
 - Un PDF cifrado abierto con **Leer PDF** se quedaba girando para siempre. El
   diálogo de la contraseña sólo existía dentro de la pantalla de páginas; ahora
   vale para cualquier herramienta.
