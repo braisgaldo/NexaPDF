@@ -1,8 +1,6 @@
 What's new
 
-• Viewer: swipe between pages, type a number to jump, drag the bar across the document. Page by page or continuous scroll.
-• Split with the pages in front of you: each part in its colour, by range or loose pages, and a summary before creating.
-• Signing in two steps: handwritten mark, then certificate.
-• Recents: hold to rename or delete.
-• A guided tour over the real screen.
-• Smoother scrolling.
+• Protect PDF: close a document with a password, AES-256 encrypted, before sending a payslip or a contract. The same screen takes it off again.
+• PDF permissions are adjustable, and the app says what they are worth: requests a reader obeys if it wants to, not a lock.
+• A password-protected PDF now opens from any tool.
+• In the editor, an inserted image is visible while you place it, and weighs what it should.

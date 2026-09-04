@@ -15,7 +15,7 @@ NexaPDF: PDF ohne Internet
 PDFs zusammenfügen, teilen, bearbeiten, signieren. Ohne Netz, ohne Werbung.
 ```
 
-## Descripcion completa (2720/4000)
+## Descripcion completa (2828/4000)
 
 ```
 NexaPDF ist ein PDF-Werkzeugkasten, der vollständig auf Ihrem Telefon läuft.
@@ -31,6 +31,7 @@ WAS SIE KANN
 • Handschriftlich unterschreiben oder mit dem eigenen Zertifikat. Die Zertifikatsignatur wird eingebettet, sodass jeder PDF-Betrachter prüfen kann, dass sich das Dokument seit der Unterschrift nicht geändert hat.
 • Seiten per Ziehen neu ordnen und das Ergebnis vor dem Übernehmen sehen.
 • Zwischen PDF und Word, Excel und PowerPoint umwandeln, in beide Richtungen.
+• Ein PDF mit einem Passwort schützen, verschlüsselt mit AES-256, und das Passwort später wieder entfernen.
 
 DATENSCHUTZ, OHNE UMSCHWEIFE
 

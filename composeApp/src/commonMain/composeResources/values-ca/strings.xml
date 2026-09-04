@@ -433,6 +433,10 @@ Per separar, «Divideix en parts…» mostra totes les pàgines de cop. Cada par
     <string name="visor_pagina_numero">Pàgina %1$d</string>
     <string name="visor_sin_indice">Aquest document no porta índex. Els escanejats no acostumen a tenir-ne.</string>
     <string name="visor_sin_resultados">Cap resultat</string>
+    <plurals name="plural_comp_pregunta">
+        <item quantity="one">Voleu compartir aquest document?</item>
+        <item quantity="other">Voleu compartir aquests %1$d documents?</item>
+    </plurals>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d document</item>
         <item quantity="other">%1$d documents</item>

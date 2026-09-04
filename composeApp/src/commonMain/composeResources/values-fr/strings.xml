@@ -433,6 +433,10 @@ Pour diviser, « Diviser en parties… » affiche toutes les pages. Chaque parti
     <string name="visor_pagina_numero">Page %1$d</string>
     <string name="visor_sin_indice">Ce document n’a pas de sommaire. Les documents numérisés n’en ont généralement pas.</string>
     <string name="visor_sin_resultados">Aucun résultat</string>
+    <plurals name="plural_comp_pregunta">
+        <item quantity="one">Partager ce document ?</item>
+        <item quantity="other">Partager ces %1$d documents ?</item>
+    </plurals>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d document</item>
         <item quantity="other">%1$d documents</item>

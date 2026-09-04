@@ -433,6 +433,10 @@ Per dividere, «Dividi in parti…» mostra tutte le pagine in una volta. Ogni p
     <string name="visor_pagina_numero">Pagina %1$d</string>
     <string name="visor_sin_indice">Questo documento non ha un indice. I documenti scansionati di solito non ce l’hanno.</string>
     <string name="visor_sin_resultados">Nessun risultato</string>
+    <plurals name="plural_comp_pregunta">
+        <item quantity="one">Condividere questo documento?</item>
+        <item quantity="other">Condividere questi %1$d documenti?</item>
+    </plurals>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d documento</item>
         <item quantity="other">%1$d documenti</item>

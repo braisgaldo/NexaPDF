@@ -15,7 +15,7 @@ NexaPDF: PDF offline
 Unisci, dividi, modifica e firma PDF offline. Senza pubblicità né tracciamento.
 ```
 
-## Descripcion completa (2695/4000)
+## Descripcion completa (2794/4000)
 
 ```
 NexaPDF è una cassetta degli attrezzi per PDF che gira interamente sul telefono.
@@ -31,6 +31,7 @@ COSA FA
 • Firmare a mano o con il proprio certificato. La firma con certificato viene incorporata, così qualsiasi lettore PDF può verificare che il documento non sia cambiato dopo la firma.
 • Riordinare le pagine trascinandole, vedendo il risultato prima di applicarlo.
 • Convertire tra PDF e Word, Excel e PowerPoint, in entrambe le direzioni.
+• Proteggere un PDF con una password, cifrato con AES a 256 bit, e toglierla quando non serve più.
 
 PRIVACY, SENZA GIRI DI PAROLE
 

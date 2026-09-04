@@ -15,7 +15,7 @@ NexaPDF: PDF sense connexió
 Uneix, divideix, edita i signa PDF sense connexió. Sense anuncis ni rastreig.
 ```
 
-## Descripcion completa (2641/4000)
+## Descripcion completa (2735/4000)
 
 ```
 NexaPDF és una caixa d'eines per a PDF que funciona sencera al teu mòbil.
@@ -31,6 +31,7 @@ QUÈ FA
 • Signar a mà o amb el teu propi certificat. La signatura amb certificat queda incrustada perquè qualsevol lector de PDF pugui comprovar que el document no ha canviat des que el vas signar.
 • Reordenar pàgines arrossegant, veient el resultat abans d'aplicar-lo.
 • Convertir entre PDF i Word, Excel i PowerPoint, en tots dos sentits.
+• Protegir un PDF amb contrasenya, xifrat amb AES de 256 bits, i treure-la quan ja no calgui.
 
 PRIVADESA, SENSE ADORNS
 

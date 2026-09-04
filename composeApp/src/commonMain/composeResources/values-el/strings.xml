@@ -433,6 +433,10 @@
     <string name="visor_pagina_numero">Σελίδα %1$d</string>
     <string name="visor_sin_indice">Αυτό το έγγραφο δεν έχει περιεχόμενα. Τα σαρωμένα συνήθως δεν έχουν.</string>
     <string name="visor_sin_resultados">Κανένα αποτέλεσμα</string>
+    <plurals name="plural_comp_pregunta">
+        <item quantity="one">Κοινή χρήση αυτού του εγγράφου;</item>
+        <item quantity="other">Κοινή χρήση %1$d εγγράφων;</item>
+    </plurals>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d έγγραφο</item>
         <item quantity="other">%1$d έγγραφα</item>

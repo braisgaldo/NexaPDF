@@ -433,6 +433,10 @@ Zum Teilen zeigt „In Teile teilen…“ alle Seiten auf einmal. Jeder Teil hat
     <string name="visor_pagina_numero">Seite %1$d</string>
     <string name="visor_sin_indice">Dieses Dokument hat kein Inhaltsverzeichnis. Gescannte Dokumente meist nicht.</string>
     <string name="visor_sin_resultados">Keine Treffer</string>
+    <plurals name="plural_comp_pregunta">
+        <item quantity="one">Dieses Dokument teilen?</item>
+        <item quantity="other">Diese %1$d Dokumente teilen?</item>
+    </plurals>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d Dokument</item>
         <item quantity="other">%1$d Dokumente</item>

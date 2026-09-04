@@ -433,6 +433,10 @@ Banantzeko, «Zatitan banandu…» orri guztiak batera erakusten ditu. Zati bako
     <string name="visor_pagina_numero">%1$d. orria</string>
     <string name="visor_sin_indice">Dokumentu honek ez du aurkibiderik. Eskaneatutakoek normalean ez dute.</string>
     <string name="visor_sin_resultados">Emaitzarik ez</string>
+    <plurals name="plural_comp_pregunta">
+        <item quantity="one">Dokumentu hau partekatu?</item>
+        <item quantity="other">%1$d dokumentu hauek partekatu?</item>
+    </plurals>
     <plurals name="plural_documentos">
         <item quantity="one">dokumentu %1$d</item>
         <item quantity="other">%1$d dokumentu</item>

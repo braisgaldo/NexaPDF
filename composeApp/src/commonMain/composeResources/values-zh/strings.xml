@@ -433,6 +433,9 @@
     <string name="visor_pagina_numero">第 %1$d 页</string>
     <string name="visor_sin_indice">此文档没有目录。扫描件通常没有。</string>
     <string name="visor_sin_resultados">没有结果</string>
+    <plurals name="plural_comp_pregunta">
+        <item quantity="other">分享这 %1$d 个文档？</item>
+    </plurals>
     <plurals name="plural_documentos">
         <item quantity="other">%1$d 个文档</item>
     </plurals>

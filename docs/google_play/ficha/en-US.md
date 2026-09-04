@@ -15,7 +15,7 @@ NexaPDF: PDF tools offline
 Merge, split, edit and sign PDFs offline. No ads, no tracking, no accounts.
 ```
 
-## Descripcion completa (2481/4000)
+## Descripcion completa (2599/4000)
 
 ```
 NexaPDF is a complete PDF toolbox that runs entirely on your phone.
@@ -31,6 +31,7 @@ WHAT IT DOES
 • Sign by hand, or with your own certificate. A certificate signature is embedded so any PDF reader can check that the document has not changed since you signed it.
 • Reorder pages by dragging, and see the result before applying it.
 • Convert between PDF and Word, Excel and PowerPoint, in both directions.
+• Protect a PDF with a password, encrypted with AES-256, and take the password off again when it is no longer needed.
 
 PRIVACY, PLAINLY
 

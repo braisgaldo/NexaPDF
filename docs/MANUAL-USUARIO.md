@@ -28,7 +28,10 @@ pantalla: no hay que desplazarse para descubrir nada.
 | **Editar PDF** | Dibujar, escribir y retocar las páginas. |
 | **Firmar PDF** | Firmar a mano o con tu certificado. |
 | **Convertir** | Word, Excel y PowerPoint a PDF, y al revés. |
-| **Ficheros recientes** | Lo que has ido creando. El número indica cuántos. |
+| **Proteger PDF** | Ponerle o quitarle una contraseña. |
+
+Debajo de la rejilla, a lo ancho, **Ficheros recientes**: lo que has ido
+creando. El número indica cuántos.
 
 Arriba a la derecha, la rueda dentada abre los **Ajustes**.
 
@@ -273,6 +276,47 @@ Con un documento abierto, pulsa **Exportar como…** y elige el formato.
 
 ---
 
+## Proteger un documento con contraseña
+
+**Proteger PDF** cierra un documento con una contraseña. Es lo que conviene
+hacer antes de mandar una nómina, un contrato o un informe médico por correo o
+por mensajería.
+
+1. Elige el documento. NexaPDF mira solo si ya pide contraseña y te lo dice.
+2. Escribe la contraseña y repítela. Debajo verás si es débil, aceptable o
+   fuerte: cuenta la longitud y la variedad de caracteres.
+3. Pulsa **Proteger el documento**.
+
+Se cifra con **AES de 256 bits**, que es lo que entiende cualquier lector
+actual. El fichero protegido se guarda aparte, con «protegido» en el nombre: el
+original se queda como estaba.
+
+> **Si olvidas la contraseña, el documento no se puede volver a abrir.** No hay
+> forma de recuperarlo, y NexaPDF no guarda una copia de la contraseña en
+> ninguna parte. Apúntala donde apuntes las demás.
+
+### Qué permite el documento
+
+Plegado bajo la contraseña hay cuatro interruptores: imprimir, copiar el texto,
+anotar y rellenar formularios, y cambiar el contenido.
+
+Conviene saber qué son: **peticiones, no candados**. Van escritas dentro del
+PDF y el programa que lo abra las respeta si quiere; un lector que decida
+ignorarlas imprime igual. Lo único que de verdad cierra el documento es la
+contraseña de apertura.
+
+### Quitar la contraseña
+
+Si el documento que eliges ya está protegido, la pantalla arranca en **Quitar
+contraseña**: escribe la que tiene y se guarda una copia sin ella.
+
+### Abrir un PDF protegido
+
+Cualquier herramienta —leerlo, editarlo, separarlo— te pedirá la contraseña
+antes de abrirlo. A partir de ahí trabajas con él con normalidad.
+
+---
+
 ## Dónde se guardan los ficheros
 
 En la carpeta **Descargas/NexaPDF** de tu teléfono. Cualquier gestor de archivos
@@ -288,9 +332,9 @@ Desde el documento puedes:
 
 ## El recorrido guiado
 
-La primera vez que abres NexaPDF sale un **recorrido guiado** sobre la propia
-pantalla de inicio: cada paso oscurece todo menos aquello de lo que habla, que
-se queda iluminado. Se puede saltar en cualquier momento, y volver a verlo
+La primera vez que abres NexaPDF sale un **recorrido guiado** de seis pasos
+sobre la propia pantalla de inicio: cada paso oscurece todo menos aquello de lo
+que habla, que se queda iluminado. Se puede saltar en cualquier momento, y volver a verlo
 desde **Ajustes › Ayuda**.
 
 ---

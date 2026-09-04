@@ -15,7 +15,7 @@ NexaPDF : outils PDF
 Fusionnez, divisez, modifiez et signez des PDF. Sans internet, sans publicité.
 ```
 
-## Descripcion completa (2878/4000)
+## Descripcion completa (2980/4000)
 
 ```
 NexaPDF est une boîte à outils PDF qui fonctionne entièrement sur votre téléphone.
@@ -31,6 +31,7 @@ CE QU'ELLE FAIT
 • Signer à la main ou avec votre propre certificat. La signature par certificat est intégrée pour que n'importe quel lecteur PDF puisse vérifier que le document n'a pas changé depuis la signature.
 • Réordonner les pages en les faisant glisser, en voyant le résultat avant de l'appliquer.
 • Convertir entre PDF et Word, Excel et PowerPoint, dans les deux sens.
+• Protéger un PDF par mot de passe, chiffré en AES-256, et le retirer quand il n’est plus nécessaire.
 
 CONFIDENTIALITÉ, SANS DÉTOUR
 

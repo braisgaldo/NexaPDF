@@ -433,6 +433,12 @@
     <string name="visor_pagina_numero">Страница %1$d</string>
     <string name="visor_sin_indice">В этом документе нет оглавления. У сканов его обычно не бывает.</string>
     <string name="visor_sin_resultados">Ничего не найдено</string>
+    <plurals name="plural_comp_pregunta">
+        <item quantity="one">Поделиться этим документом?</item>
+        <item quantity="few">Поделиться этими %1$d документами?</item>
+        <item quantity="many">Поделиться этими %1$d документами?</item>
+        <item quantity="other">Поделиться этими %1$d документами?</item>
+    </plurals>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d документ</item>
         <item quantity="few">%1$d документа</item>

@@ -141,7 +141,12 @@ fun CapaTour(
         BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val altoPx = with(densidad) { maxHeight.toPx() }
         val centroDelHueco = hueco?.let { (it.top + it.bottom) / 2f } ?: 0f
-        val abajo = hueco == null || centroDelHueco < altoPx / 2f
+        // Cuando lo iluminado ocupa casi toda la pantalla no hay mitad libre, y
+        // entonces el cartel va abajo. Tapar el final de la rejilla cuesta menos
+        // que tapar el principio: lo primero que lee cualquiera es la fila de
+        // arriba, y es la que se queda a la vista.
+        val huecoEnorme = hueco != null && hueco.height > altoPx * 0.7f
+        val abajo = huecoEnorme || hueco == null || centroDelHueco < altoPx / 2f
         Column(
             modifier = Modifier
                 .fillMaxSize()

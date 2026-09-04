@@ -15,7 +15,7 @@ NexaPDF: PDF konexiorik gabe
 Batu, zatitu, editatu eta sinatu PDFak. Internetik gabe, iragarkirik gabe.
 ```
 
-## Descripcion completa (2619/4000)
+## Descripcion completa (2717/4000)
 
 ```
 NexaPDF zure mugikorrean osorik dabilen PDF tresna-kutxa bat da.
@@ -31,6 +31,7 @@ ZER EGITEN DUEN
 • Eskuz sinatu, edo zeure ziurtagiriarekin. Ziurtagiriarekiko sinadura kapsulatuta geratzen da, eta edozein PDF irakurgailuk egiazta dezake dokumentua ez dela aldatu sinatu zenuenetik.
 • Orriak arrastatuz berrantolatu, emaitza aplikatu aurretik ikusiz.
 • PDF eta Word, Excel eta PowerPoint artean bihurtu, bi noranzkoetan.
+• PDF bat pasahitzarekin babestea, AES-256 zifratzearekin, eta pasahitza kentzea behar ez denean.
 
 PRIBATUTASUNA, BIRIBILKETARIK GABE
 

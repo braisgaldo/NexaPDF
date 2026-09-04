@@ -472,6 +472,32 @@ PLURALES = {
         "ca": {"one": "%1$d seleccionada", "other": "%1$d seleccionades"},
         "eu": {"one": "%1$d hautatuta", "other": "%1$d hautatuta"},
     },
+    # El titulo del aviso de "¿lo comparto?" tras crear ficheros. Era una frase
+    # fija en singular y salia "¿Compartir este documento?" encima de una lista
+    # de tres.
+    "plural_comp_pregunta": {
+        "en": {"one": "Share this document?", "other": "Share these %1$d documents?"},
+        "es": {"one": "¿Compartir este documento?", "other": "¿Compartir estos %1$d documentos?"},
+        "fr": {"one": "Partager ce document ?", "other": "Partager ces %1$d documents ?"},
+        "de": {"one": "Dieses Dokument teilen?", "other": "Diese %1$d Dokumente teilen?"},
+        "zh": {"other": "分享这 %1$d 个文档？"},
+        "ja": {"other": "%1$d 個の文書を共有しますか？"},
+        "ru": {"one": "Поделиться этим документом?",
+               "few": "Поделиться этими %1$d документами?",
+               "many": "Поделиться этими %1$d документами?",
+               "other": "Поделиться этими %1$d документами?"},
+        "it": {"one": "Condividere questo documento?", "other": "Condividere questi %1$d documenti?"},
+        "el": {"one": "Κοινή χρήση αυτού του εγγράφου;", "other": "Κοινή χρήση %1$d εγγράφων;"},
+        "ar": {"zero": "لا توجد مستندات للمشاركة",
+               "one": "هل تشارك هذا المستند؟",
+               "two": "هل تشارك هذين المستندين؟",
+               "few": "هل تشارك %1$d مستندات؟",
+               "many": "هل تشارك %1$d مستندًا؟",
+               "other": "هل تشارك %1$d مستند؟"},
+        "gl": {"one": "Compartir este documento?", "other": "Compartir estes %1$d documentos?"},
+        "ca": {"one": "Voleu compartir aquest document?", "other": "Voleu compartir aquests %1$d documents?"},
+        "eu": {"one": "Dokumentu hau partekatu?", "other": "%1$d dokumentu hauek partekatu?"},
+    },
     "plural_documentos": {
         "en": {"one": "%1$d document", "other": "%1$d documents"},
         "es": {"one": "%1$d documento", "other": "%1$d documentos"},

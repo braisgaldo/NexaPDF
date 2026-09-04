@@ -123,6 +123,13 @@ import es.ghatostudio.nexapdf.ui.pantallas.PantallaCifrar
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import es.ghatostudio.nexapdf.ui.componentes.DialogoContrasena
+import es.ghatostudio.nexapdf.resources.plural_comp_pregunta
+import org.jetbrains.compose.resources.pluralStringResource
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.unit.dp
 
 /**
  * Raiz de la interfaz: tema, navegacion, avisos y el hilo que une las pantallas
@@ -1250,10 +1257,21 @@ private fun ContenidoApp(
                             is ResultadoPdf.Exito -> {
                                 registrarResultado(hecho.valor)
                                 estado.avisar(getString(Res.string.cifrar_hecho))
-                                // No se ofrece abrirlo: acaba de ponerle una
-                                // contrasena y abrirlo le pediria teclearla
-                                // otra vez para ver lo que ya estaba viendo.
-                                estado.volver()
+                                // Se abre con la contrasena que se acaba de
+                                // teclear en lugar de volver a pedirla: es la
+                                // unica forma de que "abrir al terminar" sirva
+                                // de algo aqui, y comprobar que el documento
+                                // sigue estando bien es justo lo que uno quiere
+                                // hacer despues de cerrarlo con llave.
+                                contrasenaActual = contrasena
+                                abrirDocumentos(listOf(hecho.valor)) { abiertos ->
+                                    val abierto = abiertos.firstOrNull()
+                                        ?: return@abrirDocumentos
+                                    mostrarResultado(
+                                        TareaConResultado.CIFRAR,
+                                        Destino.Documento(listOf(abierto.ruta)),
+                                    )
+                                }
                             }
 
                             is ResultadoPdf.Fallo ->
@@ -1469,9 +1487,21 @@ private fun ContenidoApp(
     compartirVariosRecienCreados?.let { rutas ->
         AlertDialog(
             onDismissRequest = { compartirVariosRecienCreados = null },
-            title = { Text(stringResource(Res.string.comp_pregunta_titulo)) },
+            title = {
+                Text(pluralStringResource(Res.plurals.plural_comp_pregunta, rutas.size, rutas.size))
+            },
             text = {
-                Text(rutas.joinToString(separator = "\n") { contenedor.ficheros.nombre(it) })
+                // La lista se desplaza y no crece sin fin. Separar un documento
+                // largo deja ciento veinte ficheros: sin esto el dialogo ocupaba
+                // la pantalla entera, ensenaba los treinta primeros y se comia
+                // los noventa restantes sin decirlo.
+                Column(
+                    modifier = Modifier
+                        .heightIn(max = 280.dp)
+                        .verticalScroll(rememberScrollState()),
+                ) {
+                    Text(rutas.joinToString(separator = "\n") { contenedor.ficheros.nombre(it) })
+                }
             },
             confirmButton = {
                 TextButton(

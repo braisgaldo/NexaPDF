@@ -15,7 +15,7 @@ NexaPDF: PDF sin conexión
 Une, separa, edita y firma PDF sin conexión. Sin anuncios y sin rastreo.
 ```
 
-## Descripcion completa (2677/4000)
+## Descripcion completa (2778/4000)
 
 ```
 NexaPDF es una caja de herramientas para PDF que funciona entera en tu móvil.
@@ -31,6 +31,7 @@ QUÉ HACE
 • Firmar a mano o con tu propio certificado. La firma con certificado queda incrustada para que cualquier lector de PDF pueda comprobar que el documento no ha cambiado desde que lo firmaste.
 • Reordenar páginas arrastrando, viendo el resultado antes de aplicarlo.
 • Convertir entre PDF y Word, Excel y PowerPoint, en los dos sentidos.
+• Proteger un PDF con contraseña, cifrado con AES de 256 bits, y quitársela cuando ya no haga falta.
 
 PRIVACIDAD, SIN ADORNOS
 

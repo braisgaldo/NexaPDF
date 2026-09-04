@@ -1,7 +1,6 @@
 Neu
 
-• Betrachter: zwischen Seiten wischen, Seitenzahl eintippen, Leiste über das Dokument ziehen. Seite für Seite oder fortlaufend.
-• Teilen mit den Seiten vor Augen: jeder Teil in eigener Farbe, als Bereich oder einzelne Seiten, mit Übersicht vor dem Erstellen.
-• Signieren in zwei Schritten: handschriftlich, dann Zertifikat.
-• Zuletzt: gedrückt halten zum Umbenennen oder Löschen.
-• Geführte Tour auf dem echten Bildschirm.
+• PDF schützen: ein Dokument mit Passwort schließen, AES-256-verschlüsselt, bevor Sie eine Gehaltsabrechnung oder einen Vertrag verschicken. Derselbe Bildschirm nimmt es wieder weg.
+• PDF-Berechtigungen sind einstellbar, und die App sagt, was sie wert sind: Bitten, keine Schlösser.
+• Ein passwortgeschütztes PDF öffnet sich aus jedem Werkzeug.
+• Im Editor ist ein eingefügtes Bild schon beim Platzieren sichtbar.

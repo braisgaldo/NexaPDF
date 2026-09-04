@@ -1,7 +1,6 @@
 Novità
 
-• Visore: scorri tra le pagine, scrivi il numero per saltare, trascina la barra sul documento. Pagina per pagina o scorrimento continuo.
-• Dividere vedendo le pagine: ogni parte con il suo colore, per intervallo o pagine sciolte, con un riepilogo prima di creare.
-• Firma in due passi: autografa e poi certificato.
-• Recenti: tieni premuto per rinominare o eliminare.
-• Tour guidato sulla schermata vera.
+• Proteggi PDF: chiudi un documento con una password, cifrata AES-256, prima di mandare una busta paga o un contratto. La stessa schermata te la toglie dopo.
+• I permessi del PDF si regolano, e l’app dice quanto valgono: richieste che il lettore rispetta se vuole, non un lucchetto.
+• Un PDF con password si apre da qualsiasi strumento.
+• Nell’editor l’immagine inserita si vede mentre la collochi.

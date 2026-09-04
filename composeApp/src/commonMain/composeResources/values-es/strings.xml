@@ -433,6 +433,10 @@ Para separar, «Dividir en partes…» enseña todas las páginas de golpe. Cada
     <string name="visor_pagina_numero">Página %1$d</string>
     <string name="visor_sin_indice">Este documento no trae índice. Los escaneados no suelen tenerlo.</string>
     <string name="visor_sin_resultados">Sin resultados</string>
+    <plurals name="plural_comp_pregunta">
+        <item quantity="one">¿Compartir este documento?</item>
+        <item quantity="other">¿Compartir estos %1$d documentos?</item>
+    </plurals>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d documento</item>
         <item quantity="other">%1$d documentos</item>

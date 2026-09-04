@@ -433,6 +433,14 @@
     <string name="visor_pagina_numero">الصفحة %1$d</string>
     <string name="visor_sin_indice">لا يحتوي هذا المستند على فهرس. المستندات الممسوحة ضوئيًا عادةً لا تحتوي عليه.</string>
     <string name="visor_sin_resultados">لا نتائج</string>
+    <plurals name="plural_comp_pregunta">
+        <item quantity="zero">لا توجد مستندات للمشاركة</item>
+        <item quantity="one">هل تشارك هذا المستند؟</item>
+        <item quantity="two">هل تشارك هذين المستندين؟</item>
+        <item quantity="few">هل تشارك %1$d مستندات؟</item>
+        <item quantity="many">هل تشارك %1$d مستندًا؟</item>
+        <item quantity="other">هل تشارك %1$d مستند؟</item>
+    </plurals>
     <plurals name="plural_documentos">
         <item quantity="zero">لا مستندات</item>
         <item quantity="one">مستند واحد</item>

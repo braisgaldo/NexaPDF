@@ -16,7 +16,7 @@ plugins {
 // --- Versionado -------------------------------------------------------------
 // versionName sigue SemVer. versionCode se deriva de forma monotona con la
 // formula MAJOR * 10_000 + MINOR * 100 + PATCH, documentada en docs/INSTALL.md.
-val appVersionName = "1.1.0"
+val appVersionName = "1.2.0"
 val appVersionCode = appVersionName.split(".").let { (major, minor, patch) ->
     major.toInt() * 10_000 + minor.toInt() * 100 + patch.toInt()
 }

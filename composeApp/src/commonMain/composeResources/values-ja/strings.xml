@@ -433,6 +433,9 @@
     <string name="visor_pagina_numero">%1$d ページ</string>
     <string name="visor_sin_indice">この文書に目次はありません。スキャンした文書にはたいてい入っていません。</string>
     <string name="visor_sin_resultados">見つかりません</string>
+    <plurals name="plural_comp_pregunta">
+        <item quantity="other">%1$d 個の文書を共有しますか？</item>
+    </plurals>
     <plurals name="plural_documentos">
         <item quantity="other">%1$d 個の文書</item>
     </plurals>

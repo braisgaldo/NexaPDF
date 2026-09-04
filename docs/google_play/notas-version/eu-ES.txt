@@ -1,7 +1,6 @@
 Berritasunak
 
-• Ikustailea: lerratuz pasa orria, idatzi zenbakia jauzi egiteko eta arrastatu barra dokumentuan. Orriz orri edo etengabeko korritzea.
-• Zatitu orriak ikusiz: zati bakoitza bere kolorearekin, tarteka edo solteka, eta laburpena sortu aurretik.
-• Sinatu bi urratsetan: eskuz eta gero ziurtagiriarekin.
-• Azkenak: eutsi sakatuta berrizendatzeko edo ezabatzeko.
-• Bisita gidatua benetako pantailan.
+• Babestu PDFa: itxi dokumentu bat pasahitzarekin, AES-256 zifratuta, nomina edo kontratu bat bidali aurretik. Pantaila berak kentzen du gero.
+• PDFaren baimenak doitu daitezke, eta zenbat balio duten esaten da: irakurgailuak nahi badu betetzen dituen eskaerak, ez sarrailak.
+• Pasahitzdun PDF bat edozein tresnatatik ireki daiteke orain.
+• Editorean, txertatzen duzun irudia ikusten da kokatzen duzun bitartean.

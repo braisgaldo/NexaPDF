@@ -79,6 +79,7 @@ WHAT IT DOES
 • Sign by hand, or with your own certificate. A certificate signature is embedded so any PDF reader can check that the document has not changed since you signed it.
 • Reorder pages by dragging, and see the result before applying it.
 • Convert between PDF and Word, Excel and PowerPoint, in both directions.
+• Protect a PDF with a password, encrypted with AES-256, and take the password off again when it is no longer needed.
 
 PRIVACY, PLAINLY
 
@@ -115,6 +116,7 @@ QUÉ HACE
 • Firmar a mano o con tu propio certificado. La firma con certificado queda incrustada para que cualquier lector de PDF pueda comprobar que el documento no ha cambiado desde que lo firmaste.
 • Reordenar páginas arrastrando, viendo el resultado antes de aplicarlo.
 • Convertir entre PDF y Word, Excel y PowerPoint, en los dos sentidos.
+• Proteger un PDF con contraseña, cifrado con AES de 256 bits, y quitársela cuando ya no haga falta.
 
 PRIVACIDAD, SIN ADORNOS
 
@@ -151,6 +153,7 @@ CE QU'ELLE FAIT
 • Signer à la main ou avec votre propre certificat. La signature par certificat est intégrée pour que n'importe quel lecteur PDF puisse vérifier que le document n'a pas changé depuis la signature.
 • Réordonner les pages en les faisant glisser, en voyant le résultat avant de l'appliquer.
 • Convertir entre PDF et Word, Excel et PowerPoint, dans les deux sens.
+• Protéger un PDF par mot de passe, chiffré en AES-256, et le retirer quand il n’est plus nécessaire.
 
 CONFIDENTIALITÉ, SANS DÉTOUR
 
@@ -187,6 +190,7 @@ WAS SIE KANN
 • Handschriftlich unterschreiben oder mit dem eigenen Zertifikat. Die Zertifikatsignatur wird eingebettet, sodass jeder PDF-Betrachter prüfen kann, dass sich das Dokument seit der Unterschrift nicht geändert hat.
 • Seiten per Ziehen neu ordnen und das Ergebnis vor dem Übernehmen sehen.
 • Zwischen PDF und Word, Excel und PowerPoint umwandeln, in beide Richtungen.
+• Ein PDF mit einem Passwort schützen, verschlüsselt mit AES-256, und das Passwort später wieder entfernen.
 
 DATENSCHUTZ, OHNE UMSCHWEIFE
 
@@ -223,6 +227,7 @@ Quellcode: github.com/braisgaldo/NexaPDF""",
 • 手写签名，或使用你自己的证书签名。证书签名会嵌入文档，任何 PDF 阅读器都能验证文档自签署后未被更改。
 • 拖动重新排列页面，应用前可先查看效果。
 • 在 PDF 与 Word、Excel、PowerPoint 之间双向转换。
+• 为 PDF 设置打开密码（AES-256 加密），不需要时也能再把密码去掉。
 
 隐私，直说
 
@@ -259,6 +264,7 @@ PDF 与办公格式之间的转换保留的是内容，而非精确排版。PDF 
 • 手書き署名、または自分の証明書による署名。証明書の署名は文書に埋め込まれ、署名後に改変されていないことをどの PDF ビューアでも確認できます。
 • ドラッグでページを並べ替え、適用前に結果を確認できます。
 • PDF と Word・Excel・PowerPoint を双方向に変換。
+• PDF をパスワードで保護（AES-256 で暗号化）。不要になれば同じ画面で解除できます。
 
 プライバシーについて、率直に
 
@@ -295,6 +301,7 @@ PDF とオフィス形式の変換で保たれるのは内容であり、レイ�
 • Подписывать от руки или собственным сертификатом. Подпись сертификатом встраивается, и любая программа для чтения PDF может проверить, что документ не менялся после подписания.
 • Менять порядок страниц перетаскиванием, видя результат до применения.
 • Преобразовывать между PDF и Word, Excel и PowerPoint в обе стороны.
+• Защитить PDF паролем с шифрованием AES-256 и снять пароль, когда он больше не нужен.
 
 О ПРИВАТНОСТИ, БЕЗ ПРИКРАС
 
@@ -331,6 +338,7 @@ COSA FA
 • Firmare a mano o con il proprio certificato. La firma con certificato viene incorporata, così qualsiasi lettore PDF può verificare che il documento non sia cambiato dopo la firma.
 • Riordinare le pagine trascinandole, vedendo il risultato prima di applicarlo.
 • Convertire tra PDF e Word, Excel e PowerPoint, in entrambe le direzioni.
+• Proteggere un PDF con una password, cifrato con AES a 256 bit, e toglierla quando non serve più.
 
 PRIVACY, SENZA GIRI DI PAROLE
 
@@ -367,6 +375,7 @@ Codice sorgente: github.com/braisgaldo/NexaPDF""",
 • Υπογραφή με το χέρι ή με το δικό σας πιστοποιητικό. Η υπογραφή με πιστοποιητικό ενσωματώνεται, ώστε οποιοδήποτε πρόγραμμα ανάγνωσης PDF να μπορεί να επαληθεύσει ότι το έγγραφο δεν άλλαξε μετά την υπογραφή.
 • Αναδιάταξη σελίδων με σύρσιμο, βλέποντας το αποτέλεσμα πριν το εφαρμόσετε.
 • Μετατροπή ανάμεσα σε PDF και Word, Excel και PowerPoint, και προς τις δύο κατευθύνσεις.
+• Προστασία PDF με κωδικό, με κρυπτογράφηση AES-256, και αφαίρεση του κωδικού όταν δεν χρειάζεται πια.
 
 ΑΠΟΡΡΗΤΟ, ΧΩΡΙΣ ΠΕΡΙΣΤΡΟΦΕΣ
 
@@ -403,6 +412,7 @@ Codice sorgente: github.com/braisgaldo/NexaPDF""",
 • التوقيع بخط اليد أو بشهادتك الخاصة. يُضمَّن التوقيع بالشهادة داخل الملف، فيستطيع أي قارئ PDF التحقق من أن المستند لم يتغيّر بعد توقيعه.
 • إعادة ترتيب الصفحات بالسحب، مع رؤية النتيجة قبل تطبيقها.
 • التحويل بين PDF وWord وExcel وPowerPoint في الاتجاهين.
+• حماية ملف PDF بكلمة مرور بتشفير AES-256، وإزالتها عندما لا تعود هناك حاجة إليها.
 
 الخصوصية، بصراحة
 
@@ -439,6 +449,7 @@ QUE FAI
 • Asinar a man ou co teu propio certificado. A sinatura con certificado queda incrustada para que calquera lector de PDF poida comprobar que o documento non cambiou desde que o asinaches.
 • Reordenar páxinas arrastrando, vendo o resultado antes de aplicalo.
 • Converter entre PDF e Word, Excel e PowerPoint, nos dous sentidos.
+• Protexer un PDF con contrasinal, cifrado con AES de 256 bits, e quitalo cando xa non faga falla.
 
 PRIVACIDADE, SEN ADORNOS
 
@@ -475,6 +486,7 @@ QUÈ FA
 • Signar a mà o amb el teu propi certificat. La signatura amb certificat queda incrustada perquè qualsevol lector de PDF pugui comprovar que el document no ha canviat des que el vas signar.
 • Reordenar pàgines arrossegant, veient el resultat abans d'aplicar-lo.
 • Convertir entre PDF i Word, Excel i PowerPoint, en tots dos sentits.
+• Protegir un PDF amb contrasenya, xifrat amb AES de 256 bits, i treure-la quan ja no calgui.
 
 PRIVADESA, SENSE ADORNS
 
@@ -511,6 +523,7 @@ ZER EGITEN DUEN
 • Eskuz sinatu, edo zeure ziurtagiriarekin. Ziurtagiriarekiko sinadura kapsulatuta geratzen da, eta edozein PDF irakurgailuk egiazta dezake dokumentua ez dela aldatu sinatu zenuenetik.
 • Orriak arrastatuz berrantolatu, emaitza aplikatu aurretik ikusiz.
 • PDF eta Word, Excel eta PowerPoint artean bihurtu, bi noranzkoetan.
+• PDF bat pasahitzarekin babestea, AES-256 zifratzearekin, eta pasahitza kentzea behar ez denean.
 
 PRIBATUTASUNA, BIRIBILKETARIK GABE
 

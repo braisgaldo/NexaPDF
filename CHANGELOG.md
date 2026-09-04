@@ -5,6 +5,45 @@ Todos los cambios reseñables de NexaPDF se documentan en este fichero.
 El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y el
 proyecto se versiona con [SemVer](https://semver.org/lang/es/).
 
+## [1.2.0] — 2026-09-04
+
+### Nuevo
+
+- **Proteger PDF**: una baldosa más en el inicio para cerrar un documento con
+  contraseña, cifrado con AES de 256 bits. La misma pantalla se la quita
+  después, y detecta sola en qué estado está el documento que eliges.
+  Los permisos del PDF (imprimir, copiar, anotar, modificar) se pueden ajustar,
+  y la pantalla dice sin adornos lo que valen: son peticiones que el lector
+  respeta si quiere, no un candado.
+- El **recorrido guiado** tiene un paso más para la herramienta nueva.
+
+### Corregido
+
+- Un PDF cifrado abierto con **Leer PDF** se quedaba girando para siempre. El
+  diálogo de la contraseña sólo existía dentro de la pantalla de páginas; ahora
+  vale para cualquier herramienta.
+- La copia interna de un documento descifrado se llamaba «algo.abierto.pdf», y
+  ese «.abierto» acababa en la barra del visor y en el nombre de lo que se
+  guardara después.
+- El aviso de la donación se colaba encima del documento recién elegido: el rato
+  de quietud se contaba también mientras el selector de ficheros del sistema
+  tapaba la aplicación.
+- En el editor, una **imagen insertada** se dibujaba como un rectángulo gris: se
+  elegía la foto, se colocaba y no se sabía cuál era ni cómo quedaba hasta
+  guardar y volver a abrir el documento.
+- El aviso de «¿lo comparto?» decía «este documento» encima de una lista de
+  tres, y con muchos ficheros ocupaba la pantalla entera: enseñaba los treinta
+  primeros y se comía el resto sin decirlo. Ahora cuenta cuántos son y la lista
+  se desplaza.
+- **Ficheros recientes** ya tiene por dónde compartir varios a la vez. La
+  pantalla existía y no había forma de llegar a ella.
+
+### Rendimiento
+
+- Una **imagen insertada** se guardaba entera y sin pérdidas. Una foto de móvil
+  dejaba un PDF de 11 MB; reducida a los píxeles que caben en su hueco a 300 ppp
+  y guardada en JPEG, el mismo documento pesa 97 kB.
+
 ## [1.1.0] — 2026-09-04
 
 ### Añadido

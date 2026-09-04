@@ -1,7 +1,6 @@
 Novetats
 
-• Visor: passa pàgina lliscant, escriu el número per saltar-hi i arrossega la barra pel document. Pàgina a pàgina o desplaçament continu.
-• Dividir veient les pàgines: cada part amb el seu color, per trams o soltes, i un resum abans de crear.
-• Signar en dos passos: la signatura a mà i després el certificat.
-• Recents: mantén premut per reanomenar o esborrar.
-• Recorregut guiat sobre la pantalla real.
+• Protegir PDF: tanca un document amb contrasenya, xifrat AES-256, abans d’enviar una nòmina o un contracte. La mateixa pantalla te la treu després.
+• Els permisos del PDF s’ajusten, i es diu què valen: peticions que el lector respecta si vol, no pas un pany.
+• Un PDF amb contrasenya ja s’obre des de qualsevol eina.
+• A l’editor, la imatge que hi insereixes es veu mentre la col·loques.

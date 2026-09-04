@@ -433,6 +433,10 @@ To split, «Split into parts…» shows every page at once. Each part has its ow
     <string name="visor_pagina_numero">Page %1$d</string>
     <string name="visor_sin_indice">This document has no contents list. Scanned documents usually don’t.</string>
     <string name="visor_sin_resultados">No matches</string>
+    <plurals name="plural_comp_pregunta">
+        <item quantity="one">Share this document?</item>
+        <item quantity="other">Share these %1$d documents?</item>
+    </plurals>
     <plurals name="plural_documentos">
         <item quantity="one">%1$d document</item>
         <item quantity="other">%1$d documents</item>

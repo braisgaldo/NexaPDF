@@ -1,8 +1,6 @@
 Nouveautés
 
-• Lecteur : glissez entre les pages, saisissez un numéro, faites glisser la barre sur le document. Page par page ou défilement continu.
-• Diviser en voyant les pages : chaque partie a sa couleur, par plage ou pages isolées, avec un résumé avant de créer.
-• Signature en deux étapes : manuscrite puis certificat.
-• Récents : maintenez pour renommer ou supprimer.
-• Visite guidée sur l'écran réel.
-• Défilement plus fluide.
+• Protéger un PDF : fermez un document par mot de passe, chiffré en AES-256, avant d’envoyer une fiche de paie ou un contrat. Le même écran le retire ensuite.
+• Les autorisations du PDF se règlent, et l’app dit ce qu’elles valent : des demandes qu’un lecteur respecte s’il le veut, pas un verrou.
+• Un PDF protégé s’ouvre depuis n’importe quel outil.
+• Dans l’éditeur, l’image insérée se voit pendant le placement.
