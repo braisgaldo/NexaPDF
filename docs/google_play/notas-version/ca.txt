@@ -1,0 +1,7 @@
+Novetats
+
+• Visor: passa pàgina lliscant, escriu el número per saltar-hi i arrossega la barra pel document. Pàgina a pàgina o desplaçament continu.
+• Dividir veient les pàgines: cada part amb el seu color, per trams o soltes, i un resum abans de crear.
+• Signar en dos passos: la signatura a mà i després el certificat.
+• Recents: mantén premut per reanomenar o esborrar.
+• Recorregut guiat sobre la pantalla real.

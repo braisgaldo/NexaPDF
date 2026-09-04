@@ -1113,8 +1113,13 @@ private fun ContenidoApp(
                         estado.terminarTrabajo()
                         when (resultado) {
                             is ResultadoPdf.Exito -> {
-                                estado.registrarUsoReal()
-                                refrescarRecientes()
+                                // Por aqui pasaba de largo el registro del
+                                // resultado: el documento firmado se quedaba en
+                                // la carpeta privada, no llegaba a la que el
+                                // usuario habia elegido y tampoco se ofrecia
+                                // compartirlo. Justo lo que uno quiere hacer
+                                // nada mas firmar algo.
+                                registrarResultado(resultado.valor)
                                 estado.avisar(getString(Res.string.firma_hecha))
                                 abrirDocumentos(listOf(resultado.valor))
                                 mostrarResultado(

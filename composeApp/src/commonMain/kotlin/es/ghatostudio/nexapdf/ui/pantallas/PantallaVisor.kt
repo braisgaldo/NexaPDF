@@ -724,9 +724,11 @@ private fun CapaResaltados(
 ) {
     val colorActiva = MaterialTheme.colorScheme.primary
     Canvas(
+        // Sin margen propio: el hueco donde va la pagina ya lo trae puesto. Al
+        // reescribir el visor con el pager, este margen se sumaba al de fuera y
+        // las marcas caian un poco a la derecha y por debajo de la palabra.
         modifier = Modifier
             .fillMaxSize()
-            .padding(12.dp)
             .graphicsLayer {
                 scaleX = escala
                 scaleY = escala

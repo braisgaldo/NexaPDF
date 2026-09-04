@@ -1,0 +1,7 @@
+Novidades
+
+• Visor: pasa páxina esvarando, escribe o número para saltar e arrastra a barra polo documento. Páxina a páxina ou desprazamento continuo.
+• Dividir vendo as páxinas: cada parte coa súa cor, por tramos ou soltas, e un resumo antes de crear.
+• Asinar en dous pasos: a rúbrica a man e despois o certificado.
+• Recentes: mantén premido para renomear ou borrar.
+• Percorrido guiado sobre a pantalla real.

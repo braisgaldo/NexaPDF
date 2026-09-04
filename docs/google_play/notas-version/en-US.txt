@@ -1,0 +1,8 @@
+What's new
+
+• Viewer: swipe between pages, type a number to jump, drag the bar across the document. Page by page or continuous scroll.
+• Split with the pages in front of you: each part in its colour, by range or loose pages, and a summary before creating.
+• Signing in two steps: handwritten mark, then certificate.
+• Recents: hold to rename or delete.
+• A guided tour over the real screen.
+• Smoother scrolling.

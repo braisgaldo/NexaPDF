@@ -1,0 +1,8 @@
+Nouveautés
+
+• Lecteur : glissez entre les pages, saisissez un numéro, faites glisser la barre sur le document. Page par page ou défilement continu.
+• Diviser en voyant les pages : chaque partie a sa couleur, par plage ou pages isolées, avec un résumé avant de créer.
+• Signature en deux étapes : manuscrite puis certificat.
+• Récents : maintenez pour renommer ou supprimer.
+• Visite guidée sur l'écran réel.
+• Défilement plus fluide.

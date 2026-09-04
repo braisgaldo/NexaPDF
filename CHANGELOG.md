@@ -5,7 +5,7 @@ Todos los cambios reseñables de NexaPDF se documentan en este fichero.
 El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y el
 proyecto se versiona con [SemVer](https://semver.org/lang/es/).
 
-## [No publicado]
+## [1.1.0] — 2026-09-04
 
 ### Añadido
 
@@ -80,6 +80,8 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
   parar.
 - **La goma escribe un trazo, no un rectángulo por punto.** Un borrado a mano
   alzada dejaba cientos de operaciones en el PDF.
+- **Arranque en frío de 350 ms** en el build de publicación, medido sobre cinco
+  intentos. No hace falta Baseline Profile.
 
 ### Corregido
 
@@ -119,6 +121,16 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
   sabía cuál era la tercera.
 - El menú de ordenar los recientes no marcaba cuál estaba puesto.
 - El diálogo de añadir texto tenía el campo y el deslizador sin rótulo.
+- **El documento firmado no llegaba a la carpeta de destino** ni ofrecía
+  compartirse: la firma se saltaba el registro del resultado, que sí hacían
+  unir, editar y extraer.
+- Las marcas de la búsqueda caían desplazadas respecto a la palabra desde que el
+  visor pasó a usar un pager: el margen se aplicaba dos veces.
+- El botón de saltar la firma manuscrita quedaba debajo del lienzo de dibujo,
+  que se traga el desplazamiento, así que no había forma de llegar a él.
+- Las miniaturas se quedaban en blanco con una marca de error: `PdfRenderer`
+  sólo pinta en `ARGB_8888` y se le estaba pidiendo `RGB_565`. Ahora se pinta
+  como él quiere y la miniatura se guarda como copia de 16 bits.
 - **Importar ajustes no funcionaba**: Android da a la extensión `.bak` un tipo
   propio que el selector no aceptaba, así que la copia salía atenuada y no
   había forma de elegirla. El filtro de tipos no aportaba seguridad, porque la

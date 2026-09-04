@@ -31,6 +31,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import es.ghatostudio.nexapdf.di.LocalContenedor
 import es.ghatostudio.nexapdf.domain.pdf.ResultadoPdf
+import es.ghatostudio.nexapdf.domain.pdf.ErrorPdf
+import kotlinx.coroutines.delay
 
 /**
  * Miniatura de una pagina, rasterizada bajo demanda.
@@ -71,7 +73,22 @@ fun MiniaturaPagina(
         )
         when (resultado) {
             is ResultadoPdf.Exito -> imagen = resultado.valor
-            is ResultadoPdf.Fallo -> fallo = true
+            // Falta de memoria es un apuro del momento, no un documento roto:
+            // se vuelve a pedir una vez antes de dar la pagina por perdida.
+            is ResultadoPdf.Fallo -> if (resultado.causa == ErrorPdf.SIN_MEMORIA) {
+                delay(300)
+                when (val reintento = contenedor.motorPdf.renderizarPagina(
+                    ruta = ruta,
+                    indice = indice,
+                    anchoPx = anchoPx,
+                    miniatura = true,
+                )) {
+                    is ResultadoPdf.Exito -> imagen = reintento.valor
+                    is ResultadoPdf.Fallo -> fallo = true
+                }
+            } else {
+                fallo = true
+            }
         }
     }
 

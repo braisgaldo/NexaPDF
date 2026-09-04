@@ -241,6 +241,23 @@ fun PantallaFirma(
                 )
             }
             item {
+                TextButton(
+                    onClick = { enElCertificado = true },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 4.dp)
+                        .heightIn(min = 48.dp),
+                ) {
+                    Text(stringResource(Res.string.firma_saltar_manuscrita))
+                    Spacer(Modifier.width(8.dp))
+                    Icon(
+                        Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                    )
+                }
+            }
+            item {
                 LienzoFirma(
                     trazos = trazos,
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
@@ -266,23 +283,6 @@ fun PantallaFirma(
                         Spacer(Modifier.width(8.dp))
                         Text(stringResource(Res.string.firma_colocar))
                     }
-                }
-            }
-            item {
-                TextButton(
-                    onClick = { enElCertificado = true },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 4.dp)
-                        .heightIn(min = 48.dp),
-                ) {
-                    Text(stringResource(Res.string.firma_saltar_manuscrita))
-                    Spacer(Modifier.width(8.dp))
-                    Icon(
-                        Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
                 }
             }
             }

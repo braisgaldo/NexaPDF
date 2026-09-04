@@ -54,6 +54,10 @@ import es.ghatostudio.nexapdf.resources.tour_z_recientes_c
 import es.ghatostudio.nexapdf.resources.tour_z_recientes_t
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 
 /** Los pasos del recorrido, en el orden en que se usa la aplicacion. */
 private val PASOS: List<Triple<ZonaTour, StringResource, StringResource>> = listOf(
@@ -128,17 +132,22 @@ fun CapaTour(
             )
         }
 
-        // El cartel va debajo de lo iluminado, y encima si no cabe: tapar
-        // justo lo que se esta senalando seria el colmo.
-        val altoPantalla = with(densidad) { 0f }
-        val debajo = hueco == null || hueco.bottom < 1200f
+        // El cartel se va a la mitad contraria de lo que ilumina: tapar justo
+        // lo que se esta senalando seria el colmo. Se mide contra el alto real
+        // y no contra un numero fijo, que en una pantalla corta caia encima.
+        BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        val altoPx = with(densidad) { maxHeight.toPx() }
+        val centroDelHueco = hueco?.let { (it.top + it.bottom) / 2f } ?: 0f
+        val abajo = hueco == null || centroDelHueco < altoPx / 2f
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                // Sin esto, los botones del cartel caen bajo la barra de
+                // navegacion del telefono y no se pueden pulsar.
+                .windowInsetsPadding(WindowInsets.systemBars)
                 .padding(20.dp),
-            verticalArrangement = if (debajo) Arrangement.Bottom else Arrangement.Top,
+            verticalArrangement = if (abajo) Arrangement.Bottom else Arrangement.Top,
         ) {
-            @Suppress("UNUSED_EXPRESSION") altoPantalla
             Surface(
                 shape = RoundedCornerShape(20.dp),
                 color = MaterialTheme.colorScheme.surfaceContainerHigh,
@@ -195,6 +204,7 @@ fun CapaTour(
                     }
                 }
             }
+        }
         }
     }
 }

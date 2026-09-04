@@ -193,22 +193,39 @@ class MotorPdfAndroid(
                         .roundToInt()
                         .coerceIn(48, MAXIMO_ANCHO_PX * 4)
 
-                    // Una miniatura con 16 bits de color pesa la mitad y sobre
-                    // papel no se distingue; la pagina grande se amplia, y ahi
-                    // el degradado de un sello o de una foto si canta.
-                    val formato = if (miniatura) Bitmap.Config.RGB_565 else Bitmap.Config.ARGB_8888
-                    val mapa = Bitmap.createBitmap(ancho, alto, formato)
+                    // Un pico de memoria mientras se parte un documento largo
+                    // hacia fallar la miniatura, y la rejilla se quedaba llena
+                    // de marcas de error para siempre porque nadie reintentaba.
+                    // Soltar lo cacheado y volver a intentarlo convierte un
+                    // apuro pasajero en un fotograma mas lento.
+                    val lienzo = try {
+                        Bitmap.createBitmap(ancho, alto, Bitmap.Config.ARGB_8888)
+                    } catch (sinSitio: OutOfMemoryError) {
+                        cacheMiniaturas.vaciar()
+                        @Suppress("UNUSED_EXPRESSION") sinSitio
+                        Bitmap.createBitmap(ancho, alto, Bitmap.Config.ARGB_8888)
+                    }
                     // PdfRenderer no pinta el fondo: sin esto, una pagina con
                     // zonas transparentes saldria en negro sobre tema oscuro.
-                    mapa.eraseColor(Color.WHITE)
-                    pagina.render(mapa, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+                    lienzo.eraseColor(Color.WHITE)
+                    pagina.render(lienzo, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+
+                    // `PdfRenderer` solo sabe pintar en ARGB_8888: pedirle
+                    // RGB_565 responde "Unsupported pixel format". Asi que se
+                    // pinta como quiere y la miniatura se queda con la copia de
+                    // 16 bits, que es la que se guarda y ocupa la mitad. Sobre
+                    // papel no se distingue; la pagina grande sigue entera,
+                    // porque ahi se amplia y el degradado de un sello si canta.
+                    val mapa = if (miniatura) {
+                        lienzo.copy(Bitmap.Config.RGB_565, false)?.also { lienzo.recycle() } ?: lienzo
+                    } else {
+                        lienzo
+                    }
                     val imagen = mapa.asImageBitmap()
                     if (miniatura) cacheMiniaturas.guardar(ruta, indice, ancho, mapa, imagen)
                     ResultadoPdf.Exito(imagen)
                 }
             } catch (e: OutOfMemoryError) {
-                // Si no cabe, se suelta lo cacheado y se deja que lo intente
-                // otra vez con la memoria libre en lugar de fallar en seco.
                 cacheMiniaturas.vaciar()
                 ResultadoPdf.Fallo(ErrorPdf.SIN_MEMORIA, e.message)
             } catch (e: Exception) {
@@ -217,25 +234,36 @@ class MotorPdfAndroid(
         }
     }
 
-    private fun obtenerRenderizador(ruta: String): RenderizadorAbierto? {
-        renderizadores[ruta]?.let { return it }
+    /**
+     * El renderizador del documento, abriendolo si hace falta.
+     *
+     * El mapa se toca siempre bajo [cerrojoDeMapas]. Al pasar a un cerrojo por
+     * documento, varias corrutinas empezaron a entrar aqui a la vez: el mapa se
+     * corrompia y, peor, el desalojo podia cerrar el renderizador que otra
+     * estaba usando, que es como se quedaron todas las miniaturas en blanco.
+     * Nunca se desaloja el documento que se acaba de pedir.
+     */
+    private suspend fun obtenerRenderizador(ruta: String): RenderizadorAbierto? =
+        cerrojoDeMapas.withLock {
+            renderizadores[ruta]?.let { return@withLock it }
 
-        val fichero = File(ruta)
-        if (!fichero.exists()) return null
+            val fichero = File(ruta)
+            if (!fichero.exists()) return@withLock null
 
-        val abierto = runCatching {
-            val descriptor = ParcelFileDescriptor.open(fichero, ParcelFileDescriptor.MODE_READ_ONLY)
-            RenderizadorAbierto(descriptor, PdfRenderer(descriptor))
-        }.getOrNull() ?: return null
+            val abierto = runCatching {
+                val descriptor =
+                    ParcelFileDescriptor.open(fichero, ParcelFileDescriptor.MODE_READ_ONLY)
+                RenderizadorAbierto(descriptor, PdfRenderer(descriptor))
+            }.getOrNull() ?: return@withLock null
 
-        // Cache pequena: cada documento abierto retiene un descriptor de fichero.
-        while (renderizadores.size >= MAXIMO_DOCUMENTOS_ABIERTOS) {
-            val masAntiguo = renderizadores.keys.firstOrNull() ?: break
-            renderizadores.remove(masAntiguo)?.cerrar()
+            // Cache pequena: cada documento abierto retiene un descriptor.
+            while (renderizadores.size >= MAXIMO_DOCUMENTOS_ABIERTOS) {
+                val masAntiguo = renderizadores.keys.firstOrNull { it != ruta } ?: break
+                renderizadores.remove(masAntiguo)?.cerrar()
+            }
+            renderizadores[ruta] = abierto
+            abierto
         }
-        renderizadores[ruta] = abierto
-        return abierto
-    }
 
     override suspend fun renderizarImagen(
         ruta: String,
@@ -248,7 +276,11 @@ class MotorPdfAndroid(
 
     override suspend fun cerrar(ruta: String) {
         cacheMiniaturas.olvidar(ruta)
-        cerrojoDe(ruta).withLock { renderizadores.remove(ruta)?.cerrar() }
+        // Primero se espera a que nadie este renderizando ese documento, y solo
+        // entonces se toca el mapa.
+        cerrojoDe(ruta).withLock {
+            cerrojoDeMapas.withLock { renderizadores.remove(ruta)?.cerrar() }
+        }
     }
 
     // --- Unir, separar, reorganizar ------------------------------------------
@@ -1112,10 +1144,14 @@ class MotorPdfAndroid(
  * Miniaturas ya rasterizadas, acotadas por memoria.
  *
  * Se acota por bytes y no por numero de entradas porque una miniatura de 320 px
- * pesa medio mega y una de 1080 px seis veces mas: contar entradas daria un
- * techo que no significa nada. El limite es una octava parte del monton de la
- * aplicacion, que en la practica deja sitio de sobra para lo que se ve en una
- * rejilla sin acercarse al limite del sistema.
+ * pesa un cuarto de mega y una de 1080 px seis veces mas: contar entradas daria
+ * un techo que no significa nada.
+ *
+ * El limite es una dieciseisava parte del monton. Con una octava la memoria de
+ * la aplicacion subia de 215 a 232 MB, y no servia de nada: una pantalla de
+ * miniaturas son seis, poco mas de un mega y medio, asi que con dieciseis MB
+ * caben nueve pantallas y sobra. Guardar mas solo era retener paginas que nadie
+ * iba a volver a mirar.
  */
 private class CacheMiniaturas {
 
@@ -1123,7 +1159,7 @@ private class CacheMiniaturas {
 
     private class Entrada(val imagen: ImageBitmap, val bytes: Int)
 
-    private val limiteBytes = (Runtime.getRuntime().maxMemory() / 8).toInt()
+    private val limiteBytes = (Runtime.getRuntime().maxMemory() / 16).toInt()
     private var ocupado = 0
 
     // accessOrder = true: al leer una entrada pasa al final, asi que la primera

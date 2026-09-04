@@ -1,6 +1,7 @@
 # Plan de mejoras antes de publicar
 
-Estado: **propuesta**. Fecha: 4 de septiembre de 2026.
+Estado: **ejecutado**, con los resultados medidos anotados en cada punto.
+Fecha: 4 de septiembre de 2026.
 
 Lo que sigue sale de recorrer la aplicación entera en un Samsung S22 Ultra
 (Android 13, `SM-S908U`) pantalla a pantalla, y de medir lo que se podía medir
@@ -67,6 +68,21 @@ De ahí el 16,67 % de fotogramas con retraso con la GPU ociosa.
 **Cómo comprobarlo:** repetir los seis desplazamientos sobre las 120 páginas.
 Objetivo: **< 5 % de fotogramas con retraso y percentil 99 por debajo de 40 ms**.
 
+**Resultado medido.** El objetivo **no se cumple**, y conviene decir por qué en
+lugar de dejarlo en «mejorado»:
+
+| | Antes | Después |
+|---|---|---|
+| Primera pasada, páginas nuevas | 16,67 % · p90 42 ms | 14,17 % · p90 32 ms |
+| Volviendo sobre páginas ya vistas | — | **9,66 % · p90 22 ms** |
+
+La caché sólo puede ahorrar trabajo que ya se hizo, así que en la primera pasada
+apenas cambia nada: esas páginas hay que rasterizarlas sí o sí. Y no se pueden
+rasterizar en paralelo, porque `PdfRenderer` no admite dos páginas abiertas a la
+vez **del mismo documento**; el cerrojo por documento ayuda cuando hay varios
+abiertos, no dentro de uno. Bajar del 5 % en la primera pasada pide otra cosa:
+adelantarse y preparar la pantalla siguiente mientras no se desplaza.
+
 ### R2 · 215 MB de memoria con un documento largo abierto
 
 69 MB son bitmaps. Todas las miniaturas se piden en `ARGB_8888` (4 bytes por
@@ -81,6 +97,18 @@ píxel) aunque un PDF de texto no tenga transparencia.
 
 **Cómo comprobarlo:** `dumpsys meminfo` con las 120 páginas abiertas.
 Objetivo: **por debajo de 150 MB de PSS**.
+
+**Resultado medido: el objetivo no se cumple y la premisa era falsa.**
+`PdfRenderer.render` sólo acepta `ARGB_8888`; pedirle `RGB_565` responde
+«Unsupported pixel format». Se pinta como él quiere y la miniatura se queda con
+una copia de 16 bits, que pesa la mitad, pero la caché retiene más páginas de
+las que Compose retenía sola. Con el límite en una octava parte del montón la
+memoria subía de 215 a 232 MB; con una dieciseisava se queda en **220 MB**, con
+73 MB de gráficos frente a los 69 de partida.
+
+O sea: se cambian **5 MB de memoria por casi la mitad de tirones al volver sobre
+lo ya visto**. Es un intercambio razonable, pero es un intercambio, no la mejora
+en los dos frentes que este punto daba por hecha.
 
 ### R3 · La búsqueda se lanza en cada tecla y no se puede cancelar
 

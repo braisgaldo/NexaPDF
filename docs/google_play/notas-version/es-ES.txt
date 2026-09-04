@@ -1,0 +1,8 @@
+Novedades
+
+• Visor: pasa página deslizando, escribe el número para saltar y arrastra la barra por el documento. Página a página o desplazamiento continuo.
+• Dividir viendo las páginas: cada parte con su color, por tramos o sueltas, y un resumen antes de crear.
+• Firmar en dos pasos: la rúbrica a mano y después el certificado.
+• Recientes: mantén pulsado para renombrar o borrar.
+• Recorrido guiado sobre la pantalla real.
+• Menos tirones al desplazar.
