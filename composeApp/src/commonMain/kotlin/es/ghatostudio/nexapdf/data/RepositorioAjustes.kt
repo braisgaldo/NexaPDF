@@ -41,8 +41,12 @@ class RepositorioAjustes(
         val sesionConUsoReal = booleanPreferencesKey("sesion_con_uso_real")
         val tourVisto = booleanPreferencesKey("tour_visto")
         val modoGuardado = stringPreferencesKey("modo_guardado")
+        val direccionLectura = stringPreferencesKey("direccion_lectura")
+        val aperturaAlTerminar = stringPreferencesKey("apertura_al_terminar")
         val carpetaDestino = stringPreferencesKey("carpeta_destino")
         val preguntarCompartir = booleanPreferencesKey("preguntar_compartir")
+        val resumenSeparar = booleanPreferencesKey("resumen_separar")
+        val pedirManuscrita = booleanPreferencesKey("pedir_manuscrita")
         val firmas = stringPreferencesKey("firmas_guardadas")
         val nombreFirmas = stringPreferencesKey("nombre_para_firmas")
     }
@@ -60,9 +64,17 @@ class RepositorioAjustes(
                 ?: porDefecto.guardarEnDescargasAlTerminar,
             tourVisto = preferencias[Claves.tourVisto] ?: porDefecto.tourVisto,
             modoGuardado = preferencias[Claves.modoGuardado] ?: porDefecto.modoGuardado,
+            direccionLectura = preferencias[Claves.direccionLectura]
+                ?: porDefecto.direccionLectura,
+            aperturaAlTerminar = preferencias[Claves.aperturaAlTerminar]
+                ?: porDefecto.aperturaAlTerminar,
             carpetaDestino = preferencias[Claves.carpetaDestino],
             preguntarCompartir = preferencias[Claves.preguntarCompartir]
                 ?: porDefecto.preguntarCompartir,
+            resumenAlSepararEnPartes = preferencias[Claves.resumenSeparar]
+                ?: porDefecto.resumenAlSepararEnPartes,
+            pedirFirmaManuscrita = preferencias[Claves.pedirManuscrita]
+                ?: porDefecto.pedirFirmaManuscrita,
             estadoDonacion = preferencias[Claves.estadoDonacion] ?: porDefecto.estadoDonacion,
             usosReales = preferencias[Claves.usosReales] ?: 0,
             usosAlAplazar = preferencias[Claves.usosAlAplazar] ?: 0,
@@ -125,8 +137,20 @@ class RepositorioAjustes(
 
     suspend fun fijarModoGuardado(clave: String) = editar { it[Claves.modoGuardado] = clave }
 
+    suspend fun fijarDireccionLectura(clave: String) =
+        editar { it[Claves.direccionLectura] = clave }
+
+    suspend fun fijarAperturaAlTerminar(clave: String) =
+        editar { it[Claves.aperturaAlTerminar] = clave }
+
     suspend fun fijarPreguntarCompartir(valor: Boolean) =
         editar { it[Claves.preguntarCompartir] = valor }
+
+    suspend fun fijarResumenAlSeparar(valor: Boolean) =
+        editar { it[Claves.resumenSeparar] = valor }
+
+    suspend fun fijarPedirFirmaManuscrita(valor: Boolean) =
+        editar { it[Claves.pedirManuscrita] = valor }
 
     suspend fun fijarCarpetaDestino(uri: String?) = editar {
         if (uri == null) it.remove(Claves.carpetaDestino) else it[Claves.carpetaDestino] = uri
@@ -155,7 +179,11 @@ class RepositorioAjustes(
         preferencias[Claves.guardarEnDescargas] = nuevos.guardarEnDescargasAlTerminar
         preferencias[Claves.tourVisto] = nuevos.tourVisto
         preferencias[Claves.modoGuardado] = nuevos.modoGuardado
+        preferencias[Claves.direccionLectura] = nuevos.direccionLectura
+        preferencias[Claves.aperturaAlTerminar] = nuevos.aperturaAlTerminar
         preferencias[Claves.preguntarCompartir] = nuevos.preguntarCompartir
+        preferencias[Claves.resumenSeparar] = nuevos.resumenAlSepararEnPartes
+        preferencias[Claves.pedirManuscrita] = nuevos.pedirFirmaManuscrita
         if (nuevos.carpetaDestino == null) preferencias.remove(Claves.carpetaDestino)
         else preferencias[Claves.carpetaDestino] = nuevos.carpetaDestino
         preferencias[Claves.estadoDonacion] = nuevos.estadoDonacion

@@ -105,6 +105,10 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import kotlinx.coroutines.delay
+import es.ghatostudio.nexapdf.domain.model.AperturaAlTerminar
+import es.ghatostudio.nexapdf.resources.res_abrir
+import es.ghatostudio.nexapdf.resources.res_abrir_titulo
+import es.ghatostudio.nexapdf.resources.res_ahora_no
 
 /**
  * Raiz de la interfaz: tema, navegacion, avisos y el hilo que une las pantallas
@@ -184,6 +188,15 @@ private fun ContenidoApp(
     // Firma dibujada desde "Firmar PDF" que falta por situar en la pagina.
     var firmaParaColocar by remember { mutableStateOf<List<List<Punto>>?>(null) }
 
+    // Se entro al editor desde el asistente de firma para colocar la
+    // rubrica. Al guardar hay que volver al asistente, en el paso del
+    // certificado: firmar a mano y firmar con certificado son dos mitades
+    // de la misma tarea, y antes la segunda habia que empezarla de cero.
+    var siguiendoConCertificado by remember { mutableStateOf(false) }
+
+    // Documento recien creado sobre el que preguntar si se abre.
+    var abrirRecienCreado by remember { mutableStateOf<Destino?>(null) }
+
     // Documento recien creado sobre el que preguntar si se comparte.
     var compartirRecienCreado by remember { mutableStateOf<String?>(null) }
 
@@ -192,7 +205,6 @@ private fun ContenidoApp(
     var compartirVariosRecienCreados by remember { mutableStateOf<List<String>?>(null) }
 
     // Estado del visor
-    var paginaVisor by remember { mutableStateOf<ImageBitmap?>(null) }
     var seccionesVisor by remember { mutableStateOf(emptyList<Seccion>()) }
 
     // Estado de la firma
@@ -351,6 +363,21 @@ private fun ContenidoApp(
         if (ajustes.preguntarCompartir) compartirVariosRecienCreados = rutas
     }
 
+    /**
+     * Lleva a donde se ve el documento recien creado, o no.
+     *
+     * Abrir siempre estorba a quien encadena tareas; no abrir nunca deja
+     * con la duda de si ha salido bien. Lo decide el usuario en los
+     * ajustes, y aqui solo se obedece.
+     */
+    fun mostrarResultado(destinoDelResultado: Destino) {
+        when (ajustes.apertura) {
+            AperturaAlTerminar.ABRIR -> estado.reemplazar(destinoDelResultado)
+            AperturaAlTerminar.PREGUNTAR -> abrirRecienCreado = destinoDelResultado
+            AperturaAlTerminar.NO_ABRIR -> estado.volverAInicio()
+        }
+    }
+
     fun rutaDeSalida(nombre: String): String {
         val carpeta = contenedor.servicios.directorioSalida
         contenedor.ficheros.asegurarDirectorio(carpeta)
@@ -466,7 +493,7 @@ private fun ContenidoApp(
                                 )
                                 val primera = rutas.firstOrNull() ?: return@launch
                                 abrirDocumentos(listOf(primera))
-                                estado.ir(Destino.Documento(listOf(primera)))
+                                mostrarResultado(Destino.Documento(listOf(primera)))
                             }
 
                             Herramienta.SEPARAR -> {
@@ -496,12 +523,14 @@ private fun ContenidoApp(
                                 estado.ir(Destino.Firma(elegido.ruta))
                             }
 
-                            Herramienta.IMAGEN, Herramienta.VARIAS_IMAGENES -> {
-                                // Se pregunta de donde sacar la imagen: de la
-                                // galeria o haciendo una foto en el momento.
+                            Herramienta.IMAGENES -> {
+                                // Se pregunta de donde sacar las imagenes: de
+                                // la galeria o haciendo una foto en el momento.
+                                // El selector siempre admite varias: elegir una
+                                // sola tambien vale, y asi no hay que decidir
+                                // cuantas se van a usar antes de verlas.
                                 imagenes.clear()
-                                pidiendoOrigenImagen =
-                                    herramienta == Herramienta.VARIAS_IMAGENES
+                                pidiendoOrigenImagen = true
                             }
                         }
                     }
@@ -533,13 +562,6 @@ private fun ContenidoApp(
             )
 
             is Destino.Visor -> {
-                LaunchedEffect(destino.ruta, destino.pagina, ajustes.calidad) {
-                    paginaVisor = null
-                    val ancho = (1400 * ajustes.calidad.escala).toInt()
-                    paginaVisor = contenedor.motorPdf
-                        .renderizarPagina(destino.ruta, destino.pagina, ancho, contrasenaActual)
-                        .valorONulo()
-                }
                 LaunchedEffect(destino.ruta) {
                     seccionesVisor = contenedor.motorPdf
                         .esquema(destino.ruta, contrasenaActual).valorONulo().orEmpty()
@@ -548,11 +570,14 @@ private fun ContenidoApp(
                 }
 
                 PantallaVisor(
+                    ruta = destino.ruta,
                     nombreDocumento = contenedor.ficheros.nombre(destino.ruta),
                     paginaActual = destino.pagina,
                     totalPaginas = paginas.size,
                     proporcion = paginas.getOrNull(destino.pagina)?.proporcion ?: 0.707f,
-                    pagina = paginaVisor,
+                    anchoRender = (1400 * ajustes.calidad.escala).toInt(),
+                    contrasena = contrasenaActual,
+                    lectura = ajustes.lectura,
                     secciones = seccionesVisor,
                     firmas = firmasExistentes,
                     snackbar = snackbar,
@@ -587,6 +612,7 @@ private fun ContenidoApp(
                 desdeUnion = destino.desdeUnion,
                 necesitaContrasena = necesitaContrasena,
                 confirmarBorrado = ajustes.confirmarAccionesDestructivas,
+                conResumenAlSeparar = ajustes.resumenAlSepararEnPartes,
                 snackbar = snackbar,
                 alVolver = { estado.volver() },
                 acciones = AccionesDocumento(
@@ -605,7 +631,7 @@ private fun ContenidoApp(
                                     abrirDocumentos(listOf(resultado.valor))
                                     // Segundo paso de la union: ya se puede
                                     // ordenar el conjunto pagina a pagina.
-                                    estado.reemplazar(
+                                    mostrarResultado(
                                         Destino.Documento(
                                             rutas = listOf(resultado.valor),
                                             desdeUnion = true,
@@ -647,11 +673,11 @@ private fun ContenidoApp(
                             // usuario, tal cual. `separar` le pegaria detras el
                             // rango de paginas y devolveria "informe_part-1
                             // 1-5.pdf" en vez de "informe_part-1.pdf".
-                            partes.forEach { (rango, nombre) ->
+                            partes.forEach { (paginasParte, nombre) ->
                                 val salida = rutaDeSalida("${nombre.removeSuffix(".pdf")}.pdf")
                                 val resultado = contenedor.motorPdf.extraerPaginas(
                                     ruta,
-                                    rango.paginas,
+                                    paginasParte,
                                     salida,
                                 )
                                 if (resultado is ResultadoPdf.Exito) creados += resultado.valor
@@ -874,7 +900,7 @@ private fun ContenidoApp(
                         alcance.launch {
                             registrarResultado(ruta)
                             abrirDocumentos(listOf(ruta))
-                            estado.reemplazar(Destino.Documento(listOf(ruta)))
+                            mostrarResultado(Destino.Documento(listOf(ruta)))
                         }
                     },
                     mensajeDeError = { error -> mensajeDeError(error) },
@@ -905,7 +931,11 @@ private fun ContenidoApp(
                     bloquesTexto = bloquesEditor,
                     firmaPendiente = firmaParaColocar,
                     snackbar = snackbar,
-                    alVolver = { firmaParaColocar = null; estado.volver() },
+                    alVolver = {
+                        firmaParaColocar = null
+                        siguiendoConCertificado = false
+                        estado.volver()
+                    },
                     acciones = AccionesEditor(
                         alGuardar = { edicion ->
                             alcance.launch {
@@ -922,7 +952,16 @@ private fun ContenidoApp(
                                             registrarResultado(rutaFinal)
                                             contenedor.motorPdf.cerrar(destino.ruta)
                                             abrirDocumentos(listOf(rutaFinal))
-                                            estado.reemplazar(Destino.Documento(listOf(rutaFinal)))
+                                            if (siguiendoConCertificado) {
+                                                siguiendoConCertificado = false
+                                                estado.reemplazar(
+                                                    Destino.Firma(rutaFinal, manuscritaHecha = true),
+                                                )
+                                            } else {
+                                                mostrarResultado(
+                                                    Destino.Documento(listOf(rutaFinal)),
+                                                )
+                                            }
                                         }
                                     },
                                     mensajeDeError = { error -> mensajeDeError(error) },
@@ -959,6 +998,8 @@ private fun ContenidoApp(
                 certificadoPideContrasena =
                     certificado?.second is OrigenCertificado.Fichero,
                 hayAlmacenDeClaves = contenedor.selector.hayAlmacenDeClaves(),
+                manuscritaHecha = destino.manuscritaHecha,
+                pedirManuscrita = ajustes.pedirFirmaManuscrita,
                 nombreSugerido = ajustes.nombreParaFirmas,
                 snackbar = snackbar,
                 alVolver = { estado.volver() },
@@ -977,6 +1018,7 @@ private fun ContenidoApp(
                         // abre el editor con la firma en la mano para que el
                         // usuario marque donde cae y en que pagina.
                         firmaParaColocar = trazos
+                        siguiendoConCertificado = true
                         estado.reemplazar(Destino.Editor(destino.ruta, 0))
                     }
                 },
@@ -1033,7 +1075,7 @@ private fun ContenidoApp(
                                 refrescarRecientes()
                                 estado.avisar(getString(Res.string.firma_hecha))
                                 abrirDocumentos(listOf(resultado.valor))
-                                estado.reemplazar(Destino.Documento(listOf(resultado.valor)))
+                                mostrarResultado(Destino.Documento(listOf(resultado.valor)))
                             }
 
                             is ResultadoPdf.Fallo -> estado.avisar(mensajeDeError(resultado.causa))
@@ -1061,6 +1103,10 @@ private fun ContenidoApp(
                 alCambiarDescargas = { estado.fijarGuardarEnDescargas(it) },
                 alCambiarModoGuardado = { estado.fijarModoGuardado(it) },
                 alCambiarPreguntarCompartir = { estado.fijarPreguntarCompartir(it) },
+                alCambiarResumenSeparar = { estado.fijarResumenAlSeparar(it) },
+                alCambiarPedirManuscrita = { estado.fijarPedirFirmaManuscrita(it) },
+                alCambiarDireccionLectura = { estado.fijarDireccionLectura(it.name) },
+                alCambiarApertura = { estado.fijarAperturaAlTerminar(it.name) },
                 alElegirCarpeta = {
                     alcance.launch {
                         val elegida = contenedor.selector.elegirCarpeta()
@@ -1139,6 +1185,33 @@ private fun ContenidoApp(
                     if (estado.destinoActual !is Destino.Imagenes) {
                         estado.ir(Destino.Imagenes(imagenes.toList()))
                     }
+                }
+            },
+        )
+    }
+
+    abrirRecienCreado?.let { aDonde ->
+        AlertDialog(
+            onDismissRequest = { abrirRecienCreado = null },
+            title = { Text(stringResource(Res.string.res_abrir_titulo)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        abrirRecienCreado = null
+                        estado.reemplazar(aDonde)
+                    },
+                ) {
+                    Text(stringResource(Res.string.res_abrir))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        abrirRecienCreado = null
+                        estado.volverAInicio()
+                    },
+                ) {
+                    Text(stringResource(Res.string.res_ahora_no))
                 }
             },
         )

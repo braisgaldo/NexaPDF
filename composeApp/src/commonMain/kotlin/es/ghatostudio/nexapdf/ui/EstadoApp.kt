@@ -200,6 +200,18 @@ class EstadoApp(private val contenedor: ContenedorApp) : ViewModel() {
     fun fijarPreguntarCompartir(valor: Boolean) =
         viewModelScope.launch { contenedor.ajustes.fijarPreguntarCompartir(valor) }
 
+    fun fijarResumenAlSeparar(valor: Boolean) =
+        viewModelScope.launch { contenedor.ajustes.fijarResumenAlSeparar(valor) }
+
+    fun fijarPedirFirmaManuscrita(valor: Boolean) =
+        viewModelScope.launch { contenedor.ajustes.fijarPedirFirmaManuscrita(valor) }
+
+    fun fijarDireccionLectura(clave: String) =
+        viewModelScope.launch { contenedor.ajustes.fijarDireccionLectura(clave) }
+
+    fun fijarAperturaAlTerminar(clave: String) =
+        viewModelScope.launch { contenedor.ajustes.fijarAperturaAlTerminar(clave) }
+
     fun fijarCarpetaDestino(uri: String?) =
         viewModelScope.launch { contenedor.ajustes.fijarCarpetaDestino(uri) }
 

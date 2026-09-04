@@ -40,7 +40,12 @@ sealed interface Destino {
 
     data class Editor(val ruta: String, val paginaInicial: Int) : Destino
 
-    data class Firma(val ruta: String) : Destino
+    /**
+     * @param manuscritaHecha se viene de colocar y guardar la rubrica, asi
+     *   que el primer paso del asistente ya esta dado y se empieza por el
+     *   certificado.
+     */
+    data class Firma(val ruta: String, val manuscritaHecha: Boolean = false) : Destino
 
     data object Ajustes : Destino
 

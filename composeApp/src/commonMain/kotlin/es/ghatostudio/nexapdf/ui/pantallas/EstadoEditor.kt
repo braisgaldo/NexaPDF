@@ -165,6 +165,53 @@ class EstadoEditor(indicePagina: Int) {
         seleccionada = null
     }
 
+    /**
+     * Sustituye el objeto seleccionado por otro.
+     *
+     * Lo usa la edicion de un texto ya anadido: se conserva el sitio en la
+     * lista, y con el el orden de pintado, en vez de borrarlo y volver a
+     * anadirlo al final, que lo pondria encima de todo lo demas.
+     */
+    fun sustituirSeleccion(nuevo: Edicion) {
+        val id = seleccionada ?: return
+        val indiceObjeto = ediciones.indexOfFirst { it.id == id }
+        if (indiceObjeto < 0) return
+        ediciones[indiceObjeto] = nuevo
+        seleccionada = (nuevo as? Edicion.Colocada)?.id
+    }
+
+    /**
+     * Fija el color de la herramienta y, si hay algo seleccionado, se lo aplica.
+     *
+     * Es lo que espera cualquiera que haya usado un editor: se elige un trazo y
+     * se toca un color para cambiarlo. Antes la paleta solo servia para lo
+     * siguiente que se dibujara, asi que corregir el color de una flecha
+     * obligaba a borrarla y repetirla.
+     */
+    fun fijarColor(valor: Long) {
+        color = valor
+        transformarSeleccion { objeto ->
+            when (objeto) {
+                is Edicion.Figura -> objeto.copy(colorTrazoArgb = valor)
+                is Edicion.Trazo -> objeto.copy(colorArgb = valor)
+                is Edicion.Texto -> objeto.copy(colorArgb = valor)
+                else -> objeto
+            }
+        }
+    }
+
+    /** Igual que [fijarColor], con el grosor. */
+    fun fijarGrosor(valor: Float) {
+        grosor = valor
+        transformarSeleccion { objeto ->
+            when (objeto) {
+                is Edicion.Figura -> objeto.copy(grosor = valor)
+                is Edicion.Trazo -> objeto.copy(grosor = valor)
+                else -> objeto
+            }
+        }
+    }
+
     private inline fun transformarSeleccion(cambio: (Edicion.Colocada) -> Edicion) {
         val id = seleccionada ?: return
         val indiceObjeto = ediciones.indexOfFirst { it.id == id }

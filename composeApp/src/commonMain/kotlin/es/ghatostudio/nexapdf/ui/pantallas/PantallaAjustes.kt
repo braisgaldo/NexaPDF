@@ -122,6 +122,19 @@ import es.ghatostudio.nexapdf.resources.comun_cancelar
 import es.ghatostudio.nexapdf.resources.comun_continuar
 import es.ghatostudio.nexapdf.resources.copia_importar_texto
 import es.ghatostudio.nexapdf.resources.copia_importar_titulo
+import es.ghatostudio.nexapdf.resources.aj_resumen_separar
+import es.ghatostudio.nexapdf.resources.aj_resumen_separar_desc
+import es.ghatostudio.nexapdf.resources.aj_lectura
+import es.ghatostudio.nexapdf.resources.aj_lectura_desc
+import es.ghatostudio.nexapdf.resources.aj_lectura_lateral
+import es.ghatostudio.nexapdf.resources.aj_lectura_vertical
+import es.ghatostudio.nexapdf.resources.aj_pedir_manuscrita
+import es.ghatostudio.nexapdf.resources.aj_pedir_manuscrita_desc
+import es.ghatostudio.nexapdf.resources.aj_al_terminar
+import es.ghatostudio.nexapdf.resources.aj_al_terminar_abrir
+import es.ghatostudio.nexapdf.resources.aj_al_terminar_desc
+import es.ghatostudio.nexapdf.resources.aj_al_terminar_no
+import es.ghatostudio.nexapdf.resources.aj_al_terminar_preguntar
 import es.ghatostudio.nexapdf.ui.componentes.BarraSuperior
 import es.ghatostudio.nexapdf.ui.componentes.SeparadorSuave
 import es.ghatostudio.nexapdf.ui.componentes.TituloSeccion
@@ -133,6 +146,10 @@ import es.ghatostudio.nexapdf.ui.theme.ThemeMode
 import es.ghatostudio.nexapdf.ui.theme.esquemaDe
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import androidx.compose.material.icons.automirrored.filled.MenuBook
+import es.ghatostudio.nexapdf.domain.model.DireccionLectura
+import androidx.compose.material.icons.filled.TaskAlt
+import es.ghatostudio.nexapdf.domain.model.AperturaAlTerminar
 
 @Composable
 fun PantallaAjustes(
@@ -147,6 +164,10 @@ fun PantallaAjustes(
     alCambiarDescargas: (Boolean) -> Unit,
     alCambiarModoGuardado: (ModoGuardado) -> Unit,
     alCambiarPreguntarCompartir: (Boolean) -> Unit,
+    alCambiarResumenSeparar: (Boolean) -> Unit,
+    alCambiarPedirManuscrita: (Boolean) -> Unit,
+    alCambiarDireccionLectura: (DireccionLectura) -> Unit,
+    alCambiarApertura: (AperturaAlTerminar) -> Unit,
     alElegirCarpeta: () -> Unit,
     alQuitarCarpeta: () -> Unit,
     nombreCarpeta: String?,
@@ -201,12 +222,61 @@ fun PantallaAjustes(
                 )
             }
 
+            // --- Lectura ------------------------------------------------------
+            item {
+                TituloSeccion(
+                    stringResource(Res.string.aj_lectura),
+                    icono = Icons.AutoMirrored.Filled.MenuBook,
+                )
+            }
+            item {
+                FilaFiltros(
+                    opciones = listOf(
+                        DireccionLectura.LATERAL to Res.string.aj_lectura_lateral,
+                        DireccionLectura.VERTICAL to Res.string.aj_lectura_vertical,
+                    ),
+                    elegida = ajustes.lectura,
+                    alElegir = alCambiarDireccionLectura,
+                )
+                Text(
+                    text = stringResource(Res.string.aj_lectura_desc),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+                )
+            }
+
             // --- Vista --------------------------------------------------------
             item { TituloSeccion(stringResource(Res.string.aj_calidad), icono = Icons.Filled.HighQuality) }
             item {
                 FilaFiltros(CALIDADES, ajustes.calidad, alCambiarCalidad)
                 Text(
                     text = stringResource(Res.string.aj_calidad_desc),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+                )
+            }
+
+            // --- Al terminar --------------------------------------------------
+            item {
+                TituloSeccion(
+                    stringResource(Res.string.aj_al_terminar),
+                    icono = Icons.Filled.TaskAlt,
+                )
+            }
+            item {
+                FilaFiltros(
+                    opciones = listOf(
+                        AperturaAlTerminar.ABRIR to Res.string.aj_al_terminar_abrir,
+                        AperturaAlTerminar.PREGUNTAR to Res.string.aj_al_terminar_preguntar,
+                        AperturaAlTerminar.NO_ABRIR to Res.string.aj_al_terminar_no,
+                    ),
+                    elegida = ajustes.apertura,
+                    alElegir = alCambiarApertura,
+                )
+                Text(
+                    text = stringResource(Res.string.aj_al_terminar_desc),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
@@ -284,10 +354,26 @@ fun PantallaAjustes(
             }
             item {
                 FilaConmutador(
+                    titulo = stringResource(Res.string.aj_resumen_separar),
+                    detalle = stringResource(Res.string.aj_resumen_separar_desc),
+                    valor = ajustes.resumenAlSepararEnPartes,
+                    alCambiar = alCambiarResumenSeparar,
+                )
+            }
+            item {
+                FilaConmutador(
                     titulo = stringResource(Res.string.aj_confirmar_destructivas),
                     detalle = null,
                     valor = ajustes.confirmarAccionesDestructivas,
                     alCambiar = alCambiarConfirmar,
+                )
+            }
+            item {
+                FilaConmutador(
+                    titulo = stringResource(Res.string.aj_pedir_manuscrita),
+                    detalle = stringResource(Res.string.aj_pedir_manuscrita_desc),
+                    valor = ajustes.pedirFirmaManuscrita,
+                    alCambiar = alCambiarPedirManuscrita,
                 )
             }
             item {

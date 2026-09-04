@@ -85,6 +85,7 @@ import es.ghatostudio.nexapdf.ui.componentes.TituloSeccion
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.BoxWithConstraints
 
 /** Las seis herramientas del punto 14 del encargo, en el orden en que se pidieron. */
 enum class Herramienta(
@@ -95,8 +96,12 @@ enum class Herramienta(
     VISOR(Res.string.herr_visor_titulo, Res.string.herr_visor_desc, Icons.Filled.MenuBook),
     UNIR(Res.string.herr_unir_titulo, Res.string.herr_unir_desc, Icons.AutoMirrored.Filled.MergeType),
     SEPARAR(Res.string.herr_separar_titulo, Res.string.herr_separar_desc, Icons.Filled.ContentCut),
-    IMAGEN(Res.string.herr_imagen_titulo, Res.string.herr_imagen_desc, Icons.Filled.Image),
-    VARIAS_IMAGENES(
+    // Una sola entrada para las fotos. Eran dos, "Imagen a PDF" e
+    // "Imagenes a PDF", y llevaban a la misma pantalla: lo unico que
+    // cambiaba era si el selector admitia una o varias. El selector de
+    // fotos de Android deja elegir una o varias en la misma interfaz, asi
+    // que la distincion solo servia para hacer elegir antes de empezar.
+    IMAGENES(
         Res.string.herr_varias_imagenes_titulo,
         Res.string.herr_varias_imagenes_desc,
         Icons.Filled.PhotoLibrary,
@@ -131,9 +136,11 @@ fun PantallaInicio(
         containerColor = MaterialTheme.colorScheme.background,
         snackbarHost = { SnackbarHost(snackbar) },
     ) { relleno ->
-        // Rejilla y no lista: con nueve entradas, una lista con descripcion
+        // Rejilla y no lista: con ocho entradas, una lista con descripcion
         // obliga a desplazarse para ver la mitad de lo que la aplicacion sabe
-        // hacer, y lo que no se ve no existe.
+        // hacer, y lo que no se ve no existe. Dos columnas y no tres: con
+        // ocho baldosas salen cuatro filas justas, sin huecos, y cada una es
+        // lo bastante ancha para que el icono se vea de lejos.
         Column(modifier = Modifier.fillMaxSize().padding(relleno)) {
             Cabecera(alAbrirAjustes)
 
@@ -236,6 +243,12 @@ private fun Baldosa(
         modifier = modifier
             .semantics(mergeDescendants = true) { contentDescription = descripcionAccesible },
     ) {
+        BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+            // El icono se mide contra la baldosa. Con un tamano fijo, en
+            // una baldosa que ocupa un cuarto de la pantalla quedaba
+            // diminuto en medio de un hueco enorme: no parecia espacioso,
+            // parecia vacio.
+            val ladoIcono = (minOf(maxWidth, maxHeight) * 0.42f).coerceIn(34.dp, 72.dp)
         Column(
             modifier = Modifier.fillMaxSize().padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -246,7 +259,7 @@ private fun Baldosa(
                     imageVector = icono,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(34.dp),
+                    modifier = Modifier.size(ladoIcono),
                 )
                 if (insignia != null) {
                     Text(
@@ -263,12 +276,13 @@ private fun Baldosa(
             Spacer(Modifier.height(8.dp))
             Text(
                 text = titulo,
-                style = MaterialTheme.typography.labelLarge,
+                style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
+        }
         }
     }
 }
@@ -389,4 +403,4 @@ internal fun FilaReciente(documento: DocumentoReciente, alPulsar: () -> Unit) {
 }
 
 /** Columnas de la rejilla del inicio. */
-private const val COLUMNAS = 3
+private const val COLUMNAS = 2

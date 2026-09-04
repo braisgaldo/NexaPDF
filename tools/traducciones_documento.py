@@ -3,6 +3,36 @@
 """Textos del espacio de trabajo: documentos, paginas e imagenes a PDF."""
 
 TEXTOS = {
+    "doc_acciones": {
+        "en": "Actions",
+        "es": "Acciones",
+        "fr": "Actions",
+        "de": "Aktionen",
+        "zh": "操作",
+        "ja": "操作",
+        "ru": "Действия",
+        "it": "Azioni",
+        "el": "Ενέργειες",
+        "ar": "إجراءات",
+        "gl": "Accións",
+        "ca": "Accions",
+        "eu": "Ekintzak",
+    },
+    "doc_elegir_accion": {
+        "en": "Choose an action",
+        "es": "Elegir acción",
+        "fr": "Choisir une action",
+        "de": "Aktion wählen",
+        "zh": "选择操作",
+        "ja": "操作を選ぶ",
+        "ru": "Выбрать действие",
+        "it": "Scegli un'azione",
+        "el": "Επιλογή ενέργειας",
+        "ar": "اختر إجراءً",
+        "gl": "Elixir acción",
+        "ca": "Tria una acció",
+        "eu": "Aukeratu ekintza",
+    },
     # --- Espacio de trabajo --------------------------------------------------
     "doc_titulo_union": {
         "en": "Order and merge", "es": "Ordenar y unir",

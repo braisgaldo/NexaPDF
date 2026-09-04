@@ -72,7 +72,7 @@ import es.ghatostudio.nexapdf.resources.visor_pagina_numero
 import es.ghatostudio.nexapdf.resources.visor_sin_indice
 import es.ghatostudio.nexapdf.resources.visor_sin_resultados
 import es.ghatostudio.nexapdf.ui.componentes.BarraSuperior
-import es.ghatostudio.nexapdf.ui.componentes.encuadre
+import es.ghatostudio.nexapdf.ui.componentes.encuadreConPaso
 import es.ghatostudio.nexapdf.ui.componentes.rememberEncuadre
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.foundation.Canvas
@@ -83,6 +83,46 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import es.ghatostudio.nexapdf.resources.vis_anterior
 import es.ghatostudio.nexapdf.resources.vis_siguiente
+import androidx.compose.foundation.gestures.snapping.SnapPosition
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Slider
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.times
+import es.ghatostudio.nexapdf.domain.model.DireccionLectura
+import es.ghatostudio.nexapdf.resources.vis_ir
+import es.ghatostudio.nexapdf.resources.vis_ir_a_pagina
+import es.ghatostudio.nexapdf.resources.vis_numero_pagina
+import es.ghatostudio.nexapdf.resources.comun_cancelar
+import es.ghatostudio.nexapdf.di.LocalContenedor
+import es.ghatostudio.nexapdf.ui.componentes.encuadreDosDedos
+import androidx.compose.foundation.layout.aspectRatio
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
+import es.ghatostudio.nexapdf.resources.vis_de_total
+import kotlin.math.roundToInt
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.Surface
+import androidx.compose.ui.graphics.SolidColor
 
 /** Lo que el visor necesita del resto de la aplicacion. */
 class AccionesVisor(
@@ -103,11 +143,15 @@ class AccionesVisor(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaVisor(
+    ruta: String,
     nombreDocumento: String,
     paginaActual: Int,
     totalPaginas: Int,
     proporcion: Float,
-    pagina: ImageBitmap?,
+    /** Ancho al que se rasteriza cada pagina, segun la calidad elegida. */
+    anchoRender: Int,
+    contrasena: String?,
+    lectura: DireccionLectura,
     secciones: List<Seccion>,
     firmas: List<FirmaExistente>,
     snackbar: SnackbarHostState,
@@ -125,6 +169,51 @@ fun PantallaVisor(
 
     // Cambiar de pagina con la anterior ampliada dejaria la nueva a medio ver.
     LaunchedEffect(paginaActual) { encuadre.reiniciar() }
+
+    // Las dos formas de recorrer el documento comparten el mismo numero de
+    // pagina, que es el que manda: lo mueve el dedo, pero tambien la
+    // busqueda, el indice y el salto directo. Cada estado se sincroniza en
+    // los dos sentidos, comprobando antes que hay algo que cambiar para que
+    // no se persigan el uno al otro.
+    val paginas = rememberPagerState(initialPage = paginaActual) {
+        totalPaginas.coerceAtLeast(1)
+    }
+    val listaVertical = rememberLazyListState(initialFirstVisibleItemIndex = paginaActual)
+
+    // Solo se informa de la pagina cuando el desplazamiento ha parado.
+    // Contando las intermedias, un salto animado de la 3 a la 100 iba
+    // avisando de cada una, cada aviso cambiaba la pagina actual, y eso
+    // reiniciaba la animacion: el salto se quedaba a medias en una pagina
+    // cualquiera del camino.
+    LaunchedEffect(paginas, lectura) {
+        if (lectura != DireccionLectura.LATERAL) return@LaunchedEffect
+        snapshotFlow { paginas.settledPage }.distinctUntilChanged().collect {
+            if (it != paginaActual) acciones.alIrAPagina(it)
+        }
+    }
+    LaunchedEffect(listaVertical, lectura) {
+        if (lectura != DireccionLectura.VERTICAL) return@LaunchedEffect
+        snapshotFlow { listaVertical.isScrollInProgress }
+            .distinctUntilChanged()
+            .filter { !it }
+            .collect {
+                val visible = listaVertical.firstVisibleItemIndex
+                if (visible != paginaActual) acciones.alIrAPagina(visible)
+            }
+    }
+    LaunchedEffect(paginaActual, lectura) {
+        when (lectura) {
+            DireccionLectura.LATERAL ->
+                if (paginas.currentPage != paginaActual) {
+                    paginas.animateScrollToPage(paginaActual)
+                }
+
+            DireccionLectura.VERTICAL ->
+                if (listaVertical.firstVisibleItemIndex != paginaActual) {
+                    listaVertical.animateScrollToItem(paginaActual)
+                }
+        }
+    }
 
     // La busqueda se lanza sola al dejar de teclear: obligar a pulsar una lupa
     // despues de escribir es un paso que nadie echa de menos cuando no esta.
@@ -264,88 +353,91 @@ fun PantallaVisor(
             }
         },
         bottomBar = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surface)
-                    // Sin esto los botones de pagina quedan debajo de la barra
-                    // de navegacion del telefono y no se pueden pulsar.
-                    .windowInsetsPadding(WindowInsets.navigationBars)
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-            ) {
-                IconButton(
-                    onClick = { acciones.alIrAPagina(paginaActual - 1) },
-                    enabled = paginaActual > 0,
-                    modifier = Modifier.size(56.dp),
-                ) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.NavigateBefore,
-                        contentDescription = stringResource(Res.string.ed_pagina_anterior),
-                    )
-                }
-                Text(
-                    text = stringResource(
-                        Res.string.ed_pagina_de,
-                        paginaActual + 1,
-                        totalPaginas.coerceAtLeast(1),
-                    ),
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(horizontal = 20.dp),
-                )
-                IconButton(
-                    onClick = { acciones.alIrAPagina(paginaActual + 1) },
-                    enabled = paginaActual < totalPaginas - 1,
-                    modifier = Modifier.size(56.dp),
-                ) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.NavigateNext,
-                        contentDescription = stringResource(Res.string.ed_pagina_siguiente),
-                    )
-                }
-            }
+            BarraDePaginas(
+                paginaActual = paginaActual,
+                totalPaginas = totalPaginas,
+                alIrAPagina = acciones.alIrAPagina,
+            )
         },
     ) { relleno ->
         Box(modifier = Modifier.fillMaxSize().padding(relleno)) {
-            when {
-                // Mientras se busca se sigue viendo la pagina, con las
-                // apariciones marcadas encima: una lista de resultados a
-                // pantalla completa tapa justo lo que se quiere leer.
-                pagina != null -> androidx.compose.foundation.Image(
-                    bitmap = pagina,
-                    contentDescription = stringResource(
-                        Res.string.visor_pagina_numero,
-                        paginaActual + 1,
-                    ),
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(12.dp)
-                        .encuadre(encuadre)
-                        .graphicsLayer {
-                            scaleX = encuadre.escala
-                            scaleY = encuadre.escala
-                            translationX = encuadre.desplazamiento.x
-                            translationY = encuadre.desplazamiento.y
-                        },
-                )
+            when (lectura) {
+                DireccionLectura.LATERAL -> HorizontalPager(
+                    state = paginas,
+                    // Con la pagina ampliada el dedo esta moviendola, no
+                    // pasando de hoja: si el pager siguiera atendiendo al
+                    // arrastre, ampliar y mirar un detalle seria imposible.
+                    userScrollEnabled = !encuadre.ampliada,
+                    modifier = Modifier.fillMaxSize(),
+                ) { indice ->
+                    Box(modifier = Modifier.fillMaxSize().padding(12.dp)) {
+                        PaginaDeVisor(
+                            ruta = ruta,
+                            indice = indice,
+                            anchoPx = anchoRender,
+                            contrasena = contrasena,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .encuadreConPaso(encuadre)
+                                .graphicsLayer {
+                                    scaleX = encuadre.escala
+                                    scaleY = encuadre.escala
+                                    translationX = encuadre.desplazamiento.x
+                                    translationY = encuadre.desplazamiento.y
+                                },
+                        )
+                        Resaltados(
+                            resultados = resultados,
+                            pagina = indice,
+                            activa = actual,
+                            proporcion = proporcion,
+                            escala = encuadre.escala,
+                            desplazamiento = encuadre.desplazamiento,
+                        )
+                    }
+                }
 
-                else -> CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            }
-
-            val enEstaPagina = resultados
-                ?.withIndex()
-                ?.filter { it.value.pagina == paginaActual }
-                .orEmpty()
-            if (enEstaPagina.isNotEmpty() && pagina != null) {
-                CapaResaltados(
-                    coincidencias = enEstaPagina,
-                    activa = actual,
-                    proporcion = proporcion,
-                    escala = encuadre.escala,
-                    desplazamiento = encuadre.desplazamiento,
-                )
+                // Desplazamiento continuo: todas las paginas seguidas. El
+                // zoom aqui no mueve la pagina, la ensancha, y el ancho de
+                // mas se recorre de lado: es como se lee un documento largo
+                // cuando la letra es pequena.
+                DireccionLectura.VERTICAL -> BoxWithConstraints(Modifier.fillMaxSize()) {
+                    val anchoBase = maxWidth
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .horizontalScroll(rememberScrollState())
+                            .encuadreDosDedos(encuadre),
+                    ) {
+                        LazyColumn(
+                            state = listaVertical,
+                            modifier = Modifier.width(anchoBase * encuadre.escala),
+                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
+                        ) {
+                            items(totalPaginas.coerceAtLeast(1)) { indice ->
+                                Box {
+                                    PaginaDeVisor(
+                                        ruta = ruta,
+                                        indice = indice,
+                                        anchoPx = anchoRender,
+                                        contrasena = contrasena,
+                                        proporcion = proporcion,
+                                        modifier = Modifier.fillMaxWidth(),
+                                    )
+                                    Resaltados(
+                                        resultados = resultados,
+                                        pagina = indice,
+                                        activa = actual,
+                                        proporcion = proporcion,
+                                        escala = 1f,
+                                        desplazamiento = Offset.Zero,
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             if (buscandoAhora) {
@@ -364,6 +456,245 @@ fun PantallaVisor(
 
                 Panel.FIRMAS -> PanelFirmas(firmas)
             }
+        }
+    }
+}
+
+/**
+ * Una pagina del documento, rasterizada cuando hace falta.
+ *
+ * El visor pinta ahora varias paginas a la vez (la de al lado en el pager, las
+ * de arriba y abajo en el desplazamiento continuo), asi que cada una se pide
+ * por su cuenta en lugar de recibir una sola imagen ya hecha desde fuera.
+ */
+@Composable
+private fun PaginaDeVisor(
+    ruta: String,
+    indice: Int,
+    anchoPx: Int,
+    contrasena: String?,
+    modifier: Modifier = Modifier,
+    proporcion: Float? = null,
+) {
+    val contenedor = LocalContenedor.current
+    var imagen by remember(ruta, indice, anchoPx) { mutableStateOf<ImageBitmap?>(null) }
+
+    LaunchedEffect(ruta, indice, anchoPx) {
+        imagen = contenedor.motorPdf
+            .renderizarPagina(ruta, indice, anchoPx, contrasena)
+            .valorONulo()
+    }
+
+    val mapa = imagen
+    val conProporcion = if (proporcion != null) {
+        modifier.aspectRatio(proporcion.coerceIn(0.2f, 5f))
+    } else {
+        modifier
+    }
+    Box(modifier = conProporcion, contentAlignment = Alignment.Center) {
+        if (mapa != null) {
+            androidx.compose.foundation.Image(
+                bitmap = mapa,
+                contentDescription = stringResource(Res.string.visor_pagina_numero, indice + 1),
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.fillMaxSize(),
+            )
+        } else {
+            CircularProgressIndicator()
+        }
+    }
+}
+
+/** Las apariciones de la busqueda que caen en una pagina concreta. */
+@Composable
+private fun Resaltados(
+    resultados: List<Coincidencia>?,
+    pagina: Int,
+    activa: Int,
+    proporcion: Float,
+    escala: Float,
+    desplazamiento: Offset,
+) {
+    val enEstaPagina = resultados
+        ?.withIndex()
+        ?.filter { it.value.pagina == pagina }
+        .orEmpty()
+    if (enEstaPagina.isEmpty()) return
+    CapaResaltados(
+        coincidencias = enEstaPagina,
+        activa = activa,
+        proporcion = proporcion,
+        escala = escala,
+        desplazamiento = desplazamiento,
+    )
+}
+
+/**
+ * Barra de paginas: flechas, numero editable y deslizador.
+ *
+ * Las flechas solas obligan a ciento cuarenta y nueve toques para llegar a la
+ * pagina 150. El numero se escribe directamente y el deslizador recorre el
+ * documento entero de un gesto: son tres maneras de decir a donde se quiere ir,
+ * y cada una gana en un caso distinto. Todo en la barra, sin dialogos de por
+ * medio, porque moverse por un documento no es una decision que haya que
+ * confirmar.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun BarraDePaginas(
+    paginaActual: Int,
+    totalPaginas: Int,
+    alIrAPagina: (Int) -> Unit,
+) {
+    val total = totalPaginas.coerceAtLeast(1)
+    val etiquetaPagina = stringResource(Res.string.vis_numero_pagina)
+    val etiquetaIr = stringResource(Res.string.vis_ir_a_pagina)
+    val teclado = LocalSoftwareKeyboardController.current
+    val foco = LocalFocusManager.current
+
+    // Mientras se arrastra el deslizador manda lo que marque; al soltar, se
+    // salta. Cambiar de pagina en cada paso del arrastre obligaria a rasterizar
+    // decenas de paginas que nadie va a mirar.
+    var arrastrando by remember { mutableStateOf<Float?>(null) }
+    var texto by remember(paginaActual) { mutableStateOf("${paginaActual + 1}") }
+
+    fun saltar() {
+        val destino = texto.toIntOrNull()?.coerceIn(1, total)
+        if (destino != null && destino - 1 != paginaActual) alIrAPagina(destino - 1)
+        texto = "${destino ?: (paginaActual + 1)}"
+        teclado?.hide()
+        foco.clearFocus()
+    }
+
+    Surface(
+        color = MaterialTheme.colorScheme.surfaceContainer,
+        tonalElevation = 3.dp,
+        shadowElevation = 8.dp,
+        shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                // Sin esto la barra queda debajo de la del telefono y no se toca.
+                .windowInsetsPadding(WindowInsets.navigationBars)
+                .padding(horizontal = 8.dp, vertical = 4.dp),
+        ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            IconButton(
+                onClick = { alIrAPagina(paginaActual - 1) },
+                enabled = paginaActual > 0,
+                modifier = Modifier.size(52.dp),
+            ) {
+                Icon(
+                    Icons.AutoMirrored.Filled.NavigateBefore,
+                    contentDescription = stringResource(Res.string.ed_pagina_anterior),
+                )
+            }
+            // El numero y el total van en una misma pastilla: son una sola
+            // cosa ("por donde voy"), y dos cajas sueltas separadas por texto
+            // se leian como dos controles distintos.
+            Row(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(18.dp))
+                    .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                    .padding(start = 4.dp, end = 14.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                BasicTextField(
+                    value = texto,
+                    onValueChange = { texto = it.filter(Char::isDigit).take(6) },
+                    singleLine = true,
+                    textStyle = MaterialTheme.typography.titleMedium.copy(
+                        color = MaterialTheme.colorScheme.onSurface,
+                        textAlign = TextAlign.Center,
+                    ),
+                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Go,
+                    ),
+                    keyboardActions = KeyboardActions(onGo = { saltar() }),
+                    modifier = Modifier
+                        .width(64.dp)
+                        .heightIn(min = 44.dp)
+                        .padding(vertical = 10.dp)
+                        .semantics { contentDescription = etiquetaPagina }
+                        .onFocusChanged { if (!it.isFocused) texto = "${paginaActual + 1}" },
+                )
+                Text(
+                    text = stringResource(Res.string.vis_de_total, total),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            IconButton(
+                onClick = { alIrAPagina(paginaActual + 1) },
+                enabled = paginaActual < total - 1,
+                modifier = Modifier.size(52.dp),
+            ) {
+                Icon(
+                    Icons.AutoMirrored.Filled.NavigateNext,
+                    contentDescription = stringResource(Res.string.ed_pagina_siguiente),
+                )
+            }
+        }
+
+        if (total > 1) {
+            Slider(
+                value = (arrastrando ?: (paginaActual + 1).toFloat()).coerceIn(1f, total.toFloat()),
+                onValueChange = {
+                    arrastrando = it
+                    texto = "${it.roundToInt().coerceIn(1, total)}"
+                },
+                onValueChangeFinished = {
+                    arrastrando?.let { valor ->
+                        val destino = valor.roundToInt().coerceIn(1, total) - 1
+                        if (destino != paginaActual) alIrAPagina(destino)
+                    }
+                    arrastrando = null
+                },
+                valueRange = 1f..total.toFloat(),
+                // Barra fina y pulsador pequeno: es un indicador de por donde
+                // se va que ademas se puede arrastrar, no el control principal
+                // de la pantalla, y con el grosor de serie competia con el
+                // documento.
+                track = { estadoBarra ->
+                    val recorrido = (estadoBarra.value - 1f) / (total - 1).coerceAtLeast(1)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(4.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.surfaceContainerHighest),
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(recorrido.coerceIn(0f, 1f))
+                                .height(4.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.primary),
+                        )
+                    }
+                },
+                thumb = {
+                    Box(
+                        modifier = Modifier
+                            .size(if (arrastrando != null) 20.dp else 14.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.primary),
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
+                    .semantics { contentDescription = etiquetaIr },
+            )
+        }
         }
     }
 }

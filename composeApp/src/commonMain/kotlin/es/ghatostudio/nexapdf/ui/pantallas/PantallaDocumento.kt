@@ -52,8 +52,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -127,13 +125,28 @@ import androidx.compose.ui.text.style.TextAlign
 import es.ghatostudio.nexapdf.resources.doc_unir_vacio
 import es.ghatostudio.nexapdf.domain.model.RangoPaginas
 import es.ghatostudio.nexapdf.resources.doc_separar_partes
+import es.ghatostudio.nexapdf.resources.doc_elegir_accion
+import androidx.compose.material.icons.automirrored.filled.CallSplit
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Surface
+import androidx.compose.material3.VerticalDivider
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.foundation.shape.RoundedCornerShape
 
 /** Acciones que la pantalla ofrece al resto de la app. */
 class AccionesDocumento(
     val alUnir: () -> Unit,
     val alExtraer: (List<Int>) -> Unit,
     val alSepararTodo: () -> Unit,
-    val alSepararEnPartes: (List<Pair<RangoPaginas, String>>) -> Unit,
+    /**
+     * Cada parte es su lista de paginas y su nombre.
+     *
+     * Lista y no rango: una parte puede ser un tramo seguido o un punado
+     * de paginas sueltas, y un rango no sabe expresar lo segundo.
+     */
+    val alSepararEnPartes: (List<Pair<List<Int>, String>>) -> Unit,
     val alGirar: (List<Int>, Int) -> Unit,
     val alEliminar: (List<Int>) -> Unit,
     val alReordenarPaginas: (List<Int>) -> Unit,
@@ -164,6 +177,8 @@ fun PantallaDocumento(
     desdeUnion: Boolean = false,
     necesitaContrasena: Boolean,
     confirmarBorrado: Boolean,
+    /** Ensenar el resumen antes de crear los ficheros al dividir en partes. */
+    conResumenAlSeparar: Boolean,
     snackbar: SnackbarHostState,
     acciones: AccionesDocumento,
     alVolver: () -> Unit,
@@ -309,6 +324,7 @@ fun PantallaDocumento(
             ruta = rutaActiva,
             paginas = paginas,
             nombreBase = rutaActiva.substringAfterLast('/').removeSuffix(".pdf"),
+            conResumen = conResumenAlSeparar,
             alConfirmar = { partes ->
                 partiendo = false
                 acciones.alSepararEnPartes(partes)
@@ -363,14 +379,59 @@ private fun BarraAcciones(
     alPedirPartes: () -> Unit,
     confirmarBorrado: Boolean,
 ) {
-    FlowRow(
+    val conSeleccion = seleccion.isNotEmpty()
+    val lista = if (conSeleccion) {
+        listOf(
+            AccionDeDocumento(
+                Icons.Filled.RotateLeft,
+                stringResource(Res.string.doc_girar_izquierda),
+            ) { acciones.alGirar(seleccion, -90) },
+            AccionDeDocumento(
+                Icons.Filled.RotateRight,
+                stringResource(Res.string.doc_girar_derecha),
+            ) { acciones.alGirar(seleccion, 90) },
+            AccionDeDocumento(
+                Icons.Filled.Delete,
+                stringResource(Res.string.comun_eliminar),
+            ) { if (confirmarBorrado) alPedirBorrado() else acciones.alEliminar(seleccion) },
+        )
+    } else {
+        listOf(
+            AccionDeDocumento(
+                Icons.Filled.ContentCut,
+                stringResource(Res.string.doc_separar_una_por_fichero),
+            ) { acciones.alSepararTodo() },
+            AccionDeDocumento(
+                Icons.AutoMirrored.Filled.CallSplit,
+                stringResource(Res.string.doc_separar_partes),
+            ) { alPedirPartes() },
+            AccionDeDocumento(
+                Icons.Filled.Draw,
+                stringResource(Res.string.doc_firmar),
+                acciones.alFirmar,
+            ),
+            AccionDeDocumento(
+                Icons.Filled.FileDownload,
+                stringResource(Res.string.doc_guardar_como),
+            ) { acciones.alGuardarComo() },
+            AccionDeDocumento(
+                Icons.Filled.SaveAlt,
+                stringResource(Res.string.doc_exportar_como),
+            ) { alPedirExportar() },
+        )
+    }
+
+    // Con y sin seleccion las acciones son otras, asi que la elegida vuelve a
+    // la primera: dejar apuntando a "Girar" cuando ya no hay nada seleccionado
+    // seria ensenar un boton que no hace nada.
+    var elegida by remember(conSeleccion) { mutableIntStateOf(0) }
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (seleccion.isNotEmpty()) {
+        if (conSeleccion) {
             Text(
                 text = pluralStringResource(
                     Res.plurals.plural_seleccionadas,
@@ -379,69 +440,102 @@ private fun BarraAcciones(
                 ),
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(end = 4.dp),
+                modifier = Modifier.padding(end = 12.dp),
             )
-            Accion(Icons.Filled.RotateLeft, stringResource(Res.string.doc_girar_izquierda)) {
-                acciones.alGirar(seleccion, -90)
-            }
-            Accion(Icons.Filled.RotateRight, stringResource(Res.string.doc_girar_derecha)) {
-                acciones.alGirar(seleccion, 90)
-            }
-            Accion(Icons.Filled.Delete, stringResource(Res.string.comun_eliminar)) {
-                if (confirmarBorrado) alPedirBorrado() else acciones.alEliminar(seleccion)
-            }
-        } else {
-            Accion(Icons.Filled.ContentCut, stringResource(Res.string.doc_separar_una_por_fichero)) {
-                acciones.alSepararTodo()
-            }
-            Accion(Icons.Filled.ContentCut, stringResource(Res.string.doc_separar_partes)) {
-                alPedirPartes()
-            }
-            Accion(Icons.Filled.Draw, stringResource(Res.string.doc_firmar), acciones.alFirmar)
-            Accion(Icons.Filled.FileDownload, stringResource(Res.string.doc_guardar_como)) {
-                acciones.alGuardarComo()
-            }
-            Accion(Icons.Filled.SaveAlt, stringResource(Res.string.doc_exportar_como)) {
-                alPedirExportar()
-            }
         }
+        SelectorDeAccion(
+            lista = lista,
+            elegida = elegida,
+            alElegir = { elegida = it },
+            modifier = Modifier.weight(1f),
+        )
     }
 }
 
+/** Una accion del documento con su icono y su etiqueta. */
+private data class AccionDeDocumento(
+    val icono: androidx.compose.ui.graphics.vector.ImageVector,
+    val etiqueta: String,
+    val alPulsar: () -> Unit,
+)
+
+/**
+ * Boton de accion con desplegable.
+ *
+ * La mitad izquierda ejecuta lo que pone; la flecha abre la lista con todas
+ * las acciones, cada una con su icono, y al elegir una el boton pasa a ser esa.
+ * Es el patron de "boton dividido" de toda la vida: una accion a un toque y el
+ * resto a dos, en lugar de cinco tarjetas ocupando la pantalla.
+ */
 @Composable
-private fun Accion(
-    icono: androidx.compose.ui.graphics.vector.ImageVector,
-    etiqueta: String,
-    alPulsar: () -> Unit,
+private fun SelectorDeAccion(
+    lista: List<AccionDeDocumento>,
+    elegida: Int,
+    alElegir: (Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    // Tarjeta y no chip: el chip de Material es una etiqueta con borde fino,
-    // pensada para filtrar, y como boton de accion se lee mal y se acierta
-    // peor. Con superficie propia, icono grande y 56 dp de alto la fila pasa a
-    // parecer lo que es, una barra de acciones.
-    Card(
-        onClick = alPulsar,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-            contentColor = MaterialTheme.colorScheme.onSurface,
-        ),
-        modifier = Modifier.heightIn(min = 56.dp),
+    val actual = lista.getOrNull(elegida) ?: lista.first()
+    var abierto by remember { mutableStateOf(false) }
+
+    Surface(
+        color = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        shape = RoundedCornerShape(16.dp),
+        modifier = modifier.heightIn(min = 56.dp),
     ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                imageVector = icono,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(22.dp),
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable(onClick = actual.alPulsar)
+                    .padding(horizontal = 16.dp, vertical = 14.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    imageVector = actual.icono,
+                    contentDescription = null,
+                    modifier = Modifier.size(22.dp),
+                )
+                Spacer(Modifier.width(12.dp))
+                Text(
+                    text = actual.etiqueta,
+                    style = MaterialTheme.typography.labelLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+            VerticalDivider(
+                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.25f),
+                modifier = Modifier.height(28.dp),
             )
-            Spacer(Modifier.width(10.dp))
-            Text(
-                text = etiqueta,
-                style = MaterialTheme.typography.labelLarge,
-                maxLines = 1,
-            )
+            Box {
+                IconButton(
+                    onClick = { abierto = true },
+                    modifier = Modifier.size(52.dp),
+                ) {
+                    Icon(
+                        Icons.Filled.ArrowDropDown,
+                        contentDescription = stringResource(Res.string.doc_elegir_accion),
+                    )
+                }
+                DropdownMenu(expanded = abierto, onDismissRequest = { abierto = false }) {
+                    lista.forEachIndexed { indice, accion ->
+                        DropdownMenuItem(
+                            text = { Text(accion.etiqueta) },
+                            leadingIcon = { Icon(accion.icono, contentDescription = null) },
+                            trailingIcon = {
+                                if (indice == elegida) {
+                                    Icon(Icons.Filled.Check, contentDescription = null)
+                                }
+                            },
+                            onClick = {
+                                alElegir(indice)
+                                abierto = false
+                            },
+                        )
+                    }
+                }
+            }
         }
     }
 }

@@ -45,6 +45,9 @@ data class Ajustes(
      */
     val modoGuardado: String = ModoGuardado.PASO_A_PASO.name,
 
+    /** Como se pasa de pagina en el visor. Ver [DireccionLectura]. */
+    val direccionLectura: String = DireccionLectura.LATERAL.name,
+
     /**
      * Carpeta elegida por el usuario, como URI de arbol del sistema.
      *
@@ -55,6 +58,28 @@ data class Ajustes(
 
     /** Preguntar si se quiere compartir cada documento recien creado. */
     val preguntarCompartir: Boolean = false,
+
+    /**
+     * Ensenar el resumen antes de crear los ficheros al dividir en partes.
+     *
+     * Viene puesto porque dividir es la operacion que mas ficheros produce
+     * de una vez y la que mas cuesta deshacer: mirar la lista antes sale
+     * mas barato que borrar doce ficheros mal cortados. Quien parte
+     * documentos a diario lo puede quitar.
+     */
+    val resumenAlSepararEnPartes: Boolean = true,
+
+    /**
+     * Ofrecer dibujar la rubrica antes de firmar con certificado.
+     *
+     * Quien firma con certificado a diario no dibuja nunca su rubrica, y
+     * el paso se convierte en un toque de mas cada vez. Viene puesto porque
+     * la firma a mano es lo que la mayoria entiende por firmar.
+     */
+    val pedirFirmaManuscrita: Boolean = true,
+
+    /** Que hacer con lo recien creado. Ver [AperturaAlTerminar]. */
+    val aperturaAlTerminar: String = AperturaAlTerminar.ABRIR.name,
 
     // --- Aviso de donacion ---
     val estadoDonacion: String = EstadoDonacion.SIN_MOSTRAR.name,
@@ -74,6 +99,14 @@ data class Ajustes(
 ) {
     val familia: ThemeFamily get() = ThemeFamily.desdeClave(familiaTema)
     val modo: ThemeMode get() = ThemeMode.desdeClave(modoTema)
+    val apertura: AperturaAlTerminar
+        get() = AperturaAlTerminar.entries.firstOrNull { it.name == aperturaAlTerminar }
+            ?: AperturaAlTerminar.ABRIR
+
+    val lectura: DireccionLectura
+        get() = DireccionLectura.entries.firstOrNull { it.name == direccionLectura }
+            ?: DireccionLectura.LATERAL
+
     val guardado: ModoGuardado
         get() = ModoGuardado.entries.firstOrNull { it.name == modoGuardado }
             ?: ModoGuardado.PASO_A_PASO
@@ -117,6 +150,40 @@ data class FirmaGuardada(
 )
 
 /** Cuando salen los ficheros de la carpeta privada de la aplicacion. */
+/**
+ * Como se recorre un documento en el visor.
+ *
+ * No hay una respuesta buena para todo el mundo: para revisar un contrato
+ * pagina a pagina va mejor pasar de lado, y para leer de corrido va mejor
+ * el desplazamiento continuo, que es como se lee cualquier cosa en un
+ * telefono. Por eso se elige y no se decide por el usuario.
+ */
+/**
+ * Que pasa cuando termina de crearse un documento.
+ *
+ * Abrirlo siempre estorba a quien encadena tareas y no quiere ver cada
+ * paso; no abrirlo nunca deja con la duda de si ha salido bien. Como no hay
+ * una respuesta buena para los dos, se elige.
+ */
+enum class AperturaAlTerminar {
+    /** Se abre en cuanto esta listo. */
+    ABRIR,
+
+    /** Se pregunta antes de abrirlo. */
+    PREGUNTAR,
+
+    /** No se abre: se avisa y se vuelve al inicio. */
+    NO_ABRIR,
+}
+
+enum class DireccionLectura {
+    /** Una pagina cada vez, deslizando de lado. */
+    LATERAL,
+
+    /** Todas las paginas seguidas, desplazandose hacia abajo. */
+    VERTICAL,
+}
+
 enum class ModoGuardado {
     /** Cada resultado intermedio se guarda segun se produce. */
     PASO_A_PASO,

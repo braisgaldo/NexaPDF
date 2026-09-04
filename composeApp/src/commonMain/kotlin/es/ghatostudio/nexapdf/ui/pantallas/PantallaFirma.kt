@@ -84,10 +84,17 @@ import es.ghatostudio.nexapdf.resources.firma_origen
 import es.ghatostudio.nexapdf.resources.firma_sin_existentes
 import es.ghatostudio.nexapdf.resources.firma_titulo
 import es.ghatostudio.nexapdf.resources.firma_vista_previa
+import es.ghatostudio.nexapdf.resources.firma_manuscrita_hecha
+import es.ghatostudio.nexapdf.resources.firma_paso_certificado
+import es.ghatostudio.nexapdf.resources.firma_paso_manuscrita
+import es.ghatostudio.nexapdf.resources.firma_saltar_manuscrita
+import es.ghatostudio.nexapdf.resources.firma_volver_manuscrita
 import es.ghatostudio.nexapdf.ui.componentes.BarraSuperior
 import es.ghatostudio.nexapdf.ui.componentes.MiniaturaPagina
 import es.ghatostudio.nexapdf.ui.componentes.TituloSeccion
 import org.jetbrains.compose.resources.stringResource
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 
 /** Datos que la pantalla devuelve al pedir una firma con certificado. */
 data class PeticionFirmaCertificado(
@@ -110,6 +117,15 @@ fun PantallaFirma(
      */
     certificadoPideContrasena: Boolean,
     hayAlmacenDeClaves: Boolean,
+    /**
+     * Se llega con la firma manuscrita ya colocada y guardada.
+     *
+     * Entonces el primer paso ya esta hecho y no tiene sentido volver a
+     * ensenarlo: se empieza directamente por el certificado.
+     */
+    manuscritaHecha: Boolean = false,
+    /** Ofrecer el paso de la rubrica. Se apaga desde los ajustes. */
+    pedirManuscrita: Boolean = true,
     nombreSugerido: String,
     snackbar: SnackbarHostState,
     alColocarManuscrita: (List<List<Punto>>) -> Unit,
@@ -119,6 +135,12 @@ fun PantallaFirma(
     alVolver: () -> Unit,
 ) {
     val trazos = remember { mutableStateListOf<List<Punto>>() }
+    // Firmar son dos cosas distintas que antes iban en la misma pantalla
+    // larga: dibujar la rubrica y sellar el documento con un certificado.
+    // La primera es opcional y la segunda es la que tiene valor legal, asi
+    // que van en ese orden y de una en una.
+    val saltarManuscrita = manuscritaHecha || !pedirManuscrita
+    var enElCertificado by remember(saltarManuscrita) { mutableStateOf(saltarManuscrita) }
     var contrasena by remember { mutableStateOf("") }
     var motivo by remember { mutableStateOf("") }
     var lugar by remember { mutableStateOf("") }
@@ -207,8 +229,9 @@ fun PantallaFirma(
                 }
             }
 
-            // --- Firma manuscrita ---------------------------------------------
-            item { TituloSeccion(stringResource(Res.string.firma_manuscrita)) }
+            // --- Paso 1: firma manuscrita -------------------------------------
+            if (!enElCertificado && pedirManuscrita) {
+            item { TituloSeccion(stringResource(Res.string.firma_paso_manuscrita)) }
             item {
                 Text(
                     text = stringResource(Res.string.firma_manuscrita_desc),
@@ -245,9 +268,48 @@ fun PantallaFirma(
                     }
                 }
             }
+            item {
+                TextButton(
+                    onClick = { enElCertificado = true },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 4.dp)
+                        .heightIn(min = 48.dp),
+                ) {
+                    Text(stringResource(Res.string.firma_saltar_manuscrita))
+                    Spacer(Modifier.width(8.dp))
+                    Icon(
+                        Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                    )
+                }
+            }
+            }
 
-            // --- Firma con certificado ----------------------------------------
-            item { TituloSeccion(stringResource(Res.string.firma_certificado)) }
+            // --- Paso 2: firma con certificado --------------------------------
+            if (enElCertificado) {
+            item {
+                TituloSeccion(
+                    stringResource(
+                        if (pedirManuscrita) {
+                            Res.string.firma_paso_certificado
+                        } else {
+                            Res.string.firma_certificado
+                        },
+                    ),
+                )
+            }
+            if (manuscritaHecha) {
+                item {
+                    Text(
+                        text = stringResource(Res.string.firma_manuscrita_hecha),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
+                    )
+                }
+            }
             item {
                 Text(
                     text = stringResource(Res.string.firma_certificado_desc),
@@ -368,6 +430,26 @@ fun PantallaFirma(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
+            }
+            if (!saltarManuscrita) {
+                item {
+                    TextButton(
+                        onClick = { enElCertificado = false },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 8.dp)
+                            .heightIn(min = 48.dp),
+                    ) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        Text(stringResource(Res.string.firma_volver_manuscrita))
+                    }
+                }
+            }
             }
         }
     }

@@ -16,7 +16,8 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
 - **Convertir** como herramienta propia, en los dos sentidos. Las **tablas** del
   PDF se detectan y salen como tablas reales en Word.
 - **Inicio en rejilla** que cabe entero en la pantalla, con los ficheros
-  recientes como una baldosa más.
+  recientes como una baldosa más. «Imagen a PDF» e «Imágenes a PDF» pasan a
+  ser una sola: el selector de fotos ya deja elegir una o varias.
 - **Ficheros recientes** con pantalla propia: ordenar por fecha, nombre o
   tamaño, y verlos en lista, detalle o cuadrícula.
 - **Compartir varios documentos** a la vez, empaquetados en un ZIP, y botón de
@@ -25,7 +26,9 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
   con la lista vacía y se van añadiendo de uno en uno o de varios en varios.
 - **Separar en partes** con las páginas a la vista: cada parte tiene su color y
   se marca tocando la primera página y luego la última, o escribiendo el rango.
-  Los nombres se proponen como `documento_part-1` y se pueden cambiar.
+  Cada parte puede ser un tramo seguido o **páginas sueltas**. Antes de crear
+  nada se enseña un **resumen** de lo que va a salir, que se puede desactivar
+  en los ajustes. Los nombres se proponen como `documento_part-1`.
 - **Editor**: mover, escalar y girar cualquier cosa añadida; texto visible
   mientras se coloca, con fondo de color opcional; **goma** que tapa con el
   color de la página; **recorte** de página; rueda de color; zoom con dos dedos.
@@ -34,6 +37,20 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
 - **Ajuste de guardado**: paso a paso o sólo al final, con carpeta elegible.
 - **Abrir desde otras aplicaciones**: un PDF compartido o abierto con NexaPDF se
   abre en el visor.
+- **Cómo se lee**, en los ajustes: página a página deslizando de lado, o
+  desplazamiento continuo con todas las páginas seguidas.
+- **Barra de páginas** en el visor: flechas, número editable para saltar donde
+  se quiera y una barra que recorre el documento entero.
+- **Editar lo ya añadido** en el editor: corregir un texto puesto, y cambiar el
+  color y el grosor de un trazo o una forma con sólo seleccionarlos.
+- **Firmar en dos pasos**: primero la rúbrica a mano, si se quiere, y después
+  el certificado. Al guardar la rúbrica se sigue solo con la firma digital, y
+  el primer paso se puede quitar desde los ajustes.
+- **Botón de acciones** en la pantalla de páginas: una acción a la vista con
+  su icono y el resto en un desplegable, en lugar de una fila de tarjetas que
+  ocupaba un cuarto de la pantalla.
+- **Al terminar un documento**, en los ajustes: abrirlo, preguntar o no
+  abrirlo. Vale para editar, unir, firmar, convertir a PDF e imágenes a PDF.
 
 ### Corregido
 

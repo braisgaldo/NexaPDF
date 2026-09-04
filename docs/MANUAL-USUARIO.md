@@ -24,8 +24,7 @@ pantalla: no hay que desplazarse para descubrir nada.
 | **Leer PDF** | Leer, buscar dentro y moverse por el documento. |
 | **Unir PDF** | Juntar varios documentos en uno solo. |
 | **Separar PDF** | Partir un documento en las partes que quieras. |
-| **Imagen a PDF** | Convertir una foto en un documento. |
-| **Imágenes a PDF** | Varias fotos, una por página o varias juntas. |
+| **Imágenes a PDF** | Una foto o varias, una por página o varias juntas. |
 | **Editar PDF** | Dibujar, escribir y retocar las páginas. |
 | **Firmar PDF** | Firmar a mano o con tu certificado. |
 | **Convertir** | Word, Excel y PowerPoint a PDF, y al revés. |
@@ -47,6 +46,16 @@ Arriba a la derecha, la rueda dentada abre los **Ajustes**.
 - **El escudo** lista las firmas digitales. Se tiñe de color cuando hay alguna.
 - **Pellizca** para ampliar y **arrastra** para moverte.
 - **Compartir** envía el documento que estás leyendo.
+
+**Para moverte por el documento** tienes la barra de abajo: las flechas van
+a la página anterior y a la siguiente, el número se puede **escribir**
+directamente para saltar donde quieras, y la barra recorre el documento
+entero de un gesto.
+
+En **Ajustes › Cómo se lee** eliges entre **página a página** (deslizas de
+lado y ves una cada vez) y **desplazamiento continuo** (todas seguidas, como
+se lee cualquier otra cosa en el teléfono). Con el desplazamiento continuo,
+el pellizco con dos dedos ensancha las páginas en lugar de moverlas.
 
 ---
 
@@ -85,12 +94,25 @@ pantalla con todas las páginas a la vista. Cada parte tiene su color: elige la
 parte arriba, toca la primera página que le corresponde y luego la última, y el
 tramo se pinta de ese color. Con **Añadir una parte** creas la siguiente, que
 empieza donde acabó la anterior. Si prefieres teclear, las casillas **Desde** y
-**Hasta** siguen ahí. Los nombres se proponen como `documento_part-1`,
-`documento_part-2`… y puedes cambiar el de cada una. Al pulsar **Crear los
-ficheros** salen todas de una vez, con el nombre que hayas puesto.
+**Hasta** siguen ahí.
+
+Cada parte puede ser un tramo seguido o **páginas sueltas**: cambia el modo con
+los botones **Rango** y **Páginas sueltas** del panel. En páginas sueltas, cada
+toque mete o saca una página, y no hace falta que estén seguidas — es lo que
+sirve para quedarte con las tres hojas firmadas de un expediente de ochenta.
+
+Los nombres se proponen como `documento_part-1`, `documento_part-2`… y puedes
+cambiar el de cada una. Al pulsar **Crear los ficheros** se enseña un resumen
+de lo que se va a crear —nombre, páginas y cuántas— antes de hacerlo. Ese
+resumen se puede quitar en **Ajustes › Enseñar un resumen antes de dividir**.
 
 **Para girar o borrar:** selecciona las páginas y usa **Girar a la izquierda**,
 **Girar a la derecha** o **Eliminar**.
+
+> Todas estas acciones viven en el **botón de arriba**: la parte izquierda
+> hace lo que pone y la flecha abre la lista con el resto, cada una con su
+> icono. Al elegir una, el botón pasa a ser esa. Así el resto de la pantalla
+> es el documento y no una fila de botones.
 
 **Para reordenar:** arrastra desde el asa de los tres puntos, o mantén pulsada una página y arrástrala. Cuando el orden te
 guste, pulsa **Aplicar el nuevo orden**. Hasta que no lo pulses, el documento no
@@ -103,7 +125,7 @@ cambia.
 
 ## Convertir fotos en un documento
 
-1. Toca **Imagen a PDF** o **Imágenes a PDF**.
+1. Toca **Imágenes a PDF**. Puedes elegir una foto o varias.
 2. Elige de dónde sacarla: **de la galería** o **haciendo una foto** en el
    momento.
 3. Ajusta las opciones:
@@ -145,6 +167,11 @@ Con **Mover** puedes coger cualquier cosa que hayas añadido —un trazo, una
 forma, un texto, una imagen o una firma—: sale su marco con dos asas. Arrastra
 para moverla, tira del asa de abajo para escalarla y de la de arriba para
 girarla.
+
+Y lo seleccionado **se puede cambiar sin borrarlo**: con un texto elegido
+aparece **Editar texto**, que reabre el cuadro con lo que escribiste, su cuerpo
+de letra y su fondo; con un trazo o una forma elegidos, la paleta y el grosor
+dejan de ser «lo que se dibujará» y pasan a cambiar lo que hay seleccionado.
 
 Con dos dedos se amplía y se desplaza la página. Con uno se dibuja.
 
@@ -189,6 +216,13 @@ El deslizador ajusta la intensidad.
 ---
 
 ## Firmar un documento
+
+Firmar va **en dos pasos**. Primero la **firma manuscrita**: la dibujas y la
+colocas donde quieras de la página; al guardar se sigue solo con el segundo
+paso. Después la **firma digital** con tu certificado, que es la que tiene
+valor legal. Si sólo quieres una de las dos, «Saltar e ir a la firma digital»
+pasa de la primera, y en **Ajustes › Ofrecer la firma manuscrita** se puede
+quitar ese paso para siempre.
 
 Hay dos formas y sirven para cosas distintas.
 

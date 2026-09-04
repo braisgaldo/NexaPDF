@@ -160,6 +160,7 @@ import androidx.compose.material.icons.filled.Crop
 import androidx.compose.material.icons.filled.Deblur
 import es.ghatostudio.nexapdf.resources.ed_goma
 import es.ghatostudio.nexapdf.resources.ed_recortar
+import es.ghatostudio.nexapdf.resources.ed_editar_texto
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 
@@ -364,7 +365,15 @@ fun PantallaEditor(
                 )
             }
 
-            PanelHerramientas(estado)
+            PanelHerramientas(estado) { texto ->
+                textoEnEdicion = TextoEnEdicion(
+                    contenido = texto.contenido,
+                    marco = texto.marco,
+                    sustituye = false,
+                    colorDeLaPagina = colorDeLaPaginaEn(pagina, texto.marco),
+                    existente = texto,
+                )
+            }
         }
     }
 
@@ -372,6 +381,26 @@ fun PantallaEditor(
         DialogoTexto(
             inicial = enEdicion,
             alConfirmar = { contenido, tamano, fondo ->
+                val yaPuesto = enEdicion.existente
+                if (yaPuesto != null) {
+                    estado.sustituirSeleccion(
+                        yaPuesto.copy(
+                            contenido = contenido,
+                            tamano = tamano,
+                            fondoArgb = fondo,
+                            marco = marcoParaTexto(
+                                medidor = medidorTexto,
+                                densidad = densidad,
+                                contenido = contenido,
+                                tamano = tamano,
+                                proporcion = proporcion,
+                                ancla = yaPuesto.marco,
+                            ),
+                        ),
+                    )
+                    textoEnEdicion = null
+                    return@DialogoTexto
+                }
                 estado.anadirTexto(
                     contenido = contenido,
                     // La caja se calcula a partir del texto y del cuerpo de
@@ -439,6 +468,14 @@ private data class TextoEnEdicion(
     val sustituye: Boolean,
     /** Color que tiene la pagina debajo del texto, para usarlo de fondo. */
     val colorDeLaPagina: Long,
+    /**
+     * El texto ya existe y se esta corrigiendo, en vez de anadiendo uno.
+     *
+     * Cuando viene relleno, el dialogo arranca con el cuerpo de letra y el
+     * fondo que ya tenia, y al aceptar se sustituye el objeto en su sitio
+     * en lugar de dejar dos textos superpuestos.
+     */
+    val existente: Edicion.Texto? = null,
 )
 
 // --- Lienzo -----------------------------------------------------------------
@@ -918,7 +955,7 @@ private fun DrawScope.dibujarFiguraPrevia(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun PanelHerramientas(estado: EstadoEditor) {
+private fun PanelHerramientas(estado: EstadoEditor, alEditarTexto: (Edicion.Texto) -> Unit) {
     Surface(
         color = MaterialTheme.colorScheme.surfaceContainer,
         modifier = Modifier.fillMaxWidth(),
@@ -1009,13 +1046,14 @@ private fun PanelHerramientas(estado: EstadoEditor) {
                 }
 
                 HerramientaEditor.MOVER -> {
+                    val elegido = estado.objetoSeleccionado
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 6.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
                             text = stringResource(
-                                if (estado.objetoSeleccionado == null) {
+                                if (elegido == null) {
                                     Res.string.ed_mover_ayuda
                                 } else {
                                     Res.string.ed_mover_asas
@@ -1025,7 +1063,18 @@ private fun PanelHerramientas(estado: EstadoEditor) {
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.weight(1f),
                         )
-                        if (estado.objetoSeleccionado != null) {
+                        // Un texto ya puesto se corrige aqui, no borrandolo y
+                        // volviendolo a escribir: lo primero que se hace con un
+                        // texto anadido a un documento es cambiarle algo.
+                        if (elegido is Edicion.Texto) {
+                            TextButton(
+                                onClick = { alEditarTexto(elegido) },
+                                modifier = Modifier.heightIn(min = 48.dp),
+                            ) {
+                                Text(stringResource(Res.string.ed_editar_texto))
+                            }
+                        }
+                        if (elegido != null) {
                             TextButton(
                                 onClick = { estado.borrarSeleccion() },
                                 modifier = Modifier.heightIn(min = 48.dp),
@@ -1033,6 +1082,15 @@ private fun PanelHerramientas(estado: EstadoEditor) {
                                 Text(stringResource(Res.string.comun_eliminar))
                             }
                         }
+                    }
+                    // Con un trazo o una figura seleccionados, la paleta y el
+                    // grosor dejan de ser "lo que se dibujara" y pasan a ser
+                    // "lo que es esto", que es como funciona en cualquier
+                    // editor y lo que ya esperaba quien lo tocaba.
+                    when (elegido) {
+                        is Edicion.Figura, is Edicion.Trazo -> ControlesTrazo(estado)
+                        is Edicion.Texto -> Paleta(estado)
+                        else -> Unit
                     }
                 }
 
@@ -1102,7 +1160,7 @@ private fun ControlesTrazo(estado: EstadoEditor, conPaleta: Boolean = true) {
         Spacer(Modifier.width(12.dp))
         Slider(
             value = estado.grosor,
-            onValueChange = { estado.grosor = it },
+            onValueChange = { estado.fijarGrosor(it) },
             valueRange = 0.001f..0.03f,
             modifier = Modifier.weight(1f),
         )
@@ -1201,7 +1259,7 @@ private fun Paleta(estado: EstadoEditor) {
             Box(
                 modifier = Modifier
                     .size(48.dp)
-                    .pointerInput(valor) { detectTapGestures { estado.color = valor } },
+                    .pointerInput(valor) { detectTapGestures { estado.fijarColor(valor) } },
                 contentAlignment = Alignment.Center,
             ) {
                 Box(
@@ -1237,20 +1295,31 @@ private fun DialogoTexto(
 ) {
     var contenido by remember { mutableStateOf(inicial.contenido) }
     var tamano by remember {
-        mutableStateOf(if (inicial.sustituye) inicial.marco.alto.coerceIn(0.012f, 0.08f) else 0.025f)
+        mutableStateOf(
+            inicial.existente?.tamano
+                ?: if (inicial.sustituye) {
+                    inicial.marco.alto.coerceIn(0.012f, 0.08f)
+                } else {
+                    0.025f
+                },
+        )
     }
     // Por defecto, el color que tiene la pagina justo debajo.
-    var conFondo by remember { mutableStateOf(true) }
-    var fondo by remember { mutableStateOf(inicial.colorDeLaPagina) }
+    var conFondo by remember {
+        mutableStateOf(inicial.existente?.let { it.fondoArgb != null } ?: true)
+    }
+    var fondo by remember {
+        mutableStateOf(inicial.existente?.fondoArgb ?: inicial.colorDeLaPagina)
+    }
 
     AlertDialog(
         onDismissRequest = alCancelar,
         title = {
             Text(
-                if (inicial.sustituye) {
-                    stringResource(Res.string.ed_sustituir_texto)
-                } else {
-                    stringResource(Res.string.ed_anadir_texto)
+                when {
+                    inicial.existente != null -> stringResource(Res.string.ed_editar_texto)
+                    inicial.sustituye -> stringResource(Res.string.ed_sustituir_texto)
+                    else -> stringResource(Res.string.ed_anadir_texto)
                 },
             )
         },

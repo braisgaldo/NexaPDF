@@ -108,6 +108,39 @@ fun Modifier.encuadre(estado: EstadoEncuadre): Modifier =
         }
 
 /**
+ * Encuadre que convive con el paso de pagina.
+ *
+ * [encuadre] usa `detectTransformGestures`, que consume el arrastre en cuanto
+ * pasa el umbral de toque aunque no llegue a aplicar nada. Con la pagina en un
+ * pager eso se traducia en que deslizar de lado no pasaba de hoja: el gesto se
+ * lo quedaba el zoom y no llegaba a nadie.
+ *
+ * Aqui el reparto es explicito. Dos dedos siempre son ampliar y mover. Un dedo
+ * solo mueve la pagina cuando ya esta ampliada, que es cuando hay algo fuera de
+ * la vista que ver; si no lo esta, el evento se deja pasar y lo recoge quien
+ * corresponda para pasar de pagina.
+ */
+fun Modifier.encuadreConPaso(estado: EstadoEncuadre): Modifier =
+    this
+        .onSizeChanged { estado.tamano = it }
+        .pointerInput(Unit) {
+            awaitEachGesture {
+                awaitFirstDown(requireUnconsumed = false)
+                do {
+                    val evento = awaitPointerEvent()
+                    val dedos = evento.changes.count { it.pressed }
+                    val zoom = evento.calculateZoom()
+                    val arrastre = evento.calculatePan()
+                    val manda = dedos >= 2 || estado.ampliada
+                    if (manda && (zoom != 1f || arrastre != Offset.Zero)) {
+                        estado.aplicar(zoom, arrastre)
+                        evento.changes.forEach { it.consume() }
+                    }
+                } while (evento.changes.any { it.pressed })
+            }
+        }
+
+/**
  * Igual que [encuadre], pero solo con dos dedos.
  *
  * En el editor un dedo esta dibujando. Si el gesto de mover la pagina

@@ -3,6 +3,36 @@
 """Textos de Ajustes, copias de seguridad, ayuda, acerca de, donacion y errores."""
 
 TEXTOS = {
+    "aj_pedir_manuscrita": {
+        "en": "Offer the handwritten signature",
+        "es": "Ofrecer la firma manuscrita",
+        "fr": "Proposer la signature manuscrite",
+        "de": "Handschriftliche Unterschrift anbieten",
+        "zh": "提供手写签名步骤",
+        "ja": "手書きの署名を提案する",
+        "ru": "Предлагать подпись от руки",
+        "it": "Proponi la firma autografa",
+        "el": "Πρόταση χειρόγραφης υπογραφής",
+        "ar": "اقتراح التوقيع بخط اليد",
+        "gl": "Ofrecer a sinatura manuscrita",
+        "ca": "Ofereix la signatura manuscrita",
+        "eu": "Eskaini eskuzko sinadura",
+    },
+    "aj_pedir_manuscrita_desc": {
+        "en": "Off, signing goes straight to the certificate.",
+        "es": "Apagado, firmar va directo al certificado.",
+        "fr": "Désactivé, la signature va directement au certificat.",
+        "de": "Aus geht das Signieren direkt zum Zertifikat.",
+        "zh": "关闭后，签名将直接进入证书步骤。",
+        "ja": "オフにすると、署名は証明書の手順から始まります。",
+        "ru": "Если выключено, подписание сразу переходит к сертификату.",
+        "it": "Disattivato, firmare va dritto al certificato.",
+        "el": "Απενεργοποιημένο, η υπογραφή πάει κατευθείαν στο πιστοποιητικό.",
+        "ar": "عند إيقافه، يبدأ التوقيع مباشرة بالشهادة.",
+        "gl": "Apagado, asinar vai directo ao certificado.",
+        "ca": "Desactivat, signar va directe al certificat.",
+        "eu": "Itzalita, sinatzea zuzenean ziurtagirira doa.",
+    },
     # --- Ajustes -------------------------------------------------------------
     "aj_titulo": {
         "en": "Settings", "es": "Ajustes", "fr": "Réglages",
