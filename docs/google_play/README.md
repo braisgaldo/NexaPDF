@@ -230,6 +230,14 @@ alertas → Crear presupuesto → importe 5 € → avisos al 50 %, 90 % y 100 %
 - [ ] Gráfico destacado 1024 × 500 subido.
 - [ ] Al menos 2 capturas de teléfono (mínimo de Play; hay 8 en `capturas/`).
 - [ ] Categoría: Productividad.
+- [ ] Aviso de «símbolos de depuración» al subir el AAB: es opcional. El código
+      nativo no es de NexaPDF, son dos bibliotecas de AndroidX
+      (`androidx.graphics:graphics-path` y el contador de DataStore). Si se
+      quiere quitar el aviso, `python tools/simbolos_nativos.py <ruta al .aab>`
+      arma el ZIP y se sube en la versión, en «App bundles», menú de tres
+      puntos → «Subir archivo de símbolos de depuración nativos». La traza de
+      los fallos de la propia aplicación no depende de esto: la desofusca el
+      `proguard.map`, que ya viaja dentro del AAB.
 - [ ] Correo de contacto verificado.
 
 ### Declaraciones

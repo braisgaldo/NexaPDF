@@ -232,6 +232,13 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
+
+            // El AAB lleva codigo nativo que no es nuestro: las bibliotecas de
+            // androidx.graphics.path y del contador compartido de DataStore.
+            // Sin sus simbolos, un fallo dentro de ellas llega a Play Console
+            // como direcciones de memoria. Con esto se adjuntan y la traza sale
+            // legible; ademas Play deja de avisar en cada subida.
+            ndk { debugSymbolLevel = "SYMBOL_TABLE" }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
