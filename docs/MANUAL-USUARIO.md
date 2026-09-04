@@ -244,9 +244,27 @@ ordenador.
 3. Rellena, si quieres, el **motivo** y el **lugar**.
 4. Pulsa **Firmar ahora**.
 
+También puedes usar un certificado **instalado en el teléfono** (los que
+aparecen en los ajustes de Android, incluidos los de la FNMT o el DNIe): elige
+«Instalado en el dispositivo» y el sistema te deja escoger cuál. La clave
+privada no sale nunca del almacén de Android.
+
 La firma queda incrustada en el documento y **cualquier lector de PDF puede
 comprobar que no ha cambiado desde que lo firmaste**. Es la que sirve para lo
 oficial.
+
+### Qué formato de firma es
+
+Es **PAdES-B-B** (`ETSI.CAdES.detached`), el formato de la norma europea
+EN 319 142, el mismo que produce AutoFirma. Se puede comprobar en los
+validadores oficiales, como
+[VALIDe](https://valide.redsara.es) del Gobierno de España.
+
+**No lleva sello de tiempo de una autoridad**, así que no es PAdES-B-T. No es un
+descuido: pedir un sello exige salir a internet, y NexaPDF no tiene permiso de
+red. La fecha que consta es la del teléfono. Para la mayoría de los usos vale;
+si necesitas un sello de tiempo cualificado, ese trámite hay que hacerlo en el
+ordenador.
 
 > Tu certificado y su contraseña **no se guardan en ningún sitio**: se leen, se
 > usan y se descartan. Y como la aplicación no tiene acceso a internet, tampoco

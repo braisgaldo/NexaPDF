@@ -19,6 +19,14 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
 
 ### Corregido
 
+- **La firma con certificado no era PAdES.** Le faltaba `signingCertificateV2`,
+  el atributo firmado que lleva dentro el hash del certificado del firmante y
+  que CAdES-BES exige, y salía con el subfiltro antiguo de Adobe
+  (`adbe.pkcs7.detached`). La criptografía era correcta, pero un validador
+  conforme a la norma europea —VALIDe, DSS— no la clasificaba como PAdES. Ahora
+  es **PAdES-B-B** (`ETSI.CAdES.detached`), como la de AutoFirma. Se quita
+  además el atributo `signingTime`, que en PAdES no debe estar porque la hora va
+  en la entrada `/M` del diccionario de la firma.
 - Un PDF cifrado abierto con **Leer PDF** se quedaba girando para siempre. El
   diálogo de la contraseña sólo existía dentro de la pantalla de páginas; ahora
   vale para cualquier herramienta.

@@ -23,14 +23,37 @@ import java.security.PrivateKey
 import java.security.cert.Certificate
 import java.security.cert.X509Certificate
 import java.util.Calendar
+import java.security.MessageDigest
+import org.bouncycastle.asn1.ASN1EncodableVector
+import org.bouncycastle.asn1.ASN1Integer
+import org.bouncycastle.asn1.DERSet
+import org.bouncycastle.asn1.cms.Attribute
+import org.bouncycastle.asn1.cms.AttributeTable
+import org.bouncycastle.asn1.cms.CMSAttributes
+import org.bouncycastle.asn1.ess.ESSCertIDv2
+import org.bouncycastle.asn1.ess.SigningCertificateV2
+import org.bouncycastle.asn1.nist.NISTObjectIdentifiers
+import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers
+import org.bouncycastle.asn1.x500.X500Name
+import org.bouncycastle.asn1.x509.AlgorithmIdentifier
+import org.bouncycastle.asn1.x509.GeneralName
+import org.bouncycastle.asn1.x509.GeneralNames
+import org.bouncycastle.asn1.x509.IssuerSerial
+import org.bouncycastle.cms.DefaultSignedAttributeTableGenerator
+import com.tom_roush.pdfbox.pdmodel.interactive.digitalsignature.SignatureOptions
 
 /**
  * Firma electronica con certificado del usuario.
  *
- * Produce una firma `adbe.pkcs7.detached` incrustada mediante guardado
- * incremental, que es el mismo mecanismo que usan Acrobat y AutoFirma: el
- * contenido anterior del documento no se toca, se anade la firma al final, y
+ * Produce una firma **PAdES-B-B** (`ETSI.CAdES.detached`) incrustada mediante
+ * guardado incremental, que es el mismo mecanismo que usan Acrobat y AutoFirma:
+ * el contenido anterior del documento no se toca, se anade la firma al final, y
  * cualquier lector puede comprobar que nada cambio despues de firmar.
+ *
+ * No lleva sello de tiempo de una autoridad, asi que no es PAdES-B-T. No es un
+ * descuido: pedirlo exige salir a internet y NexaPDF no declara el permiso. La
+ * hora que consta es la del dispositivo, en la entrada `/M` del diccionario de
+ * la firma.
  *
  * El certificado nunca sale del telefono ni se guarda: se lee del fichero que
  * elige el usuario, se usa y se descarta al terminar la operacion.
@@ -120,15 +143,34 @@ class FirmadorPdf {
     ) {
         val firma = PDSignature().apply {
             setFilter(PDSignature.FILTER_ADOBE_PPKLITE)
-            setSubFilter(PDSignature.SUBFILTER_ADBE_PKCS7_DETACHED)
+            // ETSI.CAdES.detached y no adbe.pkcs7.detached: es lo que
+            // distingue una firma PAdES de un PKCS#7 metido en un PDF. Con el
+            // subfiltro de Adobe, un validador conforme a la norma europea
+            // (VALIDe, DSS) no la clasifica como PAdES aunque la criptografia
+            // este bien.
+            setSubFilter(PDSignature.SUBFILTER_ETSI_CADES_DETACHED)
             setName(nombre)
             motivo?.takeIf { it.isNotBlank() }?.let { setReason(it) }
             lugar?.takeIf { it.isNotBlank() }?.let { setLocation(it) }
             signDate = Calendar.getInstance()
         }
 
-        documento.addSignature(firma, GeneradorCms(credenciales))
-        documento.saveIncremental(salida)
+        // El hueco que PDFBox reserva para el sobre CMS es fijo y por defecto
+        // son 9 KB. Cabe de sobra con un certificado suelto, pero una cadena
+        // real de la FNMT o del DNIe son tres certificados y se queda corto: la
+        // firma falla al final, cuando ya se ha hecho todo el trabajo. Se pide
+        // sitio a partir de lo que ocupa la cadena, con margen para la firma y
+        // los atributos.
+        val opciones = SignatureOptions().apply {
+            val cadena = credenciales.cadena.sumOf { it.encoded.size }
+            setPreferredSignatureSize(
+                maxOf(SignatureOptions.DEFAULT_SIGNATURE_SIZE, cadena + HOLGURA_FIRMA),
+            )
+        }
+        opciones.use {
+            documento.addSignature(firma, GeneradorCms(credenciales), it)
+            documento.saveIncremental(salida)
+        }
     }
 
     /** Construye el sobre CMS que se guarda dentro del PDF. */
@@ -156,7 +198,9 @@ class FirmadorPdf {
                 addSignerInfoGenerator(
                     JcaSignerInfoGeneratorBuilder(
                         JcaDigestCalculatorProviderBuilder().setProvider(proveedor).build(),
-                    ).build(firmante, certificado),
+                    )
+                        .setSignedAttributeGenerator(AtributosPades(certificado))
+                        .build(firmante, certificado),
                 )
                 addCertificates(JcaCertStore(credenciales.cadena.toList()))
             }
@@ -172,6 +216,57 @@ class FirmadorPdf {
             return generador.generate(ContenidoFlujo(contenido), false)
                 .toASN1Structure()
                 .getEncoded(ASN1Encoding.DER)
+        }
+    }
+
+    /**
+     * Los atributos firmados que pide PAdES-B-B.
+     *
+     * Sobre los que pone BouncyCastle por su cuenta (contentType, messageDigest
+     * y la proteccion de algoritmos) hace dos cosas:
+     *
+     * - **Anade `signingCertificateV2`**, que lleva el hash del certificado del
+     *   firmante dentro de lo que se firma. Es lo que impide que alguien cambie
+     *   el certificado del sobre por otro y siga cuadrando, y es obligatorio en
+     *   CAdES-BES; sin el, la firma no es PAdES por mucho que la criptografia
+     *   sea correcta.
+     * - **Quita `signingTime`.** En PAdES la hora va en la entrada `/M` del
+     *   diccionario de la firma, y la norma dice que este atributo no debe
+     *   estar. Tenerlo duplicado y sin sello de tiempo solo da un aviso en los
+     *   validadores.
+     */
+    private class AtributosPades(
+        certificado: X509Certificate,
+    ) : DefaultSignedAttributeTableGenerator(referenciaA(certificado)) {
+
+        override fun getAttributes(parametros: MutableMap<Any?, Any?>): AttributeTable =
+            super.getAttributes(parametros).remove(CMSAttributes.signingTime)
+
+        private companion object {
+            fun referenciaA(certificado: X509Certificate): AttributeTable {
+                val huella = MessageDigest.getInstance("SHA-256").digest(certificado.encoded)
+                val emisorYSerie = IssuerSerial(
+                    GeneralNames(
+                        GeneralName(X500Name.getInstance(certificado.issuerX500Principal.encoded)),
+                    ),
+                    ASN1Integer(certificado.serialNumber),
+                )
+                val identificador = ESSCertIDv2(
+                    AlgorithmIdentifier(NISTObjectIdentifiers.id_sha256),
+                    huella,
+                    emisorYSerie,
+                )
+                return AttributeTable(
+                    ASN1EncodableVector().apply {
+                        add(
+                            Attribute(
+                                PKCSObjectIdentifiers.id_aa_signingCertificateV2,
+                                DERSet(SigningCertificateV2(arrayOf(identificador))),
+                            ),
+                        )
+                    },
+                )
+            }
         }
     }
 
@@ -192,6 +287,9 @@ class FirmadorPdf {
     }
 
     private companion object {
+        /** Sitio de sobra, ademas de la cadena, para la firma y sus atributos. */
+        const val HOLGURA_FIRMA = 12 * 1024
+
         /**
          * Se usa la instancia del proveedor, no su nombre.
          *
