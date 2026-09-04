@@ -38,6 +38,15 @@ interface MotorPdf {
         indice: Int,
         anchoPx: Int,
         contrasena: String? = null,
+        /**
+         * Es una miniatura: se puede guardar en cache y con menos color.
+         *
+         * Una rejilla de miniaturas pide las mismas paginas una y otra vez
+         * segun se desplaza, y a ese tamano nadie distingue 16 bits de
+         * color de 24. La pagina grande del visor y del editor no lo es:
+         * ahi se amplia y se nota.
+         */
+        miniatura: Boolean = false,
     ): ResultadoPdf<ImageBitmap>
 
     /** Libera el documento cacheado. Se llama al salir de la pantalla. */
@@ -71,6 +80,8 @@ interface MotorPdf {
         rangos: List<RangoPaginas>,
         directorioSalida: String,
         nombreBase: String,
+        /** Se llama con (hechos, total) segun van saliendo los ficheros. */
+        alAvanzar: ((Int, Int) -> Unit)? = null,
     ): ResultadoPdf<List<String>>
 
     /** Reordena, rota o elimina paginas y escribe el resultado. */

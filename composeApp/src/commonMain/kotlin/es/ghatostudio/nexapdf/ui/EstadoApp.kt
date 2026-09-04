@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import es.ghatostudio.nexapdf.domain.model.TareaConResultado
+import kotlinx.coroutines.Job
 
 /**
  * Estado que vive mientras vive la aplicacion: ajustes, pila de navegacion,
@@ -82,12 +83,41 @@ class EstadoApp(private val contenedor: ContenedorApp) : ViewModel() {
     var trabajando by mutableStateOf<String?>(null)
         private set
 
-    fun empezarTrabajo(descripcion: String) {
+    /** Cuantas partes de cuantas van hechas, si la tarea lo sabe. */
+    var progreso by mutableStateOf<Pair<Int, Int>?>(null)
+        private set
+
+    private var trabajoEnCurso: Job? = null
+
+    /** Si la tarea en curso se puede cortar por la mitad. */
+    val sePuedeCancelar: Boolean get() = trabajoEnCurso != null
+
+    fun empezarTrabajo(descripcion: String, trabajo: Job? = null) {
         trabajando = descripcion
+        progreso = null
+        trabajoEnCurso = trabajo
+    }
+
+    /**
+     * Apunta por donde va la tarea.
+     *
+     * Un velo con un texto fijo no distingue entre "tarda" y "se ha
+     * colgado", y en un documento de ciento veinte paginas la diferencia
+     * importa.
+     */
+    fun fijarProgreso(hechas: Int, total: Int) {
+        progreso = if (total > 1) hechas to total else null
+    }
+
+    fun cancelarTrabajo() {
+        trabajoEnCurso?.cancel()
+        terminarTrabajo()
     }
 
     fun terminarTrabajo() {
         trabajando = null
+        progreso = null
+        trabajoEnCurso = null
     }
 
     // --- Donacion ------------------------------------------------------------

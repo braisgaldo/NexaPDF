@@ -216,6 +216,27 @@ FNMT. Después de eso se ha tocado el editor y el guardado. Antes de subir hay
 que **repetir esa verificación externa**, no sólo comprobar que la aplicación no
 falla.
 
+### V7 · El tour no enseña la aplicación que hay
+
+El tour son cuatro páginas de texto con un dibujo. Cuenta lo que la aplicación
+hace, pero no enseña **dónde está**, así que al terminarlo sigues sin saber que
+el número de página del visor se puede escribir o que las acciones de la
+pantalla de páginas están detrás de una flecha.
+
+**Propuesta:** convertirlo en un recorrido sobre la pantalla de verdad. Cada
+paso oscurece la pantalla entera menos el elemento del que habla, que se queda
+iluminado con un recorte, y al lado sale el rótulo con lo que hace. Es el patrón
+que usa cualquier aplicación para enseñar su propia interfaz, y funciona porque
+lo que se explica y lo que se señala son la misma cosa.
+
+Pasos, en el orden en que se usan: las baldosas de inicio, el botón de acciones
+de la pantalla de páginas, la barra de páginas del visor, la barra de
+herramientas del editor y el botón de ajustes.
+
+**Cómo comprobarlo:** hacer el tour entero en el teléfono y comprobar que en
+cada paso lo iluminado es el elemento del que habla el rótulo, y que al terminar
+se llega a la pantalla de inicio sin que vuelva a salir.
+
 ### F5 · Las capturas de la ficha de Google Play están desactualizadas
 
 `docs/google_play/capturas` sigue enseñando la interfaz de lista anterior, sin
@@ -230,22 +251,28 @@ coordenadas fijas ya no corresponden con el menú actual.
 **Antes de subir a Google Play** — lo que un usuario nota el primer día o lo que
 compromete lo que la ficha promete:
 
-1. F5 · capturas al día (la ficha enseña una aplicación que ya no existe).
-2. F4 · revalidar la firma con el certificado real.
-3. R1 + R2 · caché de miniaturas y `RGB_565`. Es el arreglo con más efecto por
+1. R1 + R2 · caché de miniaturas y `RGB_565`. Es el arreglo con más efecto por
    línea escrita: quita el tirón al desplazar y baja la memoria a la mitad.
-4. R3 · antirrebote y búsqueda cancelable.
-5. V3 · resaltado visible y aparición activa distinguible.
-6. F1 · borrar y renombrar recientes.
-7. F3 · confirmar antes de crear muchos ficheros.
+2. R3 · antirrebote y búsqueda cancelable.
+3. V3 · resaltado visible y aparición activa distinguible.
+4. F1 · borrar y renombrar recientes.
+5. F3 · confirmar antes de crear muchos ficheros.
+6. V2, V5 · ajustes de composición que quedan.
+7. R5 · goma como trazo único.
+8. F2 · progreso y cancelación.
+9. R4 · medir el arranque del build de publicación y, si lo pide, Baseline
+   Profile.
+10. F4 · revalidar la firma con el certificado real.
+11. V7 · tour sobre la pantalla de verdad, con lo que se explica iluminado.
+12. F5 · capturas al día. **Va la última a propósito**: cualquier cosa de esta
+    lista cambia lo que se ve, y unas capturas hechas antes habría que rehacerlas.
 
-**Puede esperar a la siguiente versión:**
+**Ya hechos** en el repaso anterior, se dejan anotados para no perderlos de
+vista al comprobar:
 
-8. V1, V2, V4, V5 · ajustes de composición.
-9. V6 · deslizar entre páginas en el visor.
-10. R5 · goma como trazo único.
-11. F2 · progreso y cancelación.
-12. R4 · Baseline Profile, si la medida sobre el build de publicación lo pide.
+- V1 · las baldosas de inicio llenan la pantalla y el icono crece con ellas.
+- V4 · la barra de acciones es un botón con desplegable.
+- V6 · el visor pasa página deslizando, con número editable y barra.
 
 Cada punto se da por bueno con su comprobación en el teléfono, no con que
 compile.

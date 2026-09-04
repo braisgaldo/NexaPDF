@@ -290,15 +290,25 @@ class EstadoEditor(indicePagina: Int) {
         if (puntos.isEmpty()) return
 
         val resaltador = herramienta == HerramientaEditor.RESALTAR
+        val goma = herramienta == HerramientaEditor.GOMA
         anadir(
             Edicion.Trazo(
                 id = siguienteId(),
                 puntos = puntos,
-                colorArgb = color,
+                // La goma es un trazo del color de la pagina. Antes
+                // escribia un rectangulo por cada punto muestreado, y un
+                // borrado de media hoja dejaba cientos de operaciones en
+                // el flujo del PDF: mas peso, mas lento de guardar y mas
+                // lento de abrir en cualquier visor.
+                colorArgb = if (goma) colorDeFondo else color,
                 // El marcador se pinta mucho mas grueso y translucido: si no,
                 // no parece un marcador sino un boligrafo de color.
-                grosor = if (resaltador) grosor * 4f else grosor,
-                opacidad = if (resaltador) 0.35f else opacidad,
+                grosor = when {
+                    resaltador -> grosor * 4f
+                    goma -> grosor * 6f
+                    else -> grosor
+                },
+                opacidad = if (resaltador) 0.35f else 1f,
                 resaltador = resaltador,
             ),
         )

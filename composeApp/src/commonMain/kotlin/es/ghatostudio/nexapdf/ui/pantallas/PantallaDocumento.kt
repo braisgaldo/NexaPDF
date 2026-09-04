@@ -126,6 +126,7 @@ import es.ghatostudio.nexapdf.resources.doc_unir_vacio
 import es.ghatostudio.nexapdf.domain.model.RangoPaginas
 import es.ghatostudio.nexapdf.resources.doc_separar_partes
 import es.ghatostudio.nexapdf.resources.doc_elegir_accion
+import es.ghatostudio.nexapdf.resources.doc_separar_todo_pregunta
 import androidx.compose.material.icons.automirrored.filled.CallSplit
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.DropdownMenu
@@ -187,6 +188,9 @@ fun PantallaDocumento(
     var pidiendoBorrado by remember { mutableStateOf(false) }
     var eligiendoFormato by remember { mutableStateOf(false) }
     var partiendo by remember { mutableStateOf(false) }
+    // Un fichero por pagina sobre un documento de ciento veinte crea
+    // ciento veinte ficheros de golpe, y deshacerlo es borrarlos a mano.
+    var partiendoTodo by remember { mutableStateOf(false) }
 
     // Orden de las paginas mientras se reordena. Se mantiene aparte de la lista
     // real: el documento no se toca hasta que el usuario aplica el cambio.
@@ -299,6 +303,9 @@ fun PantallaDocumento(
                     seleccion = seleccion.sorted(),
                     acciones = acciones,
                     alPedirBorrado = { pidiendoBorrado = true },
+                    alPedirSepararTodo = {
+                        if (paginas.size > 1) partiendoTodo = true else acciones.alSepararTodo()
+                    },
                     alPedirExportar = { eligiendoFormato = true },
                     alPedirPartes = { partiendo = true },
                     confirmarBorrado = confirmarBorrado,
@@ -317,6 +324,36 @@ fun PantallaDocumento(
                 )
             }
         }
+    }
+
+    if (partiendoTodo) {
+        AlertDialog(
+            onDismissRequest = { partiendoTodo = false },
+            title = { Text(stringResource(Res.string.doc_separar_una_por_fichero)) },
+            text = {
+                Text(
+                    stringResource(
+                        Res.string.doc_separar_todo_pregunta,
+                        paginas.size,
+                    ),
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        partiendoTodo = false
+                        acciones.alSepararTodo()
+                    },
+                ) {
+                    Text(stringResource(Res.string.comun_aceptar))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { partiendoTodo = false }) {
+                    Text(stringResource(Res.string.comun_cancelar))
+                }
+            },
+        )
     }
 
     if (partiendo && rutaActiva != null) {
@@ -375,6 +412,7 @@ private fun BarraAcciones(
     seleccion: List<Int>,
     acciones: AccionesDocumento,
     alPedirBorrado: () -> Unit,
+    alPedirSepararTodo: () -> Unit,
     alPedirExportar: () -> Unit,
     alPedirPartes: () -> Unit,
     confirmarBorrado: Boolean,
@@ -400,7 +438,7 @@ private fun BarraAcciones(
             AccionDeDocumento(
                 Icons.Filled.ContentCut,
                 stringResource(Res.string.doc_separar_una_por_fichero),
-            ) { acciones.alSepararTodo() },
+            ) { alPedirSepararTodo() },
             AccionDeDocumento(
                 Icons.AutoMirrored.Filled.CallSplit,
                 stringResource(Res.string.doc_separar_partes),

@@ -63,7 +63,13 @@ fun MiniaturaPagina(
         ?: PROPORCION_A4
 
     LaunchedEffect(ruta, indice, anchoPx) {
-        when (val resultado = contenedor.motorPdf.renderizarPagina(ruta, indice, anchoPx)) {
+        val resultado = contenedor.motorPdf.renderizarPagina(
+            ruta = ruta,
+            indice = indice,
+            anchoPx = anchoPx,
+            miniatura = true,
+        )
+        when (resultado) {
             is ResultadoPdf.Exito -> imagen = resultado.valor
             is ResultadoPdf.Fallo -> fallo = true
         }

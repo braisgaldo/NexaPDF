@@ -58,6 +58,20 @@ import es.ghatostudio.nexapdf.ui.componentes.EstadoVacio
 import es.ghatostudio.nexapdf.ui.componentes.MiniaturaPagina
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.TextButton
+import es.ghatostudio.nexapdf.resources.comun_aceptar
+import es.ghatostudio.nexapdf.resources.comun_cancelar
+import es.ghatostudio.nexapdf.resources.comun_eliminar
+import es.ghatostudio.nexapdf.resources.rec_borrar
+import es.ghatostudio.nexapdf.resources.rec_borrar_pregunta
+import es.ghatostudio.nexapdf.resources.rec_nombre_nuevo
+import es.ghatostudio.nexapdf.resources.rec_opciones
+import es.ghatostudio.nexapdf.resources.rec_renombrar
 
 /** Como se ordenan los ficheros recientes. */
 private enum class Orden(val etiqueta: StringResource) {
@@ -81,13 +95,22 @@ private enum class Vista { LISTA, DETALLE, CUADRICULA }
  * muchos, el detalle para reconocerlos por la primera pagina, y la cuadricula
  * para encontrar uno que se recuerda por su aspecto y no por su nombre.
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PantallaRecientes(
     recientes: List<DocumentoReciente>,
     snackbar: SnackbarHostState,
     alAbrir: (DocumentoReciente) -> Unit,
+    alRenombrar: (DocumentoReciente, String) -> Unit,
+    alBorrar: (DocumentoReciente) -> Unit,
     alVolver: () -> Unit,
 ) {
+    // La lista crecia sin freno y desde la aplicacion no habia forma de
+    // limpiarla ni de corregir un nombre: la carpeta acababa llena de
+    // "documento editado editado.pdf".
+    var menuDe by remember { mutableStateOf<DocumentoReciente?>(null) }
+    var renombrando by remember { mutableStateOf<DocumentoReciente?>(null) }
+    var borrando by remember { mutableStateOf<DocumentoReciente?>(null) }
     var orden by remember { mutableStateOf(Orden.RECIENTES) }
     var vista by remember { mutableStateOf(Vista.DETALLE) }
     var menuOrden by remember { mutableStateOf(false) }
@@ -142,6 +165,17 @@ fun PantallaRecientes(
                             Orden.entries.forEach { opcion ->
                                 DropdownMenuItem(
                                     text = { Text(stringResource(opcion.etiqueta)) },
+                                    // Los tres salian iguales, asi que abrir
+                                    // el menu no servia para saber por que
+                                    // estaba ordenada la lista.
+                                    trailingIcon = {
+                                        if (opcion == orden) {
+                                            Icon(
+                                                Icons.Filled.Check,
+                                                contentDescription = null,
+                                            )
+                                        }
+                                    },
                                     onClick = {
                                         orden = opcion
                                         menuOrden = false
@@ -170,7 +204,11 @@ fun PantallaRecientes(
                 contentPadding = PaddingValues(bottom = 32.dp),
             ) {
                 items(ordenados, key = { it.ruta }) { documento ->
-                    FilaReciente(documento) { alAbrir(documento) }
+                    FilaReciente(
+                        documento = documento,
+                        alPulsar = { alAbrir(documento) },
+                        alMantener = { menuDe = documento },
+                    )
                 }
             }
 
@@ -183,7 +221,10 @@ fun PantallaRecientes(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(min = 56.dp)
-                            .clickable { alAbrir(documento) }
+                            .combinedClickable(
+                                onClick = { alAbrir(documento) },
+                                onLongClick = { menuDe = documento },
+                            )
                             .padding(horizontal = 20.dp, vertical = 12.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
@@ -212,7 +253,10 @@ fun PantallaRecientes(
             ) {
                 items(ordenados, key = { it.ruta }) { documento ->
                     Column(
-                        modifier = Modifier.clickable { alAbrir(documento) },
+                        modifier = Modifier.combinedClickable(
+                            onClick = { alAbrir(documento) },
+                            onLongClick = { menuDe = documento },
+                        ),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         MiniaturaPagina(
@@ -234,5 +278,90 @@ fun PantallaRecientes(
                 }
             }
         }
+    }
+menuDe?.let { documento ->
+        AlertDialog(
+            onDismissRequest = { menuDe = null },
+            title = { Text(documento.nombre) },
+            text = { Text(stringResource(Res.string.rec_opciones)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        renombrando = documento
+                        menuDe = null
+                    },
+                ) {
+                    Text(stringResource(Res.string.rec_renombrar))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        borrando = documento
+                        menuDe = null
+                    },
+                ) {
+                    Text(stringResource(Res.string.rec_borrar))
+                }
+            },
+        )
+    }
+
+    renombrando?.let { documento ->
+        var nombre by remember(documento.ruta) {
+            mutableStateOf(documento.nombre.removeSuffix(".pdf"))
+        }
+        AlertDialog(
+            onDismissRequest = { renombrando = null },
+            title = { Text(stringResource(Res.string.rec_renombrar)) },
+            text = {
+                OutlinedTextField(
+                    value = nombre,
+                    onValueChange = { nombre = it },
+                    label = { Text(stringResource(Res.string.rec_nombre_nuevo)) },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        alRenombrar(documento, nombre)
+                        renombrando = null
+                    },
+                    enabled = nombre.isNotBlank(),
+                ) {
+                    Text(stringResource(Res.string.comun_aceptar))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { renombrando = null }) {
+                    Text(stringResource(Res.string.comun_cancelar))
+                }
+            },
+        )
+    }
+
+    borrando?.let { documento ->
+        AlertDialog(
+            onDismissRequest = { borrando = null },
+            title = { Text(stringResource(Res.string.rec_borrar)) },
+            text = { Text(stringResource(Res.string.rec_borrar_pregunta, documento.nombre)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        alBorrar(documento)
+                        borrando = null
+                    },
+                ) {
+                    Text(stringResource(Res.string.comun_eliminar))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { borrando = null }) {
+                    Text(stringResource(Res.string.comun_cancelar))
+                }
+            },
+        )
     }
 }

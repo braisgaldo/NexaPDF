@@ -58,6 +58,29 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
   botones con un párrafo debajo. Al pie, la versión y el lema, que es el dato
   que hace falta para informar de un fallo.
 
+- **Ficheros recientes**: mantener pulsado un fichero deja renombrarlo o
+  borrarlo, con confirmación. Antes la lista sólo crecía.
+- **Recorrido guiado sobre la pantalla de verdad**: cada paso ilumina el
+  elemento del que habla y oscurece el resto, en lugar de cuatro páginas de
+  texto con un dibujo.
+- **Progreso y cancelación** en las tareas que crean varios ficheros: se ve por
+  dónde van y se pueden cortar.
+- **Aviso antes de crear un fichero por página**, que sobre un documento largo
+  son decenas de ficheros de golpe.
+
+### Rendimiento
+
+- **Caché de miniaturas** acotada por memoria y un cerrojo por documento en vez
+  de uno para toda la aplicación: las páginas dejan de rasterizarse cada vez que
+  vuelven a la vista y varias pueden prepararse a la vez.
+- **Miniaturas en 16 bits de color**: la mitad de memoria y, sobre papel, sin
+  diferencia visible. La página grande del visor y del editor sigue a 24 bits.
+- **La búsqueda espera a que dejes de teclear** y se puede cortar por la mitad.
+  Antes cada letra lanzaba un recorrido del documento entero que no se podía
+  parar.
+- **La goma escribe un trazo, no un rectángulo por punto.** Un borrado a mano
+  alzada dejaba cientos de operaciones en el PDF.
+
 ### Corregido
 
 - La rejilla de páginas salía vacía al abrir un documento, sin error ni
@@ -91,6 +114,11 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
   como los documentos.
 - Los nombres de los documentos a unir se partían a mitad de palabra en dos
   líneas.
+- El resaltado de la búsqueda casi no se veía sobre papel blanco, y todas las
+  apariciones se pintaban igual: el contador decía «3 de 8» y la vista no
+  sabía cuál era la tercera.
+- El menú de ordenar los recientes no marcaba cuál estaba puesto.
+- El diálogo de añadir texto tenía el campo y el deslizador sin rótulo.
 - **Importar ajustes no funcionaba**: Android da a la extensión `.bak` un tipo
   propio que el selector no aceptaba, así que la copia salía atenuada y no
   había forma de elegirla. El filtro de tipos no aportaba seguridad, porque la

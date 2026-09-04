@@ -123,6 +123,8 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Surface
 import androidx.compose.ui.graphics.SolidColor
+import kotlinx.coroutines.delay
+import androidx.compose.ui.graphics.drawscope.Stroke
 
 /** Lo que el visor necesita del resto de la aplicacion. */
 class AccionesVisor(
@@ -222,6 +224,10 @@ fun PantallaVisor(
             resultados = null
             return@LaunchedEffect
         }
+        // Se espera a que deje de teclear. Escribir "Pagina" lanzaba seis
+        // recorridos del documento entero, uno por letra, y el ultimo era
+        // el unico que servia.
+        delay(350)
         buscandoAhora = true
         resultados = acciones.alBuscar(consulta)
         actual = 0
@@ -747,23 +753,52 @@ private fun CapaResaltados(
         coincidencias.forEach { (indice, coincidencia) ->
             val marco = coincidencia.marco.normalizado()
             val esActiva = indice == activa
-            drawRect(
-                color = if (esActiva) colorActiva.copy(alpha = 0.45f) else AMARILLO_BUSQUEDA,
-                topLeft = Offset(
-                    margenX + marco.izquierda * anchoPagina,
-                    margenY + marco.arriba * altoPagina,
-                ),
-                size = Size(
-                    (marco.derecha - marco.izquierda) * anchoPagina,
-                    (marco.abajo - marco.arriba) * altoPagina,
-                ),
+            // Se pinta un poco mas alto y ancho que la palabra: pegado al
+            // trazo, el subrayado parecia una sombra del texto.
+            val holguraX = anchoPagina * 0.004f
+            val holguraY = altoPagina * 0.002f
+            val esquina = Offset(
+                margenX + marco.izquierda * anchoPagina - holguraX,
+                margenY + marco.arriba * altoPagina - holguraY,
             )
+            val tamano = Size(
+                (marco.derecha - marco.izquierda) * anchoPagina + holguraX * 2,
+                (marco.abajo - marco.arriba) * altoPagina + holguraY * 2,
+            )
+            drawRect(
+                color = if (esActiva) {
+                    NARANJA_ACTIVA
+                } else {
+                    AMARILLO_BUSQUEDA
+                },
+                topLeft = esquina,
+                size = tamano,
+            )
+            // La activa ademas va enmarcada: con ocho apariciones amarillas
+            // el contador decia "3 de 8" y la vista no sabia cual era la 3.
+            if (esActiva) {
+                drawRect(
+                    color = colorActiva,
+                    topLeft = esquina,
+                    size = tamano,
+                    style = Stroke(width = size.minDimension * 0.004f),
+                )
+            }
         }
     }
 }
 
-/** Amarillo de subrayado, con transparencia para dejar leer debajo. */
-private val AMARILLO_BUSQUEDA = Color(0x66FFD54F)
+/**
+ * Amarillo de subrayado, con transparencia para dejar leer debajo.
+ *
+ * Antes era un lavanda al 40 % que sobre papel blanco casi no se veia. Un
+ * amarillo de rotulador al 70 % es lo que espera cualquiera de un
+ * resaltado, y el texto negro debajo sigue leyendose de sobra.
+ */
+private val AMARILLO_BUSQUEDA = Color(0xB3FFD54F)
+
+/** La aparicion en la que se esta: naranja, para no confundirla con el resto. */
+private val NARANJA_ACTIVA = Color(0xCCFF8A3D)
 
 @Composable
 private fun ListaResultados(

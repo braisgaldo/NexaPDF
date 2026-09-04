@@ -86,6 +86,11 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.onGloballyPositioned
 
 /** Las seis herramientas del punto 14 del encargo, en el orden en que se pidieron. */
 enum class Herramienta(
@@ -131,6 +136,14 @@ fun PantallaInicio(
     alElegirHerramienta: (Herramienta) -> Unit,
     alAbrirRecientes: () -> Unit,
     alAbrirAjustes: () -> Unit,
+    /**
+     * Donde ha quedado cada elemento en pantalla.
+     *
+     * Lo usa el tour para iluminar lo que esta explicando. Se mide aqui y
+     * no se calcula fuera porque las baldosas se reparten el alto y su
+     * posicion depende del telefono.
+     */
+    alMedirZona: (ZonaTour, Rect) -> Unit = { _, _ -> },
 ) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -142,7 +155,7 @@ fun PantallaInicio(
         // ocho baldosas salen cuatro filas justas, sin huecos, y cada una es
         // lo bastante ancha para que el icono se vea de lejos.
         Column(modifier = Modifier.fillMaxSize().padding(relleno)) {
-            Cabecera(alAbrirAjustes)
+            Cabecera(alAbrirAjustes, alMedirZona)
 
             // Rejilla con pesos y no LazyVerticalGrid: son unas pocas entradas
             // fijas, y repartiendo la altura entre las filas la pantalla queda
@@ -154,7 +167,8 @@ fun PantallaInicio(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .onGloballyPositioned { alMedirZona(ZonaTour.BALDOSAS, it.boundsInRoot()) },
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 repeat(filas) { fila ->
@@ -168,13 +182,31 @@ fun PantallaInicio(
                             when {
                                 indice < herramientas.size -> {
                                     val herramienta = herramientas[indice]
-                                    BaldosaHerramienta(herramienta, hueco) {
+                                    val zona = when (herramienta) {
+                                        Herramienta.VISOR -> ZonaTour.LEER
+                                        Herramienta.EDITAR -> ZonaTour.EDITAR
+                                        else -> null
+                                    }
+                                    val medido = if (zona == null) {
+                                        hueco
+                                    } else {
+                                        hueco.onGloballyPositioned {
+                                            alMedirZona(zona, it.boundsInRoot())
+                                        }
+                                    }
+                                    BaldosaHerramienta(herramienta, medido) {
                                         alElegirHerramienta(herramienta)
                                     }
                                 }
 
                                 indice == herramientas.size ->
-                                    BaldosaRecientes(numeroRecientes, hueco, alAbrirRecientes)
+                                    BaldosaRecientes(
+                                        numeroRecientes,
+                                        hueco.onGloballyPositioned {
+                                            alMedirZona(ZonaTour.RECIENTES, it.boundsInRoot())
+                                        },
+                                        alAbrirRecientes,
+                                    )
 
                                 // Hueco vacio para que la ultima fila no
                                 // estire las baldosas que si tiene.
@@ -288,7 +320,10 @@ private fun Baldosa(
 }
 
 @Composable
-private fun Cabecera(alAbrirAjustes: () -> Unit) {
+private fun Cabecera(
+    alAbrirAjustes: () -> Unit,
+    alMedirZona: (ZonaTour, Rect) -> Unit = { _, _ -> },
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -307,7 +342,12 @@ private fun Cabecera(alAbrirAjustes: () -> Unit) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-        IconButton(onClick = alAbrirAjustes, modifier = Modifier.size(48.dp)) {
+        IconButton(
+            onClick = alAbrirAjustes,
+            modifier = Modifier
+                .size(48.dp)
+                .onGloballyPositioned { alMedirZona(ZonaTour.AJUSTES, it.boundsInRoot()) },
+        ) {
             Icon(
                 imageVector = Icons.Filled.Settings,
                 contentDescription = stringResource(Res.string.cd_ajustes),
@@ -367,13 +407,19 @@ private fun TarjetaHerramienta(herramienta: Herramienta, alPulsar: () -> Unit) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun FilaReciente(documento: DocumentoReciente, alPulsar: () -> Unit) {
+internal fun FilaReciente(
+    documento: DocumentoReciente,
+    alPulsar: () -> Unit,
+    /** Mantener pulsado abre lo que se puede hacer con el fichero. */
+    alMantener: (() -> Unit)? = null,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 64.dp)
-            .clickable(onClick = alPulsar)
+            .combinedClickable(onClick = alPulsar, onLongClick = alMantener)
             .padding(horizontal = 20.dp, vertical = 12.dp)
             .semantics(mergeDescendants = true) { },
         verticalAlignment = Alignment.CenterVertically,
@@ -404,3 +450,6 @@ internal fun FilaReciente(documento: DocumentoReciente, alPulsar: () -> Unit) {
 
 /** Columnas de la rejilla del inicio. */
 private const val COLUMNAS = 2
+
+/** Elementos de la pantalla de inicio que el tour puede senalar. */
+enum class ZonaTour { BALDOSAS, LEER, EDITAR, RECIENTES, AJUSTES }

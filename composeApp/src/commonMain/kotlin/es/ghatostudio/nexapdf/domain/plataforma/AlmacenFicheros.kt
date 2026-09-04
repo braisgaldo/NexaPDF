@@ -11,6 +11,15 @@ interface AlmacenFicheros {
     fun tamano(ruta: String): Long
     fun nombre(ruta: String): String
     fun borrar(ruta: String): Boolean
+
+    /**
+     * Cambia el nombre de un fichero dentro de su misma carpeta.
+     *
+     * Devuelve la ruta nueva, o `null` si no se ha podido. No sobrescribe:
+     * si el nombre esta cogido, se busca uno libre, porque renombrar no
+     * deberia poder borrar otro documento sin avisar.
+     */
+    fun renombrar(ruta: String, nombreNuevo: String): String?
     fun listar(directorio: String): List<String>
     fun asegurarDirectorio(ruta: String)
     fun unirRuta(directorio: String, nombre: String): String

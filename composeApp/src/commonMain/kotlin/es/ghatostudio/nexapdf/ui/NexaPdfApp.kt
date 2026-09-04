@@ -96,7 +96,6 @@ import es.ghatostudio.nexapdf.ui.pantallas.PantallaFirma
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaImagenes
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaInicio
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaRecientes
-import es.ghatostudio.nexapdf.ui.pantallas.PantallaTour
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaVisor
 import es.ghatostudio.nexapdf.ui.pantallas.PeticionFirmaCertificado
 import es.ghatostudio.nexapdf.ui.theme.NexaTheme
@@ -109,7 +108,12 @@ import es.ghatostudio.nexapdf.domain.model.AperturaAlTerminar
 import es.ghatostudio.nexapdf.resources.res_abrir
 import es.ghatostudio.nexapdf.resources.res_abrir_titulo
 import es.ghatostudio.nexapdf.resources.res_ahora_no
+import es.ghatostudio.nexapdf.resources.rec_borrado
+import es.ghatostudio.nexapdf.resources.rec_renombrado
 import es.ghatostudio.nexapdf.domain.model.TareaConResultado
+import androidx.compose.ui.geometry.Rect
+import es.ghatostudio.nexapdf.ui.pantallas.CapaTour
+import es.ghatostudio.nexapdf.ui.pantallas.ZonaTour
 
 /**
  * Raiz de la interfaz: tema, navegacion, avisos y el hilo que une las pantallas
@@ -207,6 +211,10 @@ private fun ContenidoApp(
 
     // Estado del visor
     var seccionesVisor by remember { mutableStateOf(emptyList<Seccion>()) }
+
+    // Donde ha quedado cada elemento de la pantalla de inicio. Lo rellena ella
+    // al medirse y lo lee el tour para saber que iluminar.
+    val zonasDelTour = remember { mutableStateMapOf<ZonaTour, Rect>() }
 
     // Estado de la firma
     var firmasExistentes by remember { mutableStateOf(emptyList<FirmaExistente>()) }
@@ -562,6 +570,29 @@ private fun ContenidoApp(
                     abrirDocumentos(listOf(reciente.ruta))
                     estado.ir(Destino.Visor(reciente.ruta))
                 },
+                alRenombrar = { reciente, nombre ->
+                    alcance.launch {
+                        contenedor.motorPdf.cerrar(reciente.ruta)
+                        val nueva = contenedor.ficheros.renombrar(reciente.ruta, nombre)
+                        if (nueva == null) {
+                            estado.avisar(mensajeDeError(ErrorPdf.ERROR_ESCRITURA))
+                        } else {
+                            refrescarRecientes()
+                            estado.avisar(getString(Res.string.rec_renombrado))
+                        }
+                    }
+                },
+                alBorrar = { reciente ->
+                    alcance.launch {
+                        contenedor.motorPdf.cerrar(reciente.ruta)
+                        if (contenedor.ficheros.borrar(reciente.ruta)) {
+                            refrescarRecientes()
+                            estado.avisar(getString(Res.string.rec_borrado))
+                        } else {
+                            estado.avisar(mensajeDeError(ErrorPdf.ERROR_ESCRITURA))
+                        }
+                    }
+                },
                 alVolver = { estado.volver() },
             )
 
@@ -669,9 +700,8 @@ private fun ContenidoApp(
                         }
                     },
                     alSepararEnPartes = { partes ->
-                        alcance.launch {
+                        val trabajo = alcance.launch {
                             val ruta = rutaActiva ?: return@launch
-                            estado.empezarTrabajo(textoProcesando)
                             val creados = mutableListOf<String>()
                             // Una llamada por parte, con la ruta de salida ya
                             // decidida: el nombre es el que ha escrito el
@@ -686,6 +716,7 @@ private fun ContenidoApp(
                                     salida,
                                 )
                                 if (resultado is ResultadoPdf.Exito) creados += resultado.valor
+                                estado.fijarProgreso(creados.size, partes.size)
                             }
                             estado.terminarTrabajo()
                             if (creados.isEmpty()) {
@@ -694,17 +725,18 @@ private fun ContenidoApp(
                                 registrarResultados(creados)
                             }
                         }
+                        estado.empezarTrabajo(textoProcesando, trabajo)
                     },
                     alSepararTodo = {
-                        alcance.launch {
+                        val trabajo = alcance.launch {
                             val ruta = rutaActiva ?: return@launch
-                            estado.empezarTrabajo(textoProcesando)
                             val rangos = paginas.map { RangoPaginas(it.indice, it.indice) }
                             val resultado = contenedor.motorPdf.separar(
-                                ruta,
-                                rangos,
-                                contenedor.servicios.directorioSalida,
-                                nombreBase(ruta),
+                                ruta = ruta,
+                                rangos = rangos,
+                                directorioSalida = contenedor.servicios.directorioSalida,
+                                nombreBase = nombreBase(ruta),
+                                alAvanzar = { hechos, total -> estado.fijarProgreso(hechos, total) },
                             )
                             estado.terminarTrabajo()
                             when (resultado) {
@@ -714,6 +746,7 @@ private fun ContenidoApp(
                                     estado.avisar(mensajeDeError(resultado.causa))
                             }
                         }
+                        estado.empezarTrabajo(textoProcesando, trabajo)
                     },
                     alGirar = { seleccion, grados ->
                         alcance.launch {
@@ -1096,12 +1129,26 @@ private fun ContenidoApp(
                 },
             )
 
-            Destino.Tour -> PantallaTour(
-                alTerminar = {
-                    alcance.launch { contenedor.ajustes.marcarTourVisto() }
-                    estado.volver()
-                },
-            )
+            // El tour va encima de la pantalla de inicio de verdad, no en una
+            // pantalla aparte con dibujos: lo que se explica y lo que se
+            // ilumina tienen que ser la misma cosa.
+            Destino.Tour -> Box(Modifier.fillMaxSize()) {
+                PantallaInicio(
+                    numeroRecientes = recientes.size,
+                    snackbar = snackbar,
+                    alElegirHerramienta = {},
+                    alAbrirRecientes = {},
+                    alAbrirAjustes = {},
+                    alMedirZona = { zona, marco -> zonasDelTour[zona] = marco },
+                )
+                CapaTour(
+                    zonas = zonasDelTour,
+                    alTerminar = {
+                        alcance.launch { contenedor.ajustes.marcarTourVisto() }
+                        estado.volver()
+                    },
+                )
+            }
 
             Destino.Ajustes -> PantallaAjustes(
                 ajustes = ajustes,
@@ -1169,7 +1216,16 @@ private fun ContenidoApp(
             )
         }
 
-        VeloDeTrabajo(estado.trabajando, Modifier.fillMaxSize())
+        VeloDeTrabajo(
+            texto = estado.trabajando,
+            modifier = Modifier.fillMaxSize(),
+            progreso = estado.progreso,
+            alCancelar = if (estado.sePuedeCancelar) {
+                { estado.cancelarTrabajo() }
+            } else {
+                null
+            },
+        )
     }
 
     pidiendoOrigenImagen?.let { permiteVarias ->

@@ -161,6 +161,8 @@ import androidx.compose.material.icons.filled.Deblur
 import es.ghatostudio.nexapdf.resources.ed_goma
 import es.ghatostudio.nexapdf.resources.ed_recortar
 import es.ghatostudio.nexapdf.resources.ed_editar_texto
+import es.ghatostudio.nexapdf.resources.ed_texto_escribe
+import es.ghatostudio.nexapdf.resources.ed_texto_tamano
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 
@@ -553,13 +555,14 @@ private fun CapaGestos(
                     onDragStart = { posicion ->
                         val punto = aNormalizado(posicion, size.width, size.height)
                         when (herramienta) {
-                            HerramientaEditor.DIBUJAR, HerramientaEditor.RESALTAR ->
-                                estado.empezarTrazo(punto)
+                            HerramientaEditor.DIBUJAR,
+                            HerramientaEditor.RESALTAR,
+                            HerramientaEditor.GOMA,
+                            -> estado.empezarTrazo(punto)
 
                             HerramientaEditor.FIGURA -> estado.empezarFigura(punto)
                             HerramientaEditor.RECORTAR -> estado.empezarFigura(punto)
                             HerramientaEditor.BORRAR -> estado.borrarEn(punto)
-                            HerramientaEditor.GOMA -> estado.taparEn(punto, estado.grosor * 3f)
 
                             // Con "Mover" el arrastre empieza cogiendo un asa
                             // del objeto seleccionado, si el dedo cae sobre
@@ -580,13 +583,14 @@ private fun CapaGestos(
                     onDrag = { cambio, desplazamiento ->
                         val punto = aNormalizado(cambio.position, size.width, size.height)
                         when (herramienta) {
-                            HerramientaEditor.DIBUJAR, HerramientaEditor.RESALTAR ->
-                                estado.continuarTrazo(punto)
+                            HerramientaEditor.DIBUJAR,
+                            HerramientaEditor.RESALTAR,
+                            HerramientaEditor.GOMA,
+                            -> estado.continuarTrazo(punto)
 
                             HerramientaEditor.FIGURA -> estado.continuarFigura(punto)
                             HerramientaEditor.RECORTAR -> estado.continuarFigura(punto)
                             HerramientaEditor.BORRAR -> estado.borrarEn(punto)
-                            HerramientaEditor.GOMA -> estado.taparEn(punto, estado.grosor * 3f)
 
                             HerramientaEditor.MOVER -> {
                                 val objeto = estado.objetoSeleccionado
@@ -634,8 +638,10 @@ private fun CapaGestos(
                     },
                     onDragEnd = {
                         when (herramienta) {
-                            HerramientaEditor.DIBUJAR, HerramientaEditor.RESALTAR ->
-                                estado.terminarTrazo()
+                            HerramientaEditor.DIBUJAR,
+                            HerramientaEditor.RESALTAR,
+                            HerramientaEditor.GOMA,
+                            -> estado.terminarTrazo()
 
                             HerramientaEditor.FIGURA -> estado.terminarFigura()
                             // Al soltar, el rectangulo trazado pasa a ser el
@@ -703,15 +709,22 @@ private fun CapaGestos(
 
         // Lo que se esta dibujando ahora mismo, aun sin confirmar.
         if (estado.trazoEnCurso.size >= 2) {
+            val conGoma = estado.herramienta == HerramientaEditor.GOMA
             dibujarTrazo(
                 puntos = estado.trazoEnCurso,
-                color = Color(estado.color.toInt()),
-                grosorRelativo = if (estado.herramienta == HerramientaEditor.RESALTAR) {
-                    estado.grosor * 4f
-                } else {
-                    estado.grosor
+                color = Color(
+                    (if (conGoma) estado.colorDeFondo else estado.color).toInt(),
+                ),
+                grosorRelativo = when {
+                    estado.herramienta == HerramientaEditor.RESALTAR -> estado.grosor * 4f
+                    conGoma -> estado.grosor * 6f
+                    else -> estado.grosor
                 },
-                opacidad = if (estado.herramienta == HerramientaEditor.RESALTAR) 0.35f else estado.opacidad,
+                opacidad = if (estado.herramienta == HerramientaEditor.RESALTAR) {
+                    0.35f
+                } else {
+                    estado.opacidad
+                },
             )
         }
         estado.figuraEnCurso?.let { (inicio, fin) ->
@@ -1328,15 +1341,30 @@ private fun DialogoTexto(
                 OutlinedTextField(
                     value = contenido,
                     onValueChange = { contenido = it },
+                    label = { Text(stringResource(Res.string.ed_texto_escribe)) },
                     modifier = Modifier.fillMaxWidth(),
                     minLines = 2,
                 )
                 Spacer(Modifier.height(12.dp))
-                Slider(
-                    value = tamano,
-                    onValueChange = { tamano = it },
-                    valueRange = 0.008f..0.09f,
-                )
+                // El deslizador iba suelto entre el campo y el interruptor
+                // de fondo, sin decir de que era.
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(Res.string.ed_texto_tamano),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    Spacer(Modifier.width(12.dp))
+                    Slider(
+                        value = tamano,
+                        onValueChange = { tamano = it },
+                        valueRange = 0.008f..0.09f,
+                        modifier = Modifier.weight(1f),
+                    )
+                }
                 Spacer(Modifier.height(8.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),

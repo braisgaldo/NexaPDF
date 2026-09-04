@@ -48,6 +48,8 @@ import java.io.File
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 
 /**
  * Motor de PDF para Android.
@@ -68,9 +70,22 @@ class MotorPdfAndroid(
     private val directorioTrabajo: String,
 ) : MotorPdf {
 
-    private val cerrojo = Mutex()
+    /**
+     * Un cerrojo por documento, no uno para todo.
+     *
+     * `PdfRenderer` no admite dos paginas abiertas a la vez del mismo
+     * documento, pero documentos distintos no se estorban. Con un cerrojo
+     * unico, las miniaturas de una rejilla se rasterizaban en fila de una
+     * en una aunque el telefono tuviera ocho nucleos parados.
+     */
+    private val cerrojoDeMapas = Mutex()
+    private val cerrojos = HashMap<String, Mutex>()
     private val renderizadores = LinkedHashMap<String, RenderizadorAbierto>()
+    private val cacheMiniaturas = CacheMiniaturas()
     private val firmador = FirmadorPdf()
+
+    private suspend fun cerrojoDe(ruta: String): Mutex =
+        cerrojoDeMapas.withLock { cerrojos.getOrPut(ruta) { Mutex() } }
 
     private class RenderizadorAbierto(
         val descriptor: ParcelFileDescriptor,
@@ -149,8 +164,22 @@ class MotorPdfAndroid(
         indice: Int,
         anchoPx: Int,
         contrasena: String?,
+        miniatura: Boolean,
     ): ResultadoPdf<ImageBitmap> = withContext(Dispatchers.IO) {
-        cerrojo.withLock {
+        val ancho = anchoPx.coerceIn(48, MAXIMO_ANCHO_PX)
+        if (miniatura) {
+            cacheMiniaturas.buscar(ruta, indice, ancho)?.let {
+                return@withContext ResultadoPdf.Exito(it)
+            }
+        }
+
+        cerrojoDe(ruta).withLock {
+            // Otra corrutina ha podido dejarla puesta mientras se esperaba.
+            if (miniatura) {
+                cacheMiniaturas.buscar(ruta, indice, ancho)?.let {
+                    return@withLock ResultadoPdf.Exito(it)
+                }
+            }
             try {
                 val abierto = obtenerRenderizador(ruta)
                     ?: return@withLock ResultadoPdf.Fallo(ErrorPdf.FICHERO_INVALIDO, ruta)
@@ -160,19 +189,27 @@ class MotorPdfAndroid(
                 }
 
                 abierto.renderizador.openPage(indice).use { pagina ->
-                    val ancho = anchoPx.coerceIn(48, MAXIMO_ANCHO_PX)
                     val alto = (ancho.toFloat() * pagina.height / pagina.width)
                         .roundToInt()
                         .coerceIn(48, MAXIMO_ANCHO_PX * 4)
 
-                    val mapa = Bitmap.createBitmap(ancho, alto, Bitmap.Config.ARGB_8888)
+                    // Una miniatura con 16 bits de color pesa la mitad y sobre
+                    // papel no se distingue; la pagina grande se amplia, y ahi
+                    // el degradado de un sello o de una foto si canta.
+                    val formato = if (miniatura) Bitmap.Config.RGB_565 else Bitmap.Config.ARGB_8888
+                    val mapa = Bitmap.createBitmap(ancho, alto, formato)
                     // PdfRenderer no pinta el fondo: sin esto, una pagina con
                     // zonas transparentes saldria en negro sobre tema oscuro.
                     mapa.eraseColor(Color.WHITE)
                     pagina.render(mapa, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-                    ResultadoPdf.Exito(mapa.asImageBitmap())
+                    val imagen = mapa.asImageBitmap()
+                    if (miniatura) cacheMiniaturas.guardar(ruta, indice, ancho, mapa, imagen)
+                    ResultadoPdf.Exito(imagen)
                 }
             } catch (e: OutOfMemoryError) {
+                // Si no cabe, se suelta lo cacheado y se deja que lo intente
+                // otra vez con la memoria libre en lugar de fallar en seco.
+                cacheMiniaturas.vaciar()
                 ResultadoPdf.Fallo(ErrorPdf.SIN_MEMORIA, e.message)
             } catch (e: Exception) {
                 ResultadoPdf.Fallo(ErrorPdf.FICHERO_INVALIDO, e.message)
@@ -210,7 +247,8 @@ class MotorPdfAndroid(
     }
 
     override suspend fun cerrar(ruta: String) {
-        cerrojo.withLock { renderizadores.remove(ruta)?.cerrar() }
+        cacheMiniaturas.olvidar(ruta)
+        cerrojoDe(ruta).withLock { renderizadores.remove(ruta)?.cerrar() }
     }
 
     // --- Unir, separar, reorganizar ------------------------------------------
@@ -293,6 +331,7 @@ class MotorPdfAndroid(
         rangos: List<RangoPaginas>,
         directorioSalida: String,
         nombreBase: String,
+        alAvanzar: ((Int, Int) -> Unit)?,
     ): ResultadoPdf<List<String>> = withContext(Dispatchers.IO) {
         if (rangos.isEmpty()) {
             return@withContext ResultadoPdf.Fallo(ErrorPdf.FICHERO_INVALIDO, "sin rangos")
@@ -319,6 +358,8 @@ class MotorPdfAndroid(
                         parte.save(salida)
                     }
                     generados += salida.absolutePath
+                    alAvanzar?.invoke(generados.size, rangos.size)
+                    currentCoroutineContext().ensureActive()
                     // El indice de posicion se conserva por si en el futuro hace
                     // falta numerar los cortes en vez de sus paginas.
                     @Suppress("UNUSED_EXPRESSION") posicion
@@ -752,6 +793,11 @@ class MotorPdfAndroid(
             val encontradas = mutableListOf<Coincidencia>()
 
             for (indice in 0 until documento.numberOfPages) {
+                // PDFTextStripper no mira si la corrutina sigue viva, asi
+                // que se comprueba aqui: sin esto, una busqueda cancelada
+                // en un documento de quinientas paginas seguia ocupando el
+                // hilo hasta el final aunque ya no la quisiera nadie.
+                currentCoroutineContext().ensureActive()
                 if (encontradas.size >= MAXIMO_COINCIDENCIAS) break
                 val pagina = documento.getPage(indice)
                 val transformador = TransformadorPagina(pagina)
@@ -1059,5 +1105,66 @@ class MotorPdfAndroid(
 
         /** Colores distintos a partir de los cuales se considera fotografia. */
         const val UMBRAL_COLORES = 180
+    }
+}
+
+/**
+ * Miniaturas ya rasterizadas, acotadas por memoria.
+ *
+ * Se acota por bytes y no por numero de entradas porque una miniatura de 320 px
+ * pesa medio mega y una de 1080 px seis veces mas: contar entradas daria un
+ * techo que no significa nada. El limite es una octava parte del monton de la
+ * aplicacion, que en la practica deja sitio de sobra para lo que se ve en una
+ * rejilla sin acercarse al limite del sistema.
+ */
+private class CacheMiniaturas {
+
+    private data class Clave(val ruta: String, val indice: Int, val ancho: Int)
+
+    private class Entrada(val imagen: ImageBitmap, val bytes: Int)
+
+    private val limiteBytes = (Runtime.getRuntime().maxMemory() / 8).toInt()
+    private var ocupado = 0
+
+    // accessOrder = true: al leer una entrada pasa al final, asi que la primera
+    // de la lista es siempre la que lleva mas tiempo sin usarse.
+    private val entradas = object : LinkedHashMap<Clave, Entrada>(16, 0.75f, true) {}
+
+    @Synchronized
+    fun buscar(ruta: String, indice: Int, ancho: Int): ImageBitmap? =
+        entradas[Clave(ruta, indice, ancho)]?.imagen
+
+    @Synchronized
+    fun guardar(ruta: String, indice: Int, ancho: Int, mapa: Bitmap, imagen: ImageBitmap) {
+        val bytes = mapa.allocationByteCount
+        // Una sola miniatura que ya no cabe no tiene sentido guardarla: dejaria
+        // la cache vacia de todo lo demas para nada.
+        if (bytes > limiteBytes / 2) return
+        val previa = entradas.put(Clave(ruta, indice, ancho), Entrada(imagen, bytes))
+        ocupado += bytes - (previa?.bytes ?: 0)
+        val iterador = entradas.entries.iterator()
+        while (ocupado > limiteBytes && iterador.hasNext()) {
+            ocupado -= iterador.next().value.bytes
+            iterador.remove()
+        }
+    }
+
+    /** Al reescribir un documento, lo que hubiera de el ya no vale. */
+    @Synchronized
+    fun olvidar(ruta: String) {
+        val iterador = entradas.entries.iterator()
+        while (iterador.hasNext()) {
+            val entrada = iterador.next()
+            if (entrada.key.ruta == ruta) {
+                ocupado -= entrada.value.bytes
+                iterador.remove()
+            }
+        }
+    }
+
+    @Synchronized
+    fun vaciar() {
+        entradas.clear()
+        ocupado = 0
     }
 }

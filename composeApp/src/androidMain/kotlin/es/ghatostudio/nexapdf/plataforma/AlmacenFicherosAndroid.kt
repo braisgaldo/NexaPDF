@@ -18,6 +18,18 @@ class AlmacenFicherosAndroid : AlmacenFicheros {
         if (fichero.isDirectory) fichero.deleteRecursively() else fichero.delete()
     }.getOrDefault(false)
 
+    override fun renombrar(ruta: String, nombreNuevo: String): String? = runCatching {
+        val origen = File(ruta)
+        val carpeta = origen.parentFile ?: return null
+        val limpio = nombreNuevo.trim()
+            .replace(Regex("""[/\\:*?"<>|]"""), "_")
+            .ifBlank { origen.name }
+        val conExtension = if (limpio.contains('.')) limpio else limpio + "." + origen.extension
+        if (conExtension == origen.name) return ruta
+        val destino = File(carpeta, nombreLibre(carpeta.absolutePath, conExtension))
+        if (origen.renameTo(destino)) destino.absolutePath else null
+    }.getOrNull()
+
     override fun listar(directorio: String): List<String> =
         File(directorio).listFiles()?.sortedByDescending { it.lastModified() }?.map { it.absolutePath }
             ?: emptyList()

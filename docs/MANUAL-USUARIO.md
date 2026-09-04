@@ -286,6 +286,15 @@ Desde el documento puedes:
 
 ---
 
+## El recorrido guiado
+
+La primera vez que abres NexaPDF sale un **recorrido guiado** sobre la propia
+pantalla de inicio: cada paso oscurece todo menos aquello de lo que habla, que
+se queda iluminado. Se puede saltar en cualquier momento, y volver a verlo
+desde **Ajustes › Ayuda**.
+
+---
+
 ## Ajustes
 
 Los ajustes van en **secciones plegables**: la pantalla entera cabe de una vez,

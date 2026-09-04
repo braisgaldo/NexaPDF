@@ -41,6 +41,10 @@ import es.ghatostudio.nexapdf.resources.Res
 import es.ghatostudio.nexapdf.resources.cd_volver
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.TextButton
+import es.ghatostudio.nexapdf.resources.comun_cancelar
+import androidx.compose.foundation.layout.heightIn
 
 /** Barra superior con el boton de volver ya accesible. */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -163,7 +167,14 @@ fun EstadoVacio(
 
 /** Velo con indicador mientras hay una operacion en curso. */
 @Composable
-fun VeloDeTrabajo(texto: String?, modifier: Modifier = Modifier) {
+fun VeloDeTrabajo(
+    texto: String?,
+    modifier: Modifier = Modifier,
+    /** Partes hechas y totales, si la tarea las sabe. */
+    progreso: Pair<Int, Int>? = null,
+    /** Si se puede cortar, que hacer al pulsar cancelar. */
+    alCancelar: (() -> Unit)? = null,
+) {
     AnimatedVisibility(
         visible = texto != null,
         enter = fadeIn(),
@@ -181,21 +192,41 @@ fun VeloDeTrabajo(texto: String?, modifier: Modifier = Modifier) {
                 color = MaterialTheme.colorScheme.surfaceContainerHigh,
                 tonalElevation = 6.dp,
             ) {
-                Row(
+                Column(
                     modifier = Modifier.padding(horizontal = 24.dp, vertical = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp),
-                        strokeWidth = 3.dp,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                    Spacer(Modifier.width(16.dp))
-                    Text(
-                        text = texto.orEmpty(),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        CircularProgressIndicator(modifier = Modifier.size(28.dp))
+                        Spacer(Modifier.width(16.dp))
+                        Text(
+                            text = texto.orEmpty(),
+                            style = MaterialTheme.typography.bodyLarge,
+                        )
+                    }
+                    if (progreso != null) {
+                        val (hechas, total) = progreso
+                        Spacer(Modifier.height(14.dp))
+                        LinearProgressIndicator(
+                            progress = { hechas.toFloat() / total.coerceAtLeast(1) },
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                        Spacer(Modifier.height(6.dp))
+                        Text(
+                            text = "$hechas / $total",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    if (alCancelar != null) {
+                        Spacer(Modifier.height(8.dp))
+                        TextButton(
+                            onClick = alCancelar,
+                            modifier = Modifier.heightIn(min = 48.dp),
+                        ) {
+                            Text(stringResource(Res.string.comun_cancelar))
+                        }
+                    }
                 }
             }
         }
