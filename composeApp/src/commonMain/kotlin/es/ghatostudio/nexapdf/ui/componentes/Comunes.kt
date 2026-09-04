@@ -45,6 +45,16 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.TextButton
 import es.ghatostudio.nexapdf.resources.comun_cancelar
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import es.ghatostudio.nexapdf.resources.comun_aceptar
+import es.ghatostudio.nexapdf.resources.doc_contrasena
+import es.ghatostudio.nexapdf.resources.doc_documento_cifrado
 
 /** Barra superior con el boton de volver ya accesible. */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -249,3 +259,40 @@ fun SeparadorSuave(modifier: Modifier = Modifier) {
 
 /** Relleno estandar de las listas: deja sitio bajo la barra de navegacion. */
 val RellenoLista = PaddingValues(bottom = 32.dp)
+
+/**
+ * Pide la contrasena de un documento cifrado.
+ *
+ * Vive aqui y no dentro de una pantalla porque un PDF con contrasena se puede
+ * elegir desde cualquier herramienta. Cuando el dialogo estaba metido en la
+ * pantalla de paginas, abrir un documento protegido con "Leer PDF" dejaba un
+ * visor girando para siempre sin decir por que.
+ */
+@Composable
+fun DialogoContrasena(alConfirmar: (String) -> Unit, alCancelar: () -> Unit) {
+    var contrasena by remember { mutableStateOf("") }
+    AlertDialog(
+        onDismissRequest = alCancelar,
+        title = { Text(stringResource(Res.string.doc_documento_cifrado)) },
+        text = {
+            OutlinedTextField(
+                value = contrasena,
+                onValueChange = { contrasena = it },
+                label = { Text(stringResource(Res.string.doc_contrasena)) },
+                singleLine = true,
+                visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier.fillMaxWidth(),
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = { alConfirmar(contrasena) }) {
+                Text(stringResource(Res.string.comun_aceptar))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = alCancelar) {
+                Text(stringResource(Res.string.comun_cancelar))
+            }
+        },
+    )
+}

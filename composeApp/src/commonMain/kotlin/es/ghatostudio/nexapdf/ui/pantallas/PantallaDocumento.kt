@@ -159,7 +159,6 @@ class AccionesDocumento(
     val alAnadirDocumento: () -> Unit,
     val alQuitarDocumento: (Int) -> Unit,
     val alMoverDocumento: (Int, Int) -> Unit,
-    val alDesbloquear: (String) -> Unit,
 )
 
 @Composable
@@ -176,7 +175,6 @@ fun PantallaDocumento(
     modoUnion: Boolean,
     /** Se llego a la rejilla de paginas despues de unir. */
     desdeUnion: Boolean = false,
-    necesitaContrasena: Boolean,
     confirmarBorrado: Boolean,
     /** Ensenar el resumen antes de crear los ficheros al dividir en partes. */
     conResumenAlSeparar: Boolean,
@@ -370,9 +368,6 @@ fun PantallaDocumento(
         )
     }
 
-    if (necesitaContrasena) {
-        DialogoContrasena(alConfirmar = acciones.alDesbloquear, alCancelar = alVolver)
-    }
 
     if (eligiendoFormato) {
         DialogoFormatoExportacion(
@@ -905,35 +900,6 @@ private fun BotonAnadirDocumentos(destacado: Boolean, alPulsar: () -> Unit) {
             textAlign = TextAlign.Center,
         )
     }
-}
-
-@Composable
-private fun DialogoContrasena(alConfirmar: (String) -> Unit, alCancelar: () -> Unit) {
-    var contrasena by remember { mutableStateOf("") }
-    AlertDialog(
-        onDismissRequest = alCancelar,
-        title = { Text(stringResource(Res.string.doc_documento_cifrado)) },
-        text = {
-            OutlinedTextField(
-                value = contrasena,
-                onValueChange = { contrasena = it },
-                label = { Text(stringResource(Res.string.doc_contrasena)) },
-                singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
-                modifier = Modifier.fillMaxWidth(),
-            )
-        },
-        confirmButton = {
-            TextButton(onClick = { alConfirmar(contrasena) }) {
-                Text(stringResource(Res.string.comun_aceptar))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = alCancelar) {
-                Text(stringResource(Res.string.comun_cancelar))
-            }
-        },
-    )
 }
 
 /**

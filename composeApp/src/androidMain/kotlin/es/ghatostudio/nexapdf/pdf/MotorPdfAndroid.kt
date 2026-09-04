@@ -50,6 +50,10 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
+import com.tom_roush.pdfbox.pdmodel.encryption.AccessPermission
+import com.tom_roush.pdfbox.pdmodel.encryption.InvalidPasswordException
+import com.tom_roush.pdfbox.pdmodel.encryption.StandardProtectionPolicy
+import es.ghatostudio.nexapdf.domain.pdf.PermisosPdf
 
 /**
  * Motor de PDF para Android.
@@ -114,7 +118,16 @@ class MotorPdfAndroid(
                         // Se guarda una copia sin cifrar para poder usar el
                         // renderizador del sistema en el resto de la sesion.
                         documento.setAllSecurityToBeRemoved(true)
-                        val descifrado = File(directorioTrabajo, "${fichero.nameWithoutExtension}.abierto.pdf")
+                        // La copia conserva el nombre del original y se mete en
+                        // una carpeta propia. Antes se llamaba "algo.abierto.pdf"
+                        // y ese ".abierto" acababa en la barra del visor y en el
+                        // nombre de lo que se guardara despues. La carpeta lleva
+                        // la huella de la ruta para que dos documentos que se
+                        // llamen igual no se pisen.
+                        val huella = fichero.absolutePath.hashCode().toUInt().toString(16)
+                        val carpeta = File(directorioTrabajo, "descifrados/$huella")
+                        carpeta.mkdirs()
+                        val descifrado = File(carpeta, fichero.name)
                         documento.save(descifrado)
                         descifrado.absolutePath
                     } else {
@@ -914,6 +927,73 @@ class MotorPdfAndroid(
         private companion object {
             const val MAXIMO_COINCIDENCIAS = 200
             const val CONTEXTO = 40
+        }
+    }
+
+    override suspend fun cifrar(
+        ruta: String,
+        contrasenaApertura: String,
+        contrasenaPermisos: String,
+        permisos: PermisosPdf,
+        rutaSalida: String,
+        contrasenaActual: String?,
+    ): ResultadoPdf<String> = withContext(Dispatchers.IO) {
+        if (contrasenaApertura.isBlank()) {
+            return@withContext ResultadoPdf.Fallo(ErrorPdf.OPERACION_NO_PERMITIDA, "sin contrasena")
+        }
+        try {
+            PDDocument.load(File(ruta), contrasenaActual ?: "").use { documento ->
+                // Si venia cifrado se le quita lo anterior antes de poner lo
+                // nuevo: encadenar politicas sobre un documento ya protegido
+                // deja un fichero que unos lectores abren y otros no.
+                if (documento.isEncrypted) documento.setAllSecurityToBeRemoved(true)
+
+                val acceso = AccessPermission().apply {
+                    setCanPrint(permisos.permitirImprimir)
+                    setCanPrintFaithful(permisos.permitirImprimir)
+                    setCanExtractContent(permisos.permitirCopiar)
+                    setCanExtractForAccessibility(true)
+                    setCanModify(permisos.permitirModificar)
+                    setCanModifyAnnotations(permisos.permitirAnotar)
+                    setCanFillInForm(permisos.permitirAnotar)
+                    setCanAssembleDocument(permisos.permitirModificar)
+                }
+                val duena = contrasenaPermisos.ifBlank { contrasenaApertura }
+                val politica = StandardProtectionPolicy(duena, contrasenaApertura, acceso).apply {
+                    // 256 bits es lo que usa AES-256 en PDF 2.0 y lo que
+                    // entiende cualquier lector actual. Con 128 el fichero se
+                    // abre en lectores muy viejos, pero la proteccion vale la
+                    // mitad y no compensa.
+                    encryptionKeyLength = 256
+                }
+                documento.protect(politica)
+                documento.save(File(rutaSalida))
+            }
+            ResultadoPdf.Exito(rutaSalida)
+        } catch (e: InvalidPasswordException) {
+            ResultadoPdf.Fallo(ErrorPdf.NECESITA_CONTRASENA, e.message)
+        } catch (e: OutOfMemoryError) {
+            ResultadoPdf.Fallo(ErrorPdf.SIN_MEMORIA, e.message)
+        } catch (e: Exception) {
+            ResultadoPdf.Fallo(ErrorPdf.ERROR_ESCRITURA, e.message)
+        }
+    }
+
+    override suspend fun descifrar(
+        ruta: String,
+        contrasena: String,
+        rutaSalida: String,
+    ): ResultadoPdf<String> = withContext(Dispatchers.IO) {
+        try {
+            PDDocument.load(File(ruta), contrasena).use { documento ->
+                documento.setAllSecurityToBeRemoved(true)
+                documento.save(File(rutaSalida))
+            }
+            ResultadoPdf.Exito(rutaSalida)
+        } catch (e: InvalidPasswordException) {
+            ResultadoPdf.Fallo(ErrorPdf.NECESITA_CONTRASENA, e.message)
+        } catch (e: Exception) {
+            ResultadoPdf.Fallo(ErrorPdf.ERROR_ESCRITURA, e.message)
         }
     }
 

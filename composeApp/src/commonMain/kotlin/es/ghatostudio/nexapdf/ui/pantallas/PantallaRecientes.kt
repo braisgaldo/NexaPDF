@@ -72,6 +72,8 @@ import es.ghatostudio.nexapdf.resources.rec_borrar_pregunta
 import es.ghatostudio.nexapdf.resources.rec_nombre_nuevo
 import es.ghatostudio.nexapdf.resources.rec_opciones
 import es.ghatostudio.nexapdf.resources.rec_renombrar
+import androidx.compose.material.icons.filled.Share
+import es.ghatostudio.nexapdf.resources.comun_compartir
 
 /** Como se ordenan los ficheros recientes. */
 private enum class Orden(val etiqueta: StringResource) {
@@ -103,6 +105,7 @@ fun PantallaRecientes(
     alAbrir: (DocumentoReciente) -> Unit,
     alRenombrar: (DocumentoReciente, String) -> Unit,
     alBorrar: (DocumentoReciente) -> Unit,
+    alCompartirVarios: () -> Unit,
     alVolver: () -> Unit,
 ) {
     // La lista crecia sin freno y desde la aplicacion no habia forma de
@@ -133,6 +136,17 @@ fun PantallaRecientes(
                 titulo = stringResource(Res.string.inicio_recientes),
                 alVolver = alVolver,
                 acciones = {
+                    // Elegir varios documentos para compartirlos juntos existia
+                    // desde hacia tiempo, pero no habia forma de llegar. Aqui es
+                    // donde estan los ficheros, asi que aqui va el boton.
+                    if (recientes.isNotEmpty()) {
+                        IconButton(onClick = alCompartirVarios, modifier = Modifier.size(48.dp)) {
+                            Icon(
+                                Icons.Filled.Share,
+                                contentDescription = stringResource(Res.string.comun_compartir),
+                            )
+                        }
+                    }
                     IconButton(
                         onClick = {
                             vista = Vista.entries[(vista.ordinal + 1) % Vista.entries.size]

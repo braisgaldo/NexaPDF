@@ -92,6 +92,7 @@ data class Ajustes(
     val aperturaFirmar: String = AperturaAlTerminar.ABRIR.name,
     val aperturaConvertir: String = AperturaAlTerminar.ABRIR.name,
     val aperturaImagenes: String = AperturaAlTerminar.ABRIR.name,
+    val aperturaCifrar: String = AperturaAlTerminar.ABRIR.name,
 
     // --- Aviso de donacion ---
     val estadoDonacion: String = EstadoDonacion.SIN_MOSTRAR.name,
@@ -119,6 +120,7 @@ data class Ajustes(
             TareaConResultado.FIRMAR -> aperturaFirmar
             TareaConResultado.CONVERTIR -> aperturaConvertir
             TareaConResultado.IMAGENES -> aperturaImagenes
+            TareaConResultado.CIFRAR -> aperturaCifrar
         }
         return AperturaAlTerminar.entries.firstOrNull { it.name == clave }
             ?: AperturaAlTerminar.ABRIR
@@ -198,6 +200,7 @@ enum class TareaConResultado {
     FIRMAR,
     CONVERTIR,
     IMAGENES,
+    CIFRAR,
 }
 
 enum class AperturaAlTerminar {

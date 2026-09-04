@@ -58,12 +58,15 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
+import es.ghatostudio.nexapdf.resources.tour_z_proteger_c
+import es.ghatostudio.nexapdf.resources.tour_z_proteger_t
 
 /** Los pasos del recorrido, en el orden en que se usa la aplicacion. */
 private val PASOS: List<Triple<ZonaTour, StringResource, StringResource>> = listOf(
     Triple(ZonaTour.BALDOSAS, Res.string.tour_z_baldosas_t, Res.string.tour_z_baldosas_c),
     Triple(ZonaTour.LEER, Res.string.tour_z_leer_t, Res.string.tour_z_leer_c),
     Triple(ZonaTour.EDITAR, Res.string.tour_z_editar_t, Res.string.tour_z_editar_c),
+    Triple(ZonaTour.PROTEGER, Res.string.tour_z_proteger_t, Res.string.tour_z_proteger_c),
     Triple(ZonaTour.RECIENTES, Res.string.tour_z_recientes_t, Res.string.tour_z_recientes_c),
     Triple(ZonaTour.AJUSTES, Res.string.tour_z_ajustes_t, Res.string.tour_z_ajustes_c),
 )

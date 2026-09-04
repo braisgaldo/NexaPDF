@@ -25,6 +25,7 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.sin
+import com.tom_roush.pdfbox.pdmodel.graphics.image.JPEGFactory
 
 /**
  * Convierte las anotaciones del editor en contenido real del PDF.
@@ -387,13 +388,44 @@ class PintorEdiciones(
     ) {
         val fichero = File(imagen.rutaImagen)
         if (!fichero.exists()) return
-        val mapa = BitmapFactory.decodeFile(fichero.absolutePath) ?: return
+        val original = BitmapFactory.decodeFile(fichero.absolutePath) ?: return
 
         aplicarTransparencia(flujo, imagen.opacidad, resaltador = false)
         val marco = t.aRectanguloVisible(imagen.marco)
-        val objeto: PDImageXObject = LosslessFactory.createFromImage(documento, mapa)
+
+        // La foto se reduce a los pixeles que caben en su hueco a 300 ppp. Una
+        // foto de movil son cuatro mil pixeles de ancho; metida entera en un
+        // recuadro de cinco centimetros no se ve mejor y multiplica por veinte
+        // el tamano del fichero.
+        val anchoUtil = (marco.ancho * PUNTOS_POR_PULGADA_IMAGEN / 72f).toInt().coerceAtLeast(1)
+        val altoUtil = (marco.alto * PUNTOS_POR_PULGADA_IMAGEN / 72f).toInt().coerceAtLeast(1)
+        val escala = minOf(
+            1f,
+            anchoUtil.toFloat() / original.width,
+            altoUtil.toFloat() / original.height,
+        )
+        val mapa = if (escala >= 1f) {
+            original
+        } else {
+            Bitmap.createScaledBitmap(
+                original,
+                (original.width * escala).toInt().coerceAtLeast(1),
+                (original.height * escala).toInt().coerceAtLeast(1),
+                true,
+            )
+        }
+
+        // JPEG para fotos y sin perdidas solo cuando hay transparencia que
+        // conservar: guardar una fotografia sin perdidas engorda el PDF sin que
+        // nadie note la diferencia.
+        val objeto: PDImageXObject = if (mapa.hasAlpha()) {
+            LosslessFactory.createFromImage(documento, mapa)
+        } else {
+            JPEGFactory.createFromImage(documento, mapa, CALIDAD_JPEG_IMAGEN)
+        }
         flujo.drawImage(objeto, marco.x, marco.y, marco.ancho, marco.alto)
-        mapa.recycle()
+        if (mapa !== original) mapa.recycle()
+        original.recycle()
     }
 
     private fun pintarTapado(
@@ -468,3 +500,9 @@ class PintorEdiciones(
     )
 }
 
+
+/** Resolucion a la que se guarda una imagen insertada: imprime bien y no infla el PDF. */
+private const val PUNTOS_POR_PULGADA_IMAGEN = 300f
+
+/** Calidad del JPEG de una imagen insertada. */
+private const val CALIDAD_JPEG_IMAGEN = 0.85f

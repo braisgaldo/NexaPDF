@@ -165,6 +165,9 @@ import es.ghatostudio.nexapdf.resources.ed_texto_escribe
 import es.ghatostudio.nexapdf.resources.ed_texto_tamano
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 
 /** Lo que el editor necesita del resto de la aplicacion. */
 class AccionesEditor(
@@ -194,11 +197,30 @@ fun PantallaEditor(
      * esquina fija.
      */
     firmaPendiente: List<List<Punto>>? = null,
+    /**
+     * Trae la imagen de una ruta para poder pintarla mientras se coloca.
+     *
+     * Sin esto el editor dibujaba un rectangulo gris donde iba la foto: se
+     * elegia la imagen, se colocaba y no se sabia cual era ni como quedaba
+     * hasta guardar y volver a abrir el documento.
+     */
+    cargarImagen: suspend (String) -> ImageBitmap? = { null },
     snackbar: SnackbarHostState,
     acciones: AccionesEditor,
     alVolver: () -> Unit,
 ) {
     val estado = remember(ruta, indicePagina) { EstadoEditor(indicePagina) }
+
+    val imagenesPuestas = remember { mutableStateMapOf<String, ImageBitmap>() }
+    val rutasDeImagen = estado.listaEdiciones
+        .filterIsInstance<Edicion.Imagen>()
+        .map { it.rutaImagen }
+    LaunchedEffect(rutasDeImagen) {
+        rutasDeImagen.forEach { deDonde ->
+            if (imagenesPuestas.containsKey(deDonde)) return@forEach
+            cargarImagen(deDonde)?.let { imagenesPuestas[deDonde] = it }
+        }
+    }
 
     LaunchedEffect(firmaPendiente) {
         if (firmaPendiente != null) estado.herramienta = HerramientaEditor.FIRMA
@@ -338,6 +360,7 @@ fun PantallaEditor(
                     proporcion = proporcion,
                     estado = estado,
                     bloquesTexto = bloquesTexto,
+                    imagenesPuestas = imagenesPuestas,
                     alTocarBloque = { bloque ->
                         textoEnEdicion = TextoEnEdicion(
                             contenido = bloque.texto,
@@ -488,6 +511,8 @@ private fun LienzoPagina(
     proporcion: Float,
     estado: EstadoEditor,
     bloquesTexto: List<BloqueTexto>,
+    /** Vistas previas de las imagenes ya colocadas, por su ruta. */
+    imagenesPuestas: Map<String, ImageBitmap>,
     alTocarBloque: (BloqueTexto) -> Unit,
     alPedirTextoNuevo: (Rectangulo) -> Unit,
     alPedirImagen: (Rectangulo) -> Unit,
@@ -522,6 +547,7 @@ private fun LienzoPagina(
             CapaGestos(
                 estado = estado,
                 bloquesTexto = bloquesTexto,
+                imagenesPuestas = imagenesPuestas,
                 alTocarBloque = alTocarBloque,
                 alPedirTextoNuevo = alPedirTextoNuevo,
                 alPedirImagen = alPedirImagen,
@@ -535,6 +561,7 @@ private fun LienzoPagina(
 private fun CapaGestos(
     estado: EstadoEditor,
     bloquesTexto: List<BloqueTexto>,
+    imagenesPuestas: Map<String, ImageBitmap>,
     alTocarBloque: (BloqueTexto) -> Unit,
     alPedirTextoNuevo: (Rectangulo) -> Unit,
     alPedirImagen: (Rectangulo) -> Unit,
@@ -688,7 +715,7 @@ private fun CapaGestos(
                 }
             },
     ) {
-        estado.listaEdiciones.forEach { dibujarEdicion(it, medidor) }
+        estado.listaEdiciones.forEach { dibujarEdicion(it, medidor, imagenesPuestas) }
 
         // Marco y asas del objeto seleccionado.
         if (herramienta == HerramientaEditor.MOVER) {
@@ -788,7 +815,11 @@ private fun marcoAlrededor(centro: Punto, ancho: Float, alto: Float): Rectangulo
     abajo = (centro.y + alto / 2f).coerceIn(alto, 1f),
 ).normalizado()
 
-private fun DrawScope.dibujarEdicion(edicion: Edicion, medidor: TextMeasurer) {
+private fun DrawScope.dibujarEdicion(
+    edicion: Edicion,
+    medidor: TextMeasurer,
+    imagenes: Map<String, ImageBitmap>,
+) {
     // Los objetos girados se pintan con el lienzo rotado alrededor de su
     // centro: asi el dibujo de cada tipo no tiene que saber nada del giro.
     val giro = (edicion as? Edicion.Colocada)?.rotacion ?: 0f
@@ -799,13 +830,19 @@ private fun DrawScope.dibujarEdicion(edicion: Edicion, medidor: TextMeasurer) {
             ((marco.izquierda + marco.derecha) / 2f) * size.width,
             ((marco.arriba + marco.abajo) / 2f) * size.height,
         )
-        rotate(degrees = giro, pivot = centro) { dibujarEdicionSinGirar(edicion, medidor) }
+        rotate(degrees = giro, pivot = centro) {
+            dibujarEdicionSinGirar(edicion, medidor, imagenes)
+        }
         return
     }
-    dibujarEdicionSinGirar(edicion, medidor)
+    dibujarEdicionSinGirar(edicion, medidor, imagenes)
 }
 
-private fun DrawScope.dibujarEdicionSinGirar(edicion: Edicion, medidor: TextMeasurer) {
+private fun DrawScope.dibujarEdicionSinGirar(
+    edicion: Edicion,
+    medidor: TextMeasurer,
+    imagenes: Map<String, ImageBitmap>,
+) {
     when (edicion) {
         is Edicion.Trazo -> dibujarTrazo(
             puntos = edicion.puntos,
@@ -864,11 +901,26 @@ private fun DrawScope.dibujarEdicionSinGirar(edicion: Edicion, medidor: TextMeas
 
         is Edicion.Imagen -> {
             val r = edicion.marco.normalizado()
-            drawRect(
-                color = Color(0x33000000),
-                topLeft = Offset(r.izquierda * size.width, r.arriba * size.height),
-                size = Size(r.ancho * size.width, r.alto * size.height),
+            val esquina = IntOffset(
+                (r.izquierda * size.width).toInt(),
+                (r.arriba * size.height).toInt(),
             )
+            val medida = IntSize(
+                (r.ancho * size.width).toInt().coerceAtLeast(1),
+                (r.alto * size.height).toInt().coerceAtLeast(1),
+            )
+            val foto = imagenes[edicion.rutaImagen]
+            if (foto == null) {
+                // Mientras la foto se lee del disco se marca el hueco, que es
+                // mejor que un salto de nada a imagen entera.
+                drawRect(
+                    color = Color(0x33000000),
+                    topLeft = Offset(esquina.x.toFloat(), esquina.y.toFloat()),
+                    size = Size(medida.width.toFloat(), medida.height.toFloat()),
+                )
+            } else {
+                drawImage(image = foto, dstOffset = esquina, dstSize = medida)
+            }
         }
 
         is Edicion.Firma -> {

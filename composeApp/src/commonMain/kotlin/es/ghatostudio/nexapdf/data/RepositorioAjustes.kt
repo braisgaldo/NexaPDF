@@ -48,6 +48,7 @@ class RepositorioAjustes(
         val aperturaFirmar = stringPreferencesKey("apertura_firmar")
         val aperturaConvertir = stringPreferencesKey("apertura_convertir")
         val aperturaImagenes = stringPreferencesKey("apertura_imagenes")
+        val aperturaCifrar = stringPreferencesKey("apertura_cifrar")
         val carpetaDestino = stringPreferencesKey("carpeta_destino")
         val preguntarCompartir = booleanPreferencesKey("preguntar_compartir")
         val resumenSeparar = booleanPreferencesKey("resumen_separar")
@@ -79,6 +80,8 @@ class RepositorioAjustes(
                 ?: porDefecto.aperturaConvertir,
             aperturaImagenes = preferencias[Claves.aperturaImagenes]
                 ?: porDefecto.aperturaImagenes,
+            aperturaCifrar = preferencias[Claves.aperturaCifrar]
+                ?: porDefecto.aperturaCifrar,
             carpetaDestino = preferencias[Claves.carpetaDestino],
             preguntarCompartir = preferencias[Claves.preguntarCompartir]
                 ?: porDefecto.preguntarCompartir,
@@ -161,6 +164,7 @@ class RepositorioAjustes(
         TareaConResultado.FIRMAR -> Claves.aperturaFirmar
         TareaConResultado.CONVERTIR -> Claves.aperturaConvertir
         TareaConResultado.IMAGENES -> Claves.aperturaImagenes
+        TareaConResultado.CIFRAR -> Claves.aperturaCifrar
     }
 
     suspend fun fijarPreguntarCompartir(valor: Boolean) =
@@ -205,6 +209,7 @@ class RepositorioAjustes(
         preferencias[Claves.aperturaFirmar] = nuevos.aperturaFirmar
         preferencias[Claves.aperturaConvertir] = nuevos.aperturaConvertir
         preferencias[Claves.aperturaImagenes] = nuevos.aperturaImagenes
+        preferencias[Claves.aperturaCifrar] = nuevos.aperturaCifrar
         preferencias[Claves.preguntarCompartir] = nuevos.preguntarCompartir
         preferencias[Claves.resumenSeparar] = nuevos.resumenAlSepararEnPartes
         preferencias[Claves.pedirManuscrita] = nuevos.pedirFirmaManuscrita

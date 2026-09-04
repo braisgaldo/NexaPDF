@@ -47,6 +47,15 @@ sealed interface Destino {
      */
     data class Firma(val ruta: String, val manuscritaHecha: Boolean = false) : Destino
 
+    /**
+     * Poner o quitar la contrasena de un documento.
+     *
+     * @param yaProtegido se comprobo al elegirlo, antes de entrar: la
+     *   pantalla no puede averiguarlo por su cuenta sin abrir el fichero, y
+     *   abrirlo es justo lo que no se puede hacer sin la contrasena.
+     */
+    data class Cifrar(val ruta: String, val yaProtegido: Boolean) : Destino
+
     data object Ajustes : Destino
 
     /** Lectura de un documento: buscar, indice y firmas. */

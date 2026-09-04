@@ -173,6 +173,7 @@ import es.ghatostudio.nexapdf.BuildInfo
 import es.ghatostudio.nexapdf.resources.app_lema
 import es.ghatostudio.nexapdf.resources.app_nombre
 import androidx.compose.foundation.layout.height
+import es.ghatostudio.nexapdf.resources.aj_tarea_cifrar
 
 @Composable
 fun PantallaAjustes(
@@ -962,6 +963,7 @@ private val TAREAS: List<Pair<TareaConResultado, StringResource>> = listOf(
     TareaConResultado.FIRMAR to Res.string.aj_tarea_firmar,
     TareaConResultado.CONVERTIR to Res.string.aj_tarea_convertir,
     TareaConResultado.IMAGENES to Res.string.aj_tarea_imagenes,
+    TareaConResultado.CIFRAR to Res.string.aj_tarea_cifrar,
 )
 
 /** Las tres formas de terminar, en el orden en que se entienden. */

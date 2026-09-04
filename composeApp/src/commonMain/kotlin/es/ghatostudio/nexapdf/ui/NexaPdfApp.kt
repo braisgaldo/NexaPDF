@@ -114,6 +114,15 @@ import es.ghatostudio.nexapdf.domain.model.TareaConResultado
 import androidx.compose.ui.geometry.Rect
 import es.ghatostudio.nexapdf.ui.pantallas.CapaTour
 import es.ghatostudio.nexapdf.ui.pantallas.ZonaTour
+import es.ghatostudio.nexapdf.resources.cifrar_hecho
+import es.ghatostudio.nexapdf.resources.cifrar_quitado
+import es.ghatostudio.nexapdf.resources.cifrar_sufijo
+import es.ghatostudio.nexapdf.resources.cifrar_sufijo_sin
+import es.ghatostudio.nexapdf.resources.cifrar_trabajando
+import es.ghatostudio.nexapdf.ui.pantallas.PantallaCifrar
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
+import es.ghatostudio.nexapdf.ui.componentes.DialogoContrasena
 
 /**
  * Raiz de la interfaz: tema, navegacion, avisos y el hilo que une las pantallas
@@ -160,6 +169,7 @@ private fun ContenidoApp(
     val ajustes by estado.ajustes.collectAsState()
 
     val textoProcesando = stringResource(Res.string.comun_procesando)
+    val textoProtegiendo = stringResource(Res.string.cifrar_trabajando)
     val textoConvirtiendo = stringResource(Res.string.doc_convirtiendo)
 
     // --- Estado de trabajo ---------------------------------------------------
@@ -182,6 +192,8 @@ private fun ContenidoApp(
         miniaturasImagen.keys.retainAll(vivas)
     }
     var necesitaContrasena by remember { mutableStateOf(false) }
+    var rutasBloqueadas by remember { mutableStateOf<List<String>>(emptyList()) }
+    var trasDesbloquear by remember { mutableStateOf<(List<DocumentoPdf>) -> Unit>({}) }
     var contrasenaActual by remember { mutableStateOf<String?>(null) }
     var recientes by remember { mutableStateOf(emptyList<DocumentoReciente>()) }
 
@@ -278,17 +290,33 @@ private fun ContenidoApp(
     }
 
     /** Prepara el espacio de trabajo con los PDF elegidos. */
-    fun abrirDocumentos(rutas: List<String>) {
+    /**
+     * Abre los documentos y, cuando estan abiertos de verdad, ejecuta [alAbrir].
+     *
+     * Lo que hay que hacer despues va como continuacion y no como codigo detras
+     * de la llamada porque abrir puede pararse a pedir la contrasena: navegar
+     * al visor sin esperar dejaba una pantalla girando sobre un documento que
+     * nunca llego a abrirse. La continuacion se guarda para repetirla en cuanto
+     * se teclee la contrasena.
+     *
+     * [alAbrir] recibe los documentos ya abiertos, cuya ruta puede no ser la
+     * pedida: de uno cifrado se trabaja sobre la copia descifrada.
+     */
+    fun abrirDocumentos(rutas: List<String>, alAbrir: (List<DocumentoPdf>) -> Unit = {}) {
+        rutasBloqueadas = rutas
+        trasDesbloquear = alAbrir
         alcance.launch {
             estado.empezarTrabajo(textoProcesando)
             documentos.clear()
             paginas.clear()
+            var falta = false
             rutas.forEach { ruta ->
                 when (val abierto = contenedor.motorPdf.abrir(ruta, contrasenaActual)) {
                     is ResultadoPdf.Exito -> documentos.add(abierto.valor)
                     is ResultadoPdf.Fallo -> {
                         if (abierto.causa == ErrorPdf.NECESITA_CONTRASENA) {
                             necesitaContrasena = true
+                            falta = true
                         } else {
                             estado.avisar(mensajeDeError(abierto.causa))
                         }
@@ -297,6 +325,7 @@ private fun ContenidoApp(
             }
             documentos.firstOrNull()?.let { if (documentos.size == 1) cargarPaginas(it.ruta) }
             estado.terminarTrabajo()
+            if (!falta) alAbrir(documentos.toList())
         }
     }
 
@@ -414,12 +443,26 @@ private fun ContenidoApp(
     // La espera es lo que evita que aparezca al volver del selector de
     // ficheros, que deja la app en Inicio unas decimas antes de abrir lo que se
     // acaba de elegir.
-    LaunchedEffect(estado.destinoActual, estado.donacionPendiente) {
-        if (!estado.donacionPendiente || estado.destinoActual != Destino.Inicio) {
+    // Tambien se exige que no haya nada en marcha: abrir un documento para ver
+    // si pide contrasena, o convertir uno grande, deja la app en Inicio mas de
+    // ese rato aunque el usuario ya haya pedido otra cosa.
+    val cicloDeVida = LocalLifecycleOwner.current.lifecycle
+    LaunchedEffect(estado.destinoActual, estado.donacionPendiente, estado.trabajando) {
+        if (!estado.donacionPendiente ||
+            estado.destinoActual != Destino.Inicio ||
+            estado.trabajando != null
+        ) {
             return@LaunchedEffect
         }
-        delay(1500)
-        estado.mostrarDonacionSiProcede()
+        // El rato de quietud solo cuenta con la app delante. Contarlo siempre
+        // era el fallo: mientras el selector de ficheros del sistema esta
+        // encima, la app sigue "en Inicio" y sin trabajo, asi que el aviso se
+        // preparaba a espaldas del usuario y aparecia sobre el documento que
+        // acababa de elegir.
+        cicloDeVida.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            delay(1500)
+            estado.mostrarDonacionSiProcede()
+        }
     }
 
     // --- Aviso pendiente -----------------------------------------------------
@@ -440,8 +483,10 @@ private fun ContenidoApp(
     LaunchedEffect(documentoDeEntrada) {
         val entrada = documentoDeEntrada ?: return@LaunchedEffect
         val adoptado = contenedor.selector.adoptarExterno(entrada) ?: return@LaunchedEffect
-        abrirDocumentos(listOf(adoptado.ruta))
-        estado.ir(Destino.Visor(adoptado.ruta))
+        abrirDocumentos(listOf(adoptado.ruta)) { abiertos ->
+            val abierto = abiertos.firstOrNull() ?: return@abrirDocumentos
+            estado.ir(Destino.Visor(abierto.ruta))
+        }
     }
 
     // El tour se decide con el valor que devuelve el repositorio, no con el que
@@ -480,8 +525,10 @@ private fun ContenidoApp(
                             Herramienta.VISOR -> {
                                 val elegido = contenedor.selector.elegirPdf(multiple = false)
                                     .firstOrNull() ?: return@launch
-                                abrirDocumentos(listOf(elegido.ruta))
-                                estado.ir(Destino.Visor(elegido.ruta))
+                                abrirDocumentos(listOf(elegido.ruta)) { abiertos ->
+                                    val abierto = abiertos.firstOrNull() ?: return@abrirDocumentos
+                                    estado.ir(Destino.Visor(abierto.ruta))
+                                }
                             }
 
                             Herramienta.CONVERTIR -> {
@@ -511,8 +558,10 @@ private fun ContenidoApp(
                             Herramienta.SEPARAR -> {
                                 val elegido = contenedor.selector.elegirPdf(multiple = false)
                                     .firstOrNull() ?: return@launch
-                                abrirDocumentos(listOf(elegido.ruta))
-                                estado.ir(Destino.Documento(listOf(elegido.ruta)))
+                                abrirDocumentos(listOf(elegido.ruta)) { abiertos ->
+                                    val abierto = abiertos.firstOrNull() ?: return@abrirDocumentos
+                                    estado.ir(Destino.Documento(listOf(abierto.ruta)))
+                                }
                             }
 
                             Herramienta.EDITAR -> {
@@ -522,17 +571,39 @@ private fun ContenidoApp(
                                 // desde ahi se navega entre ellas.
                                 val elegido = contenedor.selector.elegirPdf(multiple = false)
                                     .firstOrNull() ?: return@launch
-                                abrirDocumentos(listOf(elegido.ruta))
-                                estado.ir(Destino.Editor(elegido.ruta, 0))
+                                abrirDocumentos(listOf(elegido.ruta)) { abiertos ->
+                                    val abierto = abiertos.firstOrNull() ?: return@abrirDocumentos
+                                    estado.ir(Destino.Editor(abierto.ruta, 0))
+                                }
                             }
 
                             Herramienta.FIRMAR -> {
                                 val elegido = contenedor.selector.elegirPdf(multiple = false)
                                     .firstOrNull() ?: return@launch
-                                abrirDocumentos(listOf(elegido.ruta))
-                                firmasExistentes = contenedor.motorPdf.firmasExistentes(elegido.ruta)
-                                    .valorONulo().orEmpty()
-                                estado.ir(Destino.Firma(elegido.ruta))
+                                abrirDocumentos(listOf(elegido.ruta)) { abiertos ->
+                                    val abierto = abiertos.firstOrNull() ?: return@abrirDocumentos
+                                    alcance.launch {
+                                        firmasExistentes = contenedor.motorPdf
+                                            .firmasExistentes(abierto.ruta)
+                                            .valorONulo().orEmpty()
+                                        estado.ir(Destino.Firma(abierto.ruta))
+                                    }
+                                }
+                            }
+
+                            Herramienta.CIFRAR -> {
+                                val elegido = contenedor.selector.elegirPdf(multiple = false)
+                                    .firstOrNull() ?: return@launch
+                                // Se averigua aqui si ya pide contrasena, y no
+                                // dentro de la pantalla, porque la unica forma
+                                // de saberlo es intentar abrirlo: mejor una vez
+                                // al entrar que en cada recomposicion.
+                                estado.empezarTrabajo(textoProcesando)
+                                val intento = contenedor.motorPdf.abrir(elegido.ruta)
+                                estado.terminarTrabajo()
+                                val protegido = intento is ResultadoPdf.Fallo &&
+                                    intento.causa == ErrorPdf.NECESITA_CONTRASENA
+                                estado.ir(Destino.Cifrar(elegido.ruta, protegido))
                             }
 
                             Herramienta.IMAGENES -> {
@@ -582,6 +653,7 @@ private fun ContenidoApp(
                         }
                     }
                 },
+                alCompartirVarios = { estado.ir(Destino.Compartir) },
                 alBorrar = { reciente ->
                     alcance.launch {
                         contenedor.motorPdf.cerrar(reciente.ruta)
@@ -645,7 +717,6 @@ private fun ContenidoApp(
                 rutaActiva = rutaActiva,
                 modoUnion = destino.modoUnion,
                 desdeUnion = destino.desdeUnion,
-                necesitaContrasena = necesitaContrasena,
                 confirmarBorrado = ajustes.confirmarAccionesDestructivas,
                 conResumenAlSeparar = ajustes.resumenAlSepararEnPartes,
                 snackbar = snackbar,
@@ -913,10 +984,6 @@ private fun ContenidoApp(
                             documentos.add(hasta, movido)
                         }
                     },
-                    alDesbloquear = { contrasena ->
-                        contrasenaActual = contrasena
-                        abrirDocumentos(destino.rutas)
-                    },
                 ),
             )
 
@@ -971,6 +1038,10 @@ private fun ContenidoApp(
                     pagina = paginaEditor,
                     bloquesTexto = bloquesEditor,
                     firmaPendiente = firmaParaColocar,
+                    cargarImagen = { deDonde ->
+                        contenedor.motorPdf.renderizarImagen(deDonde, ANCHO_IMAGEN_EDITOR)
+                            .valorONulo()
+                    },
                     snackbar = snackbar,
                     alVolver = {
                         firmaParaColocar = null
@@ -1155,6 +1226,68 @@ private fun ContenidoApp(
                 )
             }
 
+            is Destino.Cifrar -> PantallaCifrar(
+                nombreDocumento = contenedor.ficheros.nombre(destino.ruta),
+                yaProtegido = destino.yaProtegido,
+                snackbar = snackbar,
+                alVolver = { estado.volver() },
+                alProteger = { contrasena, permisos, actual ->
+                    alcance.launch {
+                        estado.empezarTrabajo(textoProtegiendo)
+                        val salida = rutaDeSalida(
+                            nombreBase(destino.ruta) + " " + getString(Res.string.cifrar_sufijo) + ".pdf",
+                        )
+                        val hecho = contenedor.motorPdf.cifrar(
+                            ruta = destino.ruta,
+                            contrasenaApertura = contrasena,
+                            contrasenaPermisos = "",
+                            permisos = permisos,
+                            rutaSalida = salida,
+                            contrasenaActual = actual.ifBlank { null },
+                        )
+                        estado.terminarTrabajo()
+                        when (hecho) {
+                            is ResultadoPdf.Exito -> {
+                                registrarResultado(hecho.valor)
+                                estado.avisar(getString(Res.string.cifrar_hecho))
+                                // No se ofrece abrirlo: acaba de ponerle una
+                                // contrasena y abrirlo le pediria teclearla
+                                // otra vez para ver lo que ya estaba viendo.
+                                estado.volver()
+                            }
+
+                            is ResultadoPdf.Fallo ->
+                                estado.avisar(mensajeDeError(hecho.causa))
+                        }
+                    }
+                },
+                alQuitarProteccion = { actual ->
+                    alcance.launch {
+                        estado.empezarTrabajo(textoProtegiendo)
+                        val salida = rutaDeSalida(
+                            nombreBase(destino.ruta) + " " +
+                                getString(Res.string.cifrar_sufijo_sin) + ".pdf",
+                        )
+                        val hecho = contenedor.motorPdf.descifrar(destino.ruta, actual, salida)
+                        estado.terminarTrabajo()
+                        when (hecho) {
+                            is ResultadoPdf.Exito -> {
+                                registrarResultado(hecho.valor)
+                                estado.avisar(getString(Res.string.cifrar_quitado))
+                                abrirDocumentos(listOf(hecho.valor))
+                                mostrarResultado(
+                                    TareaConResultado.CIFRAR,
+                                    Destino.Documento(listOf(hecho.valor)),
+                                )
+                            }
+
+                            is ResultadoPdf.Fallo ->
+                                estado.avisar(mensajeDeError(hecho.causa))
+                        }
+                    }
+                },
+            )
+
             Destino.Ajustes -> PantallaAjustes(
                 ajustes = ajustes,
                 donacionesDisponibles = contenedor.servicios.donacionesDisponibles,
@@ -1229,6 +1362,20 @@ private fun ContenidoApp(
                 { estado.cancelarTrabajo() }
             } else {
                 null
+            },
+        )
+    }
+
+    if (necesitaContrasena) {
+        DialogoContrasena(
+            alConfirmar = { contrasena ->
+                contrasenaActual = contrasena
+                necesitaContrasena = false
+                abrirDocumentos(rutasBloqueadas, trasDesbloquear)
+            },
+            alCancelar = {
+                necesitaContrasena = false
+                estado.volver()
             },
         )
     }
@@ -1553,3 +1700,12 @@ private suspend fun importarCopia(contenedor: ContenedorApp, estado: EstadoApp) 
 
 /** Ancho en pixeles de las miniaturas de la pantalla de imagenes. */
 private const val ANCHO_MINIATURA_IMAGEN = 320
+
+/**
+ * Ancho al que se lee una imagen insertada para verla en el editor.
+ *
+ * Es la vista previa mientras se coloca, no lo que acaba en el PDF: al guardar
+ * se vuelve a leer el original. Con mas pixeles no se nota nada en pantalla y
+ * cada foto de la galeria se come varios megas de memoria.
+ */
+private const val ANCHO_IMAGEN_EDITOR = 900

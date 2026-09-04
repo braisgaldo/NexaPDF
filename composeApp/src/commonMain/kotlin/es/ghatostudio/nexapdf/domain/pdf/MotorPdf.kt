@@ -152,6 +152,33 @@ interface MotorPdf {
      * estructura de secciones; los escaneados no llevan nada, y en ese caso la
      * lista sale vacia.
      */
+    /**
+     * Cifra el documento con una contrasena y escribe el resultado.
+     *
+     * @param contrasenaApertura la que hay que teclear para abrirlo. Es la que
+     *   protege de verdad: sin ella el documento no se lee.
+     * @param contrasenaPermisos la de quien puede cambiar los permisos. Si se
+     *   deja vacia se usa la de apertura, porque dejarla en blanco significa
+     *   "cualquiera puede quitar las restricciones" y eso confunde mas que
+     *   ayuda.
+     * @param permisos que se puede hacer sin la contrasena de permisos.
+     */
+    suspend fun cifrar(
+        ruta: String,
+        contrasenaApertura: String,
+        contrasenaPermisos: String,
+        permisos: PermisosPdf,
+        rutaSalida: String,
+        contrasenaActual: String? = null,
+    ): ResultadoPdf<String>
+
+    /** Quita la proteccion de un documento del que se conoce la contrasena. */
+    suspend fun descifrar(
+        ruta: String,
+        contrasena: String,
+        rutaSalida: String,
+    ): ResultadoPdf<String>
+
     suspend fun esquema(ruta: String, contrasena: String? = null): ResultadoPdf<List<Seccion>>
 
     /** Lista las firmas ya presentes en el documento. */
@@ -277,3 +304,19 @@ inline fun <T> ejecutarPdf(bloque: () -> T): ResultadoPdf<T> = try {
 } catch (e: Exception) {
     ResultadoPdf.Fallo(ErrorPdf.DESCONOCIDO, e.message)
 }
+
+/**
+ * Que deja hacer un PDF cifrado a quien solo tiene la contrasena de apertura.
+ *
+ * Son las restricciones estandar de PDF, y conviene decir lo que valen: un
+ * lector que respete el formato las obedece, pero **no son una barrera
+ * criptografica**. Lo unico que de verdad protege el contenido es la
+ * contrasena de apertura. La aplicacion lo dice asi en pantalla en lugar de
+ * dejar creer que marcar "no imprimir" impide imprimir.
+ */
+data class PermisosPdf(
+    val permitirImprimir: Boolean = true,
+    val permitirCopiar: Boolean = true,
+    val permitirModificar: Boolean = false,
+    val permitirAnotar: Boolean = true,
+)

@@ -91,6 +91,9 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.material.icons.filled.Lock
+import es.ghatostudio.nexapdf.resources.herr_cifrar_desc
+import es.ghatostudio.nexapdf.resources.herr_cifrar_titulo
 
 /** Las seis herramientas del punto 14 del encargo, en el orden en que se pidieron. */
 enum class Herramienta(
@@ -118,6 +121,7 @@ enum class Herramienta(
         Res.string.herr_convertir_desc,
         Icons.Filled.SwapHoriz,
     ),
+    CIFRAR(Res.string.herr_cifrar_titulo, Res.string.herr_cifrar_desc, Icons.Filled.Lock),
 }
 
 /** Un documento ya generado, listo para reabrirse. */
@@ -149,11 +153,11 @@ fun PantallaInicio(
         containerColor = MaterialTheme.colorScheme.background,
         snackbarHost = { SnackbarHost(snackbar) },
     ) { relleno ->
-        // Rejilla y no lista: con ocho entradas, una lista con descripcion
+        // Rejilla y no lista: con nueve entradas, una lista con descripcion
         // obliga a desplazarse para ver la mitad de lo que la aplicacion sabe
         // hacer, y lo que no se ve no existe. Dos columnas y no tres: con
-        // ocho baldosas salen cuatro filas justas, sin huecos, y cada una es
-        // lo bastante ancha para que el icono se vea de lejos.
+        // ocho herramientas salen cuatro filas justas, y cada baldosa es lo
+        // bastante ancha para que el icono se vea de lejos.
         Column(modifier = Modifier.fillMaxSize().padding(relleno)) {
             Cabecera(alAbrirAjustes, alMedirZona)
 
@@ -161,8 +165,7 @@ fun PantallaInicio(
             // fijas, y repartiendo la altura entre las filas la pantalla queda
             // llena en cualquier movil en lugar de dejar un tercio vacio.
             val herramientas = Herramienta.entries.toList()
-            val total = herramientas.size + 1
-            val filas = (total + COLUMNAS - 1) / COLUMNAS
+            val filas = (herramientas.size + COLUMNAS - 1) / COLUMNAS
 
             Column(
                 modifier = Modifier
@@ -185,6 +188,7 @@ fun PantallaInicio(
                                     val zona = when (herramienta) {
                                         Herramienta.VISOR -> ZonaTour.LEER
                                         Herramienta.EDITAR -> ZonaTour.EDITAR
+                                        Herramienta.CIFRAR -> ZonaTour.PROTEGER
                                         else -> null
                                     }
                                     val medido = if (zona == null) {
@@ -199,15 +203,6 @@ fun PantallaInicio(
                                     }
                                 }
 
-                                indice == herramientas.size ->
-                                    BaldosaRecientes(
-                                        numeroRecientes,
-                                        hueco.onGloballyPositioned {
-                                            alMedirZona(ZonaTour.RECIENTES, it.boundsInRoot())
-                                        },
-                                        alAbrirRecientes,
-                                    )
-
                                 // Hueco vacio para que la ultima fila no
                                 // estire las baldosas que si tiene.
                                 else -> Spacer(Modifier.weight(1f))
@@ -215,6 +210,22 @@ fun PantallaInicio(
                         }
                     }
                 }
+
+                // Los recientes van a lo ancho al final y no como una
+                // baldosa mas: con nueve entradas quedaba un hueco vacio en
+                // la ultima fila, y ademas no son una herramienta sino lo
+                // que sale de usarlas. Mas bajos que las demas porque solo
+                // llevan un numero.
+                BaldosaRecientes(
+                    numeroRecientes,
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(0.55f)
+                        .onGloballyPositioned {
+                            alMedirZona(ZonaTour.RECIENTES, it.boundsInRoot())
+                        },
+                    alAbrirRecientes,
+                )
             }
         }
     }
@@ -281,11 +292,11 @@ private fun Baldosa(
             // diminuto en medio de un hueco enorme: no parecia espacioso,
             // parecia vacio.
             val ladoIcono = (minOf(maxWidth, maxHeight) * 0.42f).coerceIn(34.dp, 72.dp)
-        Column(
-            modifier = Modifier.fillMaxSize().padding(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-        ) {
+            // Una baldosa mucho mas ancha que alta pone el icono al lado del
+            // texto en vez de encima: apilarlos en una franja baja deja el
+            // rotulo pegado al borde y el icono ridiculo en medio.
+            val apaisada = maxWidth > maxHeight * 2
+        BaldosaEnLinea(apaisada) {
             Box(contentAlignment = Alignment.TopEnd) {
                 Icon(
                     imageVector = icono,
@@ -305,7 +316,7 @@ private fun Baldosa(
                     )
                 }
             }
-            Spacer(Modifier.height(8.dp))
+            if (apaisada) Spacer(Modifier.width(14.dp)) else Spacer(Modifier.height(8.dp))
             Text(
                 text = titulo,
                 style = MaterialTheme.typography.titleMedium,
@@ -316,6 +327,25 @@ private fun Baldosa(
             )
         }
         }
+    }
+}
+
+/** El contenido de una baldosa, en fila si es apaisada y en columna si no. */
+@Composable
+private fun BaldosaEnLinea(apaisada: Boolean, contenido: @Composable () -> Unit) {
+    val relleno = Modifier.fillMaxSize().padding(8.dp)
+    if (apaisada) {
+        Row(
+            modifier = relleno,
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) { contenido() }
+    } else {
+        Column(
+            modifier = relleno,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) { contenido() }
     }
 }
 
@@ -452,4 +482,4 @@ internal fun FilaReciente(
 private const val COLUMNAS = 2
 
 /** Elementos de la pantalla de inicio que el tour puede senalar. */
-enum class ZonaTour { BALDOSAS, LEER, EDITAR, RECIENTES, AJUSTES }
+enum class ZonaTour { BALDOSAS, LEER, EDITAR, PROTEGER, RECIENTES, AJUSTES }
