@@ -20,7 +20,7 @@
     <string name="aj_acerca_de">حول التطبيق</string>
     <string name="aj_al_terminar">عند اكتمال المستند</string>
     <string name="aj_al_terminar_abrir">افتحه</string>
-    <string name="aj_al_terminar_desc">ينطبق على التحرير والدمج والتوقيع والتحويل إلى PDF وتحويل الصور إلى مستند. وفي كل الأحوال يُحفظ في المجلد الذي اخترته.</string>
+    <string name="aj_al_terminar_desc">كل مهمة على حدة. وفي كل الأحوال يُحفظ في مجلدك.</string>
     <string name="aj_al_terminar_no">لا تفتحه</string>
     <string name="aj_al_terminar_preguntar">اسأل</string>
     <string name="aj_apariencia">المظهر</string>
@@ -28,7 +28,7 @@
     <string name="aj_apoyo">الدعم</string>
     <string name="aj_ayuda">المساعدة</string>
     <string name="aj_calidad">جودة المعاينة</string>
-    <string name="aj_calidad_desc">يؤثر فقط على ما تراه على الشاشة. أما الملفات المحفوظة فتحتفظ دائمًا بجودتها الكاملة.</string>
+    <string name="aj_calidad_desc">على الشاشة فقط. الملفات المحفوظة لا تفقد جودتها.</string>
     <string name="aj_calidad_equilibrada">متوازنة</string>
     <string name="aj_calidad_nitida">حادة</string>
     <string name="aj_calidad_rapida">سريعة</string>
@@ -41,7 +41,7 @@
     <string name="aj_datos">بياناتك</string>
     <string name="aj_elegir_carpeta">اختيار مجلد</string>
     <string name="aj_exportar">تصدير الإعدادات</string>
-    <string name="aj_exportar_desc">يحفظ ملف %1$s يتضمن تفضيلاتك وتوقيعاتك. مستنداتك غير مضمّنة، فهي موجودة أصلًا على جهازك.</string>
+    <string name="aj_exportar_desc">تفضيلاتك وتوقيعاتك في ملف واحد. المستندات لا تدخل فيه.</string>
     <string name="aj_guardar_al_final">في النهاية فقط</string>
     <string name="aj_guardar_descargas">الحفظ أيضًا في مجلد التنزيلات</string>
     <string name="aj_guardar_descargas_desc">يُنسخ كل مستند تنشئه إلى مجلد التنزيلات/NexaPDF لتتمكن التطبيقات الأخرى من العثور عليه.</string>
@@ -53,7 +53,7 @@
     <string name="aj_importar">استيراد الإعدادات</string>
     <string name="aj_importar_desc">يستعيد ملف %1$s سبق أن صدّرته.</string>
     <string name="aj_lectura">طريقة القراءة</string>
-    <string name="aj_lectura_desc">صفحة بصفحة: تمرّر جانبيًا وترى واحدة في كل مرة. تمرير متواصل: كل الصفحات متتالية، كما تقرأ أي شيء آخر على الهاتف.</string>
+    <string name="aj_lectura_desc">كيف تنتقل من صفحة إلى أخرى.</string>
     <string name="aj_lectura_lateral">صفحة بصفحة</string>
     <string name="aj_lectura_vertical">تمرير متواصل</string>
     <string name="aj_modo">الوضع</string>
@@ -70,6 +70,15 @@
     <string name="aj_preguntar_compartir">السؤال عن المشاركة عند إتمام مستند</string>
     <string name="aj_resumen_separar">عرض ملخّص قبل التقسيم</string>
     <string name="aj_resumen_separar_desc">التقسيم هو ما يُنشئ أكبر عدد من الملفات دفعة واحدة، وأصعبها تراجعًا.</string>
+    <string name="aj_seccion_apariencia">المظهر واللغة</string>
+    <string name="aj_seccion_avisos">التنبيهات والتوقيع</string>
+    <string name="aj_seccion_copia">نسخة احتياطية</string>
+    <string name="aj_seccion_guardado">أين يُحفظ</string>
+    <string name="aj_tarea_convertir">بعد التحويل إلى PDF</string>
+    <string name="aj_tarea_editar">بعد التحرير</string>
+    <string name="aj_tarea_firmar">بعد التوقيع</string>
+    <string name="aj_tarea_imagenes">بعد تحويل الصور إلى PDF</string>
+    <string name="aj_tarea_unir">بعد الدمج</string>
     <string name="aj_tema">السمة</string>
     <string name="aj_tema_bosque_claro">غابة فاتحة</string>
     <string name="aj_tema_bosque_oscuro">غابة داكنة</string>
@@ -85,6 +94,7 @@
     <string name="aj_tema_vino_claro">نبيذي فاتح</string>
     <string name="aj_tema_vino_oscuro">نبيذي داكن</string>
     <string name="aj_titulo">الإعدادات</string>
+    <string name="aj_vista">القراءة والعرض</string>
     <string name="app_lema">أدوات PDF تعمل دون اتصال بالإنترنت</string>
     <string name="app_nombre">NexaPDF</string>
     <string name="ayuda_convertir_c">تعمل أداة التحويل في الاتجاهين: اختر ملف Word أو Excel أو PowerPoint فينتج PDF، أو اختر ملف PDF وحدّد الصيغة. تُكتشف جداول الـ PDF وتخرج جداول حقيقية في Word. ما تحصل عليه هو المحتوى مُعاد تركيبه قدر الإمكان، لا ملف Office الأصلي.</string>

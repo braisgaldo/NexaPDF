@@ -150,6 +150,23 @@ import androidx.compose.material.icons.automirrored.filled.MenuBook
 import es.ghatostudio.nexapdf.domain.model.DireccionLectura
 import androidx.compose.material.icons.filled.TaskAlt
 import es.ghatostudio.nexapdf.domain.model.AperturaAlTerminar
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.DropdownMenu
+import es.ghatostudio.nexapdf.domain.model.TareaConResultado
+import es.ghatostudio.nexapdf.resources.aj_tarea_convertir
+import es.ghatostudio.nexapdf.resources.aj_tarea_editar
+import es.ghatostudio.nexapdf.resources.aj_tarea_firmar
+import es.ghatostudio.nexapdf.resources.aj_tarea_imagenes
+import es.ghatostudio.nexapdf.resources.aj_tarea_unir
+import es.ghatostudio.nexapdf.resources.aj_vista
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material3.HorizontalDivider
+import es.ghatostudio.nexapdf.resources.aj_seccion_apariencia
+import es.ghatostudio.nexapdf.resources.aj_seccion_avisos
+import es.ghatostudio.nexapdf.resources.aj_seccion_copia
+import es.ghatostudio.nexapdf.resources.aj_seccion_guardado
+import androidx.compose.material.icons.filled.EditNote
 
 @Composable
 fun PantallaAjustes(
@@ -167,7 +184,7 @@ fun PantallaAjustes(
     alCambiarResumenSeparar: (Boolean) -> Unit,
     alCambiarPedirManuscrita: (Boolean) -> Unit,
     alCambiarDireccionLectura: (DireccionLectura) -> Unit,
-    alCambiarApertura: (AperturaAlTerminar) -> Unit,
+    alCambiarApertura: (TareaConResultado, AperturaAlTerminar) -> Unit,
     alElegirCarpeta: () -> Unit,
     alQuitarCarpeta: () -> Unit,
     nombreCarpeta: String?,
@@ -181,6 +198,11 @@ fun PantallaAjustes(
     alVolver: () -> Unit,
 ) {
     var confirmandoImportacion by remember { mutableStateOf(false) }
+    // Solo una seccion abierta a la vez. Con todas desplegadas los ajustes
+    // eran cuatro pantallas de desplazamiento y habia que recorrerlas para
+    // saber que existia; plegadas caben enteras y se ve de un vistazo todo
+    // lo que se puede tocar.
+    var abierta by remember { mutableStateOf<Seccion?>(null) }
     var nombreFirmas by remember(ajustes.nombreParaFirmas) {
         mutableStateOf(ajustes.nombreParaFirmas)
     }
@@ -196,237 +218,281 @@ fun PantallaAjustes(
             modifier = Modifier.fillMaxSize().padding(relleno),
             contentPadding = PaddingValues(bottom = 40.dp),
         ) {
-            // --- Tema y idioma ------------------------------------------------
-            // Van en desplegables y no en listas abiertas: entre los siete temas
-            // y los catorce idiomas ocupaban casi toda la pantalla de Ajustes y
-            // dejaban el resto de opciones fuera de la vista. Cada desplegable
-            // muestra lo elegido con su muestra de color o su bandera.
-            item { TituloSeccion(stringResource(Res.string.aj_tema), icono = Icons.Filled.Palette) }
+            // --- Aspecto e idioma ---------------------------------------------
             item {
-                ComboTema(
-                    familia = ajustes.familia,
-                    modo = ajustes.modo,
-                    alElegirSistema = { alCambiarModo(ThemeMode.SISTEMA) },
-                    alElegirTema = { tema ->
-                        alCambiarPaleta(tema.familia)
-                        alCambiarModo(if (tema.oscuro) ThemeMode.OSCURO else ThemeMode.CLARO)
-                    },
+                CabeceraPlegable(
+                    icono = Icons.Filled.Palette,
+                    titulo = stringResource(Res.string.aj_seccion_apariencia),
+                    abierta = abierta == Seccion.APARIENCIA,
+                    alPulsar = { abierta = if (abierta == Seccion.APARIENCIA) null else Seccion.APARIENCIA },
                 )
             }
-
-            item { TituloSeccion(stringResource(Res.string.aj_idioma), icono = Icons.Filled.Language) }
-            item {
-                ComboIdioma(
-                    etiquetaActual = ajustes.idioma,
-                    alElegir = alCambiarIdioma,
-                )
+            if (abierta == Seccion.APARIENCIA) {
+                // Van en desplegables y no en listas abiertas: entre los doce
+                // temas y los trece idiomas ocupaban casi toda la pantalla.
+                item {
+                    ComboTema(
+                        familia = ajustes.familia,
+                        modo = ajustes.modo,
+                        alElegirSistema = { alCambiarModo(ThemeMode.SISTEMA) },
+                        alElegirTema = { tema ->
+                            alCambiarPaleta(tema.familia)
+                            alCambiarModo(if (tema.oscuro) ThemeMode.OSCURO else ThemeMode.CLARO)
+                        },
+                    )
+                }
+                item {
+                    ComboIdioma(
+                        etiquetaActual = ajustes.idioma,
+                        alElegir = alCambiarIdioma,
+                    )
+                }
             }
 
-            // --- Lectura ------------------------------------------------------
+            // --- Lectura y vista ----------------------------------------------
             item {
-                TituloSeccion(
-                    stringResource(Res.string.aj_lectura),
+                CabeceraPlegable(
                     icono = Icons.AutoMirrored.Filled.MenuBook,
+                    titulo = stringResource(Res.string.aj_vista),
+                    abierta = abierta == Seccion.VISTA,
+                    alPulsar = { abierta = if (abierta == Seccion.VISTA) null else Seccion.VISTA },
                 )
             }
-            item {
-                FilaFiltros(
-                    opciones = listOf(
-                        DireccionLectura.LATERAL to Res.string.aj_lectura_lateral,
-                        DireccionLectura.VERTICAL to Res.string.aj_lectura_vertical,
-                    ),
-                    elegida = ajustes.lectura,
-                    alElegir = alCambiarDireccionLectura,
-                )
-                Text(
-                    text = stringResource(Res.string.aj_lectura_desc),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
-                )
-            }
-
-            // --- Vista --------------------------------------------------------
-            item { TituloSeccion(stringResource(Res.string.aj_calidad), icono = Icons.Filled.HighQuality) }
-            item {
-                FilaFiltros(CALIDADES, ajustes.calidad, alCambiarCalidad)
-                Text(
-                    text = stringResource(Res.string.aj_calidad_desc),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
-                )
+            if (abierta == Seccion.VISTA) {
+                item {
+                    FilaDesplegable(
+                        titulo = stringResource(Res.string.aj_lectura),
+                        detalle = stringResource(Res.string.aj_lectura_desc),
+                        opciones = listOf(
+                            DireccionLectura.LATERAL to Res.string.aj_lectura_lateral,
+                            DireccionLectura.VERTICAL to Res.string.aj_lectura_vertical,
+                        ),
+                        elegida = ajustes.lectura,
+                        alElegir = alCambiarDireccionLectura,
+                    )
+                }
+                item {
+                    FilaDesplegable(
+                        titulo = stringResource(Res.string.aj_calidad),
+                        detalle = stringResource(Res.string.aj_calidad_desc),
+                        opciones = CALIDADES,
+                        elegida = ajustes.calidad,
+                        alElegir = alCambiarCalidad,
+                    )
+                }
             }
 
-            // --- Al terminar --------------------------------------------------
+            // --- Al terminar un documento --------------------------------------
             item {
-                TituloSeccion(
-                    stringResource(Res.string.aj_al_terminar),
+                CabeceraPlegable(
                     icono = Icons.Filled.TaskAlt,
+                    titulo = stringResource(Res.string.aj_al_terminar),
+                    abierta = abierta == Seccion.TERMINAR,
+                    alPulsar = { abierta = if (abierta == Seccion.TERMINAR) null else Seccion.TERMINAR },
                 )
             }
-            item {
-                FilaFiltros(
-                    opciones = listOf(
-                        AperturaAlTerminar.ABRIR to Res.string.aj_al_terminar_abrir,
-                        AperturaAlTerminar.PREGUNTAR to Res.string.aj_al_terminar_preguntar,
-                        AperturaAlTerminar.NO_ABRIR to Res.string.aj_al_terminar_no,
-                    ),
-                    elegida = ajustes.apertura,
-                    alElegir = alCambiarApertura,
-                )
-                Text(
-                    text = stringResource(Res.string.aj_al_terminar_desc),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
-                )
+            if (abierta == Seccion.TERMINAR) {
+                item {
+                    Text(
+                        text = stringResource(Res.string.aj_al_terminar_desc),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
+                    )
+                }
+                items(TAREAS) { (tarea, etiqueta) ->
+                    FilaDesplegable(
+                        titulo = stringResource(etiqueta),
+                        detalle = null,
+                        opciones = APERTURAS,
+                        elegida = ajustes.apertura(tarea),
+                        alElegir = { alCambiarApertura(tarea, it) },
+                        compacta = true,
+                    )
+                }
             }
 
-            // --- Datos --------------------------------------------------------
-            item { TituloSeccion(stringResource(Res.string.aj_datos), icono = Icons.Filled.Folder) }
+            // --- Donde se guarda ------------------------------------------------
             item {
-                Text(
-                    text = stringResource(Res.string.aj_cuando_guardar),
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
+                CabeceraPlegable(
+                    icono = Icons.Filled.Folder,
+                    titulo = stringResource(Res.string.aj_seccion_guardado),
+                    abierta = abierta == Seccion.GUARDADO,
+                    alPulsar = { abierta = if (abierta == Seccion.GUARDADO) null else Seccion.GUARDADO },
                 )
             }
-            item {
-                FilaFiltros(
-                    opciones = listOf(
-                        ModoGuardado.PASO_A_PASO to Res.string.aj_guardar_paso_a_paso,
-                        ModoGuardado.SOLO_AL_FINAL to Res.string.aj_guardar_al_final,
-                    ),
-                    elegida = ajustes.guardado,
-                    alElegir = alCambiarModoGuardado,
-                )
-            }
-            item {
-                Text(
-                    text = stringResource(
-                        Res.string.aj_carpeta_destino,
-                        nombreCarpeta ?: stringResource(Res.string.aj_carpeta_predeterminada),
-                    ),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
-                )
-            }
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    TextButton(
-                        onClick = alElegirCarpeta,
-                        modifier = Modifier.heightIn(min = 48.dp),
-                    ) {
-                        Icon(Icons.Filled.FolderOpen, contentDescription = null)
-                        Spacer(Modifier.width(8.dp))
-                        Text(stringResource(Res.string.aj_elegir_carpeta))
-                    }
-                    if (nombreCarpeta != null) {
+            if (abierta == Seccion.GUARDADO) {
+                item {
+                    FilaDesplegable(
+                        titulo = stringResource(Res.string.aj_cuando_guardar),
+                        detalle = null,
+                        opciones = listOf(
+                            ModoGuardado.PASO_A_PASO to Res.string.aj_guardar_paso_a_paso,
+                            ModoGuardado.SOLO_AL_FINAL to Res.string.aj_guardar_al_final,
+                        ),
+                        elegida = ajustes.guardado,
+                        alElegir = alCambiarModoGuardado,
+                    )
+                }
+                item {
+                    FilaAccion(
+                        icono = Icons.Filled.FolderOpen,
+                        titulo = stringResource(Res.string.aj_elegir_carpeta),
+                        detalle = stringResource(
+                            Res.string.aj_carpeta_destino,
+                            nombreCarpeta ?: stringResource(Res.string.aj_carpeta_predeterminada),
+                        ),
+                        alPulsar = alElegirCarpeta,
+                    )
+                }
+                if (nombreCarpeta != null) {
+                    item {
                         TextButton(
                             onClick = alQuitarCarpeta,
-                            modifier = Modifier.heightIn(min = 48.dp),
+                            modifier = Modifier
+                                .padding(horizontal = 12.dp)
+                                .heightIn(min = 48.dp),
                         ) {
                             Text(stringResource(Res.string.aj_carpeta_predeterminada))
                         }
                     }
                 }
-            }
-            item {
-                FilaConmutador(
-                    titulo = stringResource(Res.string.aj_guardar_descargas),
-                    detalle = stringResource(Res.string.aj_guardar_descargas_desc),
-                    valor = ajustes.guardarEnDescargasAlTerminar,
-                    alCambiar = alCambiarDescargas,
-                )
-            }
-            item {
-                FilaConmutador(
-                    titulo = stringResource(Res.string.aj_preguntar_compartir),
-                    detalle = null,
-                    valor = ajustes.preguntarCompartir,
-                    alCambiar = alCambiarPreguntarCompartir,
-                )
-            }
-            item {
-                FilaConmutador(
-                    titulo = stringResource(Res.string.aj_resumen_separar),
-                    detalle = stringResource(Res.string.aj_resumen_separar_desc),
-                    valor = ajustes.resumenAlSepararEnPartes,
-                    alCambiar = alCambiarResumenSeparar,
-                )
-            }
-            item {
-                FilaConmutador(
-                    titulo = stringResource(Res.string.aj_confirmar_destructivas),
-                    detalle = null,
-                    valor = ajustes.confirmarAccionesDestructivas,
-                    alCambiar = alCambiarConfirmar,
-                )
-            }
-            item {
-                FilaConmutador(
-                    titulo = stringResource(Res.string.aj_pedir_manuscrita),
-                    detalle = stringResource(Res.string.aj_pedir_manuscrita_desc),
-                    valor = ajustes.pedirFirmaManuscrita,
-                    alCambiar = alCambiarPedirManuscrita,
-                )
-            }
-            item {
-                OutlinedTextField(
-                    value = nombreFirmas,
-                    onValueChange = {
-                        nombreFirmas = it
-                        alCambiarNombreFirmas(it)
-                    },
-                    label = { Text(stringResource(Res.string.aj_nombre_firmas)) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp),
-                )
-            }
-            item {
-                FilaAccion(
-                    icono = Icons.Filled.FileDownload,
-                    titulo = stringResource(Res.string.aj_exportar),
-                    detalle = stringResource(Res.string.aj_exportar_desc, CopiaSeguridad.EXTENSION),
-                    alPulsar = alExportar,
-                )
-            }
-            item {
-                FilaAccion(
-                    icono = Icons.Filled.FileUpload,
-                    titulo = stringResource(Res.string.aj_importar),
-                    detalle = stringResource(Res.string.aj_importar_desc, CopiaSeguridad.EXTENSION),
-                    alPulsar = { confirmandoImportacion = true },
-                )
-            }
-
-            // --- Apoyo --------------------------------------------------------
-            item { TituloSeccion(stringResource(Res.string.aj_apoyo), icono = Icons.Filled.FavoriteBorder) }
-            if (donacionesDisponibles) {
                 item {
-                    FilaAccion(
-                        icono = Icons.Filled.LocalCafe,
-                        titulo = stringResource(Res.string.aj_apoyar_desarrollo),
+                    FilaConmutador(
+                        titulo = stringResource(Res.string.aj_guardar_descargas),
+                        detalle = stringResource(Res.string.aj_guardar_descargas_desc),
+                        valor = ajustes.guardarEnDescargasAlTerminar,
+                        alCambiar = alCambiarDescargas,
+                    )
+                }
+                item {
+                    FilaConmutador(
+                        titulo = stringResource(Res.string.aj_preguntar_compartir),
                         detalle = null,
-                        alPulsar = alDonar,
+                        valor = ajustes.preguntarCompartir,
+                        alCambiar = alCambiarPreguntarCompartir,
                     )
                 }
             }
+
+            // --- Avisos y firma -------------------------------------------------
             item {
-                FilaAccion(
-                    icono = Icons.Filled.Share,
-                    titulo = stringResource(Res.string.aj_compartir_app),
-                    detalle = null,
-                    alPulsar = alCompartirApp,
+                CabeceraPlegable(
+                    icono = Icons.Filled.EditNote,
+                    titulo = stringResource(Res.string.aj_seccion_avisos),
+                    abierta = abierta == Seccion.AVISOS,
+                    alPulsar = { abierta = if (abierta == Seccion.AVISOS) null else Seccion.AVISOS },
                 )
             }
+            if (abierta == Seccion.AVISOS) {
+                item {
+                    FilaConmutador(
+                        titulo = stringResource(Res.string.aj_confirmar_destructivas),
+                        detalle = null,
+                        valor = ajustes.confirmarAccionesDestructivas,
+                        alCambiar = alCambiarConfirmar,
+                    )
+                }
+                item {
+                    FilaConmutador(
+                        titulo = stringResource(Res.string.aj_resumen_separar),
+                        detalle = stringResource(Res.string.aj_resumen_separar_desc),
+                        valor = ajustes.resumenAlSepararEnPartes,
+                        alCambiar = alCambiarResumenSeparar,
+                    )
+                }
+                item {
+                    FilaConmutador(
+                        titulo = stringResource(Res.string.aj_pedir_manuscrita),
+                        detalle = stringResource(Res.string.aj_pedir_manuscrita_desc),
+                        valor = ajustes.pedirFirmaManuscrita,
+                        alCambiar = alCambiarPedirManuscrita,
+                    )
+                }
+                item {
+                    OutlinedTextField(
+                        value = nombreFirmas,
+                        onValueChange = {
+                            nombreFirmas = it
+                            alCambiarNombreFirmas(it)
+                        },
+                        label = { Text(stringResource(Res.string.aj_nombre_firmas)) },
+                        singleLine = true,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 8.dp),
+                    )
+                }
+            }
 
-            item { SeparadorSuave(Modifier.padding(top = 16.dp)) }
+            // --- Copia de seguridad ---------------------------------------------
+            item {
+                CabeceraPlegable(
+                    icono = Icons.Filled.FileDownload,
+                    titulo = stringResource(Res.string.aj_seccion_copia),
+                    abierta = abierta == Seccion.COPIA,
+                    alPulsar = { abierta = if (abierta == Seccion.COPIA) null else Seccion.COPIA },
+                )
+            }
+            if (abierta == Seccion.COPIA) {
+                item {
+                    FilaAccion(
+                        icono = Icons.Filled.FileDownload,
+                        titulo = stringResource(Res.string.aj_exportar),
+                        detalle = stringResource(
+                            Res.string.aj_exportar_desc,
+                            CopiaSeguridad.EXTENSION,
+                        ),
+                        alPulsar = alExportar,
+                    )
+                }
+                item {
+                    FilaAccion(
+                        icono = Icons.Filled.FileUpload,
+                        titulo = stringResource(Res.string.aj_importar),
+                        detalle = stringResource(
+                            Res.string.aj_importar_desc,
+                            CopiaSeguridad.EXTENSION,
+                        ),
+                        alPulsar = { confirmandoImportacion = true },
+                    )
+                }
+            }
+
+            // --- Apoyo ----------------------------------------------------------
+            item {
+                CabeceraPlegable(
+                    icono = Icons.Filled.FavoriteBorder,
+                    titulo = stringResource(Res.string.aj_apoyo),
+                    abierta = abierta == Seccion.APOYO,
+                    alPulsar = { abierta = if (abierta == Seccion.APOYO) null else Seccion.APOYO },
+                )
+            }
+            if (abierta == Seccion.APOYO) {
+                if (donacionesDisponibles) {
+                    item {
+                        FilaAccion(
+                            icono = Icons.Filled.LocalCafe,
+                            titulo = stringResource(Res.string.aj_apoyar_desarrollo),
+                            detalle = null,
+                            alPulsar = alDonar,
+                        )
+                    }
+                }
+                item {
+                    FilaAccion(
+                        icono = Icons.Filled.Share,
+                        titulo = stringResource(Res.string.aj_compartir_app),
+                        detalle = null,
+                        alPulsar = alCompartirApp,
+                    )
+                }
+            }
+
+            // Ayuda y Acerca de se quedan siempre a la vista: son las dos cosas
+            // que se buscan cuando algo no se entiende, y esconderlas dentro de
+            // una seccion plegable seria justo lo contrario de lo que hacen.
+            item { SeparadorSuave(Modifier.padding(top = 8.dp)) }
             item {
                 FilaAccion(
                     icono = Icons.AutoMirrored.Filled.HelpOutline,
@@ -843,3 +909,151 @@ private val CALIDADES: List<Pair<CalidadVista, StringResource>> = listOf(
     CalidadVista.EQUILIBRADA to Res.string.aj_calidad_equilibrada,
     CalidadVista.NITIDA to Res.string.aj_calidad_nitida,
 )
+
+/** Tareas que dejan un documento y su rotulo, en el orden en que se usan. */
+private val TAREAS: List<Pair<TareaConResultado, StringResource>> = listOf(
+    TareaConResultado.EDITAR to Res.string.aj_tarea_editar,
+    TareaConResultado.UNIR to Res.string.aj_tarea_unir,
+    TareaConResultado.FIRMAR to Res.string.aj_tarea_firmar,
+    TareaConResultado.CONVERTIR to Res.string.aj_tarea_convertir,
+    TareaConResultado.IMAGENES to Res.string.aj_tarea_imagenes,
+)
+
+/** Las tres formas de terminar, en el orden en que se entienden. */
+private val APERTURAS: List<Pair<AperturaAlTerminar, StringResource>> = listOf(
+    AperturaAlTerminar.ABRIR to Res.string.aj_al_terminar_abrir,
+    AperturaAlTerminar.PREGUNTAR to Res.string.aj_al_terminar_preguntar,
+    AperturaAlTerminar.NO_ABRIR to Res.string.aj_al_terminar_no,
+)
+
+/**
+ * Un ajuste de varias opciones, en una sola linea.
+ *
+ * Antes cada uno de estos ocupaba una fila de botones y un parrafo debajo: tres
+ * ajustes se comian una pantalla entera y habia que desplazarse para descubrir
+ * que existia el resto. En una linea con el valor a la derecha se lee de un
+ * vistazo lo que hay puesto, que es lo que se viene a mirar, y el desplegable
+ * solo aparece cuando se va a cambiar.
+ */
+@Composable
+private fun <T> FilaDesplegable(
+    titulo: String,
+    detalle: String?,
+    opciones: List<Pair<T, StringResource>>,
+    elegida: T,
+    alElegir: (T) -> Unit,
+    /** Sin detalle y con menos aire: para listas de varias filas seguidas. */
+    compacta: Boolean = false,
+) {
+    var abierto by remember { mutableStateOf(false) }
+    val actual = opciones.firstOrNull { it.first == elegida } ?: opciones.first()
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = if (compacta) 52.dp else 60.dp)
+            .clickable { abierto = true }
+            .padding(start = 20.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
+            .semantics(mergeDescendants = true) { },
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(titulo, style = MaterialTheme.typography.bodyLarge)
+            if (detalle != null) {
+                Text(
+                    text = detalle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+        Spacer(Modifier.width(8.dp))
+        Box {
+            Row(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(14.dp))
+                    .clickable { abierto = true }
+                    .heightIn(min = 44.dp)
+                    .padding(horizontal = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = stringResource(actual.second),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    maxLines = 1,
+                )
+                Icon(
+                    Icons.Filled.ArrowDropDown,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(20.dp),
+                )
+            }
+            DropdownMenu(expanded = abierto, onDismissRequest = { abierto = false }) {
+                opciones.forEach { (valor, etiqueta) ->
+                    DropdownMenuItem(
+                        text = { Text(stringResource(etiqueta)) },
+                        trailingIcon = {
+                            if (valor == elegida) {
+                                Icon(Icons.Filled.Check, contentDescription = null)
+                            }
+                        },
+                        onClick = {
+                            alElegir(valor)
+                            abierto = false
+                        },
+                    )
+                }
+            }
+        }
+    }
+}
+
+/** Bloques de ajustes, en el orden en que se despliegan. */
+private enum class Seccion { APARIENCIA, VISTA, TERMINAR, GUARDADO, AVISOS, COPIA, APOYO }
+
+/** Cabecera de una seccion que se abre y se cierra al tocarla. */
+@Composable
+private fun CabeceraPlegable(
+    icono: ImageVector,
+    titulo: String,
+    abierta: Boolean,
+    alPulsar: () -> Unit,
+) {
+    Column {
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 56.dp)
+                .clickable(onClick = alPulsar)
+                .padding(horizontal = 20.dp)
+                .semantics(mergeDescendants = true) { },
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                imageVector = icono,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(20.dp),
+            )
+            Spacer(Modifier.width(12.dp))
+            Text(
+                text = titulo,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.weight(1f),
+            )
+            Icon(
+                imageVector = if (abierta) {
+                    Icons.Filled.ExpandLess
+                } else {
+                    Icons.Filled.ExpandMore
+                },
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}

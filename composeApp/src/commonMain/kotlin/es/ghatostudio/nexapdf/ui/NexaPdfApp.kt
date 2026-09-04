@@ -109,6 +109,7 @@ import es.ghatostudio.nexapdf.domain.model.AperturaAlTerminar
 import es.ghatostudio.nexapdf.resources.res_abrir
 import es.ghatostudio.nexapdf.resources.res_abrir_titulo
 import es.ghatostudio.nexapdf.resources.res_ahora_no
+import es.ghatostudio.nexapdf.domain.model.TareaConResultado
 
 /**
  * Raiz de la interfaz: tema, navegacion, avisos y el hilo que une las pantallas
@@ -370,8 +371,8 @@ private fun ContenidoApp(
      * con la duda de si ha salido bien. Lo decide el usuario en los
      * ajustes, y aqui solo se obedece.
      */
-    fun mostrarResultado(destinoDelResultado: Destino) {
-        when (ajustes.apertura) {
+    fun mostrarResultado(tarea: TareaConResultado, destinoDelResultado: Destino) {
+        when (ajustes.apertura(tarea)) {
             AperturaAlTerminar.ABRIR -> estado.reemplazar(destinoDelResultado)
             AperturaAlTerminar.PREGUNTAR -> abrirRecienCreado = destinoDelResultado
             AperturaAlTerminar.NO_ABRIR -> estado.volverAInicio()
@@ -493,7 +494,10 @@ private fun ContenidoApp(
                                 )
                                 val primera = rutas.firstOrNull() ?: return@launch
                                 abrirDocumentos(listOf(primera))
-                                mostrarResultado(Destino.Documento(listOf(primera)))
+                                mostrarResultado(
+                                    TareaConResultado.CONVERTIR,
+                                    Destino.Documento(listOf(primera)),
+                                )
                             }
 
                             Herramienta.SEPARAR -> {
@@ -632,6 +636,7 @@ private fun ContenidoApp(
                                     // Segundo paso de la union: ya se puede
                                     // ordenar el conjunto pagina a pagina.
                                     mostrarResultado(
+                                        TareaConResultado.UNIR,
                                         Destino.Documento(
                                             rutas = listOf(resultado.valor),
                                             desdeUnion = true,
@@ -900,7 +905,10 @@ private fun ContenidoApp(
                         alcance.launch {
                             registrarResultado(ruta)
                             abrirDocumentos(listOf(ruta))
-                            mostrarResultado(Destino.Documento(listOf(ruta)))
+                            mostrarResultado(
+                                TareaConResultado.IMAGENES,
+                                Destino.Documento(listOf(ruta)),
+                            )
                         }
                     },
                     mensajeDeError = { error -> mensajeDeError(error) },
@@ -959,6 +967,7 @@ private fun ContenidoApp(
                                                 )
                                             } else {
                                                 mostrarResultado(
+                                                    TareaConResultado.EDITAR,
                                                     Destino.Documento(listOf(rutaFinal)),
                                                 )
                                             }
@@ -1075,7 +1084,10 @@ private fun ContenidoApp(
                                 refrescarRecientes()
                                 estado.avisar(getString(Res.string.firma_hecha))
                                 abrirDocumentos(listOf(resultado.valor))
-                                mostrarResultado(Destino.Documento(listOf(resultado.valor)))
+                                mostrarResultado(
+                                    TareaConResultado.FIRMAR,
+                                    Destino.Documento(listOf(resultado.valor)),
+                                )
                             }
 
                             is ResultadoPdf.Fallo -> estado.avisar(mensajeDeError(resultado.causa))
@@ -1106,7 +1118,9 @@ private fun ContenidoApp(
                 alCambiarResumenSeparar = { estado.fijarResumenAlSeparar(it) },
                 alCambiarPedirManuscrita = { estado.fijarPedirFirmaManuscrita(it) },
                 alCambiarDireccionLectura = { estado.fijarDireccionLectura(it.name) },
-                alCambiarApertura = { estado.fijarAperturaAlTerminar(it.name) },
+                alCambiarApertura = { tarea, valor ->
+                    estado.fijarApertura(tarea, valor.name)
+                },
                 alElegirCarpeta = {
                     alcance.launch {
                         val elegida = contenedor.selector.elegirCarpeta()

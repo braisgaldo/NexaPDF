@@ -20,7 +20,7 @@
     <string name="aj_acerca_de">About</string>
     <string name="aj_al_terminar">When a document is ready</string>
     <string name="aj_al_terminar_abrir">Open it</string>
-    <string name="aj_al_terminar_desc">Applies after editing, merging, signing, converting to PDF and turning photos into a document. It goes to the folder you chose either way.</string>
+    <string name="aj_al_terminar_desc">Each task on its own. It goes to your folder either way.</string>
     <string name="aj_al_terminar_no">Leave it</string>
     <string name="aj_al_terminar_preguntar">Ask</string>
     <string name="aj_apariencia">Appearance</string>
@@ -28,7 +28,7 @@
     <string name="aj_apoyo">Support</string>
     <string name="aj_ayuda">Help</string>
     <string name="aj_calidad">Preview quality</string>
-    <string name="aj_calidad_desc">Only affects what you see on screen. Saved files always keep their full quality.</string>
+    <string name="aj_calidad_desc">Only on screen. Saved files keep their full quality.</string>
     <string name="aj_calidad_equilibrada">Balanced</string>
     <string name="aj_calidad_nitida">Sharp</string>
     <string name="aj_calidad_rapida">Fast</string>
@@ -41,7 +41,7 @@
     <string name="aj_datos">Your data</string>
     <string name="aj_elegir_carpeta">Choose folder</string>
     <string name="aj_exportar">Export settings</string>
-    <string name="aj_exportar_desc">Saves a %1$s file with your preferences and signatures. Your documents are not included: they already live on your device.</string>
+    <string name="aj_exportar_desc">Your preferences and signatures in one file. Documents stay out.</string>
     <string name="aj_guardar_al_final">Only at the end</string>
     <string name="aj_guardar_descargas">Also save to Downloads</string>
     <string name="aj_guardar_descargas_desc">Every document you create is copied to Downloads/NexaPDF so other apps can find it.</string>
@@ -53,7 +53,7 @@
     <string name="aj_importar">Import settings</string>
     <string name="aj_importar_desc">Restores a %1$s file you exported before.</string>
     <string name="aj_lectura">How you read</string>
-    <string name="aj_lectura_desc">Page by page: swipe sideways, one page at a time. Continuous scroll: every page in a row, like reading anything else on a phone.</string>
+    <string name="aj_lectura_desc">How you move from one page to the next.</string>
     <string name="aj_lectura_lateral">Page by page</string>
     <string name="aj_lectura_vertical">Continuous scroll</string>
     <string name="aj_modo">Mode</string>
@@ -70,6 +70,15 @@
     <string name="aj_preguntar_compartir">Ask to share when a document is ready</string>
     <string name="aj_resumen_separar">Show a summary before splitting</string>
     <string name="aj_resumen_separar_desc">Dividing is what creates the most files at once, and the hardest to undo.</string>
+    <string name="aj_seccion_apariencia">Look and language</string>
+    <string name="aj_seccion_avisos">Prompts and signing</string>
+    <string name="aj_seccion_copia">Backup</string>
+    <string name="aj_seccion_guardado">Where it is saved</string>
+    <string name="aj_tarea_convertir">After converting to PDF</string>
+    <string name="aj_tarea_editar">After editing</string>
+    <string name="aj_tarea_firmar">After signing</string>
+    <string name="aj_tarea_imagenes">After photos to PDF</string>
+    <string name="aj_tarea_unir">After merging</string>
     <string name="aj_tema">Theme</string>
     <string name="aj_tema_bosque_claro">Forest light</string>
     <string name="aj_tema_bosque_oscuro">Forest dark</string>
@@ -85,6 +94,7 @@
     <string name="aj_tema_vino_claro">Wine light</string>
     <string name="aj_tema_vino_oscuro">Wine dark</string>
     <string name="aj_titulo">Settings</string>
+    <string name="aj_vista">Reading and display</string>
     <string name="app_lema">PDF tools that work offline</string>
     <string name="app_nombre">NexaPDF</string>
     <string name="ayuda_convertir_c">The Convert tool works both ways: pick a Word, Excel or PowerPoint file and it becomes a PDF; pick a PDF and you choose the format to export to. Tables in the PDF are detected and come out as real tables in Word. What you get is the content recomposed as well as possible, not the original Office file: a PDF stores letters placed on a page, not paragraphs or cells.</string>

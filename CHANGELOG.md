@@ -50,7 +50,12 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
   su icono y el resto en un desplegable, en lugar de una fila de tarjetas que
   ocupaba un cuarto de la pantalla.
 - **Al terminar un documento**, en los ajustes: abrirlo, preguntar o no
-  abrirlo. Vale para editar, unir, firmar, convertir a PDF e imágenes a PDF.
+  abrirlo, **con un valor por tarea**. Editar, unir, firmar, convertir a PDF e
+  imágenes a PDF van cada una a su aire: ver lo que acabas de editar tiene
+  sentido, que se abran veinte ficheros convertidos no.
+- **Ajustes en secciones plegables**: la pantalla cabe entera sin desplazarse
+  y cada opción es una línea con su valor a la derecha, en lugar de filas de
+  botones con un párrafo debajo.
 
 ### Corregido
 

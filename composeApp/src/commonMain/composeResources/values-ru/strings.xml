@@ -20,7 +20,7 @@
     <string name="aj_acerca_de">О приложении</string>
     <string name="aj_al_terminar">Когда документ готов</string>
     <string name="aj_al_terminar_abrir">Открыть</string>
-    <string name="aj_al_terminar_desc">Действует при редактировании, объединении, подписании, конвертации в PDF и создании документа из фотографий. В папку он попадёт в любом случае.</string>
+    <string name="aj_al_terminar_desc">Каждая задача по-своему. В вашу папку он попадёт в любом случае.</string>
     <string name="aj_al_terminar_no">Не открывать</string>
     <string name="aj_al_terminar_preguntar">Спросить</string>
     <string name="aj_apariencia">Вид</string>
@@ -28,7 +28,7 @@
     <string name="aj_apoyo">Поддержка</string>
     <string name="aj_ayuda">Справка</string>
     <string name="aj_calidad">Качество предпросмотра</string>
-    <string name="aj_calidad_desc">Влияет только на изображение на экране. Сохранённые файлы всегда сохраняют полное качество.</string>
+    <string name="aj_calidad_desc">Только на экране. Сохранённые файлы не теряют качество.</string>
     <string name="aj_calidad_equilibrada">Сбалансированно</string>
     <string name="aj_calidad_nitida">Чётко</string>
     <string name="aj_calidad_rapida">Быстро</string>
@@ -41,7 +41,7 @@
     <string name="aj_datos">Ваши данные</string>
     <string name="aj_elegir_carpeta">Выбрать папку</string>
     <string name="aj_exportar">Экспорт настроек</string>
-    <string name="aj_exportar_desc">Сохраняет файл %1$s с вашими настройками и подписями. Документы в него не входят: они уже на устройстве.</string>
+    <string name="aj_exportar_desc">Настройки и подписи в одном файле. Документы не входят.</string>
     <string name="aj_guardar_al_final">Только в конце</string>
     <string name="aj_guardar_descargas">Сохранять также в «Загрузки»</string>
     <string name="aj_guardar_descargas_desc">Каждый созданный документ копируется в «Загрузки/NexaPDF», чтобы другие приложения его находили.</string>
@@ -53,7 +53,7 @@
     <string name="aj_importar">Импорт настроек</string>
     <string name="aj_importar_desc">Восстанавливает ранее экспортированный файл %1$s.</string>
     <string name="aj_lectura">Как читать</string>
-    <string name="aj_lectura_desc">По страницам: листаете вбок, по одной странице. Непрерывная прокрутка: все страницы подряд, как читается всё остальное на телефоне.</string>
+    <string name="aj_lectura_desc">Как переходить со страницы на страницу.</string>
     <string name="aj_lectura_lateral">По страницам</string>
     <string name="aj_lectura_vertical">Непрерывная прокрутка</string>
     <string name="aj_modo">Режим</string>
@@ -70,6 +70,15 @@
     <string name="aj_preguntar_compartir">Спрашивать о отправке готового документа</string>
     <string name="aj_resumen_separar">Показывать сводку перед разделением</string>
     <string name="aj_resumen_separar_desc">Разделение создаёт больше всего файлов за раз, и его труднее всего отменить.</string>
+    <string name="aj_seccion_apariencia">Вид и язык</string>
+    <string name="aj_seccion_avisos">Подтверждения и подпись</string>
+    <string name="aj_seccion_copia">Резервная копия</string>
+    <string name="aj_seccion_guardado">Куда сохраняется</string>
+    <string name="aj_tarea_convertir">После конвертации в PDF</string>
+    <string name="aj_tarea_editar">После редактирования</string>
+    <string name="aj_tarea_firmar">После подписания</string>
+    <string name="aj_tarea_imagenes">После создания PDF из фото</string>
+    <string name="aj_tarea_unir">После объединения</string>
     <string name="aj_tema">Тема</string>
     <string name="aj_tema_bosque_claro">Лес, светлая</string>
     <string name="aj_tema_bosque_oscuro">Лес, тёмная</string>
@@ -85,6 +94,7 @@
     <string name="aj_tema_vino_claro">Вино светлая</string>
     <string name="aj_tema_vino_oscuro">Вино тёмная</string>
     <string name="aj_titulo">Настройки</string>
+    <string name="aj_vista">Чтение и вид</string>
     <string name="app_lema">Инструменты PDF, работающие без интернета</string>
     <string name="app_nombre">NexaPDF</string>
     <string name="ayuda_convertir_c">Инструмент «Конвертировать» работает в обе стороны: выберите Word, Excel или PowerPoint — получится PDF; выберите PDF — сами укажете формат. Таблицы в PDF распознаются и становятся настоящими таблицами в Word. Вы получаете содержимое, восстановленное как можно точнее, а не исходный файл Office.</string>

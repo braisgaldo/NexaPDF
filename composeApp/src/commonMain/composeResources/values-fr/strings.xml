@@ -20,7 +20,7 @@
     <string name="aj_acerca_de">À propos</string>
     <string name="aj_al_terminar">Quand un document est prêt</string>
     <string name="aj_al_terminar_abrir">L’ouvrir</string>
-    <string name="aj_al_terminar_desc">Vaut pour modifier, fusionner, signer, convertir en PDF et créer un document à partir de photos. Dans tous les cas il va dans le dossier choisi.</string>
+    <string name="aj_al_terminar_desc">Chaque tâche à sa façon. Dans tous les cas, il va dans votre dossier.</string>
     <string name="aj_al_terminar_no">Ne pas l’ouvrir</string>
     <string name="aj_al_terminar_preguntar">Demander</string>
     <string name="aj_apariencia">Apparence</string>
@@ -28,7 +28,7 @@
     <string name="aj_apoyo">Soutien</string>
     <string name="aj_ayuda">Aide</string>
     <string name="aj_calidad">Qualité de l’aperçu</string>
-    <string name="aj_calidad_desc">N’affecte que l’affichage. Les fichiers enregistrés conservent toujours leur pleine qualité.</string>
+    <string name="aj_calidad_desc">Seulement à l’écran. Les fichiers enregistrés gardent leur qualité.</string>
     <string name="aj_calidad_equilibrada">Équilibrée</string>
     <string name="aj_calidad_nitida">Nette</string>
     <string name="aj_calidad_rapida">Rapide</string>
@@ -41,7 +41,7 @@
     <string name="aj_datos">Vos données</string>
     <string name="aj_elegir_carpeta">Choisir un dossier</string>
     <string name="aj_exportar">Exporter les réglages</string>
-    <string name="aj_exportar_desc">Enregistre un fichier %1$s avec vos préférences et vos signatures. Vos documents n’y figurent pas : ils sont déjà sur votre appareil.</string>
+    <string name="aj_exportar_desc">Vos préférences et signatures dans un fichier. Les documents restent dehors.</string>
     <string name="aj_guardar_al_final">Seulement à la fin</string>
     <string name="aj_guardar_descargas">Enregistrer aussi dans Téléchargements</string>
     <string name="aj_guardar_descargas_desc">Chaque document créé est copié dans Téléchargements/NexaPDF pour que d’autres applis le trouvent.</string>
@@ -53,7 +53,7 @@
     <string name="aj_importar">Importer des réglages</string>
     <string name="aj_importar_desc">Restaure un fichier %1$s exporté auparavant.</string>
     <string name="aj_lectura">Mode de lecture</string>
-    <string name="aj_lectura_desc">Page par page : vous glissez sur le côté et voyez une page à la fois. Défilement continu : toutes à la suite, comme on lit le reste sur un téléphone.</string>
+    <string name="aj_lectura_desc">Comment on passe d’une page à la suivante.</string>
     <string name="aj_lectura_lateral">Page par page</string>
     <string name="aj_lectura_vertical">Défilement continu</string>
     <string name="aj_modo">Mode</string>
@@ -70,6 +70,15 @@
     <string name="aj_preguntar_compartir">Proposer de partager quand un document est prêt</string>
     <string name="aj_resumen_separar">Afficher un résumé avant de diviser</string>
     <string name="aj_resumen_separar_desc">Diviser est ce qui crée le plus de fichiers d’un coup, et le plus difficile à défaire.</string>
+    <string name="aj_seccion_apariencia">Apparence et langue</string>
+    <string name="aj_seccion_avisos">Confirmations et signature</string>
+    <string name="aj_seccion_copia">Sauvegarde</string>
+    <string name="aj_seccion_guardado">Où c’est enregistré</string>
+    <string name="aj_tarea_convertir">Après conversion en PDF</string>
+    <string name="aj_tarea_editar">Après modification</string>
+    <string name="aj_tarea_firmar">Après signature</string>
+    <string name="aj_tarea_imagenes">Après photos en PDF</string>
+    <string name="aj_tarea_unir">Après fusion</string>
     <string name="aj_tema">Thème</string>
     <string name="aj_tema_bosque_claro">Forêt claire</string>
     <string name="aj_tema_bosque_oscuro">Forêt sombre</string>
@@ -85,6 +94,7 @@
     <string name="aj_tema_vino_claro">Vin clair</string>
     <string name="aj_tema_vino_oscuro">Vin sombre</string>
     <string name="aj_titulo">Réglages</string>
+    <string name="aj_vista">Lecture et affichage</string>
     <string name="app_lema">Des outils PDF qui fonctionnent hors ligne</string>
     <string name="app_nombre">NexaPDF</string>
     <string name="ayuda_convertir_c">L’outil Convertir fonctionne dans les deux sens : choisissez un Word, Excel ou PowerPoint et vous obtenez un PDF ; choisissez un PDF et vous décidez du format de sortie. Les tableaux du PDF sont détectés et deviennent de vrais tableaux dans Word. Ce que vous obtenez est le contenu recomposé au mieux, pas le fichier Office d’origine.</string>

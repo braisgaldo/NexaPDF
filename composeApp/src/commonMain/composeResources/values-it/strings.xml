@@ -20,7 +20,7 @@
     <string name="aj_acerca_de">Informazioni</string>
     <string name="aj_al_terminar">Quando un documento è pronto</string>
     <string name="aj_al_terminar_abrir">Aprilo</string>
-    <string name="aj_al_terminar_desc">Vale per modificare, unire, firmare, convertire in PDF e creare un documento con foto. In ogni caso finisce nella cartella che hai scelto.</string>
+    <string name="aj_al_terminar_desc">Ogni operazione a modo suo. In ogni caso finisce nella tua cartella.</string>
     <string name="aj_al_terminar_no">Non aprirlo</string>
     <string name="aj_al_terminar_preguntar">Chiedi</string>
     <string name="aj_apariencia">Aspetto</string>
@@ -28,7 +28,7 @@
     <string name="aj_apoyo">Sostegno</string>
     <string name="aj_ayuda">Aiuto</string>
     <string name="aj_calidad">Qualità dell’anteprima</string>
-    <string name="aj_calidad_desc">Riguarda solo ciò che vedi sullo schermo. I file salvati mantengono sempre la piena qualità.</string>
+    <string name="aj_calidad_desc">Solo a schermo. I file salvati non perdono qualità.</string>
     <string name="aj_calidad_equilibrada">Equilibrata</string>
     <string name="aj_calidad_nitida">Nitida</string>
     <string name="aj_calidad_rapida">Rapida</string>
@@ -41,7 +41,7 @@
     <string name="aj_datos">I tuoi dati</string>
     <string name="aj_elegir_carpeta">Scegli cartella</string>
     <string name="aj_exportar">Esporta impostazioni</string>
-    <string name="aj_exportar_desc">Salva un file %1$s con le tue preferenze e le tue firme. I documenti non sono inclusi: sono già sul tuo dispositivo.</string>
+    <string name="aj_exportar_desc">Preferenze e firme in un file. I documenti restano fuori.</string>
     <string name="aj_guardar_al_final">Solo alla fine</string>
     <string name="aj_guardar_descargas">Salva anche in Download</string>
     <string name="aj_guardar_descargas_desc">Ogni documento creato viene copiato in Download/NexaPDF così altre app possono trovarlo.</string>
@@ -53,7 +53,7 @@
     <string name="aj_importar">Importa impostazioni</string>
     <string name="aj_importar_desc">Ripristina un file %1$s che hai esportato prima.</string>
     <string name="aj_lectura">Come si legge</string>
-    <string name="aj_lectura_desc">Pagina per pagina: scorri di lato e ne vedi una alla volta. Scorrimento continuo: tutte di seguito, come si legge qualsiasi altra cosa sul telefono.</string>
+    <string name="aj_lectura_desc">Come si passa da una pagina all’altra.</string>
     <string name="aj_lectura_lateral">Pagina per pagina</string>
     <string name="aj_lectura_vertical">Scorrimento continuo</string>
     <string name="aj_modo">Modalità</string>
@@ -70,6 +70,15 @@
     <string name="aj_preguntar_compartir">Chiedere se condividere quando un documento è pronto</string>
     <string name="aj_resumen_separar">Mostra un riepilogo prima di dividere</string>
     <string name="aj_resumen_separar_desc">Dividere è ciò che crea più file in una volta, e ciò che costa di più annullare.</string>
+    <string name="aj_seccion_apariencia">Aspetto e lingua</string>
+    <string name="aj_seccion_avisos">Conferme e firma</string>
+    <string name="aj_seccion_copia">Backup</string>
+    <string name="aj_seccion_guardado">Dove si salva</string>
+    <string name="aj_tarea_convertir">Dopo la conversione in PDF</string>
+    <string name="aj_tarea_editar">Dopo la modifica</string>
+    <string name="aj_tarea_firmar">Dopo la firma</string>
+    <string name="aj_tarea_imagenes">Dopo foto in PDF</string>
+    <string name="aj_tarea_unir">Dopo l'unione</string>
     <string name="aj_tema">Tema</string>
     <string name="aj_tema_bosque_claro">Foresta chiara</string>
     <string name="aj_tema_bosque_oscuro">Foresta scura</string>
@@ -85,6 +94,7 @@
     <string name="aj_tema_vino_claro">Vino chiaro</string>
     <string name="aj_tema_vino_oscuro">Vino scuro</string>
     <string name="aj_titulo">Impostazioni</string>
+    <string name="aj_vista">Lettura e vista</string>
     <string name="app_lema">Strumenti PDF che funzionano offline</string>
     <string name="app_nombre">NexaPDF</string>
     <string name="ayuda_convertir_c">Lo strumento Converti funziona in entrambe le direzioni: scegli un Word, Excel o PowerPoint e ottieni un PDF; scegli un PDF e decidi il formato di uscita. Le tabelle del PDF vengono riconosciute e diventano tabelle vere in Word. Ottieni il contenuto ricomposto al meglio, non il file Office originale.</string>

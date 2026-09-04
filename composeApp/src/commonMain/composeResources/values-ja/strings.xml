@@ -20,7 +20,7 @@
     <string name="aj_acerca_de">このアプリについて</string>
     <string name="aj_al_terminar">文書ができたとき</string>
     <string name="aj_al_terminar_abrir">開く</string>
-    <string name="aj_al_terminar_desc">編集・結合・署名・PDF への変換・写真から文書に適用されます。いずれの場合も選んだフォルダーに保存されます。</string>
+    <string name="aj_al_terminar_desc">作業ごとに設定できます。いずれも選んだフォルダーに保存されます。</string>
     <string name="aj_al_terminar_no">開かない</string>
     <string name="aj_al_terminar_preguntar">確認する</string>
     <string name="aj_apariencia">外観</string>
@@ -28,7 +28,7 @@
     <string name="aj_apoyo">応援</string>
     <string name="aj_ayuda">ヘルプ</string>
     <string name="aj_calidad">プレビューの画質</string>
-    <string name="aj_calidad_desc">画面表示だけに影響します。保存されるファイルは常に元の品質のままです。</string>
+    <string name="aj_calidad_desc">画面だけです。保存したファイルの画質は落ちません。</string>
     <string name="aj_calidad_equilibrada">標準</string>
     <string name="aj_calidad_nitida">高精細</string>
     <string name="aj_calidad_rapida">速い</string>
@@ -41,7 +41,7 @@
     <string name="aj_datos">あなたのデータ</string>
     <string name="aj_elegir_carpeta">フォルダーを選ぶ</string>
     <string name="aj_exportar">設定を書き出す</string>
-    <string name="aj_exportar_desc">設定と署名を含む %1$s ファイルを保存します。文書は含まれません。すでに端末にあるからです。</string>
+    <string name="aj_exportar_desc">設定と署名を 1 つのファイルに。文書は含まれません。</string>
     <string name="aj_guardar_al_final">最後だけ</string>
     <string name="aj_guardar_descargas">ダウンロードにも保存する</string>
     <string name="aj_guardar_descargas_desc">作成した文書は「ダウンロード/NexaPDF」にコピーされ、他のアプリからも開けます。</string>
@@ -53,7 +53,7 @@
     <string name="aj_importar">設定を読み込む</string>
     <string name="aj_importar_desc">以前に書き出した %1$s ファイルを復元します。</string>
     <string name="aj_lectura">読み方</string>
-    <string name="aj_lectura_desc">1 ページずつ：横にスワイプして 1 枚ずつ見ます。連続スクロール：全ページが続けて並び、スマートフォンで他のものを読むのと同じです。</string>
+    <string name="aj_lectura_desc">ページからページへの移り方。</string>
     <string name="aj_lectura_lateral">1 ページずつ</string>
     <string name="aj_lectura_vertical">連続スクロール</string>
     <string name="aj_modo">モード</string>
@@ -70,6 +70,15 @@
     <string name="aj_preguntar_compartir">文書ができたら共有するか尋ねる</string>
     <string name="aj_resumen_separar">分割する前に内容を確認する</string>
     <string name="aj_resumen_separar_desc">分割は一度に最も多くのファイルを作り、やり直しが一番大変な操作です。</string>
+    <string name="aj_seccion_apariencia">外観と言語</string>
+    <string name="aj_seccion_avisos">確認と署名</string>
+    <string name="aj_seccion_copia">バックアップ</string>
+    <string name="aj_seccion_guardado">保存先</string>
+    <string name="aj_tarea_convertir">PDF に変換したあと</string>
+    <string name="aj_tarea_editar">編集したあと</string>
+    <string name="aj_tarea_firmar">署名したあと</string>
+    <string name="aj_tarea_imagenes">写真から PDF を作ったあと</string>
+    <string name="aj_tarea_unir">結合したあと</string>
     <string name="aj_tema">テーマ</string>
     <string name="aj_tema_bosque_claro">フォレスト（ライト）</string>
     <string name="aj_tema_bosque_oscuro">フォレスト（ダーク）</string>
@@ -85,6 +94,7 @@
     <string name="aj_tema_vino_claro">ワイン ライト</string>
     <string name="aj_tema_vino_oscuro">ワイン ダーク</string>
     <string name="aj_titulo">設定</string>
+    <string name="aj_vista">表示と読み方</string>
     <string name="app_lema">オフラインで使える PDF ツール</string>
     <string name="app_nombre">NexaPDF</string>
     <string name="ayuda_convertir_c">「変換」は双方向です。Word・Excel・PowerPoint を選べば PDF になり、PDF を選べば出力形式を選べます。PDF 内の表は検出され、Word では本物の表になります。得られるのは可能な限り組み直した内容であり、元の Office ファイルそのものではありません。</string>

@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
+import es.ghatostudio.nexapdf.domain.model.TareaConResultado
 
 /**
  * Preferencias de la aplicacion sobre DataStore.
@@ -42,7 +43,11 @@ class RepositorioAjustes(
         val tourVisto = booleanPreferencesKey("tour_visto")
         val modoGuardado = stringPreferencesKey("modo_guardado")
         val direccionLectura = stringPreferencesKey("direccion_lectura")
-        val aperturaAlTerminar = stringPreferencesKey("apertura_al_terminar")
+        val aperturaEditar = stringPreferencesKey("apertura_editar")
+        val aperturaUnir = stringPreferencesKey("apertura_unir")
+        val aperturaFirmar = stringPreferencesKey("apertura_firmar")
+        val aperturaConvertir = stringPreferencesKey("apertura_convertir")
+        val aperturaImagenes = stringPreferencesKey("apertura_imagenes")
         val carpetaDestino = stringPreferencesKey("carpeta_destino")
         val preguntarCompartir = booleanPreferencesKey("preguntar_compartir")
         val resumenSeparar = booleanPreferencesKey("resumen_separar")
@@ -66,8 +71,14 @@ class RepositorioAjustes(
             modoGuardado = preferencias[Claves.modoGuardado] ?: porDefecto.modoGuardado,
             direccionLectura = preferencias[Claves.direccionLectura]
                 ?: porDefecto.direccionLectura,
-            aperturaAlTerminar = preferencias[Claves.aperturaAlTerminar]
-                ?: porDefecto.aperturaAlTerminar,
+            aperturaEditar = preferencias[Claves.aperturaEditar] ?: porDefecto.aperturaEditar,
+            aperturaUnir = preferencias[Claves.aperturaUnir] ?: porDefecto.aperturaUnir,
+            aperturaFirmar = preferencias[Claves.aperturaFirmar]
+                ?: porDefecto.aperturaFirmar,
+            aperturaConvertir = preferencias[Claves.aperturaConvertir]
+                ?: porDefecto.aperturaConvertir,
+            aperturaImagenes = preferencias[Claves.aperturaImagenes]
+                ?: porDefecto.aperturaImagenes,
             carpetaDestino = preferencias[Claves.carpetaDestino],
             preguntarCompartir = preferencias[Claves.preguntarCompartir]
                 ?: porDefecto.preguntarCompartir,
@@ -140,8 +151,17 @@ class RepositorioAjustes(
     suspend fun fijarDireccionLectura(clave: String) =
         editar { it[Claves.direccionLectura] = clave }
 
-    suspend fun fijarAperturaAlTerminar(clave: String) =
-        editar { it[Claves.aperturaAlTerminar] = clave }
+    suspend fun fijarApertura(tarea: TareaConResultado, clave: String) = editar {
+        it[claveDe(tarea)] = clave
+    }
+
+    private fun claveDe(tarea: TareaConResultado) = when (tarea) {
+        TareaConResultado.EDITAR -> Claves.aperturaEditar
+        TareaConResultado.UNIR -> Claves.aperturaUnir
+        TareaConResultado.FIRMAR -> Claves.aperturaFirmar
+        TareaConResultado.CONVERTIR -> Claves.aperturaConvertir
+        TareaConResultado.IMAGENES -> Claves.aperturaImagenes
+    }
 
     suspend fun fijarPreguntarCompartir(valor: Boolean) =
         editar { it[Claves.preguntarCompartir] = valor }
@@ -180,7 +200,11 @@ class RepositorioAjustes(
         preferencias[Claves.tourVisto] = nuevos.tourVisto
         preferencias[Claves.modoGuardado] = nuevos.modoGuardado
         preferencias[Claves.direccionLectura] = nuevos.direccionLectura
-        preferencias[Claves.aperturaAlTerminar] = nuevos.aperturaAlTerminar
+        preferencias[Claves.aperturaEditar] = nuevos.aperturaEditar
+        preferencias[Claves.aperturaUnir] = nuevos.aperturaUnir
+        preferencias[Claves.aperturaFirmar] = nuevos.aperturaFirmar
+        preferencias[Claves.aperturaConvertir] = nuevos.aperturaConvertir
+        preferencias[Claves.aperturaImagenes] = nuevos.aperturaImagenes
         preferencias[Claves.preguntarCompartir] = nuevos.preguntarCompartir
         preferencias[Claves.resumenSeparar] = nuevos.resumenAlSepararEnPartes
         preferencias[Claves.pedirManuscrita] = nuevos.pedirFirmaManuscrita

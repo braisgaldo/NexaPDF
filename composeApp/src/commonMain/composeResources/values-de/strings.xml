@@ -20,7 +20,7 @@
     <string name="aj_acerca_de">Über</string>
     <string name="aj_al_terminar">Wenn ein Dokument fertig ist</string>
     <string name="aj_al_terminar_abrir">Öffnen</string>
-    <string name="aj_al_terminar_desc">Gilt für Bearbeiten, Zusammenfügen, Signieren, Umwandeln in PDF und Fotos zu einem Dokument machen. Es landet ohnehin im gewählten Ordner.</string>
+    <string name="aj_al_terminar_desc">Jede Aufgabe für sich. In den gewählten Ordner kommt es ohnehin.</string>
     <string name="aj_al_terminar_no">Nicht öffnen</string>
     <string name="aj_al_terminar_preguntar">Fragen</string>
     <string name="aj_apariencia">Darstellung</string>
@@ -28,7 +28,7 @@
     <string name="aj_apoyo">Unterstützung</string>
     <string name="aj_ayuda">Hilfe</string>
     <string name="aj_calidad">Qualität der Vorschau</string>
-    <string name="aj_calidad_desc">Betrifft nur die Bildschirmanzeige. Gespeicherte Dateien behalten stets ihre volle Qualität.</string>
+    <string name="aj_calidad_desc">Nur auf dem Bildschirm. Gespeicherte Dateien behalten ihre Qualität.</string>
     <string name="aj_calidad_equilibrada">Ausgewogen</string>
     <string name="aj_calidad_nitida">Scharf</string>
     <string name="aj_calidad_rapida">Schnell</string>
@@ -41,7 +41,7 @@
     <string name="aj_datos">Ihre Daten</string>
     <string name="aj_elegir_carpeta">Ordner wählen</string>
     <string name="aj_exportar">Einstellungen exportieren</string>
-    <string name="aj_exportar_desc">Speichert eine %1$s-Datei mit Ihren Einstellungen und Unterschriften. Ihre Dokumente sind nicht enthalten: sie liegen bereits auf Ihrem Gerät.</string>
+    <string name="aj_exportar_desc">Ihre Einstellungen und Unterschriften in einer Datei. Dokumente bleiben draußen.</string>
     <string name="aj_guardar_al_final">Nur am Ende</string>
     <string name="aj_guardar_descargas">Auch in Downloads speichern</string>
     <string name="aj_guardar_descargas_desc">Jedes erstellte Dokument wird nach Downloads/NexaPDF kopiert, damit andere Apps es finden.</string>
@@ -53,7 +53,7 @@
     <string name="aj_importar">Einstellungen importieren</string>
     <string name="aj_importar_desc">Stellt eine zuvor exportierte %1$s-Datei wieder her.</string>
     <string name="aj_lectura">Leseweise</string>
-    <string name="aj_lectura_desc">Seite für Seite: seitlich wischen, immer eine Seite. Fortlaufend: alle Seiten hintereinander, wie sonst auch auf dem Telefon.</string>
+    <string name="aj_lectura_desc">Wie man von Seite zu Seite wechselt.</string>
     <string name="aj_lectura_lateral">Seite für Seite</string>
     <string name="aj_lectura_vertical">Fortlaufend scrollen</string>
     <string name="aj_modo">Modus</string>
@@ -70,6 +70,15 @@
     <string name="aj_preguntar_compartir">Nach dem Erstellen fragen, ob geteilt werden soll</string>
     <string name="aj_resumen_separar">Vor dem Teilen eine Übersicht zeigen</string>
     <string name="aj_resumen_separar_desc">Beim Teilen entstehen die meisten Dateien auf einmal, und es lässt sich am schwersten rückgängig machen.</string>
+    <string name="aj_seccion_apariencia">Aussehen und Sprache</string>
+    <string name="aj_seccion_avisos">Nachfragen und Signieren</string>
+    <string name="aj_seccion_copia">Sicherung</string>
+    <string name="aj_seccion_guardado">Wo gespeichert wird</string>
+    <string name="aj_tarea_convertir">Nach dem Umwandeln in PDF</string>
+    <string name="aj_tarea_editar">Nach dem Bearbeiten</string>
+    <string name="aj_tarea_firmar">Nach dem Signieren</string>
+    <string name="aj_tarea_imagenes">Nach Fotos zu PDF</string>
+    <string name="aj_tarea_unir">Nach dem Zusammenfügen</string>
     <string name="aj_tema">Design</string>
     <string name="aj_tema_bosque_claro">Wald hell</string>
     <string name="aj_tema_bosque_oscuro">Wald dunkel</string>
@@ -85,6 +94,7 @@
     <string name="aj_tema_vino_claro">Wein hell</string>
     <string name="aj_tema_vino_oscuro">Wein dunkel</string>
     <string name="aj_titulo">Einstellungen</string>
+    <string name="aj_vista">Lesen und Anzeige</string>
     <string name="app_lema">PDF-Werkzeuge, die offline funktionieren</string>
     <string name="app_nombre">NexaPDF</string>
     <string name="ayuda_convertir_c">Das Werkzeug Umwandeln funktioniert in beide Richtungen: Wählen Sie eine Word-, Excel- oder PowerPoint-Datei, und es entsteht ein PDF; wählen Sie ein PDF, und Sie bestimmen das Zielformat. Tabellen im PDF werden erkannt und in Word zu echten Tabellen. Sie erhalten den bestmöglich zusammengesetzten Inhalt, nicht die ursprüngliche Office-Datei.</string>

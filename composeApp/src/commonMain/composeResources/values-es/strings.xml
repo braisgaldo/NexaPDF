@@ -20,7 +20,7 @@
     <string name="aj_acerca_de">Acerca de</string>
     <string name="aj_al_terminar">Al terminar un documento</string>
     <string name="aj_al_terminar_abrir">Abrirlo</string>
-    <string name="aj_al_terminar_desc">Vale para editar, unir, firmar, convertir a PDF y hacer un documento con fotos. En cualquier caso va a la carpeta que hayas elegido.</string>
+    <string name="aj_al_terminar_desc">Cada tarea a su aire. En cualquier caso va a tu carpeta.</string>
     <string name="aj_al_terminar_no">No abrirlo</string>
     <string name="aj_al_terminar_preguntar">Preguntar</string>
     <string name="aj_apariencia">Apariencia</string>
@@ -28,7 +28,7 @@
     <string name="aj_apoyo">Apoyo</string>
     <string name="aj_ayuda">Ayuda</string>
     <string name="aj_calidad">Calidad de la vista previa</string>
-    <string name="aj_calidad_desc">Solo afecta a lo que ves en pantalla. Los ficheros guardados conservan siempre toda su calidad.</string>
+    <string name="aj_calidad_desc">Sólo en pantalla. Los ficheros guardados no pierden calidad.</string>
     <string name="aj_calidad_equilibrada">Equilibrada</string>
     <string name="aj_calidad_nitida">Nítida</string>
     <string name="aj_calidad_rapida">Rápida</string>
@@ -41,7 +41,7 @@
     <string name="aj_datos">Tus datos</string>
     <string name="aj_elegir_carpeta">Elegir carpeta</string>
     <string name="aj_exportar">Exportar ajustes</string>
-    <string name="aj_exportar_desc">Guarda un fichero %1$s con tus preferencias y tus firmas. Tus documentos no van dentro: ya están en tu dispositivo.</string>
+    <string name="aj_exportar_desc">Tus preferencias y firmas en un fichero. Los documentos no van dentro.</string>
     <string name="aj_guardar_al_final">Sólo al final</string>
     <string name="aj_guardar_descargas">Guardar también en Descargas</string>
     <string name="aj_guardar_descargas_desc">Cada documento que crees se copia a Descargas/NexaPDF para que otras apps puedan encontrarlo.</string>
@@ -53,7 +53,7 @@
     <string name="aj_importar">Importar ajustes</string>
     <string name="aj_importar_desc">Restaura un fichero %1$s que exportaste antes.</string>
     <string name="aj_lectura">Cómo se lee</string>
-    <string name="aj_lectura_desc">Página a página: deslizas de lado y ves una cada vez. Desplazamiento continuo: todas seguidas, como se lee cualquier otra cosa en el teléfono.</string>
+    <string name="aj_lectura_desc">Cómo se pasa de una página a la siguiente.</string>
     <string name="aj_lectura_lateral">Página a página</string>
     <string name="aj_lectura_vertical">Desplazamiento continuo</string>
     <string name="aj_modo">Modo</string>
@@ -70,6 +70,15 @@
     <string name="aj_preguntar_compartir">Preguntar si compartir al terminar un documento</string>
     <string name="aj_resumen_separar">Enseñar un resumen antes de dividir</string>
     <string name="aj_resumen_separar_desc">Dividir es lo que más ficheros crea de una vez, y lo que más cuesta deshacer.</string>
+    <string name="aj_seccion_apariencia">Aspecto e idioma</string>
+    <string name="aj_seccion_avisos">Avisos y firma</string>
+    <string name="aj_seccion_copia">Copia de seguridad</string>
+    <string name="aj_seccion_guardado">Dónde se guarda</string>
+    <string name="aj_tarea_convertir">Al convertir a PDF</string>
+    <string name="aj_tarea_editar">Al editar</string>
+    <string name="aj_tarea_firmar">Al firmar</string>
+    <string name="aj_tarea_imagenes">Al hacer un PDF con fotos</string>
+    <string name="aj_tarea_unir">Al unir</string>
     <string name="aj_tema">Tema</string>
     <string name="aj_tema_bosque_claro">Bosque claro</string>
     <string name="aj_tema_bosque_oscuro">Bosque oscuro</string>
@@ -85,6 +94,7 @@
     <string name="aj_tema_vino_claro">Vino claro</string>
     <string name="aj_tema_vino_oscuro">Vino oscuro</string>
     <string name="aj_titulo">Ajustes</string>
+    <string name="aj_vista">Lectura y vista</string>
     <string name="app_lema">Herramientas PDF que funcionan sin conexión</string>
     <string name="app_nombre">NexaPDF</string>
     <string name="ayuda_convertir_c">La herramienta Convertir funciona en los dos sentidos: eliges un Word, Excel o PowerPoint y sale un PDF, o eliges un PDF y decides a qué formato exportarlo. Las tablas del PDF se detectan y salen como tablas de verdad en Word. Lo que obtienes es el contenido recompuesto lo mejor posible, no el documento de Office original: un PDF guarda letras colocadas sobre una página, no párrafos ni celdas.</string>

@@ -20,7 +20,7 @@
     <string name="aj_acerca_de">Quant a</string>
     <string name="aj_al_terminar">En acabar un document</string>
     <string name="aj_al_terminar_abrir">Obre’l</string>
-    <string name="aj_al_terminar_desc">Val per editar, unir, signar, convertir a PDF i fer un document amb fotos. En qualsevol cas va a la carpeta que hagis triat.</string>
+    <string name="aj_al_terminar_desc">Cada tasca a la seva. En qualsevol cas va a la teva carpeta.</string>
     <string name="aj_al_terminar_no">No l’obris</string>
     <string name="aj_al_terminar_preguntar">Pregunta</string>
     <string name="aj_apariencia">Aparença</string>
@@ -28,7 +28,7 @@
     <string name="aj_apoyo">Suport</string>
     <string name="aj_ayuda">Ajuda</string>
     <string name="aj_calidad">Qualitat de la previsualització</string>
-    <string name="aj_calidad_desc">Només afecta el que veus a la pantalla. Els fitxers desats conserven sempre tota la qualitat.</string>
+    <string name="aj_calidad_desc">Només a la pantalla. Els fitxers desats no perden qualitat.</string>
     <string name="aj_calidad_equilibrada">Equilibrada</string>
     <string name="aj_calidad_nitida">Nítida</string>
     <string name="aj_calidad_rapida">Ràpida</string>
@@ -41,7 +41,7 @@
     <string name="aj_datos">Les teves dades</string>
     <string name="aj_elegir_carpeta">Tria una carpeta</string>
     <string name="aj_exportar">Exporta la configuració</string>
-    <string name="aj_exportar_desc">Desa un fitxer %1$s amb les teves preferències i signatures. Els teus documents no hi són: ja són al teu dispositiu.</string>
+    <string name="aj_exportar_desc">Les teves preferències i signatures en un fitxer. Els documents no hi van.</string>
     <string name="aj_guardar_al_final">Només al final</string>
     <string name="aj_guardar_descargas">Desa també a Baixades</string>
     <string name="aj_guardar_descargas_desc">Cada document que creïs es copia a Baixades/NexaPDF perquè altres aplicacions el puguin trobar.</string>
@@ -53,7 +53,7 @@
     <string name="aj_importar">Importa la configuració</string>
     <string name="aj_importar_desc">Restaura un fitxer %1$s que has exportat abans.</string>
     <string name="aj_lectura">Com es llegeix</string>
-    <string name="aj_lectura_desc">Pàgina a pàgina: llisques de costat i en veus una cada cop. Desplaçament continu: totes seguides, com es llegeix qualsevol altra cosa al telèfon.</string>
+    <string name="aj_lectura_desc">Com es passa d’una pàgina a la següent.</string>
     <string name="aj_lectura_lateral">Pàgina a pàgina</string>
     <string name="aj_lectura_vertical">Desplaçament continu</string>
     <string name="aj_modo">Mode</string>
@@ -70,6 +70,15 @@
     <string name="aj_preguntar_compartir">Preguntar si compartir en acabar un document</string>
     <string name="aj_resumen_separar">Mostra un resum abans de dividir</string>
     <string name="aj_resumen_separar_desc">Dividir és el que més fitxers crea de cop, i el que més costa desfer.</string>
+    <string name="aj_seccion_apariencia">Aspecte i idioma</string>
+    <string name="aj_seccion_avisos">Avisos i signatura</string>
+    <string name="aj_seccion_copia">Còpia de seguretat</string>
+    <string name="aj_seccion_guardado">On es desa</string>
+    <string name="aj_tarea_convertir">En convertir a PDF</string>
+    <string name="aj_tarea_editar">En editar</string>
+    <string name="aj_tarea_firmar">En signar</string>
+    <string name="aj_tarea_imagenes">En fer un PDF amb fotos</string>
+    <string name="aj_tarea_unir">En unir</string>
     <string name="aj_tema">Tema</string>
     <string name="aj_tema_bosque_claro">Bosc clar</string>
     <string name="aj_tema_bosque_oscuro">Bosc fosc</string>
@@ -85,6 +94,7 @@
     <string name="aj_tema_vino_claro">Vi clar</string>
     <string name="aj_tema_vino_oscuro">Vi fosc</string>
     <string name="aj_titulo">Configuració</string>
+    <string name="aj_vista">Lectura i vista</string>
     <string name="app_lema">Eines PDF que funcionen sense connexió</string>
     <string name="app_nombre">NexaPDF</string>
     <string name="ayuda_convertir_c">L’eina Converteix funciona en tots dos sentits: tries un Word, Excel o PowerPoint i en surt un PDF, o tries un PDF i decideixes a quin format exportar-lo. Les taules del PDF es detecten i surten com a taules de debò al Word.</string>

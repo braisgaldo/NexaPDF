@@ -91,10 +91,10 @@ fun TituloSeccion(
     Column(modifier = modifier.fillMaxWidth()) {
         HorizontalDivider(
             color = MaterialTheme.colorScheme.outlineVariant,
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier.padding(top = 10.dp),
         )
         Row(
-            modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 8.dp),
+            modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             if (icono != null) {

@@ -20,7 +20,7 @@
     <string name="aj_acerca_de">关于</string>
     <string name="aj_al_terminar">文档完成后</string>
     <string name="aj_al_terminar_abrir">打开</string>
-    <string name="aj_al_terminar_desc">适用于编辑、合并、签名、转换为 PDF 以及用照片生成文档。无论如何都会保存到你选择的文件夹。</string>
+    <string name="aj_al_terminar_desc">每种任务各自设定。无论如何都会保存到你的文件夹。</string>
     <string name="aj_al_terminar_no">不打开</string>
     <string name="aj_al_terminar_preguntar">询问</string>
     <string name="aj_apariencia">外观</string>
@@ -28,7 +28,7 @@
     <string name="aj_apoyo">支持</string>
     <string name="aj_ayuda">帮助</string>
     <string name="aj_calidad">预览质量</string>
-    <string name="aj_calidad_desc">只影响屏幕显示。保存的文件始终保持原有质量。</string>
+    <string name="aj_calidad_desc">只影响屏幕显示。保存的文件不会损失质量。</string>
     <string name="aj_calidad_equilibrada">均衡</string>
     <string name="aj_calidad_nitida">清晰</string>
     <string name="aj_calidad_rapida">快速</string>
@@ -41,7 +41,7 @@
     <string name="aj_datos">你的数据</string>
     <string name="aj_elegir_carpeta">选择文件夹</string>
     <string name="aj_exportar">导出设置</string>
-    <string name="aj_exportar_desc">保存一个 %1$s 文件，内含你的偏好设置和签名。不包含你的文档，因为它们已经在你的设备上。</string>
+    <string name="aj_exportar_desc">把偏好和签名存成一个文件。文档不包含在内。</string>
     <string name="aj_guardar_al_final">仅在最后</string>
     <string name="aj_guardar_descargas">同时保存到“下载”</string>
     <string name="aj_guardar_descargas_desc">你创建的每个文档都会复制到“下载/NexaPDF”，方便其他应用找到。</string>
@@ -53,7 +53,7 @@
     <string name="aj_importar">导入设置</string>
     <string name="aj_importar_desc">恢复你之前导出的 %1$s 文件。</string>
     <string name="aj_lectura">阅读方式</string>
-    <string name="aj_lectura_desc">逐页翻阅：左右滑动，一次一页。连续滚动：所有页面首尾相接，和手机上读其他内容一样。</string>
+    <string name="aj_lectura_desc">如何从一页翻到下一页。</string>
     <string name="aj_lectura_lateral">逐页翻阅</string>
     <string name="aj_lectura_vertical">连续滚动</string>
     <string name="aj_modo">模式</string>
@@ -70,6 +70,15 @@
     <string name="aj_preguntar_compartir">文档完成后询问是否分享</string>
     <string name="aj_resumen_separar">拆分前显示摘要</string>
     <string name="aj_resumen_separar_desc">拆分一次生成的文件最多，也最难撤销。</string>
+    <string name="aj_seccion_apariencia">外观与语言</string>
+    <string name="aj_seccion_avisos">提示与签名</string>
+    <string name="aj_seccion_copia">备份</string>
+    <string name="aj_seccion_guardado">保存位置</string>
+    <string name="aj_tarea_convertir">转换为 PDF 后</string>
+    <string name="aj_tarea_editar">编辑后</string>
+    <string name="aj_tarea_firmar">签名后</string>
+    <string name="aj_tarea_imagenes">照片转 PDF 后</string>
+    <string name="aj_tarea_unir">合并后</string>
     <string name="aj_tema">主题</string>
     <string name="aj_tema_bosque_claro">森林浅色</string>
     <string name="aj_tema_bosque_oscuro">森林深色</string>
@@ -85,6 +94,7 @@
     <string name="aj_tema_vino_claro">酒红 浅色</string>
     <string name="aj_tema_vino_oscuro">酒红 深色</string>
     <string name="aj_titulo">设置</string>
+    <string name="aj_vista">阅读与显示</string>
     <string name="app_lema">离线可用的 PDF 工具</string>
     <string name="app_nombre">NexaPDF</string>
     <string name="ayuda_convertir_c">「转换」工具双向可用：选择 Word、Excel 或 PowerPoint 会生成 PDF；选择 PDF 则由你决定导出格式。PDF 中的表格会被识别，并在 Word 中还原为真正的表格。得到的是尽力还原的内容，而非原始 Office 文件。</string>

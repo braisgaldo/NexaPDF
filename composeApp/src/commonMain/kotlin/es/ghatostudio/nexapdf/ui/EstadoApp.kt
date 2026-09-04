@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import es.ghatostudio.nexapdf.domain.model.TareaConResultado
 
 /**
  * Estado que vive mientras vive la aplicacion: ajustes, pila de navegacion,
@@ -209,8 +210,8 @@ class EstadoApp(private val contenedor: ContenedorApp) : ViewModel() {
     fun fijarDireccionLectura(clave: String) =
         viewModelScope.launch { contenedor.ajustes.fijarDireccionLectura(clave) }
 
-    fun fijarAperturaAlTerminar(clave: String) =
-        viewModelScope.launch { contenedor.ajustes.fijarAperturaAlTerminar(clave) }
+    fun fijarApertura(tarea: TareaConResultado, clave: String) =
+        viewModelScope.launch { contenedor.ajustes.fijarApertura(tarea, clave) }
 
     fun fijarCarpetaDestino(uri: String?) =
         viewModelScope.launch { contenedor.ajustes.fijarCarpetaDestino(uri) }

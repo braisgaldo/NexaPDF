@@ -288,6 +288,10 @@ Desde el documento puedes:
 
 ## Ajustes
 
+Los ajustes van en **secciones plegables**: la pantalla entera cabe de una vez,
+y se abre la que interese. **Ayuda** y **Acerca de** se quedan siempre a la
+vista, al final.
+
 ### Tema
 
 Trece opciones: **seguir al sistema** más doce temas, seis familias en claro y
@@ -300,6 +304,31 @@ Trece idiomas, cada uno escrito en su propia lengua y con su bandera. La opción
 **Idioma del sistema** usa el que tenga configurado el teléfono.
 
 El árabe cambia la interfaz a **de derecha a izquierda**.
+
+### Cómo se lee
+
+**Página a página** desliza de lado y enseña una cada vez; **desplazamiento
+continuo** las pone todas seguidas, como se lee cualquier otra cosa en el
+teléfono.
+
+### Al terminar un documento
+
+Qué pasa cuando NexaPDF acaba de crear un fichero: **abrirlo**, **preguntar** o
+**no abrirlo**. Se elige **por tarea** —al editar, al unir, al firmar, al
+convertir a PDF y al hacer un PDF con fotos—, porque no piden lo mismo: ver lo
+que acabas de editar tiene sentido, que se abran veinte ficheros convertidos
+no. En cualquier caso el fichero va a la carpeta que hayas elegido.
+
+> Convertir sólo aparece en el sentido que acaba en PDF. Para un `.docx` o un
+> `.xlsx` la aplicación no tiene visor, así que no habría nada que abrir.
+
+### Ofrecer la firma manuscrita
+
+Apagado, firmar va directo al certificado y se salta el primer paso.
+
+### Enseñar un resumen antes de dividir
+
+Apagado, «Crear los ficheros» los crea sin enseñar antes la lista.
 
 ### Calidad de la vista previa
 

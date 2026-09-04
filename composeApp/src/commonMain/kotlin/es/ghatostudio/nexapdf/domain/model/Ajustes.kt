@@ -78,8 +78,20 @@ data class Ajustes(
      */
     val pedirFirmaManuscrita: Boolean = true,
 
-    /** Que hacer con lo recien creado. Ver [AperturaAlTerminar]. */
-    val aperturaAlTerminar: String = AperturaAlTerminar.ABRIR.name,
+    /**
+     * Que hacer con lo recien creado, tarea por tarea.
+     *
+     * Una sola opcion para todas no vale: al editar una pagina se quiere
+     * ver como ha quedado, y al convertir veinte ficheros a PDF lo ultimo
+     * que se quiere es que se abra cada uno. Se guarda un valor por tarea
+     * y no un mapa porque son cinco fijas y las claves sueltas son mas
+     * faciles de leer en el fichero de preferencias.
+     */
+    val aperturaEditar: String = AperturaAlTerminar.ABRIR.name,
+    val aperturaUnir: String = AperturaAlTerminar.ABRIR.name,
+    val aperturaFirmar: String = AperturaAlTerminar.ABRIR.name,
+    val aperturaConvertir: String = AperturaAlTerminar.ABRIR.name,
+    val aperturaImagenes: String = AperturaAlTerminar.ABRIR.name,
 
     // --- Aviso de donacion ---
     val estadoDonacion: String = EstadoDonacion.SIN_MOSTRAR.name,
@@ -99,9 +111,18 @@ data class Ajustes(
 ) {
     val familia: ThemeFamily get() = ThemeFamily.desdeClave(familiaTema)
     val modo: ThemeMode get() = ThemeMode.desdeClave(modoTema)
-    val apertura: AperturaAlTerminar
-        get() = AperturaAlTerminar.entries.firstOrNull { it.name == aperturaAlTerminar }
+    /** Que hacer al terminar [tarea]. */
+    fun apertura(tarea: TareaConResultado): AperturaAlTerminar {
+        val clave = when (tarea) {
+            TareaConResultado.EDITAR -> aperturaEditar
+            TareaConResultado.UNIR -> aperturaUnir
+            TareaConResultado.FIRMAR -> aperturaFirmar
+            TareaConResultado.CONVERTIR -> aperturaConvertir
+            TareaConResultado.IMAGENES -> aperturaImagenes
+        }
+        return AperturaAlTerminar.entries.firstOrNull { it.name == clave }
             ?: AperturaAlTerminar.ABRIR
+    }
 
     val lectura: DireccionLectura
         get() = DireccionLectura.entries.firstOrNull { it.name == direccionLectura }
@@ -165,6 +186,20 @@ data class FirmaGuardada(
  * paso; no abrirlo nunca deja con la duda de si ha salido bien. Como no hay
  * una respuesta buena para los dos, se elige.
  */
+/**
+ * Tareas que dejan un documento nuevo y que por tanto pueden abrirlo.
+ *
+ * Convertir esta solo en el sentido que acaba en PDF: para un .docx o un
+ * .xlsx la aplicacion no tiene visor y no habria nada que abrir.
+ */
+enum class TareaConResultado {
+    EDITAR,
+    UNIR,
+    FIRMAR,
+    CONVERTIR,
+    IMAGENES,
+}
+
 enum class AperturaAlTerminar {
     /** Se abre en cuanto esta listo. */
     ABRIR,
