@@ -41,7 +41,9 @@ docs/google_play/
 ├── graficos/
 │   ├── icono-512.png                  512 x 512, para la ficha
 │   └── grafico-destacado-1024x500.png 1024 x 500
-├── capturas/                          capturas del dispositivo real
+├── capturas/                          8 capturas del dispositivo real
+│                                      (sólo con documentos y certificado de
+│                                       prueba: ningún dato personal)
 └── ficha/<locale>.md                  textos de la ficha en 13 idiomas
 ```
 
@@ -226,7 +228,7 @@ alertas → Crear presupuesto → importe 5 € → avisos al 50 %, 90 % y 100 %
 - [ ] Título, descripción corta y larga en los 13 idiomas (`ficha/`).
 - [ ] Icono 512 × 512 subido.
 - [ ] Gráfico destacado 1024 × 500 subido.
-- [ ] Al menos 2 capturas de teléfono (mínimo de Play; hay 7 en `capturas/`).
+- [ ] Al menos 2 capturas de teléfono (mínimo de Play; hay 8 en `capturas/`).
 - [ ] Categoría: Productividad.
 - [ ] Correo de contacto verificado.
 
