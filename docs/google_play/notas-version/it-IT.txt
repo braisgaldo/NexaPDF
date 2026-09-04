@@ -1,6 +1,9 @@
 Novità
 
-• Proteggi PDF: chiudi un documento con una password, cifrata AES-256, prima di mandare una busta paga o un contratto. La stessa schermata te la toglie dopo.
-• I permessi del PDF si regolano, e l’app dice quanto valgono: richieste che il lettore rispetta se vuole, non un lucchetto.
-• Un PDF con password si apre da qualsiasi strumento.
-• Nell’editor l’immagine inserita si vede mentre la collochi.
+• Proteggere un PDF con password (AES-256) e toglierla poi.
+• Firma elettronica PAdES, lo standard europeo, con il dettaglio di ogni firma.
+• Visore: scorri tra le pagine, scrivi il numero, trascina la barra.
+• Dividere vedendo le pagine, ogni parte con il suo colore.
+• Modificare: disegno, evidenziatore, testo, forme, immagini, filtri.
+• Unire, convertire da e verso Word, Excel e PowerPoint, foto in PDF.
+• Nessun permesso, nessuna connessione, nessuna pubblicità.

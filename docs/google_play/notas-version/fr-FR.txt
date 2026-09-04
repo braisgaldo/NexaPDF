@@ -1,6 +1,9 @@
 Nouveautés
 
-• Protéger un PDF : fermez un document par mot de passe, chiffré en AES-256, avant d’envoyer une fiche de paie ou un contrat. Le même écran le retire ensuite.
-• Les autorisations du PDF se règlent, et l’app dit ce qu’elles valent : des demandes qu’un lecteur respecte s’il le veut, pas un verrou.
-• Un PDF protégé s’ouvre depuis n’importe quel outil.
-• Dans l’éditeur, l’image insérée se voit pendant le placement.
+• Protéger un PDF par mot de passe (AES-256) et le retirer ensuite.
+• Signature électronique PAdES, la norme européenne, avec le détail de chacune.
+• Lecteur : glisser entre les pages, saisir un numéro, faire glisser la barre.
+• Diviser en voyant les pages, chaque partie a sa couleur.
+• Éditer : dessin, surlignage, texte, formes, images, filtres.
+• Fusionner, convertir vers et depuis Word, Excel, PowerPoint.
+• Aucune autorisation, aucun accès Internet, aucune publicité.

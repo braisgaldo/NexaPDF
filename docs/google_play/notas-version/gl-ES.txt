@@ -1,6 +1,9 @@
 Novidades
 
-• Protexer PDF: pecha un documento con contrasinal, cifrado AES-256, antes de mandar unha nómina ou un contrato. A mesma pantalla quítallo despois.
-• Os permisos do PDF axústanse, e dise o que valen: peticións que o lector respecta se quere, non un cadeado.
-• Un PDF con contrasinal xa se pode abrir desde calquera ferramenta.
-• No editor, a imaxe que insires vese mentres a colocas.
+• Protexer un PDF con contrasinal (AES-256) e quitalo despois.
+• Sinatura electrónica PAdES, a da norma europea, co detalle de cada sinatura.
+• Visor: pasa páxina esvarando, escribe o número e arrastra a barra.
+• Dividir vendo as páxinas, cada parte coa súa cor.
+• Editar: debuxar, resaltar, texto, formas, imaxes e filtros.
+• Unir, converter a Word, Excel e PowerPoint e ao revés, e fotos a PDF.
+• Sen permisos, sen internet e sen publicidade.

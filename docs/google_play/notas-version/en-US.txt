@@ -1,6 +1,9 @@
 What's new
 
-• Protect PDF: close a document with a password, AES-256 encrypted, before sending a payslip or a contract. The same screen takes it off again.
-• PDF permissions are adjustable, and the app says what they are worth: requests a reader obeys if it wants to, not a lock.
-• A password-protected PDF now opens from any tool.
-• In the editor, an inserted image is visible while you place it, and weighs what it should.
+• Protect a PDF with a password (AES-256), and remove it later.
+• PAdES electronic signatures, the European standard, with each signature's details in the viewer.
+• Viewer: swipe between pages, type a number to jump, drag the bar.
+• Split with the pages in front of you, each part in its colour.
+• Edit: draw, highlight, text, shapes, images and filters.
+• Merge, convert to and from Word, Excel and PowerPoint, photos to PDF.
+• No permissions, no internet, no ads.

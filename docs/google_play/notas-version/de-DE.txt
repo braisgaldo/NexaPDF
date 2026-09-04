@@ -1,6 +1,9 @@
 Neu
 
-• PDF schützen: ein Dokument mit Passwort schließen, AES-256-verschlüsselt, bevor Sie eine Gehaltsabrechnung oder einen Vertrag verschicken. Derselbe Bildschirm nimmt es wieder weg.
-• PDF-Berechtigungen sind einstellbar, und die App sagt, was sie wert sind: Bitten, keine Schlösser.
-• Ein passwortgeschütztes PDF öffnet sich aus jedem Werkzeug.
-• Im Editor ist ein eingefügtes Bild schon beim Platzieren sichtbar.
+• PDF mit Passwort schützen (AES-256) und später wieder entsperren.
+• PAdES-Signaturen nach europäischer Norm, mit allen Angaben zu jeder Signatur.
+• Betrachter: wischen, Seitenzahl eintippen, Leiste ziehen.
+• Teilen mit den Seiten vor Augen, jeder Teil in eigener Farbe.
+• Bearbeiten: zeichnen, hervorheben, Text, Formen, Bilder, Filter.
+• Zusammenführen, Umwandlung von und nach Word, Excel, PowerPoint, Fotos zu PDF.
+• Keine Berechtigungen, kein Internet, keine Werbung.

@@ -1,6 +1,9 @@
 Novedades
 
-• Proteger PDF: cierra un documento con contraseña, cifrado AES-256, antes de mandar una nómina o un contrato. La misma pantalla se la quita después.
-• Los permisos del PDF se ajustan, y se dice lo que valen: peticiones que el lector respeta si quiere, no un candado.
-• Un PDF con contraseña ya se puede abrir desde cualquier herramienta.
-• En el editor, la imagen que insertas se ve mientras la colocas, y pesa lo que debe.
+• Proteger un PDF con contraseña (AES-256) y quitarla después.
+• Firma electrónica PAdES, la de la norma europea, con el detalle de cada firma en el visor.
+• Visor: pasa página deslizando, escribe el número para saltar y arrastra la barra.
+• Dividir viendo las páginas, cada parte con su color.
+• Editar: dibujar, resaltar, texto, formas, imágenes y filtros.
+• Unir, convertir a Word, Excel y PowerPoint y al revés, y fotos a PDF.
+• Sin permisos, sin internet y sin anuncios.
