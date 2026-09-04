@@ -82,6 +82,10 @@
     <string name="ayuda_editar_t">我可以修改 PDF 里的文字吗？</string>
     <string name="ayuda_firmar_c">手写签名只是画在页面上的图形，适合送货单或内部表单。证书签名使用你的 .p12 或 .pfx 文件，让任何阅读者都能验证文档自签署后未被更改，正式场合应使用它。</string>
     <string name="ayuda_firmar_t">我该用哪种签名？</string>
+    <string name="ayuda_partir_c">合并分两步：先排文档，再排整体的页面。用 + 按钮逐个或一次添加多个，拖动手柄可调整顺序。
+
+拆分时，「拆分为多个部分…」会一次显示所有页面。每个部分有自己的颜色：选中部分，点它的首页再点末页，这一段就会被着色。也可以直接输入页码范围。每个部分都会用你起的名字保存。</string>
+    <string name="ayuda_partir_t">合并与拆分</string>
     <string name="ayuda_privacidad_c">哪儿也不去。NexaPDF 连联网权限都没有，因此即使出错也无法发送任何内容。一切都在你的设备内完成，结果保存在“下载/NexaPDF”。</string>
     <string name="ayuda_privacidad_t">我的文档会去哪里？</string>
     <string name="ayuda_problemas_c">如果文档打不开，可能已损坏或受保护：先试试用别的阅读器打开。如果处理超大文件时内存不足，请先拆分再逐个处理。其他问题请写信到 %1$s，并说明你当时在做什么。</string>
@@ -128,8 +132,8 @@
     <string name="doc_anadir_ficheros">添加文件</string>
     <string name="doc_anadir_pdf">添加 PDF</string>
     <string name="doc_aplicar_orden">应用新顺序</string>
-    <string name="doc_arrastrar_ayuda">长按一页并拖动即可调整顺序。</string>
-    <string name="doc_arrastrar_documentos">长按一个文档并拖动即可调整顺序。</string>
+    <string name="doc_arrastrar_ayuda">拖动页面的手柄，或长按页面，即可调整顺序。</string>
+    <string name="doc_arrastrar_documentos">拖动文档的手柄，或长按文档，即可调整顺序。</string>
     <string name="doc_bajar">下移</string>
     <string name="doc_confirmar_eliminar_texto">它们会从你正在编辑的副本中移除。原始文件不会被改动。</string>
     <string name="doc_confirmar_eliminar_titulo">要删除这些页面吗？</string>
@@ -312,11 +316,16 @@
     <string name="rec_ordenar_por">排序方式</string>
     <string name="rec_vista">切换视图</string>
     <string name="sep_anadir_parte">添加一个部分</string>
+    <string name="sep_crear">创建文件</string>
     <string name="sep_desde">起始页</string>
     <string name="sep_hasta">结束页</string>
     <string name="sep_nombre_parte">文件名</string>
+    <string name="sep_parte_n">第 %1$d 部分</string>
     <string name="sep_quitar_parte">移除此部分</string>
+    <string name="sep_rango">第 %1$s 页</string>
+    <string name="sep_sin_asignar">未分配到任何部分</string>
     <string name="sep_titulo">分成多个部分</string>
+    <string name="sep_toca_paginas">先点这一部分的首页，再点末页。也可以直接输入页码。</string>
     <string name="tour_1_texto">NexaPDF 不申请联网权限，因此无法上传任何内容。一切都在您的设备上完成，无需账号和注册。</string>
     <string name="tour_1_titulo">您的 PDF 不会离开手机</string>
     <string name="tour_2_texto">阅读和搜索 PDF、合并、拆分、把照片变成文档、编辑页面、签名和转换。全部装在一屏内，最近的文件也有自己的入口。</string>

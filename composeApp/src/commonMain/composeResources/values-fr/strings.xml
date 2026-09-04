@@ -82,6 +82,10 @@
     <string name="ayuda_editar_t">Puis-je modifier le texte d’un PDF ?</string>
     <string name="ayuda_firmar_c">La manuscrite est un dessin sur la page : suffisante pour un bon de livraison ou un formulaire interne. Celle par certificat utilise votre fichier .p12 ou .pfx et permet à tout lecteur de vérifier que le document n’a pas changé depuis la signature : c’est celle qui convient pour l’officiel.</string>
     <string name="ayuda_firmar_t">Quelle signature utiliser ?</string>
+    <string name="ayuda_partir_c">La fusion se fait en deux étapes : d’abord l’ordre des documents, puis celui des pages de l’ensemble. Ajoutez-les un par un ou plusieurs à la fois avec le bouton +, et réordonnez en tirant sur la poignée.
+
+Pour diviser, « Diviser en parties… » affiche toutes les pages. Chaque partie a sa couleur : choisissez la partie, touchez sa première page puis la dernière, et la portion se colore. Vous pouvez aussi saisir la plage. Chaque partie garde le nom que vous lui donnez.</string>
+    <string name="ayuda_partir_t">Fusionner et diviser</string>
     <string name="ayuda_privacidad_c">Nulle part. NexaPDF n’a même pas la permission d’accès à internet, il ne peut donc rien envoyer, même par erreur. Tout se passe sur votre appareil et les résultats sont enregistrés dans Téléchargements/NexaPDF.</string>
     <string name="ayuda_privacidad_t">Où vont mes documents ?</string>
     <string name="ayuda_problemas_c">Si un document ne s’ouvre pas, il est peut-être endommagé ou protégé : essayez d’abord un autre lecteur. Si l’appli manque de mémoire sur un très gros fichier, divisez-le et traitez les parties une par une. Pour le reste, écrivez à %1$s en indiquant ce que vous faisiez.</string>
@@ -128,8 +132,8 @@
     <string name="doc_anadir_ficheros">Ajouter des fichiers</string>
     <string name="doc_anadir_pdf">Ajouter un PDF</string>
     <string name="doc_aplicar_orden">Appliquer le nouvel ordre</string>
-    <string name="doc_arrastrar_ayuda">Maintenez une page et faites-la glisser pour changer l’ordre.</string>
-    <string name="doc_arrastrar_documentos">Maintenez un document et faites-le glisser pour changer l’ordre.</string>
+    <string name="doc_arrastrar_ayuda">Faites glisser une page par sa poignée, ou maintenez-la, pour changer l’ordre.</string>
+    <string name="doc_arrastrar_documentos">Faites glisser un document par sa poignée, ou maintenez-le, pour changer l’ordre.</string>
     <string name="doc_bajar">Descendre</string>
     <string name="doc_confirmar_eliminar_texto">Elles seront retirées de la copie en cours. Votre fichier d’origine n’est pas modifié.</string>
     <string name="doc_confirmar_eliminar_titulo">Supprimer ces pages ?</string>
@@ -312,11 +316,16 @@
     <string name="rec_ordenar_por">Trier par</string>
     <string name="rec_vista">Changer d’affichage</string>
     <string name="sep_anadir_parte">Ajouter une partie</string>
+    <string name="sep_crear">Créer les fichiers</string>
     <string name="sep_desde">De</string>
     <string name="sep_hasta">À</string>
     <string name="sep_nombre_parte">Nom du fichier</string>
+    <string name="sep_parte_n">Partie %1$d</string>
     <string name="sep_quitar_parte">Retirer cette partie</string>
+    <string name="sep_rango">Pages %1$s</string>
+    <string name="sep_sin_asignar">Dans aucune partie</string>
     <string name="sep_titulo">Diviser en parties</string>
+    <string name="sep_toca_paginas">Touchez la première page de la partie puis la dernière. Vous pouvez aussi saisir les numéros.</string>
     <string name="tour_1_texto">NexaPDF ne demande pas la permission d’accès à internet : il ne peut rien envoyer. Tout se passe sur votre appareil, sans compte ni inscription.</string>
     <string name="tour_1_titulo">Vos PDF ne quittent pas le téléphone</string>
     <string name="tour_2_texto">Lire et rechercher dans un PDF, fusionner, diviser, transformer des photos en documents, modifier des pages, signer et convertir. Tout tient sur un écran, et vos fichiers récents ont leur propre tuile.</string>

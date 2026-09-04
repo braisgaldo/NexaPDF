@@ -82,6 +82,10 @@
     <string name="ayuda_editar_t">Can I change the text of a PDF?</string>
     <string name="ayuda_firmar_c">The handwritten one is a drawing on the page: fine for a delivery note or an internal form. The certificate one uses your .p12 or .pfx file and lets any reader verify that the document has not changed since you signed it: that is the one for anything official.</string>
     <string name="ayuda_firmar_t">Which signature should I use?</string>
+    <string name="ayuda_partir_c">Merging works in two steps: first put the documents in order, then the pages of the whole. Add them one at a time or several at once with the + button, and drag by the handle to reorder.
+
+To split, «Split into parts…» shows every page at once. Each part has its own colour: pick the part, tap its first page and then its last, and that stretch is painted in. You can also type the range. Each part keeps the name you give it.</string>
+    <string name="ayuda_partir_t">Merging and splitting</string>
     <string name="ayuda_privacidad_c">Nowhere. NexaPDF has no internet permission at all, so it cannot send anything even by mistake. Everything happens inside your device, and the results are saved to Downloads/NexaPDF.</string>
     <string name="ayuda_privacidad_t">Where do my documents go?</string>
     <string name="ayuda_problemas_c">If a document will not open, it may be damaged or protected: try opening it in another reader first. If the app runs out of memory with a very large file, split it into parts and work on them one at a time. For anything else, write to %1$s and say what you were doing.</string>
@@ -128,8 +132,8 @@
     <string name="doc_anadir_ficheros">Add files</string>
     <string name="doc_anadir_pdf">Add PDF</string>
     <string name="doc_aplicar_orden">Apply new order</string>
-    <string name="doc_arrastrar_ayuda">Hold a page and drag it to change the order.</string>
-    <string name="doc_arrastrar_documentos">Hold a document and drag it to change the order.</string>
+    <string name="doc_arrastrar_ayuda">Drag a page by its handle, or hold it, to change the order.</string>
+    <string name="doc_arrastrar_documentos">Drag a document by its handle, or hold it, to change the order.</string>
     <string name="doc_bajar">Move down</string>
     <string name="doc_confirmar_eliminar_texto">They will be removed from the copy you are working on. Your original file is untouched.</string>
     <string name="doc_confirmar_eliminar_titulo">Delete these pages?</string>
@@ -312,11 +316,16 @@
     <string name="rec_ordenar_por">Sort by</string>
     <string name="rec_vista">Change view</string>
     <string name="sep_anadir_parte">Add a part</string>
+    <string name="sep_crear">Create the files</string>
     <string name="sep_desde">From</string>
     <string name="sep_hasta">To</string>
     <string name="sep_nombre_parte">File name</string>
+    <string name="sep_parte_n">Part %1$d</string>
     <string name="sep_quitar_parte">Remove this part</string>
+    <string name="sep_rango">Pages %1$s</string>
+    <string name="sep_sin_asignar">Not in any part</string>
     <string name="sep_titulo">Split into parts</string>
+    <string name="sep_toca_paginas">Tap the first page of the part and then the last one. You can also type the numbers.</string>
     <string name="tour_1_texto">NexaPDF does not ask for internet permission, so it cannot upload anything. Everything happens on your device, with no account and no sign-up.</string>
     <string name="tour_1_titulo">Your PDFs never leave the phone</string>
     <string name="tour_2_texto">Read and search a PDF, merge, split, turn photos into documents, edit pages, sign and convert. Everything fits on one screen, and your recent files have their own tile.</string>

@@ -104,6 +104,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
+import kotlinx.coroutines.delay
 
 /**
  * Raiz de la interfaz: tema, navegacion, avisos y el hilo que une las pantallas
@@ -185,6 +186,10 @@ private fun ContenidoApp(
 
     // Documento recien creado sobre el que preguntar si se comparte.
     var compartirRecienCreado by remember { mutableStateOf<String?>(null) }
+
+    // Lo mismo cuando la operacion ha dejado varios ficheros: se comparten
+    // juntos, en un zip, sin volver a elegirlos uno a uno.
+    var compartirVariosRecienCreados by remember { mutableStateOf<List<String>?>(null) }
 
     // Estado del visor
     var paginaVisor by remember { mutableStateOf<ImageBitmap?>(null) }
@@ -311,6 +316,41 @@ private fun ContenidoApp(
         if (ajustes.preguntarCompartir) compartirRecienCreado = rutaResultado
     }
 
+    /**
+     * Igual que [registrarResultado] pero para una operacion que deja varios
+     * ficheros de golpe: separar en partes o un fichero por pagina.
+     *
+     * Sin esto los resultados de separar se quedaban en la carpeta privada de
+     * la aplicacion aunque el usuario tuviera puesto "guardar paso a paso", y
+     * tampoco se ofrecia compartirlos. Se hacia con unir y con extraer, pero no
+     * con separar, que es justo la operacion que mas ficheros produce.
+     */
+    suspend fun registrarResultados(rutas: List<String>) {
+        if (rutas.isEmpty()) return
+        if (rutas.size == 1) {
+            registrarResultado(rutas.first())
+            return
+        }
+        estado.registrarUsoReal()
+        refrescarRecientes()
+
+        val sacarlosAhora = ajustes.guardado == ModoGuardado.PASO_A_PASO &&
+            ajustes.guardarEnDescargasAlTerminar
+        if (sacarlosAhora) {
+            val carpeta = ajustes.carpetaDestino
+            rutas.forEach { ruta ->
+                val nombre = contenedor.ficheros.nombre(ruta)
+                if (carpeta != null) {
+                    contenedor.servicios.guardarEnCarpeta(ruta, nombre, "application/pdf", carpeta)
+                } else {
+                    contenedor.servicios.guardarEnDescargas(ruta, nombre, "application/pdf")
+                }
+            }
+        }
+        estado.avisar(getString(Res.string.doc_ficheros_creados, rutas.size))
+        if (ajustes.preguntarCompartir) compartirVariosRecienCreados = rutas
+    }
+
     fun rutaDeSalida(nombre: String): String {
         val carpeta = contenedor.servicios.directorioSalida
         contenedor.ficheros.asegurarDirectorio(carpeta)
@@ -334,7 +374,17 @@ private fun ContenidoApp(
 
     // Y se ensena al volver, ya en la pantalla de inicio: nunca encima de algo
     // a medias.
-    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { estado.alVolverAPrimerPlano() }
+    // El aviso solo sale cuando la pantalla lleva un rato quieta en Inicio.
+    // La espera es lo que evita que aparezca al volver del selector de
+    // ficheros, que deja la app en Inicio unas decimas antes de abrir lo que se
+    // acaba de elegir.
+    LaunchedEffect(estado.destinoActual, estado.donacionPendiente) {
+        if (!estado.donacionPendiente || estado.destinoActual != Destino.Inicio) {
+            return@LaunchedEffect
+        }
+        delay(1500)
+        estado.mostrarDonacionSiProcede()
+    }
 
     // --- Aviso pendiente -----------------------------------------------------
     LaunchedEffect(estado.aviso) {
@@ -358,13 +408,13 @@ private fun ContenidoApp(
         estado.ir(Destino.Visor(adoptado.ruta))
     }
 
-    var ajustesLeidos by remember { mutableStateOf(false) }
+    // El tour se decide con el valor que devuelve el repositorio, no con el que
+    // haya en ese instante en el estado: el estado se rellena por su propio
+    // colector y, si se mira antes de que llegue, todavia tiene el valor por
+    // defecto y el tour vuelve a salir en cada arranque.
     LaunchedEffect(Unit) {
-        contenedor.ajustes.ajustes.first()
-        ajustesLeidos = true
-    }
-    LaunchedEffect(ajustesLeidos, ajustes.tourVisto) {
-        if (ajustesLeidos && !ajustes.tourVisto && estado.destinoActual == Destino.Inicio) {
+        val guardados = contenedor.ajustes.ajustes.first()
+        if (!guardados.tourVisto && estado.destinoActual == Destino.Inicio) {
             estado.ir(Destino.Tour)
         }
     }
@@ -591,25 +641,26 @@ private fun ContenidoApp(
                         alcance.launch {
                             val ruta = rutaActiva ?: return@launch
                             estado.empezarTrabajo(textoProcesando)
-                            var creados = 0
-                            // Una llamada por parte, porque cada una lleva su
-                            // propio nombre y el motor nombra por lote.
+                            val creados = mutableListOf<String>()
+                            // Una llamada por parte, con la ruta de salida ya
+                            // decidida: el nombre es el que ha escrito el
+                            // usuario, tal cual. `separar` le pegaria detras el
+                            // rango de paginas y devolveria "informe_part-1
+                            // 1-5.pdf" en vez de "informe_part-1.pdf".
                             partes.forEach { (rango, nombre) ->
-                                val resultado = contenedor.motorPdf.separar(
+                                val salida = rutaDeSalida("${nombre.removeSuffix(".pdf")}.pdf")
+                                val resultado = contenedor.motorPdf.extraerPaginas(
                                     ruta,
-                                    listOf(rango),
-                                    contenedor.servicios.directorioSalida,
-                                    nombre,
+                                    rango.paginas,
+                                    salida,
                                 )
-                                if (resultado is ResultadoPdf.Exito) creados += resultado.valor.size
+                                if (resultado is ResultadoPdf.Exito) creados += resultado.valor
                             }
                             estado.terminarTrabajo()
-                            if (creados > 0) {
-                                estado.registrarUsoReal()
-                                refrescarRecientes()
-                                estado.avisar(getString(Res.string.doc_ficheros_creados, creados))
-                            } else {
+                            if (creados.isEmpty()) {
                                 estado.avisar(mensajeDeError(ErrorPdf.ERROR_ESCRITURA))
+                            } else {
+                                registrarResultados(creados)
                             }
                         }
                     },
@@ -626,16 +677,7 @@ private fun ContenidoApp(
                             )
                             estado.terminarTrabajo()
                             when (resultado) {
-                                is ResultadoPdf.Exito -> {
-                                    estado.registrarUsoReal()
-                                    refrescarRecientes()
-                                    estado.avisar(
-                                        getString(
-                                            Res.string.doc_ficheros_creados,
-                                            resultado.valor.size,
-                                        ),
-                                    )
-                                }
+                                is ResultadoPdf.Exito -> registrarResultados(resultado.valor)
 
                                 is ResultadoPdf.Fallo ->
                                     estado.avisar(mensajeDeError(resultado.causa))
@@ -1123,6 +1165,33 @@ private fun ContenidoApp(
             },
             dismissButton = {
                 TextButton(onClick = { compartirRecienCreado = null }) {
+                    Text(stringResource(Res.string.comun_cancelar))
+                }
+            },
+        )
+    }
+
+    compartirVariosRecienCreados?.let { rutas ->
+        AlertDialog(
+            onDismissRequest = { compartirVariosRecienCreados = null },
+            title = { Text(stringResource(Res.string.comp_pregunta_titulo)) },
+            text = {
+                Text(rutas.joinToString(separator = "\n") { contenedor.ficheros.nombre(it) })
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        compartirVariosRecienCreados = null
+                        alcance.launch {
+                            contenedor.servicios.compartirVarios(rutas, "NexaPDF.zip")
+                        }
+                    },
+                ) {
+                    Text(stringResource(Res.string.comun_compartir))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { compartirVariosRecienCreados = null }) {
                     Text(stringResource(Res.string.comun_cancelar))
                 }
             },

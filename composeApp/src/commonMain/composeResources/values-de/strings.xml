@@ -82,6 +82,10 @@
     <string name="ayuda_editar_t">Kann ich den Text eines PDFs ändern?</string>
     <string name="ayuda_firmar_c">Die handschriftliche ist eine Zeichnung auf der Seite: gut für einen Lieferschein oder ein internes Formular. Die mit Zertifikat nutzt Ihre .p12- oder .pfx-Datei und lässt jeden prüfen, dass sich das Dokument seit der Unterschrift nicht geändert hat: die ist für Offizielles.</string>
     <string name="ayuda_firmar_t">Welche Signatur soll ich nutzen?</string>
+    <string name="ayuda_partir_c">Das Zusammenfügen läuft in zwei Schritten: erst die Dokumente ordnen, dann die Seiten des Ganzen. Fügen Sie sie einzeln oder mehrere auf einmal über die Schaltfläche + hinzu und ordnen Sie sie am Griff.
+
+Zum Teilen zeigt „In Teile teilen…“ alle Seiten auf einmal. Jeder Teil hat seine Farbe: Teil auswählen, erste Seite antippen, dann die letzte – der Abschnitt wird eingefärbt. Der Bereich lässt sich auch eintippen. Jeder Teil behält den Namen, den Sie vergeben.</string>
+    <string name="ayuda_partir_t">Zusammenfügen und teilen</string>
     <string name="ayuda_privacidad_c">Nirgendwohin. NexaPDF hat nicht einmal die Internetberechtigung und kann daher nichts versenden, auch nicht versehentlich. Alles geschieht auf Ihrem Gerät, die Ergebnisse landen in Downloads/NexaPDF.</string>
     <string name="ayuda_privacidad_t">Wohin gehen meine Dokumente?</string>
     <string name="ayuda_problemas_c">Lässt sich ein Dokument nicht öffnen, ist es vielleicht beschädigt oder geschützt: probieren Sie es zuerst in einem anderen Betrachter. Geht der App bei sehr großen Dateien der Speicher aus, teilen Sie sie auf und bearbeiten Sie die Teile einzeln. Für alles andere schreiben Sie an %1$s und schildern Sie, was Sie gerade taten.</string>
@@ -128,8 +132,8 @@
     <string name="doc_anadir_ficheros">Dateien hinzufügen</string>
     <string name="doc_anadir_pdf">PDF hinzufügen</string>
     <string name="doc_aplicar_orden">Neue Reihenfolge anwenden</string>
-    <string name="doc_arrastrar_ayuda">Seite gedrückt halten und ziehen, um die Reihenfolge zu ändern.</string>
-    <string name="doc_arrastrar_documentos">Dokument gedrückt halten und ziehen, um die Reihenfolge zu ändern.</string>
+    <string name="doc_arrastrar_ayuda">Ziehen Sie eine Seite am Griff oder halten Sie sie gedrückt, um die Reihenfolge zu ändern.</string>
+    <string name="doc_arrastrar_documentos">Ziehen Sie ein Dokument am Griff oder halten Sie es gedrückt, um die Reihenfolge zu ändern.</string>
     <string name="doc_bajar">Nach unten</string>
     <string name="doc_confirmar_eliminar_texto">Sie werden aus der Arbeitskopie entfernt. Ihre Originaldatei bleibt unverändert.</string>
     <string name="doc_confirmar_eliminar_titulo">Diese Seiten löschen?</string>
@@ -312,11 +316,16 @@
     <string name="rec_ordenar_por">Sortieren nach</string>
     <string name="rec_vista">Ansicht wechseln</string>
     <string name="sep_anadir_parte">Teil hinzufügen</string>
+    <string name="sep_crear">Dateien erstellen</string>
     <string name="sep_desde">Von</string>
     <string name="sep_hasta">Bis</string>
     <string name="sep_nombre_parte">Dateiname</string>
+    <string name="sep_parte_n">Teil %1$d</string>
     <string name="sep_quitar_parte">Diesen Teil entfernen</string>
+    <string name="sep_rango">Seiten %1$s</string>
+    <string name="sep_sin_asignar">Keinem Teil zugeordnet</string>
     <string name="sep_titulo">In Teile aufteilen</string>
+    <string name="sep_toca_paginas">Tippen Sie auf die erste Seite des Teils und dann auf die letzte. Sie können die Nummern auch eintippen.</string>
     <string name="tour_1_texto">NexaPDF fordert keine Internetberechtigung an und kann daher nichts hochladen. Alles geschieht auf Ihrem Gerät, ohne Konto und ohne Anmeldung.</string>
     <string name="tour_1_titulo">Ihre PDFs verlassen das Telefon nicht</string>
     <string name="tour_2_texto">Ein PDF lesen und durchsuchen, zusammenfügen, teilen, Fotos in Dokumente verwandeln, Seiten bearbeiten, unterschreiben und umwandeln. Alles passt auf einen Bildschirm, und Ihre letzten Dateien haben eine eigene Kachel.</string>

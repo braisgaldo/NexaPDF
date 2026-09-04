@@ -80,10 +80,14 @@ pulsa **Extraer**. Se crea un documento nuevo solo con esas.
 **Para partirlo entero:** pulsa **Un fichero por página**. Cada página se
 convierte en un documento independiente.
 
-**Para partirlo en capítulos:** pulsa **Dividir en partes…** y declara cada
-parte con su rango de páginas y su nombre. Se proponen como
-`documento_part-1`, `documento_part-2`… y puedes cambiar el de cada una.
-Salen todas de una vez.
+**Para partirlo en capítulos:** pulsa **Dividir en partes…**. Se abre una
+pantalla con todas las páginas a la vista. Cada parte tiene su color: elige la
+parte arriba, toca la primera página que le corresponde y luego la última, y el
+tramo se pinta de ese color. Con **Añadir una parte** creas la siguiente, que
+empieza donde acabó la anterior. Si prefieres teclear, las casillas **Desde** y
+**Hasta** siguen ahí. Los nombres se proponen como `documento_part-1`,
+`documento_part-2`… y puedes cambiar el de cada una. Al pulsar **Crear los
+ficheros** salen todas de una vez, con el nombre que hayas puesto.
 
 **Para girar o borrar:** selecciona las páginas y usa **Girar a la izquierda**,
 **Girar a la derecha** o **Eliminar**.

@@ -82,6 +82,10 @@
     <string name="ayuda_editar_t">Podo cambiar o texto dun PDF?</string>
     <string name="ayuda_firmar_c">A manuscrita é un debuxo sobre a páxina: vale para un albará ou un formulario interno. A de certificado usa o teu ficheiro .p12 ou .pfx e permite que calquera lector comprobe que o documento non cambiou desde que o asinaches: esa é a que serve para o oficial.</string>
     <string name="ayuda_firmar_t">Que sinatura debo usar?</string>
+    <string name="ayuda_partir_c">Unir vai en dous pasos: primeiro ordenas os documentos e despois as páxinas do conxunto. Engádelos dun en un ou varios á vez co botón +, e reordénaos arrastrando pola asa.
+
+Para separar, «Dividir en partes…» amosa todas as páxinas de golpe. Cada parte ten a súa cor: escolles a parte, tocas a súa primeira páxina e logo a última, e ese tramo píntase. Tamén podes escribir o rango. Cada parte gárdase co nome que lle poñas.</string>
+    <string name="ayuda_partir_t">Unir e separar</string>
     <string name="ayuda_privacidad_c">A ningún sitio. NexaPDF non ten nin permiso de internet, así que non pode enviar nada nin por erro. Todo ocorre dentro do teu dispositivo, e os resultados gárdanse en Descargas/NexaPDF.</string>
     <string name="ayuda_privacidad_t">A onde van os meus documentos?</string>
     <string name="ayuda_problemas_c">Se un documento non abre, pode estar danado ou protexido: proba a abrilo antes noutro lector. Se a app queda sen memoria cun ficheiro moi grande, sepárao en partes e trabállaas dunha en unha. Para calquera outra cousa, escribe a %1$s contando que estabas a facer.</string>
@@ -128,8 +132,8 @@
     <string name="doc_anadir_ficheros">Engadir ficheiros</string>
     <string name="doc_anadir_pdf">Engadir PDF</string>
     <string name="doc_aplicar_orden">Aplicar a nova orde</string>
-    <string name="doc_arrastrar_ayuda">Mantén premida unha páxina e arrástraa para cambiar a orde.</string>
-    <string name="doc_arrastrar_documentos">Mantén premido un documento e arrástrao para cambiar a orde.</string>
+    <string name="doc_arrastrar_ayuda">Arrastra unha páxina pola súa asa, ou mantena premida, para cambiar a orde.</string>
+    <string name="doc_arrastrar_documentos">Arrastra un documento pola súa asa, ou mantéo premido, para cambiar a orde.</string>
     <string name="doc_bajar">Baixar</string>
     <string name="doc_confirmar_eliminar_texto">Quitaranse da copia coa que traballas. O teu ficheiro orixinal non se toca.</string>
     <string name="doc_confirmar_eliminar_titulo">Eliminar estas páxinas?</string>
@@ -312,11 +316,16 @@
     <string name="rec_ordenar_por">Ordenar por</string>
     <string name="rec_vista">Cambiar a vista</string>
     <string name="sep_anadir_parte">Engadir unha parte</string>
+    <string name="sep_crear">Crear os ficheiros</string>
     <string name="sep_desde">Desde</string>
     <string name="sep_hasta">Ata</string>
     <string name="sep_nombre_parte">Nome do ficheiro</string>
+    <string name="sep_parte_n">Parte %1$d</string>
     <string name="sep_quitar_parte">Quitar esta parte</string>
+    <string name="sep_rango">Páxinas %1$s</string>
+    <string name="sep_sin_asignar">Sen parte asignada</string>
     <string name="sep_titulo">Dividir en partes</string>
+    <string name="sep_toca_paginas">Toca a primeira páxina da parte e logo a última. Tamén podes escribir os números.</string>
     <string name="tour_1_texto">NexaPDF non pide permiso de internet, así que non pode subir nada. Todo ocorre no teu dispositivo, sen conta e sen rexistro.</string>
     <string name="tour_1_titulo">Os teus PDF non saen do teléfono</string>
     <string name="tour_2_texto">Ler e buscar nun PDF, unir, separar, converter fotos en documentos, editar páxinas, asinar e converter. Todo cabe nunha pantalla, e os teus ficheiros recentes teñen a súa propia baldosa.</string>

@@ -82,6 +82,10 @@
     <string name="ayuda_editar_t">Posso cambiare il testo di un PDF?</string>
     <string name="ayuda_firmar_c">Quella autografa è un disegno sulla pagina: va bene per una bolla o un modulo interno. Quella con certificato usa il tuo file .p12 o .pfx e permette a chiunque di verificare che il documento non sia cambiato dopo la firma: è quella per le cose ufficiali.</string>
     <string name="ayuda_firmar_t">Quale firma devo usare?</string>
+    <string name="ayuda_partir_c">Unire avviene in due passi: prima l’ordine dei documenti, poi quello delle pagine dell’insieme. Aggiungili uno alla volta o più insieme con il pulsante +, e riordinali trascinando dalla maniglia.
+
+Per dividere, «Dividi in parti…» mostra tutte le pagine in una volta. Ogni parte ha il suo colore: scegli la parte, tocca la sua prima pagina e poi l’ultima, e quel tratto si colora. Puoi anche scrivere l’intervallo. Ogni parte conserva il nome che le dai.</string>
+    <string name="ayuda_partir_t">Unire e dividere</string>
     <string name="ayuda_privacidad_c">Da nessuna parte. NexaPDF non ha nemmeno il permesso di accedere a internet, quindi non può inviare nulla nemmeno per sbaglio. Tutto avviene sul tuo dispositivo e i risultati vanno in Download/NexaPDF.</string>
     <string name="ayuda_privacidad_t">Dove finiscono i miei documenti?</string>
     <string name="ayuda_problemas_c">Se un documento non si apre, potrebbe essere danneggiato o protetto: prova prima con un altro lettore. Se l’app esaurisce la memoria con un file molto grande, dividilo e lavora una parte alla volta. Per tutto il resto, scrivi a %1$s raccontando cosa stavi facendo.</string>
@@ -128,8 +132,8 @@
     <string name="doc_anadir_ficheros">Aggiungi file</string>
     <string name="doc_anadir_pdf">Aggiungi PDF</string>
     <string name="doc_aplicar_orden">Applica il nuovo ordine</string>
-    <string name="doc_arrastrar_ayuda">Tieni premuta una pagina e trascinala per cambiare l’ordine.</string>
-    <string name="doc_arrastrar_documentos">Tieni premuto un documento e trascinalo per cambiare l’ordine.</string>
+    <string name="doc_arrastrar_ayuda">Trascina una pagina dalla maniglia, o tienila premuta, per cambiare l’ordine.</string>
+    <string name="doc_arrastrar_documentos">Trascina un documento dalla maniglia, o tienilo premuto, per cambiare l’ordine.</string>
     <string name="doc_bajar">Sposta giù</string>
     <string name="doc_confirmar_eliminar_texto">Verranno rimosse dalla copia su cui stai lavorando. Il file originale resta intatto.</string>
     <string name="doc_confirmar_eliminar_titulo">Eliminare queste pagine?</string>
@@ -312,11 +316,16 @@
     <string name="rec_ordenar_por">Ordina per</string>
     <string name="rec_vista">Cambia vista</string>
     <string name="sep_anadir_parte">Aggiungi una parte</string>
+    <string name="sep_crear">Crea i file</string>
     <string name="sep_desde">Da</string>
     <string name="sep_hasta">A</string>
     <string name="sep_nombre_parte">Nome del file</string>
+    <string name="sep_parte_n">Parte %1$d</string>
     <string name="sep_quitar_parte">Rimuovi questa parte</string>
+    <string name="sep_rango">Pagine %1$s</string>
+    <string name="sep_sin_asignar">In nessuna parte</string>
     <string name="sep_titulo">Dividi in parti</string>
+    <string name="sep_toca_paginas">Tocca la prima pagina della parte e poi l’ultima. Puoi anche scrivere i numeri.</string>
     <string name="tour_1_texto">NexaPDF non chiede il permesso di accesso a internet, quindi non può caricare nulla. Tutto avviene sul tuo dispositivo, senza account né registrazione.</string>
     <string name="tour_1_titulo">I tuoi PDF non escono dal telefono</string>
     <string name="tour_2_texto">Leggere e cercare in un PDF, unire, dividere, trasformare foto in documenti, modificare pagine, firmare e convertire. Tutto sta in una schermata, e i file recenti hanno la loro casella.</string>

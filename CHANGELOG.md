@@ -23,8 +23,9 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
   compartir en el visor.
 - **Unir en dos pasos**: primero los documentos, después las páginas. Empieza
   con la lista vacía y se van añadiendo de uno en uno o de varios en varios.
-- **Separar en partes** declarando de una vez el rango y el nombre de cada una,
-  propuestos como `documento_part-1`.
+- **Separar en partes** con las páginas a la vista: cada parte tiene su color y
+  se marca tocando la primera página y luego la última, o escribiendo el rango.
+  Los nombres se proponen como `documento_part-1` y se pueden cambiar.
 - **Editor**: mover, escalar y girar cualquier cosa añadida; texto visible
   mientras se coloca, con fondo de color opcional; **goma** que tapa con el
   color de la página; **recorte** de página; rueda de color; zoom con dos dedos.
@@ -49,6 +50,24 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
   estrictos la rechazaban sin llegar a comprobarla.
 - Los `.docx` y `.xlsx` guardados como `octet-stream` no se podían elegir y el
   sistema ofrecía abrirlos con otra aplicación.
+- El tour de bienvenida volvía a salir en cada arranque aunque ya se hubiera
+  visto o saltado.
+- Los ficheros de «Dividir en partes» llevaban el rango de páginas pegado al
+  nombre, no se copiaban a la carpeta de destino y no ofrecían compartirse.
+- El aviso de donación aparecía al volver del selector de ficheros, encima del
+  documento que se acababa de elegir.
+- En el editor, la goma, el recorte y el borrado quedaban fuera de la pantalla:
+  las once herramientas iban en una fila que había que desplazar, y la rueda de
+  color tampoco se veía.
+- El recorte de página no se dibujaba: sólo un rótulo decía que existía, sin
+  poder comprobar qué parte se conservaba.
+- La goma enseñaba la paleta de colores aunque tape siempre con el color de la
+  página.
+- Las asas de escalar y girar caían encima de las últimas letras del texto.
+- Las páginas sólo se reordenaban manteniéndolas pulsadas: ahora tienen asa,
+  como los documentos.
+- Los nombres de los documentos a unir se partían a mitad de palabra en dos
+  líneas.
 
 
 ## [1.0.0] — 2026-09-03

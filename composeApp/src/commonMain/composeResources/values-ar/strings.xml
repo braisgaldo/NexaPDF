@@ -82,6 +82,10 @@
     <string name="ayuda_editar_t">هل يمكنني تغيير نص ملف PDF؟</string>
     <string name="ayuda_firmar_c">التوقيع بخط اليد مجرد رسم على الصفحة، ويكفي لإذن تسليم أو نموذج داخلي. أما التوقيع بالشهادة فيستخدم ملف ‎.p12 أو ‎.pfx ويتيح لأي قارئ التحقق من أن المستند لم يتغيّر بعد توقيعه، وهو المناسب للأمور الرسمية.</string>
     <string name="ayuda_firmar_t">أي توقيع ينبغي أن أستخدم؟</string>
+    <string name="ayuda_partir_c">الدمج يتم في خطوتين: أولًا ترتيب المستندات، ثم ترتيب صفحات المجموع. أضفها واحدًا واحدًا أو عدة معًا بزر +، وأعد ترتيبها بالسحب من المقبض.
+
+وللفصل، يعرض «تقسيم إلى أجزاء…» كل الصفحات دفعة واحدة. لكل جزء لونه: اختر الجزء، والمس أول صفحة له ثم آخر صفحة، فيُلوَّن هذا المقطع. ويمكنك كتابة النطاق أيضًا. ويُحفظ كل جزء بالاسم الذي تعطيه له.</string>
+    <string name="ayuda_partir_t">الدمج والفصل</string>
     <string name="ayuda_privacidad_c">إلى لا مكان. لا يملك NexaPDF حتى إذن الوصول إلى الإنترنت، فلا يستطيع إرسال أي شيء ولو بالخطأ. كل شيء يجري داخل جهازك، وتُحفظ النتائج في التنزيلات/NexaPDF.</string>
     <string name="ayuda_privacidad_t">إلى أين تذهب مستنداتي؟</string>
     <string name="ayuda_problemas_c">إذا تعذّر فتح مستند، فقد يكون تالفًا أو محميًا: جرّب فتحه أولًا في قارئ آخر. وإذا نفدت ذاكرة التطبيق مع ملف ضخم، فقسّمه واعمل على أجزائه واحدًا تلو الآخر. ولأي أمر آخر، راسل %1$s موضّحًا ما كنت تفعله.</string>
@@ -128,8 +132,8 @@
     <string name="doc_anadir_ficheros">إضافة ملفات</string>
     <string name="doc_anadir_pdf">إضافة PDF</string>
     <string name="doc_aplicar_orden">تطبيق الترتيب الجديد</string>
-    <string name="doc_arrastrar_ayuda">اضغط مطولًا على صفحة واسحبها لتغيير الترتيب.</string>
-    <string name="doc_arrastrar_documentos">اضغط مطولًا على مستند واسحبه لتغيير الترتيب.</string>
+    <string name="doc_arrastrar_ayuda">اسحب الصفحة من مقبضها، أو اضغط عليها مطولًا، لتغيير الترتيب.</string>
+    <string name="doc_arrastrar_documentos">اسحب المستند من مقبضه، أو اضغط عليه مطولًا، لتغيير الترتيب.</string>
     <string name="doc_bajar">تحريك لأسفل</string>
     <string name="doc_confirmar_eliminar_texto">ستُزال من النسخة التي تعمل عليها. ملفك الأصلي لن يتغيّر.</string>
     <string name="doc_confirmar_eliminar_titulo">هل تريد حذف هذه الصفحات؟</string>
@@ -312,11 +316,16 @@
     <string name="rec_ordenar_por">الترتيب حسب</string>
     <string name="rec_vista">تغيير طريقة العرض</string>
     <string name="sep_anadir_parte">إضافة جزء</string>
+    <string name="sep_crear">إنشاء الملفات</string>
     <string name="sep_desde">من</string>
     <string name="sep_hasta">إلى</string>
     <string name="sep_nombre_parte">اسم الملف</string>
+    <string name="sep_parte_n">الجزء %1$d</string>
     <string name="sep_quitar_parte">إزالة هذا الجزء</string>
+    <string name="sep_rango">الصفحات %1$s</string>
+    <string name="sep_sin_asignar">ليست ضمن أي جزء</string>
     <string name="sep_titulo">التقسيم إلى أجزاء</string>
+    <string name="sep_toca_paginas">المس أول صفحة في الجزء ثم آخر صفحة. ويمكنك كتابة الأرقام أيضًا.</string>
     <string name="tour_1_texto">لا يطلب NexaPDF إذن الإنترنت، لذا لا يمكنه رفع أي شيء. كل شيء يجري على جهازك، بلا حساب ولا تسجيل.</string>
     <string name="tour_1_titulo">ملفات PDF لا تغادر هاتفك</string>
     <string name="tour_2_texto">قراءة PDF والبحث فيه، والدمج، والفصل، وتحويل الصور إلى مستندات، وتحرير الصفحات، والتوقيع، والتحويل. كل ذلك في شاشة واحدة، وللملفات الأخيرة مربّعها الخاص.</string>

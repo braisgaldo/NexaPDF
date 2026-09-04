@@ -3,6 +3,36 @@
 """Textos de Ayuda, Acerca de, donacion, accesibilidad y plurales."""
 
 TEXTOS = {
+    "ayuda_partir_t": {
+        "en": "Merging and splitting",
+        "es": "Unir y separar",
+        "fr": "Fusionner et diviser",
+        "de": "Zusammenfügen und teilen",
+        "zh": "合并与拆分",
+        "ja": "結合と分割",
+        "ru": "Объединение и разделение",
+        "it": "Unire e dividere",
+        "el": "Ένωση και διαχωρισμός",
+        "ar": "الدمج والفصل",
+        "gl": "Unir e separar",
+        "ca": "Unir i separar",
+        "eu": "Batu eta banandu",
+    },
+    "ayuda_partir_c": {
+        "en": "Merging works in two steps: first put the documents in order, then the pages of the whole. Add them one at a time or several at once with the + button, and drag by the handle to reorder.\n\nTo split, «Split into parts…» shows every page at once. Each part has its own colour: pick the part, tap its first page and then its last, and that stretch is painted in. You can also type the range. Each part keeps the name you give it.",
+        "es": "Unir va en dos pasos: primero ordenas los documentos y después las páginas del conjunto. Los añades de uno en uno o varios a la vez con el botón +, y los reordenas arrastrando por el asa.\n\nPara separar, «Dividir en partes…» enseña todas las páginas de golpe. Cada parte tiene su color: eliges la parte, tocas su primera página y luego la última, y ese tramo se pinta. También puedes escribir el rango. Cada parte se guarda con el nombre que le pongas.",
+        "fr": "La fusion se fait en deux étapes : d’abord l’ordre des documents, puis celui des pages de l’ensemble. Ajoutez-les un par un ou plusieurs à la fois avec le bouton +, et réordonnez en tirant sur la poignée.\n\nPour diviser, « Diviser en parties… » affiche toutes les pages. Chaque partie a sa couleur : choisissez la partie, touchez sa première page puis la dernière, et la portion se colore. Vous pouvez aussi saisir la plage. Chaque partie garde le nom que vous lui donnez.",
+        "de": "Das Zusammenfügen läuft in zwei Schritten: erst die Dokumente ordnen, dann die Seiten des Ganzen. Fügen Sie sie einzeln oder mehrere auf einmal über die Schaltfläche + hinzu und ordnen Sie sie am Griff.\n\nZum Teilen zeigt „In Teile teilen…“ alle Seiten auf einmal. Jeder Teil hat seine Farbe: Teil auswählen, erste Seite antippen, dann die letzte – der Abschnitt wird eingefärbt. Der Bereich lässt sich auch eintippen. Jeder Teil behält den Namen, den Sie vergeben.",
+        "zh": "合并分两步：先排文档，再排整体的页面。用 + 按钮逐个或一次添加多个，拖动手柄可调整顺序。\n\n拆分时，「拆分为多个部分…」会一次显示所有页面。每个部分有自己的颜色：选中部分，点它的首页再点末页，这一段就会被着色。也可以直接输入页码范围。每个部分都会用你起的名字保存。",
+        "ja": "結合は 2 段階です。まず文書の順番、次に全体のページの順番。+ ボタンで 1 つずつでも複数まとめてでも追加でき、ハンドルをドラッグして並べ替えます。\n\n分割では「パートに分ける…」がすべてのページを一度に表示します。パートごとに色があり、パートを選んで最初のページ、次に最後のページをタップすると、その範囲に色がつきます。番号を入力しても構いません。各パートは付けた名前で保存されます。",
+        "ru": "Объединение идёт в два шага: сначала порядок документов, затем порядок страниц целого. Добавляйте их по одному или сразу несколько кнопкой +, а порядок меняйте перетаскиванием за маркер.\n\nДля разделения «Разделить на части…» показывает все страницы сразу. У каждой части свой цвет: выберите часть, нажмите её первую страницу, затем последнюю — отрезок закрасится. Диапазон можно и ввести. Каждая часть сохраняется под тем именем, которое вы дадите.",
+        "it": "Unire avviene in due passi: prima l’ordine dei documenti, poi quello delle pagine dell’insieme. Aggiungili uno alla volta o più insieme con il pulsante +, e riordinali trascinando dalla maniglia.\n\nPer dividere, «Dividi in parti…» mostra tutte le pagine in una volta. Ogni parte ha il suo colore: scegli la parte, tocca la sua prima pagina e poi l’ultima, e quel tratto si colora. Puoi anche scrivere l’intervallo. Ogni parte conserva il nome che le dai.",
+        "el": "Η ένωση γίνεται σε δύο βήματα: πρώτα η σειρά των εγγράφων, μετά των σελίδων του συνόλου. Προσθέστε τα ένα-ένα ή πολλά μαζί με το κουμπί +, και αλλάξτε σειρά σύροντας από τη λαβή.\n\nΓια διαχωρισμό, το «Διαχωρισμός σε μέρη…» δείχνει όλες τις σελίδες μαζί. Κάθε μέρος έχει το χρώμα του: διαλέγετε το μέρος, πατάτε την πρώτη σελίδα και μετά την τελευταία, και το τμήμα χρωματίζεται. Μπορείτε και να γράψετε το εύρος. Κάθε μέρος κρατά το όνομα που του δίνετε.",
+        "ar": "الدمج يتم في خطوتين: أولًا ترتيب المستندات، ثم ترتيب صفحات المجموع. أضفها واحدًا واحدًا أو عدة معًا بزر +، وأعد ترتيبها بالسحب من المقبض.\n\nوللفصل، يعرض «تقسيم إلى أجزاء…» كل الصفحات دفعة واحدة. لكل جزء لونه: اختر الجزء، والمس أول صفحة له ثم آخر صفحة، فيُلوَّن هذا المقطع. ويمكنك كتابة النطاق أيضًا. ويُحفظ كل جزء بالاسم الذي تعطيه له.",
+        "gl": "Unir vai en dous pasos: primeiro ordenas os documentos e despois as páxinas do conxunto. Engádelos dun en un ou varios á vez co botón +, e reordénaos arrastrando pola asa.\n\nPara separar, «Dividir en partes…» amosa todas as páxinas de golpe. Cada parte ten a súa cor: escolles a parte, tocas a súa primeira páxina e logo a última, e ese tramo píntase. Tamén podes escribir o rango. Cada parte gárdase co nome que lle poñas.",
+        "ca": "Unir va en dos passos: primer ordenes els documents i després les pàgines del conjunt. Els afegeixes d’un en un o uns quants alhora amb el botó +, i els reordenes arrossegant per la nansa.\n\nPer separar, «Divideix en parts…» mostra totes les pàgines de cop. Cada part té el seu color: tries la part, toques la seva primera pàgina i després l’última, i aquest tram es pinta. També pots escriure l’interval. Cada part es desa amb el nom que li posis.",
+        "eu": "Batzea bi urratsetan doa: lehenik dokumentuak ordenatzen dituzu eta gero multzoaren orriak. + botoiarekin banaka edo hainbat batera gehitzen dituzu, eta heldulekutik arrastatuz berrantolatzen.\n\nBanantzeko, «Zatitan banandu…» orri guztiak batera erakusten ditu. Zati bakoitzak bere kolorea du: zatia aukeratu, bere lehen orria ukitu eta gero azkena, eta tarte hori margotzen da. Barrutia idatz dezakezu ere. Zati bakoitza jartzen diozun izenarekin gordetzen da.",
+    },
     # --- Ayuda ---------------------------------------------------------------
     "ayuda_titulo": {
         "en": "Help", "es": "Ayuda", "fr": "Aide", "de": "Hilfe",

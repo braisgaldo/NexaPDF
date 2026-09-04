@@ -82,6 +82,10 @@
     <string name="ayuda_editar_t">Μπορώ να αλλάξω το κείμενο ενός PDF;</string>
     <string name="ayuda_firmar_c">Η χειρόγραφη είναι ένα σχέδιο πάνω στη σελίδα: αρκεί για ένα δελτίο αποστολής ή μια εσωτερική φόρμα. Η υπογραφή με πιστοποιητικό χρησιμοποιεί το αρχείο .p12 ή .pfx και επιτρέπει σε οποιονδήποτε να επαληθεύσει ότι το έγγραφο δεν άλλαξε: αυτή χρειάζεται για τα επίσημα.</string>
     <string name="ayuda_firmar_t">Ποια υπογραφή να χρησιμοποιήσω;</string>
+    <string name="ayuda_partir_c">Η ένωση γίνεται σε δύο βήματα: πρώτα η σειρά των εγγράφων, μετά των σελίδων του συνόλου. Προσθέστε τα ένα-ένα ή πολλά μαζί με το κουμπί +, και αλλάξτε σειρά σύροντας από τη λαβή.
+
+Για διαχωρισμό, το «Διαχωρισμός σε μέρη…» δείχνει όλες τις σελίδες μαζί. Κάθε μέρος έχει το χρώμα του: διαλέγετε το μέρος, πατάτε την πρώτη σελίδα και μετά την τελευταία, και το τμήμα χρωματίζεται. Μπορείτε και να γράψετε το εύρος. Κάθε μέρος κρατά το όνομα που του δίνετε.</string>
+    <string name="ayuda_partir_t">Ένωση και διαχωρισμός</string>
     <string name="ayuda_privacidad_c">Πουθενά. Το NexaPDF δεν έχει καν άδεια πρόσβασης στο διαδίκτυο, οπότε δεν μπορεί να στείλει τίποτα ούτε κατά λάθος. Όλα γίνονται στη συσκευή σας και τα αποτελέσματα αποθηκεύονται στο Λήψεις/NexaPDF.</string>
     <string name="ayuda_privacidad_t">Πού πηγαίνουν τα έγγραφά μου;</string>
     <string name="ayuda_problemas_c">Αν ένα έγγραφο δεν ανοίγει, ίσως είναι κατεστραμμένο ή προστατευμένο: δοκιμάστε πρώτα σε άλλο πρόγραμμα. Αν τελειώσει η μνήμη με πολύ μεγάλο αρχείο, χωρίστε το και δουλέψτε ένα κομμάτι τη φορά. Για οτιδήποτε άλλο, γράψτε στο %1$s περιγράφοντας τι κάνατε.</string>
@@ -128,8 +132,8 @@
     <string name="doc_anadir_ficheros">Προσθήκη αρχείων</string>
     <string name="doc_anadir_pdf">Προσθήκη PDF</string>
     <string name="doc_aplicar_orden">Εφαρμογή νέας σειράς</string>
-    <string name="doc_arrastrar_ayuda">Κρατήστε πατημένη μια σελίδα και σύρετέ την για να αλλάξετε τη σειρά.</string>
-    <string name="doc_arrastrar_documentos">Κρατήστε πατημένο ένα έγγραφο και σύρετέ το για να αλλάξετε τη σειρά.</string>
+    <string name="doc_arrastrar_ayuda">Σύρετε μια σελίδα από τη λαβή της, ή κρατήστε την πατημένη, για να αλλάξετε τη σειρά.</string>
+    <string name="doc_arrastrar_documentos">Σύρετε ένα έγγραφο από τη λαβή του, ή κρατήστε το πατημένο, για να αλλάξετε τη σειρά.</string>
     <string name="doc_bajar">Μετακίνηση κάτω</string>
     <string name="doc_confirmar_eliminar_texto">Θα αφαιρεθούν από το αντίγραφο εργασίας. Το πρωτότυπο αρχείο σας δεν αλλάζει.</string>
     <string name="doc_confirmar_eliminar_titulo">Διαγραφή αυτών των σελίδων;</string>
@@ -312,11 +316,16 @@
     <string name="rec_ordenar_por">Ταξινόμηση κατά</string>
     <string name="rec_vista">Αλλαγή προβολής</string>
     <string name="sep_anadir_parte">Προσθήκη μέρους</string>
+    <string name="sep_crear">Δημιουργία αρχείων</string>
     <string name="sep_desde">Από</string>
     <string name="sep_hasta">Έως</string>
     <string name="sep_nombre_parte">Όνομα αρχείου</string>
+    <string name="sep_parte_n">Μέρος %1$d</string>
     <string name="sep_quitar_parte">Αφαίρεση μέρους</string>
+    <string name="sep_rango">Σελίδες %1$s</string>
+    <string name="sep_sin_asignar">Σε κανένα μέρος</string>
     <string name="sep_titulo">Διαχωρισμός σε μέρη</string>
+    <string name="sep_toca_paginas">Πατήστε την πρώτη σελίδα του μέρους και μετά την τελευταία. Μπορείτε και να γράψετε τους αριθμούς.</string>
     <string name="tour_1_texto">Το NexaPDF δεν ζητά άδεια για internet, οπότε δεν μπορεί να ανεβάσει τίποτα. Όλα γίνονται στη συσκευή σας, χωρίς λογαριασμό και χωρίς εγγραφή.</string>
     <string name="tour_1_titulo">Τα PDF σας δεν φεύγουν από το τηλέφωνο</string>
     <string name="tour_2_texto">Ανάγνωση και αναζήτηση σε PDF, ένωση, διαχωρισμός, φωτογραφίες σε έγγραφα, επεξεργασία σελίδων, υπογραφή και μετατροπή. Όλα χωρούν σε μία οθόνη, και τα πρόσφατα αρχεία έχουν το δικό τους πλακίδιο.</string>

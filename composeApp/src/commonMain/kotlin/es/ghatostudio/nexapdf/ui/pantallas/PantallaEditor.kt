@@ -160,6 +160,8 @@ import androidx.compose.material.icons.filled.Crop
 import androidx.compose.material.icons.filled.Deblur
 import es.ghatostudio.nexapdf.resources.ed_goma
 import es.ghatostudio.nexapdf.resources.ed_recortar
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 
 /** Lo que el editor necesita del resto de la aplicacion. */
 class AccionesEditor(
@@ -676,9 +678,52 @@ private fun CapaGestos(
             )
         }
         estado.figuraEnCurso?.let { (inicio, fin) ->
-            dibujarFiguraPrevia(estado.tipoFigura, inicio, fin, Color(estado.color.toInt()), estado.grosor)
+            if (estado.herramienta == HerramientaEditor.RECORTAR) {
+                dibujarRecorte(Rectangulo(inicio.x, inicio.y, fin.x, fin.y), colorSeleccion)
+            } else {
+                dibujarFiguraPrevia(
+                    estado.tipoFigura,
+                    inicio,
+                    fin,
+                    Color(estado.color.toInt()),
+                    estado.grosor,
+                )
+            }
         }
+
+        // El recorte ya fijado se ve siempre, con cualquier herramienta: es un
+        // cambio que no se aplica hasta guardar, y sin dibujarlo el usuario
+        // solo tenia un rotulo diciendo que habia un recorte, sin poder
+        // comprobar donde.
+        estado.recorte?.let { dibujarRecorte(it, colorSeleccion) }
     }
+}
+
+/**
+ * Ensena que parte de la pagina se queda al recortar.
+ *
+ * Lo de fuera se apaga y lo de dentro se enmarca: es como lo ensena cualquier
+ * recortador de fotos y se entiende sin leer nada.
+ */
+private fun DrawScope.dibujarRecorte(marco: Rectangulo, color: Color) {
+    val m = marco.normalizado()
+    val izquierda = m.izquierda * size.width
+    val arriba = m.arriba * size.height
+    val derecha = m.derecha * size.width
+    val abajo = m.abajo * size.height
+    val sombra = Color(0x99000000)
+
+    drawRect(sombra, Offset.Zero, Size(size.width, arriba))
+    drawRect(sombra, Offset(0f, abajo), Size(size.width, size.height - abajo))
+    drawRect(sombra, Offset(0f, arriba), Size(izquierda, abajo - arriba))
+    drawRect(sombra, Offset(derecha, arriba), Size(size.width - derecha, abajo - arriba))
+
+    drawRect(
+        color = color,
+        topLeft = Offset(izquierda, arriba),
+        size = Size(derecha - izquierda, abajo - arriba),
+        style = Stroke(width = size.minDimension * 0.005f),
+    )
 }
 
 private fun aNormalizado(posicion: Offset, ancho: Int, alto: Int): Punto = Punto(
@@ -871,6 +916,7 @@ private fun DrawScope.dibujarFiguraPrevia(
 
 // --- Panel de herramientas --------------------------------------------------
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun PanelHerramientas(estado: EstadoEditor) {
     Surface(
@@ -878,12 +924,15 @@ private fun PanelHerramientas(estado: EstadoEditor) {
         modifier = Modifier.fillMaxWidth(),
     ) {
         Column(modifier = Modifier.padding(vertical = 8.dp)) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState())
-                    .padding(horizontal = 12.dp),
+            // Once herramientas en una fila que se desplaza dejaban la goma,
+            // el recorte y el borrado fuera de la pantalla: quien no arrastra
+            // la fila da por hecho que esas herramientas no existen. En dos
+            // filas caben todas a la vez y no hay nada escondido.
+            FlowRow(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+                maxItemsInEachRow = 6,
             ) {
                 HERRAMIENTAS.forEach { (herramienta, icono, etiqueta) ->
                     val texto = stringResource(etiqueta)
@@ -897,7 +946,7 @@ private fun PanelHerramientas(estado: EstadoEditor) {
                     // fondo y color, no solo por un borde.
                     Column(
                         modifier = Modifier
-                            .width(72.dp)
+                            .weight(1f)
                             .heightIn(min = 64.dp)
                             .clip(MaterialTheme.shapes.medium)
                             .background(
@@ -912,7 +961,7 @@ private fun PanelHerramientas(estado: EstadoEditor) {
                                 onClick = { estado.herramienta = herramienta },
                             )
                             .semantics { contentDescription = texto }
-                            .padding(vertical = 8.dp),
+                            .padding(vertical = 8.dp, horizontal = 2.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
                     ) {
@@ -994,7 +1043,11 @@ private fun PanelHerramientas(estado: EstadoEditor) {
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(horizontal = 20.dp, vertical = 6.dp),
                     )
-                    ControlesTrazo(estado)
+                    // Sin paleta: la goma tapa con el color de la pagina, que
+                    // se lee del propio documento. Ensenar los colores hacia
+                    // creer que se elegia con que borrar, y elegir uno no
+                    // cambiaba nada.
+                    ControlesTrazo(estado, conPaleta = false)
                 }
 
                 HerramientaEditor.RECORTAR -> {
@@ -1035,8 +1088,8 @@ private fun PanelHerramientas(estado: EstadoEditor) {
 }
 
 @Composable
-private fun ControlesTrazo(estado: EstadoEditor) {
-    Paleta(estado)
+private fun ControlesTrazo(estado: EstadoEditor, conPaleta: Boolean = true) {
+    if (conPaleta) Paleta(estado)
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -1128,17 +1181,20 @@ private fun ControlesFiltro(estado: EstadoEditor) {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun Paleta(estado: EstadoEditor) {
     val etiquetaColor = stringResource(Res.string.ed_color)
-    Row(
+    // Igual que con las herramientas: la rueda de color es el ultimo circulo
+    // y en una fila desplazable se quedaba fuera de la pantalla, que es tanto
+    // como no tenerla.
+    FlowRow(
         modifier = Modifier
             .fillMaxWidth()
-            .horizontalScroll(rememberScrollState())
             .padding(horizontal = 20.dp, vertical = 6.dp)
             .semantics { contentDescription = etiquetaColor },
         horizontalArrangement = Arrangement.spacedBy(10.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        maxItemsInEachRow = 6,
     ) {
         EstadoEditor.COLORES.forEach { valor ->
             val elegido = estado.color == valor
@@ -1325,8 +1381,11 @@ private const val RADIO_ASA = 0.030f
 /** Que asa hay bajo el dedo, si hay alguna. */
 private fun asaBajoElDedo(marco: Rectangulo, punto: Punto): Asa? {
     val m = marco.normalizado()
-    val escalar = Punto(m.derecha, m.abajo)
-    val rotar = Punto(m.derecha, m.arriba)
+    // Desplazadas hacia fuera igual que se pintan, para que la zona sensible
+    // este donde el usuario ve el circulo y no un poco mas adentro.
+    val fuera = RADIO_ASA * 0.5f
+    val escalar = Punto(m.derecha + fuera, m.abajo + fuera)
+    val rotar = Punto(m.derecha + fuera, m.arriba - fuera)
     return when {
         cercaDe(punto, escalar) -> Asa.ESCALAR
         cercaDe(punto, rotar) -> Asa.ROTAR
@@ -1366,10 +1425,13 @@ private fun DrawScope.dibujarMarcoSeleccion(marco: Rectangulo, color: Color) {
         ),
     )
 
+    // Las asas van por fuera del marco, separadas su propio radio. Centradas
+    // en la esquina caian encima de las ultimas letras del texto y tapaban
+    // justo lo que hay que leer para saber si esta bien colocado.
     val radio = size.minDimension * 0.018f
     listOf(
-        Offset(izquierda + ancho, arriba + alto),
-        Offset(izquierda + ancho, arriba),
+        Offset(izquierda + ancho + radio, arriba + alto + radio),
+        Offset(izquierda + ancho + radio, arriba - radio),
     ).forEach { centro ->
         drawCircle(color = Color.White, radius = radio, center = centro)
         drawCircle(color = color, radius = radio, center = centro, style = Stroke(width = grosor))

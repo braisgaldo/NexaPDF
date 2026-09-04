@@ -305,9 +305,10 @@ fun PantallaDocumento(
     }
 
     if (partiendo && rutaActiva != null) {
-        DialogoSeparar(
+        PantallaSepararPartes(
+            ruta = rutaActiva,
+            paginas = paginas,
             nombreBase = rutaActiva.substringAfterLast('/').removeSuffix(".pdf"),
-            totalPaginas = paginas.size.coerceAtLeast(1),
             alConfirmar = { partes ->
                 partiendo = false
                 acciones.alSepararEnPartes(partes)
@@ -544,22 +545,29 @@ private fun RejillaPaginas(
                             etiqueta = numero.toString(),
                         )
                     }
-                    TextButton(
-                        onClick = { alAbrirEditor(indicePagina) },
-                        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
-                    ) {
-                        Icon(
-                            Icons.Filled.Edit,
-                            contentDescription = null,
-                            modifier = Modifier.size(16.dp),
-                        )
-                        Spacer(Modifier.width(6.dp))
-                        Text(
-                            text = etiquetaEditar,
-                            style = MaterialTheme.typography.labelMedium,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
+                    // El asa va debajo de la miniatura, no encima: sobre la
+                    // pagina tapaba justo la esquina donde suele estar el
+                    // titulo. Sin ella el orden solo se cambiaba manteniendo
+                    // pulsado, que funciona pero no se ve.
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        AsaArrastre(reordenar, posicion)
+                        TextButton(
+                            onClick = { alAbrirEditor(indicePagina) },
+                            modifier = Modifier.weight(1f).heightIn(min = 48.dp),
+                        ) {
+                            Icon(
+                                Icons.Filled.Edit,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                            )
+                            Spacer(Modifier.width(6.dp))
+                            Text(
+                                text = etiquetaEditar,
+                                style = MaterialTheme.typography.labelMedium,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        }
                     }
                 }
             }
@@ -649,11 +657,16 @@ private fun ListaDocumentos(
                 )
                 Spacer(Modifier.width(14.dp))
                 Column(modifier = Modifier.weight(1f)) {
+                    // Recortar por el medio y no por el final: los nombres de
+                    // los PDF comparten prefijo y se distinguen por el final,
+                    // asi que "NexaPDF_prue..." en dos lineas partidas a mitad
+                    // de palabra no dice cual es cual y ademas queda feo.
                     Text(
                         text = documento.nombre,
-                        style = MaterialTheme.typography.bodyLarge,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.MiddleEllipsis,
                     )
                     Text(
                         text = pluralStringResource(

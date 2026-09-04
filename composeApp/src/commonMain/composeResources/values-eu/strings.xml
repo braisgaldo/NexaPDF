@@ -82,6 +82,10 @@
     <string name="ayuda_editar_t">PDF baten testua alda dezaket?</string>
     <string name="ayuda_firmar_c">Eskuz idatzitakoa orriaren gaineko marrazki bat da: nahikoa albaran baterako edo barne-inprimaki baterako. Ziurtagiriarekikoak zure .p12 edo .pfx fitxategia erabiltzen du eta edonork egiaztatu dezake dokumentua ez dela aldatu sinatu zenuenetik: hori da ofizialerako balio duena.</string>
     <string name="ayuda_firmar_t">Zein sinadura erabili behar dut?</string>
+    <string name="ayuda_partir_c">Batzea bi urratsetan doa: lehenik dokumentuak ordenatzen dituzu eta gero multzoaren orriak. + botoiarekin banaka edo hainbat batera gehitzen dituzu, eta heldulekutik arrastatuz berrantolatzen.
+
+Banantzeko, «Zatitan banandu…» orri guztiak batera erakusten ditu. Zati bakoitzak bere kolorea du: zatia aukeratu, bere lehen orria ukitu eta gero azkena, eta tarte hori margotzen da. Barrutia idatz dezakezu ere. Zati bakoitza jartzen diozun izenarekin gordetzen da.</string>
+    <string name="ayuda_partir_t">Batu eta banandu</string>
     <string name="ayuda_privacidad_c">Inora ez. NexaPDFek ez du interneteko baimenik ere, beraz ezin du ezer bidali, ezta akatsez ere. Dena zure gailuaren barruan gertatzen da, eta emaitzak Deskargak/NexaPDF karpetan gordetzen dira.</string>
     <string name="ayuda_privacidad_t">Nora doaz nire dokumentuak?</string>
     <string name="ayuda_problemas_c">Dokumentu bat irekitzen ez bada, hondatuta edo babestuta egon liteke: saiatu lehenik beste irakurgailu batean. Aplikazioari memoria amaitzen bazaio fitxategi oso handi batekin, zatitu eta banaka landu. Beste ezertarako, idatzi %1$s helbidera zer egiten ari zinen azalduz.</string>
@@ -128,8 +132,8 @@
     <string name="doc_anadir_ficheros">Gehitu fitxategiak</string>
     <string name="doc_anadir_pdf">Gehitu PDFa</string>
     <string name="doc_aplicar_orden">Aplikatu ordena berria</string>
-    <string name="doc_arrastrar_ayuda">Eutsi orri bati eta arrastatu ordena aldatzeko.</string>
-    <string name="doc_arrastrar_documentos">Eutsi dokumentu bati eta arrastatu ordena aldatzeko.</string>
+    <string name="doc_arrastrar_ayuda">Arrastatu orria bere heldulekutik, edo eutsi sakatuta, ordena aldatzeko.</string>
+    <string name="doc_arrastrar_documentos">Arrastatu dokumentua bere heldulekutik, edo eutsi sakatuta, ordena aldatzeko.</string>
     <string name="doc_bajar">Behera</string>
     <string name="doc_confirmar_eliminar_texto">Lanean ari zaren kopiatik kenduko dira. Zure jatorrizko fitxategia ez da ukitzen.</string>
     <string name="doc_confirmar_eliminar_titulo">Orri hauek ezabatu?</string>
@@ -312,11 +316,16 @@
     <string name="rec_ordenar_por">Ordenatu honela</string>
     <string name="rec_vista">Aldatu ikuspegia</string>
     <string name="sep_anadir_parte">Gehitu zati bat</string>
+    <string name="sep_crear">Sortu fitxategiak</string>
     <string name="sep_desde">Nondik</string>
     <string name="sep_hasta">Nora</string>
     <string name="sep_nombre_parte">Fitxategiaren izena</string>
+    <string name="sep_parte_n">%1$d. zatia</string>
     <string name="sep_quitar_parte">Kendu zati hau</string>
+    <string name="sep_rango">%1$s orriak</string>
+    <string name="sep_sin_asignar">Zatirik gabe</string>
     <string name="sep_titulo">Zatitu zatitan</string>
+    <string name="sep_toca_paginas">Ukitu zatiaren lehen orria eta gero azkena. Zenbakiak idatz ditzakezu ere.</string>
     <string name="tour_1_texto">NexaPDFk ez du interneterako baimenik eskatzen, beraz ezin du ezer igo. Dena zure gailuan gertatzen da, konturik eta izen-ematerik gabe.</string>
     <string name="tour_1_titulo">Zure PDFak ez dira telefonotik ateratzen</string>
     <string name="tour_2_texto">PDF bat irakurri eta bertan bilatu, batu, banandu, argazkiak dokumentu bihurtu, orriak editatu, sinatu eta bihurtu. Dena pantaila batean sartzen da, eta azken fitxategiek beren lauza dute.</string>

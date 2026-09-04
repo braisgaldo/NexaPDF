@@ -64,6 +64,8 @@ import es.ghatostudio.nexapdf.resources.ayuda_visor_c
 import es.ghatostudio.nexapdf.resources.ayuda_visor_t
 import es.ghatostudio.nexapdf.ui.componentes.BarraSuperior
 import es.ghatostudio.nexapdf.resources.tour_ver_otra_vez
+import es.ghatostudio.nexapdf.resources.ayuda_partir_c
+import es.ghatostudio.nexapdf.resources.ayuda_partir_t
 import es.ghatostudio.nexapdf.ui.componentes.SeparadorSuave
 import es.ghatostudio.nexapdf.ui.donacion.IlustracionCafe
 import org.jetbrains.compose.resources.StringResource
@@ -290,6 +292,7 @@ private val APARTADOS = listOf(
     Apartado(Res.string.ayuda_que_es_t, Res.string.ayuda_que_es_c),
     Apartado(Res.string.ayuda_privacidad_t, Res.string.ayuda_privacidad_c),
     Apartado(Res.string.ayuda_visor_t, Res.string.ayuda_visor_c),
+    Apartado(Res.string.ayuda_partir_t, Res.string.ayuda_partir_c),
     Apartado(Res.string.ayuda_editar_t, Res.string.ayuda_editar_c),
     Apartado(Res.string.ayuda_convertir_t, Res.string.ayuda_convertir_c),
     Apartado(Res.string.ayuda_firmar_t, Res.string.ayuda_firmar_c),

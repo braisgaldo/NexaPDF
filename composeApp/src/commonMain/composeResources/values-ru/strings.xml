@@ -82,6 +82,10 @@
     <string name="ayuda_editar_t">Можно ли изменить текст PDF?</string>
     <string name="ayuda_firmar_c">Рукописная — это рисунок на странице: подойдёт для накладной или внутренней формы. Подпись сертификатом использует ваш файл .p12 или .pfx и позволяет любому убедиться, что документ не менялся после подписания: она нужна для официальных случаев.</string>
     <string name="ayuda_firmar_t">Какую подпись использовать?</string>
+    <string name="ayuda_partir_c">Объединение идёт в два шага: сначала порядок документов, затем порядок страниц целого. Добавляйте их по одному или сразу несколько кнопкой +, а порядок меняйте перетаскиванием за маркер.
+
+Для разделения «Разделить на части…» показывает все страницы сразу. У каждой части свой цвет: выберите часть, нажмите её первую страницу, затем последнюю — отрезок закрасится. Диапазон можно и ввести. Каждая часть сохраняется под тем именем, которое вы дадите.</string>
+    <string name="ayuda_partir_t">Объединение и разделение</string>
     <string name="ayuda_privacidad_c">Никуда. У NexaPDF нет даже разрешения на доступ в интернет, поэтому он не может ничего отправить даже по ошибке. Всё происходит на устройстве, а результаты сохраняются в «Загрузки/NexaPDF».</string>
     <string name="ayuda_privacidad_t">Куда попадают мои документы?</string>
     <string name="ayuda_problemas_c">Если документ не открывается, он может быть повреждён или защищён: попробуйте сначала другой просмотрщик. Если приложению не хватает памяти на очень большом файле, разделите его и работайте с частями по очереди. По остальным вопросам напишите на %1$s и опишите, что вы делали.</string>
@@ -128,8 +132,8 @@
     <string name="doc_anadir_ficheros">Добавить файлы</string>
     <string name="doc_anadir_pdf">Добавить PDF</string>
     <string name="doc_aplicar_orden">Применить новый порядок</string>
-    <string name="doc_arrastrar_ayuda">Удерживайте страницу и перетащите, чтобы изменить порядок.</string>
-    <string name="doc_arrastrar_documentos">Удерживайте документ и перетащите, чтобы изменить порядок.</string>
+    <string name="doc_arrastrar_ayuda">Перетащите страницу за маркер или удерживайте её, чтобы изменить порядок.</string>
+    <string name="doc_arrastrar_documentos">Перетащите документ за маркер или удерживайте его, чтобы изменить порядок.</string>
     <string name="doc_bajar">Вниз</string>
     <string name="doc_confirmar_eliminar_texto">Они будут удалены из рабочей копии. Исходный файл не изменится.</string>
     <string name="doc_confirmar_eliminar_titulo">Удалить эти страницы?</string>
@@ -312,11 +316,16 @@
     <string name="rec_ordenar_por">Сортировка</string>
     <string name="rec_vista">Сменить вид</string>
     <string name="sep_anadir_parte">Добавить часть</string>
+    <string name="sep_crear">Создать файлы</string>
     <string name="sep_desde">С</string>
     <string name="sep_hasta">По</string>
     <string name="sep_nombre_parte">Имя файла</string>
+    <string name="sep_parte_n">Часть %1$d</string>
     <string name="sep_quitar_parte">Убрать эту часть</string>
+    <string name="sep_rango">Страницы %1$s</string>
+    <string name="sep_sin_asignar">Не входит ни в одну часть</string>
     <string name="sep_titulo">Разделить на части</string>
+    <string name="sep_toca_paginas">Нажмите первую страницу части, затем последнюю. Номера можно и ввести вручную.</string>
     <string name="tour_1_texto">NexaPDF не запрашивает разрешение на доступ в интернет, поэтому ничего не может отправить. Всё происходит на вашем устройстве, без аккаунта и регистрации.</string>
     <string name="tour_1_titulo">Ваши PDF не покидают телефон</string>
     <string name="tour_2_texto">Читать и искать в PDF, объединять, разделять, превращать фото в документы, редактировать страницы, подписывать и конвертировать. Всё помещается на одном экране, а недавние файлы имеют свою плитку.</string>

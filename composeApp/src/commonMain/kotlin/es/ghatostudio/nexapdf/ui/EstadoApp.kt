@@ -102,10 +102,19 @@ class EstadoApp(private val contenedor: ContenedorApp) : ViewModel() {
      * vuelve y esta en la pantalla de inicio. Esperar a inicio es lo que
      * garantiza que no aparezca encima de una tarea a medias.
      */
-    private var donacionPendiente by mutableStateOf(false)
+    var donacionPendiente by mutableStateOf(false)
+        private set
 
-    /** Llamar al volver a primer plano: decide si ya toca ensenar el aviso. */
-    fun alVolverAPrimerPlano() {
+    /**
+     * Ensena el aviso si sigue tocando.
+     *
+     * Lo llama la pantalla despues de comprobar que la app lleva un rato quieta
+     * en Inicio. Antes se ensenaba directamente al volver a primer plano, y eso
+     * lo hacia saltar al regresar del selector de ficheros del sistema: la app
+     * pasa por Inicio un instante, con el documento ya elegido y a punto de
+     * abrirse, y el aviso caia justo encima de una tarea empezada.
+     */
+    fun mostrarDonacionSiProcede() {
         if (donacionPendiente && destinoActual == Destino.Inicio) {
             donacionPendiente = false
             mostrandoDonacion = true
