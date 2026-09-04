@@ -167,6 +167,12 @@ import es.ghatostudio.nexapdf.resources.aj_seccion_avisos
 import es.ghatostudio.nexapdf.resources.aj_seccion_copia
 import es.ghatostudio.nexapdf.resources.aj_seccion_guardado
 import androidx.compose.material.icons.filled.EditNote
+import androidx.compose.material.icons.filled.PictureAsPdf
+import androidx.compose.ui.text.style.TextAlign
+import es.ghatostudio.nexapdf.BuildInfo
+import es.ghatostudio.nexapdf.resources.app_lema
+import es.ghatostudio.nexapdf.resources.app_nombre
+import androidx.compose.foundation.layout.height
 
 @Composable
 fun PantallaAjustes(
@@ -214,6 +220,39 @@ fun PantallaAjustes(
             BarraSuperior(titulo = stringResource(Res.string.aj_titulo), alVolver = alVolver)
         },
     ) { relleno ->
+        if (abierta == null) {
+            // Con todo plegado no hay nada que desplazar. Las filas mantienen su
+            // tamano —cambiarlo al abrir una seccion daba un salto raro— y el
+            // hueco que sobra lo ocupa el pie, que ademas dice la version, que
+            // es justo el dato que hace falta para informar de un fallo.
+            Column(modifier = Modifier.fillMaxSize().padding(relleno)) {
+                SECCIONES.forEach { (seccion, icono, rotulo) ->
+                    CabeceraPlegable(
+                        icono = icono,
+                        titulo = stringResource(rotulo),
+                        abierta = false,
+                        alPulsar = { abierta = seccion },
+                    )
+                }
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                FilaAccion(
+                    icono = Icons.AutoMirrored.Filled.HelpOutline,
+                    titulo = stringResource(Res.string.aj_ayuda),
+                    detalle = null,
+                    alPulsar = alAbrirAyuda,
+                )
+                FilaAccion(
+                    icono = Icons.Filled.Info,
+                    titulo = stringResource(Res.string.aj_acerca_de),
+                    detalle = null,
+                    alPulsar = alAbrirAcercaDe,
+                )
+                Spacer(Modifier.weight(1f))
+                PieDeAjustes()
+            }
+            return@Scaffold
+        }
+
         LazyColumn(
             modifier = Modifier.fillMaxSize().padding(relleno),
             contentPadding = PaddingValues(bottom = 40.dp),
@@ -851,20 +890,26 @@ private fun FilaAccion(
     titulo: String,
     detalle: String?,
     alPulsar: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = 56.dp)
+            .heightIn(min = ALTO_FILA)
             .clickable(onClick = alPulsar)
             .padding(horizontal = 20.dp, vertical = 12.dp)
             .semantics(mergeDescendants = true) { },
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(icono, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+        Icon(
+            imageVector = icono,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(24.dp),
+        )
         Spacer(Modifier.width(16.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(titulo, style = MaterialTheme.typography.bodyLarge)
+            Text(titulo, style = MaterialTheme.typography.titleMedium)
             if (detalle != null) {
                 Text(
                     text = detalle,
@@ -1013,6 +1058,17 @@ private fun <T> FilaDesplegable(
 /** Bloques de ajustes, en el orden en que se despliegan. */
 private enum class Seccion { APARIENCIA, VISTA, TERMINAR, GUARDADO, AVISOS, COPIA, APOYO }
 
+/** Cada seccion con su icono y su rotulo, para no repetirlos en dos sitios. */
+private val SECCIONES: List<Triple<Seccion, ImageVector, StringResource>> = listOf(
+    Triple(Seccion.APARIENCIA, Icons.Filled.Palette, Res.string.aj_seccion_apariencia),
+    Triple(Seccion.VISTA, Icons.AutoMirrored.Filled.MenuBook, Res.string.aj_vista),
+    Triple(Seccion.TERMINAR, Icons.Filled.TaskAlt, Res.string.aj_al_terminar),
+    Triple(Seccion.GUARDADO, Icons.Filled.Folder, Res.string.aj_seccion_guardado),
+    Triple(Seccion.AVISOS, Icons.Filled.EditNote, Res.string.aj_seccion_avisos),
+    Triple(Seccion.COPIA, Icons.Filled.FileDownload, Res.string.aj_seccion_copia),
+    Triple(Seccion.APOYO, Icons.Filled.FavoriteBorder, Res.string.aj_apoyo),
+)
+
 /** Cabecera de una seccion que se abre y se cierra al tocarla. */
 @Composable
 private fun CabeceraPlegable(
@@ -1020,13 +1076,14 @@ private fun CabeceraPlegable(
     titulo: String,
     abierta: Boolean,
     alPulsar: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Column {
+    Column(modifier = modifier) {
         HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 56.dp)
+                .heightIn(min = ALTO_FILA)
                 .clickable(onClick = alPulsar)
                 .padding(horizontal = 20.dp)
                 .semantics(mergeDescendants = true) { },
@@ -1036,12 +1093,12 @@ private fun CabeceraPlegable(
                 imageVector = icono,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(20.dp),
+                modifier = Modifier.size(24.dp),
             )
-            Spacer(Modifier.width(12.dp))
+            Spacer(Modifier.width(16.dp))
             Text(
                 text = titulo,
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.weight(1f),
             )
@@ -1055,5 +1112,44 @@ private fun CabeceraPlegable(
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+    }
+}
+
+/** Alto de todas las filas de ajustes, abiertas o cerradas. */
+private val ALTO_FILA = 64.dp
+
+/**
+ * Pie de la pantalla de ajustes.
+ *
+ * Rellena el hueco que queda con todo plegado, pero no es relleno: la version
+ * es el dato que se pide en cuanto alguien informa de un fallo, y la frase de
+ * debajo es la promesa que sostiene toda la aplicacion, dicha donde se mira
+ * cuando se duda de ella.
+ */
+@Composable
+private fun PieDeAjustes() {
+    Column(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Icon(
+            imageVector = Icons.Filled.PictureAsPdf,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+            modifier = Modifier.size(36.dp),
+        )
+        Spacer(Modifier.height(10.dp))
+        Text(
+            text = stringResource(Res.string.app_nombre) + "  " + BuildInfo.VERSION_NAME,
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Spacer(Modifier.height(4.dp))
+        Text(
+            text = stringResource(Res.string.app_lema),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+        )
     }
 }

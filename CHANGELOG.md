@@ -55,7 +55,8 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
   sentido, que se abran veinte ficheros convertidos no.
 - **Ajustes en secciones plegables**: la pantalla cabe entera sin desplazarse
   y cada opción es una línea con su valor a la derecha, en lugar de filas de
-  botones con un párrafo debajo.
+  botones con un párrafo debajo. Al pie, la versión y el lema, que es el dato
+  que hace falta para informar de un fallo.
 
 ### Corregido
 
