@@ -132,6 +132,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.unit.dp
 import es.ghatostudio.nexapdf.ui.navegacion.EntradaExterna
 import es.ghatostudio.nexapdf.data.CopiaSeguridad
+import es.ghatostudio.nexapdf.ui.navegacion.EntregaExterna
 
 /**
  * Raiz de la interfaz: tema, navegacion, avisos y el hilo que une las pantallas
@@ -143,7 +144,7 @@ import es.ghatostudio.nexapdf.data.CopiaSeguridad
  * sea cuestion de dar otra implementacion del contenedor.
  */
 @Composable
-fun NexaPdfApp(contenedor: ContenedorApp, entradaExterna: EntradaExterna? = null) {
+fun NexaPdfApp(contenedor: ContenedorApp, entrega: EntregaExterna? = null) {
     CompositionLocalProvider(LocalContenedor provides contenedor) {
         val estado = remember { EstadoApp(contenedor) }
         val ajustes by estado.ajustes.collectAsState()
@@ -157,7 +158,7 @@ fun NexaPdfApp(contenedor: ContenedorApp, entradaExterna: EntradaExterna? = null
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background,
             ) {
-                ContenidoApp(contenedor, estado, entradaExterna)
+                ContenidoApp(contenedor, estado, entrega)
             }
         }
     }
@@ -167,7 +168,7 @@ fun NexaPdfApp(contenedor: ContenedorApp, entradaExterna: EntradaExterna? = null
 private fun ContenidoApp(
     contenedor: ContenedorApp,
     estado: EstadoApp,
-    entradaExterna: EntradaExterna?,
+    entrega: EntregaExterna?,
 ) {
     val alcance = rememberCoroutineScope()
     // Se usa la retroalimentacion haptica de Compose y no el Vibrator del
@@ -491,8 +492,14 @@ private fun ContenidoApp(
     // es lo que espera quien pulsa "abrir con"; varios solo pueden querer
     // unirse; unas fotos, convertirse en documento; y una copia de seguridad,
     // importarse.
-    LaunchedEffect(entradaExterna) {
-        when (val entrada = entradaExterna ?: return@LaunchedEffect) {
+    LaunchedEffect(entrega) {
+        val entrada = entrega?.entrada ?: return@LaunchedEffect
+        // Se parte de inicio. Un documento que llega de fuera no es un paso mas
+        // dentro de lo que se estaba haciendo: es otra cosa. Apilarlo dejaba
+        // atras la pantalla anterior con los datos del documento nuevo, y volver
+        // ensenaba el documento viejo con el numero de paginas del otro.
+        estado.volverAInicio()
+        when (entrada) {
             is EntradaExterna.UnDocumento -> {
                 val adoptado = contenedor.selector.adoptarExterno(entrada.uri)
                     ?: return@LaunchedEffect

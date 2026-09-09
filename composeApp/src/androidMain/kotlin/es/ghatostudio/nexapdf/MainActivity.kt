@@ -8,9 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStoreFile
 import es.ghatostudio.nexapdf.data.RepositorioAjustes
 import es.ghatostudio.nexapdf.di.ContenedorApp
 import es.ghatostudio.nexapdf.pdf.ConversorDocumentosAndroid
@@ -23,10 +21,18 @@ import android.content.Intent
 import android.net.Uri
 import androidx.core.content.IntentCompat
 import es.ghatostudio.nexapdf.ui.navegacion.EntradaExterna
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import es.ghatostudio.nexapdf.ui.navegacion.EntregaExterna
 
 class MainActivity : ComponentActivity() {
 
     private lateinit var contenedor: ContenedorApp
+
+    /** Lo ultimo que ha llegado de fuera. Es estado: la interfaz lo observa. */
+    private var entrega by mutableStateOf<EntregaExterna?>(null)
+    private var entregas = 0L
 
     /**
      * Aplica el idioma elegido antes de que se cree nada de la interfaz.
@@ -67,15 +73,36 @@ class MainActivity : ComponentActivity() {
             ajustes = RepositorioAjustes(almacenPreferencias),
         )
 
-        setContent { App(contenedor, entradaExterna) }
+        recibir(intent)
+        setContent { App(contenedor, entrega) }
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         // Con launchMode singleTask el sistema reutiliza la actividad viva, y
-        // sin esto el segundo PDF que se abriera desde fuera no llegaria.
+        // sin esto el segundo documento que se abriera desde fuera no llegaria.
+        //
+        // Antes aqui se llamaba a `recreate()`. Rehacer la actividad entera
+        // para leer un intent tiraba la pantalla y la pila de navegacion, y
+        // ademas cerraba la aplicacion: dejaba dos actividades vivas un
+        // instante y DataStore aborta en cuanto ve dos almacenes sobre el mismo
+        // fichero. Ahora la entrega es estado observable y la interfaz se entera
+        // sola.
         setIntent(intent)
-        recreate()
+        recibir(intent)
+    }
+
+    /**
+     * Anota lo que acaba de llegar para que la interfaz reaccione.
+     *
+     * Cada entrega lleva su numero porque abrir dos veces seguidas el mismo
+     * fichero son dos entregas distintas, y sin el la segunda seria un valor
+     * igual al anterior: quien lo observa no se enteraria.
+     */
+    private fun recibir(entrante: Intent?) {
+        val leida = entradaDe(entrante) ?: return
+        entregas += 1
+        entrega = EntregaExterna(entregas, leida)
     }
 
     /**
@@ -93,9 +120,8 @@ class MainActivity : ComponentActivity() {
      * direccion `content://` de MediaStore la ruta es un numero, no el nombre,
      * y mirar ahi la extension no funciona.
      */
-    private val entradaExterna: EntradaExterna?
-        get() {
-            val recibido = intent ?: return null
+    private fun entradaDe(entrante: Intent?): EntradaExterna? {
+            val recibido = entrante ?: return null
             val tipo = recibido.type.orEmpty()
 
             fun unaDireccion(): String? = IntentCompat
@@ -131,12 +157,10 @@ class MainActivity : ComponentActivity() {
 
                 else -> null
             }
-        }
-
-
-    private val almacenPreferencias: DataStore<Preferences> by lazy {
-        PreferenceDataStoreFactory.create(
-            produceFile = { applicationContext.preferencesDataStoreFile("ajustes") },
-        )
     }
+
+
+    /** El almacen vive en la aplicacion: dos por proceso cierran el programa. */
+    private val almacenPreferencias: DataStore<Preferences>
+        get() = (application as NexaPdfApplication).almacenPreferencias
 }

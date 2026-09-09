@@ -24,6 +24,14 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
 
 ### Corregido
 
+- **Abrir un segundo documento con la aplicación ya abierta la cerraba.** Al
+  llegar el documento nuevo se recreaba la actividad entera, y eso dejaba dos
+  almacenes de ajustes vivos sobre el mismo fichero; DataStore aborta el
+  proceso en cuanto lo detecta. Se veía como «falla la primera vez y a la
+  segunda funciona», porque tras cerrarse el segundo intento era un arranque en
+  frío. Ahora el almacén es uno solo en todo el proceso y la aplicación no se
+  recrea: lo que llega es estado que la pantalla observa, así que además no se
+  pierde nada de lo que estuvieras haciendo.
 - El índice de secciones ya no ocupa sitio en la barra del visor cuando el
   documento no tiene índice, que es la mayoría de las veces.
 - El build de depuración se llama «NexaPDF debug». Con la misma etiqueta que el

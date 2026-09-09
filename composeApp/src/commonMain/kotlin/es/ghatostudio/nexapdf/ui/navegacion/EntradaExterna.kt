@@ -27,3 +27,12 @@ sealed interface EntradaExterna {
     /** Una o varias imagenes: van a la pantalla que las convierte en un PDF. */
     data class Imagenes(val uris: List<String>) : EntradaExterna
 }
+
+/**
+ * Una entrega concreta de [EntradaExterna].
+ *
+ * El numero distingue dos entregas del mismo fichero. Sin el, abrir dos veces
+ * seguidas el mismo documento produciria dos valores iguales y quien lo observa
+ * no reaccionaria la segunda vez.
+ */
+data class EntregaExterna(val numero: Long, val entrada: EntradaExterna)
