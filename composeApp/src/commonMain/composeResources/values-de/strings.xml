@@ -442,7 +442,9 @@ Zum Teilen zeigt „In Teile teilen…“ alle Seiten auf einmal. Jeder Teil hat
     <string name="vis_de_total">von %1$d</string>
     <string name="vis_ir">Los</string>
     <string name="vis_ir_a_pagina">Gehe zu Seite</string>
+    <string name="vis_mas_acciones">Was mit diesem Dokument tun</string>
     <string name="vis_numero_pagina">Seitenzahl</string>
+    <string name="vis_paginas_y_mas">Seiten, teilen und exportieren</string>
     <string name="vis_siguiente">Nächster Treffer</string>
     <string name="visor_indice">Inhalt</string>
     <string name="visor_pagina_numero">Seite %1$d</string>

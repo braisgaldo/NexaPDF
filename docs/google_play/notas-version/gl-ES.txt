@@ -1,9 +1,7 @@
 Novidades
 
-• Protexer un PDF con contrasinal (AES-256) e quitalo despois.
-• Sinatura electrónica PAdES, a da norma europea, co detalle de cada sinatura.
-• Visor: pasa páxina esvarando, escribe o número e arrastra a barra.
-• Dividir vendo as páxinas, cada parte coa súa cor.
-• Editar: debuxar, resaltar, texto, formas, imaxes e filtros.
-• Unir, converter a Word, Excel e PowerPoint e ao revés, e fotos a PDF.
-• Sen permisos, sen internet e sen publicidade.
+Un PDF que abres desde mensaxería ou desde o xestor de ficheiros xa non queda en «só ler». O visor leva agora unha caixa de ferramentas para asinalo, editalo, protexelo con contrasinal, separalo ou exportalo, e gardalo onde queiras, sen saír nin volver buscar o ficheiro.
+
+• Compartir varios PDF leva a unilos.
+• Compartir fotos leva a convertelas en documento.
+• Abrir unha copia de seguridade ofrece importala.

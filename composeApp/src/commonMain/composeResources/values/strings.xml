@@ -442,7 +442,9 @@ To split, «Split into parts…» shows every page at once. Each part has its ow
     <string name="vis_de_total">of %1$d</string>
     <string name="vis_ir">Go</string>
     <string name="vis_ir_a_pagina">Go to page</string>
+    <string name="vis_mas_acciones">What to do with this document</string>
     <string name="vis_numero_pagina">Page number</string>
+    <string name="vis_paginas_y_mas">Pages, split and export</string>
     <string name="vis_siguiente">Next match</string>
     <string name="visor_indice">Contents</string>
     <string name="visor_pagina_numero">Page %1$d</string>

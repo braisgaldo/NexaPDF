@@ -1,9 +1,7 @@
 Novedades
 
-• Proteger un PDF con contraseña (AES-256) y quitarla después.
-• Firma electrónica PAdES, la de la norma europea, con el detalle de cada firma en el visor.
-• Visor: pasa página deslizando, escribe el número para saltar y arrastra la barra.
-• Dividir viendo las páginas, cada parte con su color.
-• Editar: dibujar, resaltar, texto, formas, imágenes y filtros.
-• Unir, convertir a Word, Excel y PowerPoint y al revés, y fotos a PDF.
-• Sin permisos, sin internet y sin anuncios.
+Un PDF que abres desde mensajería o desde el gestor de archivos ya no se queda en «sólo leer». El visor lleva ahora una caja de herramientas para firmarlo, editarlo, protegerlo con contraseña, separarlo o exportarlo, y guardarlo donde quieras, sin salir ni volver a buscar el fichero.
+
+• Compartir varios PDF a la vez lleva a unirlos.
+• Compartir fotos lleva a convertirlas en documento.
+• Abrir una copia de seguridad ofrece importarla.

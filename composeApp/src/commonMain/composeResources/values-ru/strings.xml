@@ -442,7 +442,9 @@
     <string name="vis_de_total">из %1$d</string>
     <string name="vis_ir">Перейти</string>
     <string name="vis_ir_a_pagina">Перейти к странице</string>
+    <string name="vis_mas_acciones">Что сделать с документом</string>
     <string name="vis_numero_pagina">Номер страницы</string>
+    <string name="vis_paginas_y_mas">Страницы, разделение и экспорт</string>
     <string name="vis_siguiente">Следующее совпадение</string>
     <string name="visor_indice">Оглавление</string>
     <string name="visor_pagina_numero">Страница %1$d</string>

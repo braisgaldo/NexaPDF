@@ -1,9 +1,7 @@
 Nouveautés
 
-• Protéger un PDF par mot de passe (AES-256) et le retirer ensuite.
-• Signature électronique PAdES, la norme européenne, avec le détail de chacune.
-• Lecteur : glisser entre les pages, saisir un numéro, faire glisser la barre.
-• Diviser en voyant les pages, chaque partie a sa couleur.
-• Éditer : dessin, surlignage, texte, formes, images, filtres.
-• Fusionner, convertir vers et depuis Word, Excel, PowerPoint.
-• Aucune autorisation, aucun accès Internet, aucune publicité.
+Un PDF ouvert depuis une messagerie ou le gestionnaire de fichiers ne se limite plus à la lecture. Le lecteur dispose d'une boîte à outils pour le signer, le modifier, le protéger par mot de passe, le diviser ou l'exporter, et l'enregistrer où vous voulez, sans sortir ni rechercher le fichier.
+
+• Partager plusieurs PDF mène à les fusionner.
+• Partager des photos mène à en faire un document.
+• Ouvrir une sauvegarde propose de l'importer.

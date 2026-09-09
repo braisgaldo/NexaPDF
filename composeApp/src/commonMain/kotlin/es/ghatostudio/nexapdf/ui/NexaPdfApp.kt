@@ -130,6 +130,8 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.unit.dp
+import es.ghatostudio.nexapdf.ui.navegacion.EntradaExterna
+import es.ghatostudio.nexapdf.data.CopiaSeguridad
 
 /**
  * Raiz de la interfaz: tema, navegacion, avisos y el hilo que une las pantallas
@@ -141,7 +143,7 @@ import androidx.compose.ui.unit.dp
  * sea cuestion de dar otra implementacion del contenedor.
  */
 @Composable
-fun NexaPdfApp(contenedor: ContenedorApp, documentoDeEntrada: String? = null) {
+fun NexaPdfApp(contenedor: ContenedorApp, entradaExterna: EntradaExterna? = null) {
     CompositionLocalProvider(LocalContenedor provides contenedor) {
         val estado = remember { EstadoApp(contenedor) }
         val ajustes by estado.ajustes.collectAsState()
@@ -155,7 +157,7 @@ fun NexaPdfApp(contenedor: ContenedorApp, documentoDeEntrada: String? = null) {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background,
             ) {
-                ContenidoApp(contenedor, estado, documentoDeEntrada)
+                ContenidoApp(contenedor, estado, entradaExterna)
             }
         }
     }
@@ -165,7 +167,7 @@ fun NexaPdfApp(contenedor: ContenedorApp, documentoDeEntrada: String? = null) {
 private fun ContenidoApp(
     contenedor: ContenedorApp,
     estado: EstadoApp,
-    documentoDeEntrada: String?,
+    entradaExterna: EntradaExterna?,
 ) {
     val alcance = rememberCoroutineScope()
     // Se usa la retroalimentacion haptica de Compose y no el Vibrator del
@@ -484,15 +486,52 @@ private fun ContenidoApp(
         estado.avisoMostrado()
     }
 
-    // Un PDF que llega desde el gestor de archivos o desde otra aplicacion se
-    // copia al espacio de trabajo y se abre para leer, que es lo que espera
-    // quien pulsa "abrir con".
-    LaunchedEffect(documentoDeEntrada) {
-        val entrada = documentoDeEntrada ?: return@LaunchedEffect
-        val adoptado = contenedor.selector.adoptarExterno(entrada) ?: return@LaunchedEffect
-        abrirDocumentos(listOf(adoptado.ruta)) { abiertos ->
-            val abierto = abiertos.firstOrNull() ?: return@abrirDocumentos
-            estado.ir(Destino.Visor(abierto.ruta))
+    // Lo que llega de otra aplicacion se copia al espacio de trabajo y se
+    // lleva a la pantalla que corresponde. Un PDF suelto se abre para leer, que
+    // es lo que espera quien pulsa "abrir con"; varios solo pueden querer
+    // unirse; unas fotos, convertirse en documento; y una copia de seguridad,
+    // importarse.
+    LaunchedEffect(entradaExterna) {
+        when (val entrada = entradaExterna ?: return@LaunchedEffect) {
+            is EntradaExterna.UnDocumento -> {
+                val adoptado = contenedor.selector.adoptarExterno(entrada.uri)
+                    ?: return@LaunchedEffect
+                val nombre = contenedor.ficheros.nombre(adoptado.ruta)
+                if (nombre.endsWith(CopiaSeguridad.EXTENSION, ignoreCase = true)) {
+                    importarCopiaDesde(contenedor, estado, adoptado.ruta)
+                } else {
+                    abrirDocumentos(listOf(adoptado.ruta)) { abiertos ->
+                        val abierto = abiertos.firstOrNull() ?: return@abrirDocumentos
+                        estado.ir(Destino.Visor(abierto.ruta))
+                    }
+                }
+            }
+
+            is EntradaExterna.VariosDocumentos -> {
+                estado.empezarTrabajo(textoProcesando)
+                val rutas = entrada.uris.mapNotNull {
+                    contenedor.selector.adoptarExterno(it)?.ruta
+                }
+                estado.terminarTrabajo()
+                if (rutas.isEmpty()) return@LaunchedEffect
+                abrirDocumentos(rutas) { abiertos ->
+                    estado.ir(
+                        Destino.Documento(abiertos.map { it.ruta }, modoUnion = true),
+                    )
+                }
+            }
+
+            is EntradaExterna.Imagenes -> {
+                estado.empezarTrabajo(textoProcesando)
+                val rutas = entrada.uris.mapNotNull {
+                    contenedor.selector.adoptarExterno(it)?.ruta
+                }
+                estado.terminarTrabajo()
+                if (rutas.isEmpty()) return@LaunchedEffect
+                imagenes.clear()
+                imagenes.addAll(rutas)
+                estado.ir(Destino.Imagenes(rutas))
+            }
         }
     }
 
@@ -713,6 +752,45 @@ private fun ContenidoApp(
                                 "application/pdf",
                                 contenedor.ficheros.nombre(destino.ruta),
                             )
+                        },
+                        alFirmar = {
+                            alcance.launch {
+                                firmasExistentes = contenedor.motorPdf
+                                    .firmasExistentes(destino.ruta)
+                                    .valorONulo().orEmpty()
+                                estado.ir(Destino.Firma(destino.ruta))
+                            }
+                        },
+                        // Se entra por la pagina que se estaba leyendo, no por
+                        // la primera: si algo hay que corregir, es lo que se
+                        // tiene delante.
+                        alEditar = { estado.ir(Destino.Editor(destino.ruta, destino.pagina)) },
+                        alProteger = {
+                            alcance.launch {
+                                estado.empezarTrabajo(textoProcesando)
+                                val intento = contenedor.motorPdf.abrir(destino.ruta)
+                                estado.terminarTrabajo()
+                                val protegido = intento is ResultadoPdf.Fallo &&
+                                    intento.causa == ErrorPdf.NECESITA_CONTRASENA
+                                estado.ir(Destino.Cifrar(destino.ruta, protegido))
+                            }
+                        },
+                        alVerPaginas = {
+                            estado.ir(Destino.Documento(listOf(destino.ruta)))
+                        },
+                        alGuardarComo = {
+                            alcance.launch {
+                                val guardado = contenedor.selector.guardarComo(
+                                    destino.ruta,
+                                    contenedor.ficheros.nombre(destino.ruta),
+                                    "application/pdf",
+                                )
+                                if (guardado != null) {
+                                    estado.avisar(
+                                        getString(Res.string.doc_resultado_guardado, guardado),
+                                    )
+                                }
+                            }
                         },
                     ),
                     alVolver = { estado.volver() },
@@ -1680,7 +1758,21 @@ private suspend fun exportarCopia(contenedor: ContenedorApp, estado: EstadoApp) 
 
 private suspend fun importarCopia(contenedor: ContenedorApp, estado: EstadoApp) {
     val elegido = contenedor.selector.elegirCopiaSeguridad() ?: return
-    val contenido = contenedor.ficheros.leerTexto(elegido.ruta)
+    importarCopiaDesde(contenedor, estado, elegido.ruta)
+}
+
+/**
+ * Importa una copia de seguridad ya localizada.
+ *
+ * Separado de [importarCopia] porque una copia puede llegar sin pasar por el
+ * selector: al pulsarla en el gestor de archivos o al recibirla compartida.
+ */
+private suspend fun importarCopiaDesde(
+    contenedor: ContenedorApp,
+    estado: EstadoApp,
+    ruta: String,
+) {
+    val contenido = contenedor.ficheros.leerTexto(ruta)
     if (contenido == null) {
         estado.avisar(getString(Res.string.error_fichero_invalido))
         return

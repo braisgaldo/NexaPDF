@@ -1,9 +1,7 @@
 Novità
 
-• Proteggere un PDF con password (AES-256) e toglierla poi.
-• Firma elettronica PAdES, lo standard europeo, con il dettaglio di ogni firma.
-• Visore: scorri tra le pagine, scrivi il numero, trascina la barra.
-• Dividere vedendo le pagine, ogni parte con il suo colore.
-• Modificare: disegno, evidenziatore, testo, forme, immagini, filtri.
-• Unire, convertire da e verso Word, Excel e PowerPoint, foto in PDF.
-• Nessun permesso, nessuna connessione, nessuna pubblicità.
+Un PDF aperto da una app di messaggistica o dal gestore file non è più di sola lettura. Il visore ha ora una cassetta degli attrezzi per firmarlo, modificarlo, proteggerlo con password, dividerlo o esportarlo, e salvarlo dove vuoi, senza uscire e ricercare il file.
+
+• Condividere più PDF porta a unirli.
+• Condividere foto porta a farne un documento.
+• Aprire un backup propone di importarlo.

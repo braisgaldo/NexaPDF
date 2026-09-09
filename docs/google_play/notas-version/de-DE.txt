@@ -1,9 +1,7 @@
 Neu
 
-• PDF mit Passwort schützen (AES-256) und später wieder entsperren.
-• PAdES-Signaturen nach europäischer Norm, mit allen Angaben zu jeder Signatur.
-• Betrachter: wischen, Seitenzahl eintippen, Leiste ziehen.
-• Teilen mit den Seiten vor Augen, jeder Teil in eigener Farbe.
-• Bearbeiten: zeichnen, hervorheben, Text, Formen, Bilder, Filter.
-• Zusammenführen, Umwandlung von und nach Word, Excel, PowerPoint, Fotos zu PDF.
-• Keine Berechtigungen, kein Internet, keine Werbung.
+Ein PDF, das Sie aus einer Messaging-App oder der Dateiverwaltung öffnen, lässt sich nicht mehr nur lesen. Der Betrachter hat jetzt einen Werkzeugkasten: signieren, bearbeiten, mit Passwort schützen, teilen oder exportieren und speichern, wo Sie wollen — ohne die App zu verlassen und die Datei erneut zu suchen.
+
+• Mehrere PDFs teilen führt zum Zusammenführen.
+• Fotos teilen führt zum Dokument.
+• Eine Sicherung öffnen bietet den Import an.

@@ -442,7 +442,9 @@ Banantzeko, «Zatitan banandu…» orri guztiak batera erakusten ditu. Zati bako
     <string name="vis_de_total">/ %1$d</string>
     <string name="vis_ir">Joan</string>
     <string name="vis_ir_a_pagina">Joan orrira</string>
+    <string name="vis_mas_acciones">Zer egin dokumentu honekin</string>
     <string name="vis_numero_pagina">Orri-zenbakia</string>
+    <string name="vis_paginas_y_mas">Orriak, zatitu eta esportatu</string>
     <string name="vis_siguiente">Hurrengo agerraldia</string>
     <string name="visor_indice">Aurkibidea</string>
     <string name="visor_pagina_numero">%1$d. orria</string>

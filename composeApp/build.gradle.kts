@@ -16,7 +16,7 @@ plugins {
 // --- Versionado -------------------------------------------------------------
 // versionName sigue SemVer. versionCode se deriva de forma monotona con la
 // formula MAJOR * 10_000 + MINOR * 100 + PATCH, documentada en docs/INSTALL.md.
-val appVersionName = "1.2.0"
+val appVersionName = "1.3.0"
 val appVersionCode = appVersionName.split(".").let { (major, minor, patch) ->
     major.toInt() * 10_000 + minor.toInt() * 100 + patch.toInt()
 }
@@ -192,6 +192,9 @@ android {
         targetSdk = libs.versions.androidTargetSdk.get().toInt()
         versionCode = appVersionCode
         versionName = appVersionName
+        // La etiqueta visible. Es un marcador y no @string/app_name porque el
+        // build de depuracion la cambia, y `app_name` no se traduce.
+        manifestPlaceholders["etiquetaApp"] = "NexaPDF"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -228,6 +231,13 @@ android {
         getByName("debug") {
             applicationIdSuffix = ".debug"
             isMinifyEnabled = false
+
+            // Nombre propio para el build de depuracion. Los dos se pueden
+            // instalar a la vez, y con la misma etiqueta eran indistinguibles
+            // en el lanzador y, peor, en la hoja de compartir del sistema:
+            // salian dos "NexaPDF" y no habia forma de saber a cual se estaba
+            // mandando el fichero.
+            manifestPlaceholders["etiquetaApp"] = "NexaPDF debug"
         }
         getByName("release") {
             isMinifyEnabled = true

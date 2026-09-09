@@ -1,9 +1,7 @@
 Berritasunak
 
-• PDF bat pasahitzarekin babestea (AES-256) eta gero kentzea.
-• PAdES sinadura elektronikoa, Europako arauarena, sinadura bakoitzaren xehetasunekin.
-• Ikustailea: lerratuz orria pasa, zenbakia idatzi eta barra arrastatu.
-• Zatitu orriak ikusiz, zati bakoitza bere kolorearekin.
-• Editatu: marraztu, nabarmendu, testua, formak, irudiak eta iragazkiak.
-• Batu, Word, Excel eta PowerPoint-era bihurtu eta alderantziz, argazkiak PDF.
-• Baimenik gabe, internetik gabe eta iragarkirik gabe.
+Mezularitzatik edo fitxategi-kudeatzailetik irekitzen duzun PDF bat ez da jada «irakurri besterik ez». Ikustaileak tresna-kutxa bat du orain: sinatu, editatu, pasahitzarekin babestu, zatitu edo esportatu, eta nahi duzun lekuan gorde, irten eta fitxategia berriro bilatu gabe.
+
+• PDF bat baino gehiago partekatzeak batzera darama.
+• Argazkiak partekatzeak dokumentu bihurtzera.
+• Babeskopia bat irekitzeak inportatzea eskaintzen du.

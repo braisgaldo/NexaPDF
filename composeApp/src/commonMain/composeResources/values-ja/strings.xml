@@ -442,7 +442,9 @@
     <string name="vis_de_total">/ %1$d</string>
     <string name="vis_ir">移動</string>
     <string name="vis_ir_a_pagina">ページへ移動</string>
+    <string name="vis_mas_acciones">この文書にできること</string>
     <string name="vis_numero_pagina">ページ番号</string>
+    <string name="vis_paginas_y_mas">ページ、分割、書き出し</string>
     <string name="vis_siguiente">次の一致</string>
     <string name="visor_indice">目次</string>
     <string name="visor_pagina_numero">%1$d ページ</string>

@@ -442,7 +442,9 @@ Para separar, «Dividir en partes…» amosa todas as páxinas de golpe. Cada pa
     <string name="vis_de_total">de %1$d</string>
     <string name="vis_ir">Ir</string>
     <string name="vis_ir_a_pagina">Ir á páxina</string>
+    <string name="vis_mas_acciones">Que facer con este documento</string>
     <string name="vis_numero_pagina">Número de páxina</string>
+    <string name="vis_paginas_y_mas">Páxinas, separar e exportar</string>
     <string name="vis_siguiente">Aparición seguinte</string>
     <string name="visor_indice">Índice</string>
     <string name="visor_pagina_numero">Páxina %1$d</string>

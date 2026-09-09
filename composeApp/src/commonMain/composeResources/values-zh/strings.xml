@@ -442,7 +442,9 @@
     <string name="vis_de_total">/ %1$d</string>
     <string name="vis_ir">前往</string>
     <string name="vis_ir_a_pagina">跳转到页面</string>
+    <string name="vis_mas_acciones">对此文档可以做什么</string>
     <string name="vis_numero_pagina">页码</string>
+    <string name="vis_paginas_y_mas">页面、拆分与导出</string>
     <string name="vis_siguiente">下一处匹配</string>
     <string name="visor_indice">目录</string>
     <string name="visor_pagina_numero">第 %1$d 页</string>

@@ -28,6 +28,7 @@ import traducciones_ajustes  # noqa: E402
 import traducciones_ayuda  # noqa: E402
 import traducciones_cifrar  # noqa: E402
 import traducciones_firma  # noqa: E402
+import traducciones_visor  # noqa: E402
 import traducciones_documento  # noqa: E402
 import traducciones_editor  # noqa: E402
 
@@ -55,6 +56,7 @@ def reunir_textos() -> dict[str, dict[str, str]]:
         traducciones_ayuda,
         traducciones_cifrar,
         traducciones_firma,
+        traducciones_visor,
     ):
         for clave, valores in modulo.TEXTOS.items():
             if clave in textos:

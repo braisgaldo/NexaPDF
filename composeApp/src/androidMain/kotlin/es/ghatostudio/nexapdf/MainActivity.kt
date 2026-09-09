@@ -22,6 +22,7 @@ import java.util.Locale
 import android.content.Intent
 import android.net.Uri
 import androidx.core.content.IntentCompat
+import es.ghatostudio.nexapdf.ui.navegacion.EntradaExterna
 
 class MainActivity : ComponentActivity() {
 
@@ -66,7 +67,7 @@ class MainActivity : ComponentActivity() {
             ajustes = RepositorioAjustes(almacenPreferencias),
         )
 
-        setContent { App(contenedor, documentoDeEntrada) }
+        setContent { App(contenedor, entradaExterna) }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -78,21 +79,60 @@ class MainActivity : ComponentActivity() {
     }
 
     /**
-     * El documento con el que se ha abierto la aplicacion, si viene de fuera.
+     * Lo que se ha abierto o compartido con la aplicacion, si viene de fuera.
      *
-     * Llega de dos sitios: al pulsar "abrir con" sobre un PDF en el gestor de
-     * archivos (ACTION_VIEW) y al compartirlo desde otra aplicacion
-     * (ACTION_SEND).
+     * El manifiesto declara cuatro casos y hasta ahora solo se resolvia uno:
+     * ACTION_VIEW sobre un PDF. Compartir varios ficheros, compartir una foto o
+     * abrir una copia de seguridad entraban y se quedaban en nada, porque todo
+     * se leia como "la direccion de un PDF". Aqui se distingue cada caso para
+     * que arriba se pueda llevar a su pantalla.
+     *
+     * Aqui solo se distingue lo que el intent sabe de verdad: la accion y si
+     * lo que llega son imagenes. Que un fichero sea una copia de seguridad se
+     * decide mas arriba, cuando ya se ha copiado y se conoce su nombre: en una
+     * direccion `content://` de MediaStore la ruta es un numero, no el nombre,
+     * y mirar ahi la extension no funciona.
      */
-    private val documentoDeEntrada: String?
-        get() = when (intent?.action) {
-            Intent.ACTION_VIEW -> intent?.data?.toString()
-            Intent.ACTION_SEND -> IntentCompat
-                .getParcelableExtra(intent, Intent.EXTRA_STREAM, Uri::class.java)
+    private val entradaExterna: EntradaExterna?
+        get() {
+            val recibido = intent ?: return null
+            val tipo = recibido.type.orEmpty()
+
+            fun unaDireccion(): String? = IntentCompat
+                .getParcelableExtra(recibido, Intent.EXTRA_STREAM, Uri::class.java)
                 ?.toString()
 
-            else -> null
+            fun variasDirecciones(): List<String> = IntentCompat
+                .getParcelableArrayListExtra(recibido, Intent.EXTRA_STREAM, Uri::class.java)
+                ?.map { it.toString() }
+                .orEmpty()
+
+            return when (recibido.action) {
+                Intent.ACTION_VIEW ->
+                    recibido.data?.toString()?.let { EntradaExterna.UnDocumento(it) }
+
+                Intent.ACTION_SEND -> {
+                    val direccion = unaDireccion() ?: return null
+                    if (tipo.startsWith("image/")) {
+                        EntradaExterna.Imagenes(listOf(direccion))
+                    } else {
+                        EntradaExterna.UnDocumento(direccion)
+                    }
+                }
+
+                Intent.ACTION_SEND_MULTIPLE -> {
+                    val direcciones = variasDirecciones().ifEmpty { return null }
+                    if (tipo.startsWith("image/")) {
+                        EntradaExterna.Imagenes(direcciones)
+                    } else {
+                        EntradaExterna.VariosDocumentos(direcciones)
+                    }
+                }
+
+                else -> null
+            }
         }
+
 
     private val almacenPreferencias: DataStore<Preferences> by lazy {
         PreferenceDataStoreFactory.create(

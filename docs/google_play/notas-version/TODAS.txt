@@ -1,143 +1,117 @@
 <es-ES>
 Novedades
 
-• Proteger un PDF con contraseña (AES-256) y quitarla después.
-• Firma electrónica PAdES, la de la norma europea, con el detalle de cada firma en el visor.
-• Visor: pasa página deslizando, escribe el número para saltar y arrastra la barra.
-• Dividir viendo las páginas, cada parte con su color.
-• Editar: dibujar, resaltar, texto, formas, imágenes y filtros.
-• Unir, convertir a Word, Excel y PowerPoint y al revés, y fotos a PDF.
-• Sin permisos, sin internet y sin anuncios.
+Un PDF que abres desde mensajería o desde el gestor de archivos ya no se queda en «sólo leer». El visor lleva ahora una caja de herramientas para firmarlo, editarlo, protegerlo con contraseña, separarlo o exportarlo, y guardarlo donde quieras, sin salir ni volver a buscar el fichero.
+
+• Compartir varios PDF a la vez lleva a unirlos.
+• Compartir fotos lleva a convertirlas en documento.
+• Abrir una copia de seguridad ofrece importarla.
 </es-ES>
 <en-US>
 What's new
 
-• Protect a PDF with a password (AES-256), and remove it later.
-• PAdES electronic signatures, the European standard, with each signature's details in the viewer.
-• Viewer: swipe between pages, type a number to jump, drag the bar.
-• Split with the pages in front of you, each part in its colour.
-• Edit: draw, highlight, text, shapes, images and filters.
-• Merge, convert to and from Word, Excel and PowerPoint, photos to PDF.
-• No permissions, no internet, no ads.
+A PDF you open from a messaging app or your file manager is no longer read-only. The viewer now has a toolbox to sign it, edit it, protect it with a password, split or export it, and save it wherever you want, without leaving and hunting for the file again.
+
+• Sharing several PDFs at once takes you to merging them.
+• Sharing photos takes you to turning them into a document.
+• Opening a backup offers to import it.
 </en-US>
 <fr-FR>
 Nouveautés
 
-• Protéger un PDF par mot de passe (AES-256) et le retirer ensuite.
-• Signature électronique PAdES, la norme européenne, avec le détail de chacune.
-• Lecteur : glisser entre les pages, saisir un numéro, faire glisser la barre.
-• Diviser en voyant les pages, chaque partie a sa couleur.
-• Éditer : dessin, surlignage, texte, formes, images, filtres.
-• Fusionner, convertir vers et depuis Word, Excel, PowerPoint.
-• Aucune autorisation, aucun accès Internet, aucune publicité.
+Un PDF ouvert depuis une messagerie ou le gestionnaire de fichiers ne se limite plus à la lecture. Le lecteur dispose d'une boîte à outils pour le signer, le modifier, le protéger par mot de passe, le diviser ou l'exporter, et l'enregistrer où vous voulez, sans sortir ni rechercher le fichier.
+
+• Partager plusieurs PDF mène à les fusionner.
+• Partager des photos mène à en faire un document.
+• Ouvrir une sauvegarde propose de l'importer.
 </fr-FR>
 <de-DE>
 Neu
 
-• PDF mit Passwort schützen (AES-256) und später wieder entsperren.
-• PAdES-Signaturen nach europäischer Norm, mit allen Angaben zu jeder Signatur.
-• Betrachter: wischen, Seitenzahl eintippen, Leiste ziehen.
-• Teilen mit den Seiten vor Augen, jeder Teil in eigener Farbe.
-• Bearbeiten: zeichnen, hervorheben, Text, Formen, Bilder, Filter.
-• Zusammenführen, Umwandlung von und nach Word, Excel, PowerPoint, Fotos zu PDF.
-• Keine Berechtigungen, kein Internet, keine Werbung.
+Ein PDF, das Sie aus einer Messaging-App oder der Dateiverwaltung öffnen, lässt sich nicht mehr nur lesen. Der Betrachter hat jetzt einen Werkzeugkasten: signieren, bearbeiten, mit Passwort schützen, teilen oder exportieren und speichern, wo Sie wollen — ohne die App zu verlassen und die Datei erneut zu suchen.
+
+• Mehrere PDFs teilen führt zum Zusammenführen.
+• Fotos teilen führt zum Dokument.
+• Eine Sicherung öffnen bietet den Import an.
 </de-DE>
 <it-IT>
 Novità
 
-• Proteggere un PDF con password (AES-256) e toglierla poi.
-• Firma elettronica PAdES, lo standard europeo, con il dettaglio di ogni firma.
-• Visore: scorri tra le pagine, scrivi il numero, trascina la barra.
-• Dividere vedendo le pagine, ogni parte con il suo colore.
-• Modificare: disegno, evidenziatore, testo, forme, immagini, filtri.
-• Unire, convertire da e verso Word, Excel e PowerPoint, foto in PDF.
-• Nessun permesso, nessuna connessione, nessuna pubblicità.
+Un PDF aperto da una app di messaggistica o dal gestore file non è più di sola lettura. Il visore ha ora una cassetta degli attrezzi per firmarlo, modificarlo, proteggerlo con password, dividerlo o esportarlo, e salvarlo dove vuoi, senza uscire e ricercare il file.
+
+• Condividere più PDF porta a unirli.
+• Condividere foto porta a farne un documento.
+• Aprire un backup propone di importarlo.
 </it-IT>
 <gl-ES>
 Novidades
 
-• Protexer un PDF con contrasinal (AES-256) e quitalo despois.
-• Sinatura electrónica PAdES, a da norma europea, co detalle de cada sinatura.
-• Visor: pasa páxina esvarando, escribe o número e arrastra a barra.
-• Dividir vendo as páxinas, cada parte coa súa cor.
-• Editar: debuxar, resaltar, texto, formas, imaxes e filtros.
-• Unir, converter a Word, Excel e PowerPoint e ao revés, e fotos a PDF.
-• Sen permisos, sen internet e sen publicidade.
+Un PDF que abres desde mensaxería ou desde o xestor de ficheiros xa non queda en «só ler». O visor leva agora unha caixa de ferramentas para asinalo, editalo, protexelo con contrasinal, separalo ou exportalo, e gardalo onde queiras, sen saír nin volver buscar o ficheiro.
+
+• Compartir varios PDF leva a unilos.
+• Compartir fotos leva a convertelas en documento.
+• Abrir unha copia de seguridade ofrece importala.
 </gl-ES>
 <ca>
 Novetats
 
-• Protegir un PDF amb contrasenya (AES-256) i treure-la després.
-• Signatura electrònica PAdES, la de la norma europea, amb el detall de cada signatura.
-• Visor: passa pàgina lliscant, escriu el número i arrossega la barra.
-• Dividir veient les pàgines, cada part amb el seu color.
-• Editar: dibuixar, subratllar, text, formes, imatges i filtres.
-• Unir, convertir a Word, Excel i PowerPoint i a la inversa, i fotos a PDF.
-• Sense permisos, sense internet i sense publicitat.
+Un PDF que obres des de missatgeria o des del gestor de fitxers ja no es queda en «només llegir». El visor porta ara una caixa d'eines per signar-lo, editar-lo, protegir-lo amb contrasenya, dividir-lo o exportar-lo, i desar-lo on vulguis, sense sortir ni tornar a buscar el fitxer.
+
+• Compartir diversos PDF porta a unir-los.
+• Compartir fotos porta a fer-ne un document.
+• Obrir una còpia de seguretat ofereix importar-la.
 </ca>
 <eu-ES>
 Berritasunak
 
-• PDF bat pasahitzarekin babestea (AES-256) eta gero kentzea.
-• PAdES sinadura elektronikoa, Europako arauarena, sinadura bakoitzaren xehetasunekin.
-• Ikustailea: lerratuz orria pasa, zenbakia idatzi eta barra arrastatu.
-• Zatitu orriak ikusiz, zati bakoitza bere kolorearekin.
-• Editatu: marraztu, nabarmendu, testua, formak, irudiak eta iragazkiak.
-• Batu, Word, Excel eta PowerPoint-era bihurtu eta alderantziz, argazkiak PDF.
-• Baimenik gabe, internetik gabe eta iragarkirik gabe.
+Mezularitzatik edo fitxategi-kudeatzailetik irekitzen duzun PDF bat ez da jada «irakurri besterik ez». Ikustaileak tresna-kutxa bat du orain: sinatu, editatu, pasahitzarekin babestu, zatitu edo esportatu, eta nahi duzun lekuan gorde, irten eta fitxategia berriro bilatu gabe.
+
+• PDF bat baino gehiago partekatzeak batzera darama.
+• Argazkiak partekatzeak dokumentu bihurtzera.
+• Babeskopia bat irekitzeak inportatzea eskaintzen du.
 </eu-ES>
 <el-GR>
 Τι νέο υπάρχει
 
-• Προστασία PDF με κωδικό (AES-256) και αφαίρεσή του μετά.
-• Ηλεκτρονική υπογραφή PAdES, του ευρωπαϊκού προτύπου, με τα στοιχεία κάθε υπογραφής.
-• Ανάγνωση: αλλαγή σελίδας με σύρσιμο, πληκτρολόγηση αριθμού, μπάρα.
-• Διαχωρισμός βλέποντας τις σελίδες, κάθε μέρος με το χρώμα του.
-• Επεξεργασία: σχέδιο, μαρκάρισμα, κείμενο, σχήματα, εικόνες, φίλτρα.
-• Συγχώνευση, μετατροπή από και προς Word, Excel, PowerPoint.
-• Χωρίς άδειες, χωρίς ίντερνετ, χωρίς διαφημίσεις.
+Ένα PDF που ανοίγετε από εφαρμογή μηνυμάτων ή από τη διαχείριση αρχείων δεν είναι πια μόνο για ανάγνωση. Ο αναγνώστης έχει τώρα εργαλειοθήκη: υπογραφή, επεξεργασία, προστασία με κωδικό, διαχωρισμό ή εξαγωγή, και αποθήκευση όπου θέλετε.
+
+• Κοινή χρήση πολλών PDF οδηγεί στη συγχώνευση.
+• Κοινή χρήση φωτογραφιών, στη δημιουργία εγγράφου.
+• Άνοιγμα αντιγράφου προτείνει την εισαγωγή του.
 </el-GR>
 <ru-RU>
 Что нового
 
-• Защита PDF паролем (AES-256) и снятие пароля потом.
-• Электронная подпись PAdES по европейскому стандарту, со сведениями о каждой подписи.
-• Просмотр: листайте жестом, вводите номер страницы, тяните полосу.
-• Разделение с видимыми страницами, у каждой части свой цвет.
-• Редактор: рисование, выделение, текст, фигуры, изображения, фильтры.
-• Объединение, конвертация в Word, Excel, PowerPoint и обратно, фото в PDF.
-• Без разрешений, без интернета, без рекламы.
+PDF, открытый из мессенджера или файлового менеджера, больше не только для чтения. В просмотре появился набор инструментов: подписать, отредактировать, защитить паролем, разделить или экспортировать и сохранить куда угодно — не выходя и не разыскивая файл заново.
+
+• Отправка нескольких PDF ведёт к объединению.
+• Отправка фотографий — к созданию документа.
+• Открытие резервной копии предлагает импорт.
 </ru-RU>
 <zh-CN>
 新增内容
 
-• 用密码保护 PDF（AES-256），也能再解除。
-• 符合欧洲标准的 PAdES 电子签名，阅读器中可查看每个签名的完整信息。
-• 阅读器：滑动翻页、输入页码跳转、拖动滑块。
-• 拆分时看得见页面，每部分各有颜色。
-• 编辑：绘制、高亮、文字、形状、图片与滤镜。
-• 合并、与 Word/Excel/PowerPoint 互转、照片转 PDF。
-• 无权限、无联网、无广告。
+从聊天软件或文件管理器打开的 PDF 不再只能阅读。阅读器新增了工具箱：签名、编辑、加密、拆分或导出，并可另存到任意位置，无需退出再去找一遍文件。
+
+• 一次分享多个 PDF，直接进入合并。
+• 分享照片，直接进入转成文档。
+• 打开备份文件，会提示导入。
 </zh-CN>
 <ja-JP>
 新機能
 
-• PDF をパスワードで保護（AES-256）。あとから解除もできます。
-• 欧州規格の PAdES 電子署名。ビューアで各署名の詳細を確認できます。
-• ビューア：スワイプでページ送り、番号入力で移動、バーで一気に移動。
-• ページを見ながら分割。パートごとに色分け。
-• 編集：手書き、蛍光ペン、テキスト、図形、画像、フィルター。
-• 結合、Word・Excel・PowerPoint との相互変換、写真から PDF。
-• 権限なし、通信なし、広告なし。
+メッセージアプリやファイル管理から開いた PDF が「読むだけ」ではなくなりました。ビューアに道具箱を追加：署名、編集、パスワード保護、分割や書き出し、任意の場所への保存が、アプリを出てファイルを探し直さずにできます。
+
+• 複数の PDF を共有すると結合へ。
+• 写真を共有すると文書化へ。
+• バックアップを開くと取り込みを提案。
 </ja-JP>
 <ar>
 الجديد
 
-• حماية ملف PDF بكلمة مرور (AES-256) وإزالتها لاحقًا.
-• توقيع إلكتروني PAdES وفق المعيار الأوروبي، مع تفاصيل كل توقيع في العارض.
-• العارض: تنقّل بالتمرير، واكتب رقم الصفحة، واسحب الشريط.
-• التقسيم والصفحات أمامك، لكل جزء لونه.
-• التحرير: رسم وتظليل ونصوص وأشكال وصور ومرشّحات.
-• الدمج، والتحويل من وإلى Word وExcel وPowerPoint، والصور إلى PDF.
-• بلا أذونات، بلا إنترنت، بلا إعلانات.
+ملف PDF تفتحه من تطبيق مراسلة أو من مدير الملفات لم يعد للقراءة فقط. صار في العارض صندوق أدوات لتوقيعه وتحريره وحمايته بكلمة مرور وتقسيمه أو تصديره وحفظه حيث تشاء، دون الخروج والبحث عن الملف من جديد.
+
+• مشاركة عدة ملفات PDF تقود إلى دمجها.
+• مشاركة الصور تقود إلى تحويلها لمستند.
+• فتح نسخة احتياطية يعرض استيرادها.
 </ar>

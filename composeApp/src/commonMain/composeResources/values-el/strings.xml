@@ -442,7 +442,9 @@
     <string name="vis_de_total">από %1$d</string>
     <string name="vis_ir">Μετάβαση</string>
     <string name="vis_ir_a_pagina">Μετάβαση σε σελίδα</string>
+    <string name="vis_mas_acciones">Τι να κάνετε με αυτό το έγγραφο</string>
     <string name="vis_numero_pagina">Αριθμός σελίδας</string>
+    <string name="vis_paginas_y_mas">Σελίδες, διαχωρισμός και εξαγωγή</string>
     <string name="vis_siguiente">Επόμενο αποτέλεσμα</string>
     <string name="visor_indice">Περιεχόμενα</string>
     <string name="visor_pagina_numero">Σελίδα %1$d</string>

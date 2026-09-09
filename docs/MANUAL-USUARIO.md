@@ -44,9 +44,12 @@ Arriba a la derecha, la rueda dentada abre los **Ajustes**.
 
 - **La lupa** busca en todo el documento. Las apariciones quedan resaltadas
   sobre la página, y el contador y las flechas te llevan de una a otra.
-- **El icono de lista** muestra el índice de secciones, si el PDF lo trae. Los
-  documentos escaneados no suelen tenerlo.
+- **El icono de lista** muestra el índice de secciones. Sólo aparece cuando el
+  PDF trae índice; los documentos escaneados no suelen tenerlo.
 - **El escudo** lista las firmas digitales. Se tiñe de color cuando hay alguna.
+- **La caja de herramientas** abre lo que puedes hacer con el documento que
+  tienes delante: firmarlo, editarlo, protegerlo con contraseña, ir a sus
+  páginas para separarlo o exportarlo, y guardarlo donde quieras.
 - **Pellizca** para ampliar y **arrastra** para moverte.
 - **Compartir** envía el documento que estás leyendo.
 
@@ -59,6 +62,29 @@ En **Ajustes › Cómo se lee** eliges entre **página a página** (deslizas de
 lado y ves una cada vez) y **desplazamiento continuo** (todas seguidas, como
 se lee cualquier otra cosa en el teléfono). Con el desplazamiento continuo,
 el pellizco con dos dedos ensancha las páginas en lugar de moverlas.
+
+---
+
+## Abrir cosas desde otras aplicaciones
+
+No hace falta entrar en NexaPDF para usarlo. Cuando te llega un PDF por
+mensajería o por correo, o lo tienes en el gestor de archivos, **NexaPDF sale
+entre las aplicaciones con las que abrirlo o compartirlo**, y lo que hace
+depende de lo que le mandes:
+
+| Lo que mandas | Dónde acabas |
+|---|---|
+| **Un PDF** | En el visor, leyéndolo. Desde la caja de herramientas lo firmas, editas o proteges sin salir. |
+| **Varios PDF a la vez** | En la pantalla de unir, con todos cargados y listos para ordenar. |
+| **Una foto o varias** | En «Imágenes a PDF», con las fotos puestas. |
+| **Una copia de seguridad** | Se te ofrece importarla. |
+
+> Antes, un PDF abierto así sólo se podía leer: para firmarlo había que salir,
+> entrar en NexaPDF y volver a buscar el mismo fichero. Ya no.
+
+Un documento que llega de fuera se copia al espacio de trabajo de la
+aplicación, no a tus Descargas. Si quieres quedártelo, **Guardar como…** en la
+caja de herramientas.
 
 ---
 

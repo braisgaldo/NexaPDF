@@ -5,6 +5,31 @@ Todos los cambios reseñables de NexaPDF se documentan en este fichero.
 El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y el
 proyecto se versiona con [SemVer](https://semver.org/lang/es/).
 
+## [1.3.0] — 2026-09-09
+
+### Nuevo
+
+- **Lo que se abre desde otra aplicación ya se puede usar, no sólo leer.** Un
+  PDF que llega por mensajería o desde el gestor de archivos abría el visor y
+  ahí se acababa: para firmarlo había que salir, entrar en NexaPDF y volver a
+  buscar el mismo fichero. Ahora el visor lleva una caja de herramientas con
+  firmar, editar, proteger con contraseña, ir a las páginas para separar o
+  exportar, y guardar donde quieras.
+- **Compartir varios PDF a la vez** lleva a la pantalla de unir con todos
+  cargados. Antes entraban y no pasaba nada.
+- **Compartir fotos** lleva a «Imágenes a PDF» con ellas puestas. Antes se
+  intentaban abrir como si fueran un PDF.
+- **Abrir una copia de seguridad** desde fuera ofrece importarla, en lugar de
+  fallar al leerla como documento.
+
+### Corregido
+
+- El índice de secciones ya no ocupa sitio en la barra del visor cuando el
+  documento no tiene índice, que es la mayoría de las veces.
+- El build de depuración se llama «NexaPDF debug». Con la misma etiqueta que el
+  de publicación no había forma de distinguirlos ni en el lanzador ni, peor, al
+  elegir a cuál de los dos mandar un fichero.
+
 ## [1.2.0] — 2026-09-04
 
 ### Nuevo

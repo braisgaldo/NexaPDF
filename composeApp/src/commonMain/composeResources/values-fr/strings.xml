@@ -442,7 +442,9 @@ Pour diviser, « Diviser en parties… » affiche toutes les pages. Chaque parti
     <string name="vis_de_total">sur %1$d</string>
     <string name="vis_ir">Aller</string>
     <string name="vis_ir_a_pagina">Aller à la page</string>
+    <string name="vis_mas_acciones">Que faire de ce document</string>
     <string name="vis_numero_pagina">Numéro de page</string>
+    <string name="vis_paginas_y_mas">Pages, diviser et exporter</string>
     <string name="vis_siguiente">Occurrence suivante</string>
     <string name="visor_indice">Sommaire</string>
     <string name="visor_pagina_numero">Page %1$d</string>

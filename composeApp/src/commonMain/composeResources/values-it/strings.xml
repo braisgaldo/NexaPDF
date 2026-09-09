@@ -442,7 +442,9 @@ Per dividere, «Dividi in parti…» mostra tutte le pagine in una volta. Ogni p
     <string name="vis_de_total">di %1$d</string>
     <string name="vis_ir">Vai</string>
     <string name="vis_ir_a_pagina">Vai alla pagina</string>
+    <string name="vis_mas_acciones">Cosa fare con questo documento</string>
     <string name="vis_numero_pagina">Numero di pagina</string>
+    <string name="vis_paginas_y_mas">Pagine, dividere ed esportare</string>
     <string name="vis_siguiente">Occorrenza successiva</string>
     <string name="visor_indice">Indice</string>
     <string name="visor_pagina_numero">Pagina %1$d</string>

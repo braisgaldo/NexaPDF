@@ -442,7 +442,9 @@ Per separar, «Divideix en parts…» mostra totes les pàgines de cop. Cada par
     <string name="vis_de_total">de %1$d</string>
     <string name="vis_ir">Ves-hi</string>
     <string name="vis_ir_a_pagina">Ves a la pàgina</string>
+    <string name="vis_mas_acciones">Què fer amb aquest document</string>
     <string name="vis_numero_pagina">Número de pàgina</string>
+    <string name="vis_paginas_y_mas">Pàgines, dividir i exportar</string>
     <string name="vis_siguiente">Aparició següent</string>
     <string name="visor_indice">Índex</string>
     <string name="visor_pagina_numero">Pàgina %1$d</string>

@@ -145,12 +145,39 @@ import es.ghatostudio.nexapdf.resources.firma_det_validez
 import es.ghatostudio.nexapdf.resources.firma_lugar
 import es.ghatostudio.nexapdf.resources.firma_ver_detalle
 import es.ghatostudio.nexapdf.resources.firma_det_con_sello
+import androidx.compose.material.icons.filled.ContentCut
+import androidx.compose.material.icons.filled.Draw
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.FileDownload
+import androidx.compose.material.icons.filled.Handyman
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import es.ghatostudio.nexapdf.resources.doc_firmar
+import es.ghatostudio.nexapdf.resources.doc_guardar_como
+import es.ghatostudio.nexapdf.resources.herr_cifrar_titulo
+import es.ghatostudio.nexapdf.resources.herr_editar_titulo
+import es.ghatostudio.nexapdf.resources.vis_mas_acciones
+import es.ghatostudio.nexapdf.resources.vis_paginas_y_mas
 
 /** Lo que el visor necesita del resto de la aplicacion. */
 class AccionesVisor(
     val alBuscar: suspend (String) -> List<Coincidencia>,
     val alIrAPagina: (Int) -> Unit,
     val alCompartir: () -> Unit,
+    /**
+     * Lo que se puede hacer con el documento que se esta leyendo.
+     *
+     * El visor no llevaba nada de esto y era un callejon sin salida: un PDF
+     * abierto desde el gestor de archivos o compartido desde otra aplicacion
+     * solo se podia leer. Para firmarlo habia que salir, entrar en NexaPDF y
+     * volver a buscar el mismo fichero, que ademas no siempre esta a mano.
+     */
+    val alFirmar: () -> Unit = {},
+    val alEditar: () -> Unit = {},
+    val alProteger: () -> Unit = {},
+    val alVerPaginas: () -> Unit = {},
+    val alGuardarComo: () -> Unit = {},
 )
 
 /**
@@ -342,14 +369,20 @@ fun PantallaVisor(
                                 contentDescription = stringResource(Res.string.comun_buscar),
                             )
                         }
-                        IconButton(
-                            onClick = { panel = Panel.INDICE },
-                            modifier = Modifier.size(48.dp),
-                        ) {
-                            Icon(
-                                Icons.AutoMirrored.Filled.ListAlt,
-                                contentDescription = stringResource(Res.string.visor_indice),
-                            )
+                        // El indice solo cuando el documento trae secciones.
+                        // La mayoria no las tiene, y un boton que abre un panel
+                        // vacio es un boton que estorba; ademas su hueco hace
+                        // falta para el menu de herramientas.
+                        if (secciones.isNotEmpty()) {
+                            IconButton(
+                                onClick = { panel = Panel.INDICE },
+                                modifier = Modifier.size(48.dp),
+                            ) {
+                                Icon(
+                                    Icons.AutoMirrored.Filled.ListAlt,
+                                    contentDescription = stringResource(Res.string.visor_indice),
+                                )
+                            }
                         }
                         IconButton(
                             onClick = acciones.alCompartir,
@@ -360,6 +393,7 @@ fun PantallaVisor(
                                 contentDescription = stringResource(Res.string.comun_compartir),
                             )
                         }
+                        MenuDeHerramientas(acciones)
                         IconButton(
                             onClick = { panel = Panel.FIRMAS },
                             modifier = Modifier.size(48.dp),
@@ -1116,4 +1150,62 @@ private fun DatoDeFirma(etiqueta: String, valor: String) {
             color = MaterialTheme.colorScheme.onSurface,
         )
     }
+}
+
+/**
+ * Que hacer con el documento que se esta leyendo.
+ *
+ * Va en un desplegable y no en la barra porque son cinco acciones y la barra ya
+ * tiene cuatro cosas. El icono es una caja de herramientas y no los tres puntos
+ * de "mas opciones": lo que hay dentro no son ajustes de la pantalla, son las
+ * herramientas de la aplicacion aplicadas a este documento, y con los tres
+ * puntos nadie las buscaba ahi.
+ */
+@Composable
+private fun MenuDeHerramientas(acciones: AccionesVisor) {
+    var abierto by remember { mutableStateOf(false) }
+    Box {
+        IconButton(onClick = { abierto = true }, modifier = Modifier.size(48.dp)) {
+            Icon(
+                Icons.Filled.Handyman,
+                contentDescription = stringResource(Res.string.vis_mas_acciones),
+            )
+        }
+        DropdownMenu(expanded = abierto, onDismissRequest = { abierto = false }) {
+            OpcionDeHerramienta(
+                icono = Icons.Filled.Draw,
+                texto = stringResource(Res.string.doc_firmar),
+            ) { abierto = false; acciones.alFirmar() }
+            OpcionDeHerramienta(
+                icono = Icons.Filled.Edit,
+                texto = stringResource(Res.string.herr_editar_titulo),
+            ) { abierto = false; acciones.alEditar() }
+            OpcionDeHerramienta(
+                icono = Icons.Filled.Lock,
+                texto = stringResource(Res.string.herr_cifrar_titulo),
+            ) { abierto = false; acciones.alProteger() }
+            OpcionDeHerramienta(
+                icono = Icons.Filled.ContentCut,
+                texto = stringResource(Res.string.vis_paginas_y_mas),
+            ) { abierto = false; acciones.alVerPaginas() }
+            HorizontalDivider()
+            OpcionDeHerramienta(
+                icono = Icons.Filled.FileDownload,
+                texto = stringResource(Res.string.doc_guardar_como),
+            ) { abierto = false; acciones.alGuardarComo() }
+        }
+    }
+}
+
+@Composable
+private fun OpcionDeHerramienta(
+    icono: androidx.compose.ui.graphics.vector.ImageVector,
+    texto: String,
+    alPulsar: () -> Unit,
+) {
+    DropdownMenuItem(
+        text = { Text(texto) },
+        leadingIcon = { Icon(icono, contentDescription = null) },
+        onClick = alPulsar,
+    )
 }

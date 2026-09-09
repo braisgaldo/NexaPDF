@@ -1,9 +1,7 @@
 What's new
 
-• Protect a PDF with a password (AES-256), and remove it later.
-• PAdES electronic signatures, the European standard, with each signature's details in the viewer.
-• Viewer: swipe between pages, type a number to jump, drag the bar.
-• Split with the pages in front of you, each part in its colour.
-• Edit: draw, highlight, text, shapes, images and filters.
-• Merge, convert to and from Word, Excel and PowerPoint, photos to PDF.
-• No permissions, no internet, no ads.
+A PDF you open from a messaging app or your file manager is no longer read-only. The viewer now has a toolbox to sign it, edit it, protect it with a password, split or export it, and save it wherever you want, without leaving and hunting for the file again.
+
+• Sharing several PDFs at once takes you to merging them.
+• Sharing photos takes you to turning them into a document.
+• Opening a backup offers to import it.

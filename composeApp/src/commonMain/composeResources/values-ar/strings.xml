@@ -442,7 +442,9 @@
     <string name="vis_de_total">من %1$d</string>
     <string name="vis_ir">انتقال</string>
     <string name="vis_ir_a_pagina">الانتقال إلى صفحة</string>
+    <string name="vis_mas_acciones">ما يمكن فعله بهذا المستند</string>
     <string name="vis_numero_pagina">رقم الصفحة</string>
+    <string name="vis_paginas_y_mas">الصفحات والتقسيم والتصدير</string>
     <string name="vis_siguiente">النتيجة التالية</string>
     <string name="visor_indice">الفهرس</string>
     <string name="visor_pagina_numero">الصفحة %1$d</string>
