@@ -31,6 +31,7 @@ import androidx.compose.material.icons.filled.FileUpload
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocalCafe
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.DocumentScanner
 import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Folder
@@ -69,6 +70,7 @@ import androidx.compose.ui.unit.dp
 import es.ghatostudio.nexapdf.data.CopiaSeguridad
 import es.ghatostudio.nexapdf.domain.model.Ajustes
 import es.ghatostudio.nexapdf.domain.model.CalidadVista
+import es.ghatostudio.nexapdf.domain.model.FiltroPagina
 import es.ghatostudio.nexapdf.domain.model.ModoGuardado
 import es.ghatostudio.nexapdf.resources.Res
 import es.ghatostudio.nexapdf.resources.aj_acerca_de
@@ -165,7 +167,23 @@ import androidx.compose.material3.HorizontalDivider
 import es.ghatostudio.nexapdf.resources.aj_seccion_apariencia
 import es.ghatostudio.nexapdf.resources.aj_seccion_avisos
 import es.ghatostudio.nexapdf.resources.aj_seccion_copia
+import es.ghatostudio.nexapdf.resources.aj_escaner_auto
+import es.ghatostudio.nexapdf.resources.aj_escaner_auto_desc
+import es.ghatostudio.nexapdf.resources.aj_escaner_filtro
+import es.ghatostudio.nexapdf.resources.aj_escaner_rafaga
+import es.ghatostudio.nexapdf.resources.aj_escaner_rafaga_desc
+import es.ghatostudio.nexapdf.resources.aj_escaner_filtro_desc
+import es.ghatostudio.nexapdf.resources.aj_escaner_ocr
+import es.ghatostudio.nexapdf.resources.aj_escaner_ocr_desc
+import es.ghatostudio.nexapdf.resources.aj_seccion_escaner
 import es.ghatostudio.nexapdf.resources.aj_seccion_guardado
+import es.ghatostudio.nexapdf.resources.aj_tarea_escanear
+import es.ghatostudio.nexapdf.resources.ed_filtro_aclarar
+import es.ghatostudio.nexapdf.resources.ed_filtro_bn
+import es.ghatostudio.nexapdf.resources.ed_filtro_contraste
+import es.ghatostudio.nexapdf.resources.ed_filtro_documento
+import es.ghatostudio.nexapdf.resources.ed_filtro_grises
+import es.ghatostudio.nexapdf.resources.ed_filtro_ninguno
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.ui.text.style.TextAlign
@@ -192,6 +210,10 @@ fun PantallaAjustes(
     alCambiarPedirManuscrita: (Boolean) -> Unit,
     alCambiarDireccionLectura: (DireccionLectura) -> Unit,
     alCambiarApertura: (TareaConResultado, AperturaAlTerminar) -> Unit,
+    alCambiarEscanerOcr: (Boolean) -> Unit,
+    alCambiarEscanerAutomatico: (Boolean) -> Unit,
+    alCambiarEscanerRafaga: (Boolean) -> Unit,
+    alCambiarEscanerFiltro: (FiltroPagina) -> Unit,
     alElegirCarpeta: () -> Unit,
     alQuitarCarpeta: () -> Unit,
     nombreCarpeta: String?,
@@ -318,6 +340,51 @@ fun PantallaAjustes(
                         opciones = CALIDADES,
                         elegida = ajustes.calidad,
                         alElegir = alCambiarCalidad,
+                    )
+                }
+            }
+
+            // --- Escaner --------------------------------------------------------
+            item {
+                CabeceraPlegable(
+                    icono = Icons.Filled.DocumentScanner,
+                    titulo = stringResource(Res.string.aj_seccion_escaner),
+                    abierta = abierta == Seccion.ESCANER,
+                    alPulsar = { abierta = if (abierta == Seccion.ESCANER) null else Seccion.ESCANER },
+                )
+            }
+            if (abierta == Seccion.ESCANER) {
+                item {
+                    FilaConmutador(
+                        titulo = stringResource(Res.string.aj_escaner_ocr),
+                        detalle = stringResource(Res.string.aj_escaner_ocr_desc),
+                        valor = ajustes.escanerOcr,
+                        alCambiar = alCambiarEscanerOcr,
+                    )
+                }
+                item {
+                    FilaConmutador(
+                        titulo = stringResource(Res.string.aj_escaner_auto),
+                        detalle = stringResource(Res.string.aj_escaner_auto_desc),
+                        valor = ajustes.escanerCapturaAutomatica,
+                        alCambiar = alCambiarEscanerAutomatico,
+                    )
+                }
+                item {
+                    FilaConmutador(
+                        titulo = stringResource(Res.string.aj_escaner_rafaga),
+                        detalle = stringResource(Res.string.aj_escaner_rafaga_desc),
+                        valor = ajustes.escanerRafaga,
+                        alCambiar = alCambiarEscanerRafaga,
+                    )
+                }
+                item {
+                    FilaDesplegable(
+                        titulo = stringResource(Res.string.aj_escaner_filtro),
+                        detalle = stringResource(Res.string.aj_escaner_filtro_desc),
+                        opciones = FILTROS_ESCANER,
+                        elegida = ajustes.filtroEscaner,
+                        alElegir = alCambiarEscanerFiltro,
                     )
                 }
             }
@@ -964,9 +1031,20 @@ private val TAREAS: List<Pair<TareaConResultado, StringResource>> = listOf(
     TareaConResultado.CONVERTIR to Res.string.aj_tarea_convertir,
     TareaConResultado.IMAGENES to Res.string.aj_tarea_imagenes,
     TareaConResultado.CIFRAR to Res.string.aj_tarea_cifrar,
+    TareaConResultado.ESCANEAR to Res.string.aj_tarea_escanear,
 )
 
 /** Las tres formas de terminar, en el orden en que se entienden. */
+/** Los mismos filtros que ofrece la revision del escaneo, en el mismo orden. */
+private val FILTROS_ESCANER: List<Pair<FiltroPagina, StringResource>> = listOf(
+    FiltroPagina.DOCUMENTO_NITIDO to Res.string.ed_filtro_documento,
+    FiltroPagina.NINGUNO to Res.string.ed_filtro_ninguno,
+    FiltroPagina.ESCALA_DE_GRISES to Res.string.ed_filtro_grises,
+    FiltroPagina.BLANCO_Y_NEGRO to Res.string.ed_filtro_bn,
+    FiltroPagina.ALTO_CONTRASTE to Res.string.ed_filtro_contraste,
+    FiltroPagina.ACLARAR to Res.string.ed_filtro_aclarar,
+)
+
 private val APERTURAS: List<Pair<AperturaAlTerminar, StringResource>> = listOf(
     AperturaAlTerminar.ABRIR to Res.string.aj_al_terminar_abrir,
     AperturaAlTerminar.PREGUNTAR to Res.string.aj_al_terminar_preguntar,
@@ -1058,12 +1136,13 @@ private fun <T> FilaDesplegable(
 }
 
 /** Bloques de ajustes, en el orden en que se despliegan. */
-private enum class Seccion { APARIENCIA, VISTA, TERMINAR, GUARDADO, AVISOS, COPIA, APOYO }
+private enum class Seccion { APARIENCIA, VISTA, ESCANER, TERMINAR, GUARDADO, AVISOS, COPIA, APOYO }
 
 /** Cada seccion con su icono y su rotulo, para no repetirlos en dos sitios. */
 private val SECCIONES: List<Triple<Seccion, ImageVector, StringResource>> = listOf(
     Triple(Seccion.APARIENCIA, Icons.Filled.Palette, Res.string.aj_seccion_apariencia),
     Triple(Seccion.VISTA, Icons.AutoMirrored.Filled.MenuBook, Res.string.aj_vista),
+    Triple(Seccion.ESCANER, Icons.Filled.DocumentScanner, Res.string.aj_seccion_escaner),
     Triple(Seccion.TERMINAR, Icons.Filled.TaskAlt, Res.string.aj_al_terminar),
     Triple(Seccion.GUARDADO, Icons.Filled.Folder, Res.string.aj_seccion_guardado),
     Triple(Seccion.AVISOS, Icons.Filled.EditNote, Res.string.aj_seccion_avisos),

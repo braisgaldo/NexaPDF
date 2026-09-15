@@ -31,6 +31,7 @@ import traducciones_firma  # noqa: E402
 import traducciones_visor  # noqa: E402
 import traducciones_documento  # noqa: E402
 import traducciones_editor  # noqa: E402
+import traducciones_escaner  # noqa: E402
 
 IDIOMAS = base.IDIOMAS
 CARPETAS = base.CARPETAS
@@ -57,6 +58,7 @@ def reunir_textos() -> dict[str, dict[str, str]]:
         traducciones_cifrar,
         traducciones_firma,
         traducciones_visor,
+        traducciones_escaner,
     ):
         for clave, valores in modulo.TEXTOS.items():
             if clave in textos:
@@ -143,7 +145,13 @@ def main() -> int:
     args = parser.parse_args()
 
     textos = reunir_textos()
-    plurales = traducciones_ayuda.PLURALES
+    # Los plurales tambien se reunen de varios modulos, y por el mismo motivo
+    # que los textos: una clave repetida en dos sitios es un fallo silencioso.
+    plurales = dict(traducciones_ayuda.PLURALES)
+    for clave, valores in traducciones_escaner.PLURALES.items():
+        if clave in plurales:
+            raise SystemExit(f"Plural repetido en dos modulos: {clave}")
+        plurales[clave] = valores
 
     problemas = validar(textos, plurales)
     if problemas:

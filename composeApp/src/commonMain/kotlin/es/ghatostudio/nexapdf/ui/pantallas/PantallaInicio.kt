@@ -28,6 +28,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MergeType
 import androidx.compose.material.icons.filled.ContentCut
 import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.DocumentScanner
 import androidx.compose.material.icons.filled.Draw
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.History
@@ -64,6 +65,8 @@ import es.ghatostudio.nexapdf.resources.herr_convertir_desc
 import es.ghatostudio.nexapdf.resources.herr_convertir_titulo
 import es.ghatostudio.nexapdf.resources.herr_editar_desc
 import es.ghatostudio.nexapdf.resources.herr_editar_titulo
+import es.ghatostudio.nexapdf.resources.herr_escanear_desc
+import es.ghatostudio.nexapdf.resources.herr_escanear_titulo
 import es.ghatostudio.nexapdf.resources.herr_firmar_desc
 import es.ghatostudio.nexapdf.resources.herr_firmar_titulo
 import es.ghatostudio.nexapdf.resources.herr_imagen_desc
@@ -95,12 +98,28 @@ import androidx.compose.material.icons.filled.Lock
 import es.ghatostudio.nexapdf.resources.herr_cifrar_desc
 import es.ghatostudio.nexapdf.resources.herr_cifrar_titulo
 
-/** Las seis herramientas del punto 14 del encargo, en el orden en que se pidieron. */
+/**
+ * Las herramientas de la pantalla de inicio.
+ *
+ * `destacada` saca una de la rejilla y la pone a lo ancho encima. Solo la lleva
+ * el escaner, y no por ser la mas nueva: es la unica que empieza sin fichero
+ * ninguno. Las otras ocho piden un documento y se usan cuando ya se tiene algo;
+ * el escaner es por donde se entra cuando lo que hay es un papel encima de la
+ * mesa, que es el caso mas frecuente y el que peor se encontraba escondido como
+ * una baldosa mas entre ocho.
+ */
 enum class Herramienta(
     val titulo: StringResource,
     val descripcion: StringResource,
     val icono: ImageVector,
+    val destacada: Boolean = false,
 ) {
+    ESCANEAR(
+        Res.string.herr_escanear_titulo,
+        Res.string.herr_escanear_desc,
+        Icons.Filled.DocumentScanner,
+        destacada = true,
+    ),
     VISOR(Res.string.herr_visor_titulo, Res.string.herr_visor_desc, Icons.Filled.MenuBook),
     UNIR(Res.string.herr_unir_titulo, Res.string.herr_unir_desc, Icons.AutoMirrored.Filled.MergeType),
     SEPARAR(Res.string.herr_separar_titulo, Res.string.herr_separar_desc, Icons.Filled.ContentCut),
@@ -164,7 +183,8 @@ fun PantallaInicio(
             // Rejilla con pesos y no LazyVerticalGrid: son unas pocas entradas
             // fijas, y repartiendo la altura entre las filas la pantalla queda
             // llena en cualquier movil en lugar de dejar un tercio vacio.
-            val herramientas = Herramienta.entries.toList()
+            val destacadas = Herramienta.entries.filter { it.destacada }
+            val herramientas = Herramienta.entries.filterNot { it.destacada }
             val filas = (herramientas.size + COLUMNAS - 1) / COLUMNAS
 
             Column(
@@ -174,6 +194,19 @@ fun PantallaInicio(
                     .onGloballyPositioned { alMedirZona(ZonaTour.BALDOSAS, it.boundsInRoot()) },
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
+                // Lo destacado, a lo ancho y encima de todo.
+                destacadas.forEach { herramienta ->
+                    BaldosaHerramienta(
+                        herramienta,
+                        Modifier
+                            .fillMaxWidth()
+                            .weight(0.62f)
+                            .onGloballyPositioned {
+                                alMedirZona(ZonaTour.ESCANEAR, it.boundsInRoot())
+                            },
+                    ) { alElegirHerramienta(herramienta) }
+                }
+
                 repeat(filas) { fila ->
                     Row(
                         modifier = Modifier.fillMaxWidth().weight(1f),
@@ -482,4 +515,4 @@ internal fun FilaReciente(
 private const val COLUMNAS = 2
 
 /** Elementos de la pantalla de inicio que el tour puede senalar. */
-enum class ZonaTour { BALDOSAS, LEER, EDITAR, PROTEGER, RECIENTES, AJUSTES }
+enum class ZonaTour { BALDOSAS, ESCANEAR, LEER, EDITAR, PROTEGER, RECIENTES, AJUSTES }

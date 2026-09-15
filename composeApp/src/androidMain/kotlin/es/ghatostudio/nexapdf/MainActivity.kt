@@ -12,8 +12,10 @@ import androidx.datastore.preferences.core.Preferences
 import es.ghatostudio.nexapdf.data.RepositorioAjustes
 import es.ghatostudio.nexapdf.di.ContenedorApp
 import es.ghatostudio.nexapdf.pdf.ConversorDocumentosAndroid
+import es.ghatostudio.nexapdf.pdf.MotorEscanerAndroid
 import es.ghatostudio.nexapdf.pdf.MotorPdfAndroid
 import es.ghatostudio.nexapdf.plataforma.AlmacenFicherosAndroid
+import es.ghatostudio.nexapdf.plataforma.CamaraDocumentosAndroid
 import es.ghatostudio.nexapdf.plataforma.SelectorFicherosAndroid
 import es.ghatostudio.nexapdf.plataforma.ServiciosPlataformaAndroid
 import java.util.Locale
@@ -62,6 +64,7 @@ class MainActivity : ComponentActivity() {
             actividadActual = { this },
         )
         val motor = MotorPdfAndroid(applicationContext, servicios.directorioTrabajo)
+        val escaner = MotorEscanerAndroid(servicios.directorioTrabajo)
         contenedor = ContenedorApp(
             motorPdf = motor,
             conversor = ConversorDocumentosAndroid(motor),
@@ -71,6 +74,10 @@ class MainActivity : ComponentActivity() {
             // de que la actividad este iniciada lanza una excepcion.
             selector = SelectorFicherosAndroid(this, servicios.directorioTrabajo),
             ajustes = RepositorioAjustes(almacenPreferencias),
+            escaner = escaner,
+            // La camara registra su peticion de permiso igual que el selector, y
+            // por el mismo motivo tiene que construirse aqui.
+            camara = CamaraDocumentosAndroid(this, escaner.directorioEscaner()),
         )
 
         recibir(intent)

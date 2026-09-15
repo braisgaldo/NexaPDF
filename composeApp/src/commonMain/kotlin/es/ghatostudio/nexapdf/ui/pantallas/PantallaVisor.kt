@@ -67,6 +67,11 @@ import es.ghatostudio.nexapdf.resources.ed_pagina_de
 import es.ghatostudio.nexapdf.resources.ed_pagina_siguiente
 import es.ghatostudio.nexapdf.resources.firma_existentes
 import es.ghatostudio.nexapdf.resources.firma_sin_existentes
+import es.ghatostudio.nexapdf.resources.comun_eliminar
+import es.ghatostudio.nexapdf.resources.doc_confirmar_eliminar_texto
+import es.ghatostudio.nexapdf.resources.vis_confirmar_eliminar_pagina
+import es.ghatostudio.nexapdf.resources.vis_eliminar_pagina
+import es.ghatostudio.nexapdf.resources.vis_eliminar_unica
 import es.ghatostudio.nexapdf.resources.visor_indice
 import es.ghatostudio.nexapdf.resources.visor_pagina_numero
 import es.ghatostudio.nexapdf.resources.visor_sin_indice
@@ -146,6 +151,7 @@ import es.ghatostudio.nexapdf.resources.firma_lugar
 import es.ghatostudio.nexapdf.resources.firma_ver_detalle
 import es.ghatostudio.nexapdf.resources.firma_det_con_sello
 import androidx.compose.material.icons.filled.ContentCut
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Draw
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FileDownload
@@ -178,6 +184,17 @@ class AccionesVisor(
     val alProteger: () -> Unit = {},
     val alVerPaginas: () -> Unit = {},
     val alGuardarComo: () -> Unit = {},
+
+    /**
+     * Quita la pagina que se esta leyendo.
+     *
+     * Esta en el visor y no solo en la rejilla de paginas porque el momento en
+     * que uno descubre que una pagina sobra —la hoja en blanco del final, la
+     * que salio movida al escanear— es leyendola, no mirando miniaturas. Tener
+     * que salir, entrar en la rejilla, buscarla y seleccionarla convierte un
+     * gesto en un recado.
+     */
+    val alEliminarPagina: (Int) -> Unit = {},
 )
 
 /**
@@ -210,6 +227,8 @@ fun PantallaVisor(
     alVolver: () -> Unit,
 ) {
     var buscando by remember { mutableStateOf(false) }
+    var borrandoPagina by remember { mutableStateOf<Int?>(null) }
+    var sinPaginasQueQuitar by remember { mutableStateOf(false) }
     var consulta by remember { mutableStateOf("") }
     var resultados by remember { mutableStateOf<List<Coincidencia>?>(null) }
     var buscandoAhora by remember { mutableStateOf(false) }
@@ -393,7 +412,16 @@ fun PantallaVisor(
                                 contentDescription = stringResource(Res.string.comun_compartir),
                             )
                         }
-                        MenuDeHerramientas(acciones)
+                        MenuDeHerramientas(acciones) {
+                            // Un documento no puede quedarse sin paginas, y
+                            // decirlo es mejor que ofrecer algo que va a
+                            // fallar.
+                            if (totalPaginas <= 1) {
+                                sinPaginasQueQuitar = true
+                            } else {
+                                borrandoPagina = paginaActual
+                            }
+                        }
                         IconButton(
                             onClick = { panel = Panel.FIRMAS },
                             modifier = Modifier.size(48.dp),
@@ -519,6 +547,42 @@ fun PantallaVisor(
                 Panel.FIRMAS -> PanelFirmas(firmas, formatearFecha)
             }
         }
+    }
+
+    borrandoPagina?.let { indice ->
+        AlertDialog(
+            onDismissRequest = { borrandoPagina = null },
+            title = {
+                Text(stringResource(Res.string.vis_confirmar_eliminar_pagina, indice + 1))
+            },
+            text = { Text(stringResource(Res.string.doc_confirmar_eliminar_texto)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        borrandoPagina = null
+                        acciones.alEliminarPagina(indice)
+                    },
+                    modifier = Modifier.heightIn(min = 48.dp),
+                ) {
+                    Text(stringResource(Res.string.comun_eliminar))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { borrandoPagina = null },
+                    modifier = Modifier.heightIn(min = 48.dp),
+                ) {
+                    Text(stringResource(Res.string.comun_cancelar))
+                }
+            },
+        )
+    }
+
+    val avisoSinPaginas = stringResource(Res.string.vis_eliminar_unica)
+    LaunchedEffect(sinPaginasQueQuitar) {
+        if (!sinPaginasQueQuitar) return@LaunchedEffect
+        snackbar.showSnackbar(avisoSinPaginas)
+        sinPaginasQueQuitar = false
     }
 }
 
@@ -1162,7 +1226,7 @@ private fun DatoDeFirma(etiqueta: String, valor: String) {
  * puntos nadie las buscaba ahi.
  */
 @Composable
-private fun MenuDeHerramientas(acciones: AccionesVisor) {
+private fun MenuDeHerramientas(acciones: AccionesVisor, alEliminarPagina: () -> Unit) {
     var abierto by remember { mutableStateOf(false) }
     Box {
         IconButton(onClick = { abierto = true }, modifier = Modifier.size(48.dp)) {
@@ -1193,6 +1257,10 @@ private fun MenuDeHerramientas(acciones: AccionesVisor) {
                 icono = Icons.Filled.FileDownload,
                 texto = stringResource(Res.string.doc_guardar_como),
             ) { abierto = false; acciones.alGuardarComo() }
+            OpcionDeHerramienta(
+                icono = Icons.Filled.Delete,
+                texto = stringResource(Res.string.vis_eliminar_pagina),
+            ) { abierto = false; alEliminarPagina() }
         }
     }
 }

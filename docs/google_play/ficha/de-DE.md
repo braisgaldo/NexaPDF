@@ -15,7 +15,7 @@ NexaPDF: PDF ohne Internet
 PDFs zusammenfügen, teilen, bearbeiten, signieren. Ohne Netz, ohne Werbung.
 ```
 
-## Descripcion completa (2828/4000)
+## Descripcion completa (3793/4000)
 
 ```
 NexaPDF ist ein PDF-Werkzeugkasten, der vollständig auf Ihrem Telefon läuft.
@@ -24,6 +24,9 @@ Die App fordert keine Internetberechtigung an. Das ist kein Versprechen, sondern
 
 WAS SIE KANN
 
+• Papier mit der Kamera scannen. Findet die Ränder des Blattes beim Zielen, zeigt, wie gut es sie erkennt, korrigiert die Perspektive und kann den Text lesen, damit Sie später im Dokument suchen können.
+• Kartenmodus für Ausweis, Führerschein, Bankkarten, Fahrkarten und Reisepässe. Beide Seiten kommen in Originalgröße auf ein Blatt, sodass der Ausdruck die Größe der Karte hat und kein vergrößertes Foto ist.
+• Mehrere Aufnahmen pro Seite, zu einer zusammengefügt. Das Aufbereiten verstärkt das Rauschen zusammen mit dem Detail; mit drei Aufnahmen hebt sich das Rauschen von selbst auf.
 • Dokumente zu einem zusammenfügen, per Ziehen ordnen, mit Vorschau der ersten Seite jedes Dokuments. Auch Word, Excel, PowerPoint und Bilder werden angenommen: Was kein PDF ist, wird vorher umgewandelt.
 • Ein Dokument aufteilen: eine Datei pro Seite, nach Bereichen, oder ausgewählte Seiten entnehmen.
 • Fotos in Dokumente verwandeln, aus der Galerie oder direkt mit der Kamera. Ein Bild pro Seite, oder 2, 4 und 6 zusammen.
@@ -35,7 +38,9 @@ WAS SIE KANN
 
 DATENSCHUTZ, OHNE UMSCHWEIFE
 
-• Keine Internetberechtigung. Genau genommen überhaupt keine Berechtigungen.
+• Keine Internetberechtigung. Das Betriebssystem selbst blockiert jede Verbindung, Ihre Dokumente können das Telefon also nicht verlassen.
+• Eine einzige Berechtigung, die Kamera, und nur für den Scanner. Sie wird beim Öffnen des Scanners abgefragt, nie beim Start, und bei Ablehnung arbeitet der Scanner mit Fotos aus Ihrer Galerie.
+• Die Texterkennung läuft auf Ihrem Gerät. Das Modell steckt in der App: nichts wird heruntergeladen, nichts gesendet.
 • Keine Konten, keine Registrierung, keine Analyse, keine Absturzberichte, keine Werbung.
 • Ihr Zertifikat wird gelesen, verwendet und verworfen. Es wird nie gespeichert.
 • Der Arbeitsordner wird bei jedem Start der App geleert.

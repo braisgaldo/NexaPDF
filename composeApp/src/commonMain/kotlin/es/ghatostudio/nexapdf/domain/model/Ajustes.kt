@@ -93,6 +93,42 @@ data class Ajustes(
     val aperturaConvertir: String = AperturaAlTerminar.ABRIR.name,
     val aperturaImagenes: String = AperturaAlTerminar.ABRIR.name,
     val aperturaCifrar: String = AperturaAlTerminar.ABRIR.name,
+    val aperturaEscanear: String = AperturaAlTerminar.ABRIR.name,
+
+    // --- Escaner ---
+    /**
+     * Reconocer el texto de lo escaneado para poder buscarlo.
+     *
+     * Viene puesto porque un escaneo que no se puede buscar es una foto con
+     * otro nombre. Se puede quitar: el reconocimiento anade unos segundos por
+     * pagina, y quien escanea recibos para archivarlos no los va a buscar.
+     */
+    val escanerOcr: Boolean = true,
+
+    /**
+     * Disparar solo cuando el papel este bien encuadrado.
+     *
+     * Con varias hojas seguidas es la diferencia entre pasar paginas y estar
+     * pulsando un boton. Quien prefiere decidir el momento lo apaga.
+     */
+    val escanerCapturaAutomatica: Boolean = true,
+
+    /**
+     * Hacer varias fotos en cada disparo y fundirlas.
+     *
+     * El limite de nitidez de un escaneo no es el filtro, es el grano: mejorar
+     * la pagina amplifica el ruido a la vez que el detalle, asi que hay un punto
+     * en el que el papel se ensucia mas rapido de lo que las letras ganan. Con
+     * varias fotos de la misma hoja el ruido se cancela solo, y ese punto se
+     * aleja.
+     *
+     * Cuesta tiempo: cada hoja tarda unos segundos mas entre disparar y
+     * revelarse. Por eso se puede apagar.
+     */
+    val escanerRafaga: Boolean = true,
+
+    /** Filtro que se aplica a cada hoja nada mas capturarla. */
+    val escanerFiltro: String = FiltroPagina.DOCUMENTO_NITIDO.name,
 
     // --- Aviso de donacion ---
     val estadoDonacion: String = EstadoDonacion.SIN_MOSTRAR.name,
@@ -121,6 +157,7 @@ data class Ajustes(
             TareaConResultado.CONVERTIR -> aperturaConvertir
             TareaConResultado.IMAGENES -> aperturaImagenes
             TareaConResultado.CIFRAR -> aperturaCifrar
+            TareaConResultado.ESCANEAR -> aperturaEscanear
         }
         return AperturaAlTerminar.entries.firstOrNull { it.name == clave }
             ?: AperturaAlTerminar.ABRIR
@@ -136,6 +173,10 @@ data class Ajustes(
 
     val calidad: CalidadVista
         get() = CalidadVista.entries.firstOrNull { it.name == calidadVista } ?: CalidadVista.EQUILIBRADA
+
+    val filtroEscaner: FiltroPagina
+        get() = FiltroPagina.entries.firstOrNull { it.name == escanerFiltro }
+            ?: FiltroPagina.DOCUMENTO_NITIDO
     val donacion: EstadoDonacion
         get() = EstadoDonacion.entries.firstOrNull { it.name == estadoDonacion } ?: EstadoDonacion.SIN_MOSTRAR
 
@@ -201,6 +242,7 @@ enum class TareaConResultado {
     CONVERTIR,
     IMAGENES,
     CIFRAR,
+    ESCANEAR,
 }
 
 enum class AperturaAlTerminar {

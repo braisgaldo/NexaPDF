@@ -99,13 +99,18 @@
 <div class="barra"><a href="./">NexaPDF</a></div>
 <main>
 <h1>Política de privacidad de NexaPDF</h1>
-<p><strong>Última actualización: 3 de septiembre de 2026</strong></p>
+<p><strong>Última actualización: 14 de septiembre de 2026</strong></p>
 <p><strong>Aplicación:</strong> NexaPDF · <strong>Identificador:</strong> <code>es.ghatostudio.nexapdf</code></p>
 <p><strong>Responsable:</strong> Brais Castiñeiras Galdo (Ghato Studio) · ghatostudio@proton.me</p>
 <hr>
 <h2>Resumen en una frase</h2>
 <p>NexaPDF no recoge, no almacena y no transmite ningún dato personal, porque no</p>
 <p>puede: la aplicación no declara el permiso de acceso a internet.</p>
+<blockquote><strong>Novedad de la versión 1.4.0.</strong> El escáner de documentos usa la cámara, y por</blockquote>
+<blockquote>eso la aplicación ha pasado de declarar cero permisos a declarar uno. Lo que</blockquote>
+<blockquote><strong>no</strong> cambia es lo de arriba: sigue sin poder conectarse a ninguna red, así</blockquote>
+<blockquote>que las fotos que hagas no salen del teléfono. El razonamiento completo está</blockquote>
+<blockquote>en <a href="adr/0005-camara-escaner.md"><code>docs/adr/0005-camara-escaner.md</code></a>.</blockquote>
 <hr>
 <h2>Qué datos se recogen</h2>
 <p><strong>Ninguno.</strong></p>
@@ -120,6 +125,28 @@
 <p>Cuando eliges un fichero, NexaPDF hace una copia de trabajo en su carpeta</p>
 <p>privada. Esa carpeta <strong>se vacía cada vez que arrancas la aplicación</strong>: solo</p>
 <p>existe mientras dura la tarea.</p>
+<h2>Qué pasa con las fotos del escáner</h2>
+<p>Lo mismo, y conviene detallarlo porque la cámara siempre levanta sospechas, con</p>
+<p>razón:</p>
+<ul>
+<li>Las fotos que haces con el escáner se guardan en la <strong>carpeta privada</strong> de la</li>
+</ul>
+<p>  aplicación, no en tu galería. No aparecen en Google Fotos ni en ninguna otra</p>
+<p>  aplicación.</p>
+<ul>
+<li>Se borran solas: las páginas intermedias en cuanto el PDF está montado, y la</li>
+</ul>
+<p>  carpeta entera al arrancar la aplicación.</p>
+<ul>
+<li>La cámara solo está encendida mientras la pantalla del escáner está abierta.</li>
+</ul>
+<p>  Al salir se apaga; no hay ningún servicio en segundo plano.</p>
+<ul>
+<li><strong>El reconocimiento de texto ocurre en tu teléfono.</strong> El modelo que lee las</li>
+</ul>
+<p>  palabras viaja dentro de la propia aplicación, no se descarga y no consulta</p>
+<p>  nada. El escáner funciona igual en modo avión, que es la forma más rápida de</p>
+<p>  comprobarlo.</p>
 <p>Los documentos que generas se guardan en <code>Descargas/NexaPDF</code>, en tu propio</p>
 <p>teléfono, para que puedas encontrarlos con cualquier gestor de archivos.</p>
 <h2>Certificados de firma electrónica</h2>
@@ -128,21 +155,21 @@
 <p>terminar**. Ni el certificado ni su contraseña se guardan en ningún sitio, ni</p>
 <p>dentro de la aplicación ni fuera de ella.</p>
 <h2>Permisos que solicita la aplicación</h2>
-<p>NexaPDF declara <strong>cero permisos</strong> en su manifiesto. En concreto:</p>
+<p>NexaPDF declara <strong>un solo permiso</strong>. En concreto:</p>
 <table><thead><tr>
 <th>Permiso</th>
 <th>¿Se solicita?</th>
 <th>Por qué</th>
 </tr></thead><tbody>
 <tr>
-<td><code>INTERNET</code></td>
-<td><strong>No</strong></td>
-<td>La aplicación no se conecta a ninguna red.</td>
+<td><code>CAMERA</code></td>
+<td><strong>Sí</strong>, desde la 1.4.0</td>
+<td>Solo para el escáner de documentos, y solo mientras esa pantalla está abierta. Hace falta para encontrar los bordes del papel mientras apuntas; una foto ya hecha no permite eso. Se pide al entrar en el escáner, nunca al arrancar, y si lo deniegas el escáner sigue funcionando con fotos de la galería.</td>
 </tr>
 <tr>
-<td><code>CAMERA</code></td>
+<td><code>INTERNET</code></td>
 <td><strong>No</strong></td>
-<td>Al hacer una foto se abre la app de cámara del sistema, que tiene sus propios permisos.</td>
+<td>La aplicación no se conecta a ninguna red. Las bibliotecas de cámara y de reconocimiento de texto lo declaran para telemetría que aquí no se usa, y NexaPDF <strong>lo elimina expresamente</strong> al fusionar el manifiesto.</td>
 </tr>
 <tr>
 <td><code>READ_EXTERNAL_STORAGE</code></td>
@@ -159,12 +186,23 @@
 <td><strong>No</strong></td>
 <td>La aplicación no usa la ubicación.</td>
 </tr>
+<tr>
+<td><code>RECORD_AUDIO</code></td>
+<td><strong>No</strong></td>
+<td>El escáner hace fotos; no graba ni vídeo ni sonido.</td>
+</tr>
 </tbody></table>
 <p>Puedes comprobarlo tú mismo sobre el APK publicado:</p>
 <p>```</p>
-<p>aapt2 dump permissions NexaPDF-1.0.0-release.apk</p>
+<p>aapt2 dump permissions NexaPDF-1.4.0-release.apk</p>
 <p>```</p>
-<p>La única línea que aparece es</p>
+<p>Tienen que aparecer <code>android.permission.CAMERA</code> y nada más. Que <code>INTERNET</code> no</p>
+<p>esté es lo que hace que todo lo anterior no dependa de que nos creas: sin ese</p>
+<p>permiso es el propio sistema operativo el que bloquea cualquier conexión, la</p>
+<p>intente el código de NexaPDF o el de cualquier biblioteca que lleve dentro. La</p>
+<p>integración continua lo comprueba en cada cambio sobre el manifiesto ya</p>
+<p>fusionado.</p>
+<p>Además aparece</p>
 <p><code>es.ghatostudio.nexapdf.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION</code>. No es un</p>
 <p>permiso del sistema ni se te pide nunca: la biblioteca <code>androidx.core</code> la define</p>
 <p>y la usa la propia aplicación para hablar consigo misma, es de nivel <em>signature</em></p>

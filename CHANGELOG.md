@@ -5,6 +5,284 @@ Todos los cambios reseñables de NexaPDF se documentan en este fichero.
 El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y el
 proyecto se versiona con [SemVer](https://semver.org/lang/es/).
 
+## [1.5.0] — 2026-09-15
+
+### Nuevo
+
+- **Escáner de documentos.** Fotografía un papel y sale un PDF derecho y
+  legible, no una foto torcida metida dentro de un PDF. Es la novena
+  herramienta y va a lo ancho, encima de la rejilla del inicio: es la única
+  que empieza sin fichero, porque las otras ocho piden un documento que ya
+  tienes y esta sirve para cuando lo que tienes es un papel encima de la mesa.
+
+  - **Detección de bordes en vivo, con porcentaje.** Mientras apuntas se dibuja
+    el contorno de la hoja y se enseña qué parte de ese contorno se distingue
+    de verdad. El número no es un adorno: es exactamente el mismo que decide si
+    la captura automática dispara, así que lo que se ve es lo que la aplicación
+    usa. Ámbar mientras no se fía, verde cuando además lleva varios fotogramas
+    quieta.
+  - **Captura automática.** Dispara sola cuando el encuadre es bueno **y** el
+    contorno está parado. Exigir las dos cosas es lo que evita la foto movida:
+    un encuadre puede estar al noventa por ciento y seguir bailando porque la
+    mano aún no se ha detenido. Después de disparar **espera a que cambies de
+    hoja**: si no, un segundo más tarde el mismo papel sigue encuadrado y
+    quieto, y salían dos fotos de la misma página. Mientras espera lo dice, en
+    lugar de dejar creer que ha dejado de funcionar.
+  - **Auto y Manual, escrito con palabras** en la barra del escáner, no sólo con
+    un icono. El modo de arranque se elige en *Ajustes › Escáner*.
+  - **Salir del escáner con páginas sin convertir pregunta antes.** Una pulsación
+    de atrás sin querer no debería costar diez hojas ya escaneadas.
+  - **Corrección de perspectiva.** Los cuatro vértices se llevan a un
+    rectángulo, así que un folio fotografiado de lado sale recto.
+  - **Revisión antes de crear.** Cada hoja se ve como va a quedar, con las
+    cuatro esquinas arrastrables, giro, filtro de mejora y su intensidad. Si el
+    borde no se detectó con seguridad, esa página lleva un aviso.
+  - **Texto buscable.** Reconoce las palabras y las incrusta en el PDF de forma
+    invisible, encima de la imagen, en el sitio exacto donde están. El
+    documento se ve igual que la foto pero se puede buscar, seleccionar y
+    copiar en cualquier lector. Alfabeto latino.
+  - **Varias fotos por página.** Cada disparo hace tres fotos seguidas y se
+    funden en una. El límite de nitidez de un escaneo no es el filtro, es el
+    grano: mejorar la página amplifica el ruido a la vez que el detalle, así que
+    hay un punto en el que el papel se ensucia más rápido de lo que las letras
+    ganan. Con tres fotos el grano se cancela solo —es distinto en cada disparo
+    y el papel es el mismo— y ese punto se aleja.
+
+    Entre foto y foto la mano se mueve, así que antes de promediar se mide
+    cuánto, con precisión de menos de un píxel, y se remuestrea en su sitio. Y
+    para lo que la medida no alcanza —un giro de muñeca, una sombra que se
+    mueve, un dedo que entra en el encuadre— cada píxel se compara con el de la
+    foto de referencia y sólo se promedia si se parece. **El peor caso de esto
+    no es una página borrosa, sino una que simplemente no ha ganado nada.**
+
+    Cuesta unos segundos más por hoja, así que se puede apagar en
+    *Ajustes › Escáner › Varias fotos por página*.
+
+  - **Modo tarjeta.** Para DNI, permiso de conducir, tarjeta de crédito, abono
+    de transporte o pasaporte. Lo que lo define no es el recorte —de eso ya se
+    encarga el detector, que no distingue una tarjeta de un folio— sino el
+    **tamaño físico**: las caras se montan sobre una hoja normal a su medida de
+    verdad, las de la norma ISO/IEC 7810, así que al imprimir sale del tamaño
+    del carné y sirve para entregarlo en una ventanilla. Escalado a A4 se ve
+    igual de bien y no sirve para eso.
+
+    El anverso y el reverso caben en el mismo folio, centrados y con aire para
+    poder recortarlos; cuando no caben más, se abre otra hoja. Hay *Automático*,
+    que deduce el formato por la forma de lo capturado, y las opciones
+    explícitas. Una advertencia honesta sobre *Automático*: ID-2 e ID-3 tienen
+    prácticamente la misma proporción (1,419 y 1,421), así que **por la forma no
+    se pueden distinguir**; acierta al separar una tarjeta de un pasaporte, que
+    es la diferencia que se nota al imprimir, y entre los dos grandes elige
+    pasaporte. Para lo demás están las opciones explícitas.
+
+  - **Nombre elegido antes de escribir el fichero**, no después: renombrar un
+    documento ya guardado deja una copia con el nombre viejo en la carpeta de
+    descargas.
+  - Al terminar se abre o no según *Ajustes › Al terminar un documento ›
+    Escanear*, como el resto de tareas.
+
+- **Eliminar la página que se está leyendo**, desde la caja de herramientas del
+  visor. Antes sólo se podía desde la rejilla de páginas, seleccionando; pero el
+  momento en que uno descubre que una página sobra —la hoja en blanco del final,
+  la que salió movida al escanear— es leyéndola, y había que salir, entrar en la
+  rejilla y buscarla. Como el resto de la aplicación, escribe un documento nuevo
+  y no toca el original.
+- **La rejilla de páginas dice cómo se seleccionan.** La ayuda hablaba sólo de
+  reordenar arrastrando, así que girar y eliminar estaban ahí sin que nada lo
+  indicara.
+- **Ajustes del escáner**: texto buscable por defecto, captura automática y
+  filtro de mejora por defecto.
+- **Un paso más en el recorrido guiado** para la herramienta nueva.
+
+### Cambiado
+
+- **La aplicación declara un permiso.** Hasta la 1.3.0 no declaraba ninguno, y
+  eso era parte de la ficha, del `README` y de la política de privacidad. El
+  escáner necesita ver los fotogramas *antes* de la foto —es lo único que
+  permite dibujar el contorno mientras apuntas—, y la cámara del sistema
+  devuelve la foto ya hecha. Se declara `CAMERA`, se pide al entrar en el
+  escáner y nunca al arrancar, y si se deniega el escáner sigue funcionando con
+  fotos de la galería.
+
+  **Lo que no cambia es lo que importa:** la aplicación sigue sin poder salir a
+  internet. CameraX y el reconocedor de texto declaran `INTERNET` en sus
+  manifiestos para telemetría que aquí no se usa, y NexaPDF lo **elimina** al
+  fusionar. El modelo de reconocimiento viaja dentro del APK, así que el
+  escáner funciona igual en modo avión. El razonamiento completo está en
+  `docs/adr/0005-camara-escaner.md`.
+
+- **La comprobación de permisos de la CI pasa de «que no haya» a lista
+  blanca**, y se añade otra más fuerte que la anterior: el manifiesto
+  **fusionado** —no el nuestro, que es donde nunca estaría el problema— no
+  puede contener `INTERNET` ni `ACCESS_NETWORK_STATE`.
+
+### Notas técnicas
+
+- La detección de bordes es **Kotlin puro en `commonMain`**, sin OpenCV:
+  reducción a 240 px, Sobel con umbral sacado del histograma, transformada de
+  Hough y validación del cuadrilátero midiendo qué parte de su contorno cae de
+  verdad sobre píxeles de borde. Cuesta un par de milisegundos por fotograma en
+  una JVM de escritorio. Meter OpenCV habría sumado unos veinte megabytes de
+  código nativo a una aplicación que entera pesa seis, y habría dejado la
+  detección fuera del alcance de las pruebas unitarias.
+- **Doce pruebas nuevas** sobre el detector, y no sólo de acierto: cuatro miden
+  el **temblor entre fotogramas** de una escena quieta, que es lo que de verdad
+  se ve en pantalla. Un fotograma bien detectado y el siguiente detectado tres
+  píxeles más allá se lee como que la aplicación no sabe lo que hace.
+- Las familias de bordes se agrupan **respecto a la orientación del propio
+  papel** y no por «casi vertical» y «casi horizontal». Con el corte fijo a 45°,
+  un folio girado unos treinta grados metía sus cuatro bordes del mismo lado, se
+  quedaba sin ninguna pareja que cruzar y no se detectaba nada.
+- Los picos de la transformada de Hough se **afinan entre celdas** ajustando una
+  parábola a cada pico y sus vecinos. Sin eso, un borde que no se mueve salta de
+  celda en celda con el ruido del sensor.
+- **El reconocimiento lee la página sin el filtro de mejora**, aunque el PDF
+  lleve la versión filtrada. El filtro está para que la página se vea limpia, y
+  para eso lleva el papel a blanco puro y la tinta a negro; eso adelgaza los
+  trazos más finos y el reconocedor empieza a confundir letras. Medido sobre la
+  misma foto: con la página filtrada leía «lglesias», y sin filtrar lee
+  «Iglesias». Cuesta un enderezado de más por página y las coordenadas siguen
+  valiendo, porque las dos versiones salen del mismo recorte.
+- `CargadorImagen` se saca a un objeto propio: lo usan el motor de PDF y el del
+  escáner, y duplicarlo era tener dos sitios donde arreglar el mismo fallo de
+  orientación EXIF.
+- **Cuatro decisiones de resolución que estaban mal y se notaban en la página.**
+  Salieron de probar con documentos de verdad, no de leer el código:
+
+  - `inSampleSize` sólo admite potencias de dos, así que pidiendo 2600 px una
+    foto de 4000 se cargaba a **2000**: la mitad del lado y la cuarta parte de
+    los píxeles, tirados justo antes de enderezar y de leer el texto. Ahora el
+    ajuste fino lo hace el propio decodificador.
+  - La captura pedía **mínima latencia** y no pedía resolución. El argumento era
+    que el filtro de mejora se comería el ruido igualmente, y era falso: el
+    reconocimiento lee la página **sin** filtrar. Ahora es máxima calidad y
+    máxima resolución.
+  - **No se enfocaba antes de disparar.** El enfoque continuo persigue toda la
+    escena y con un papel cerca se queda en la mesa. Ahora enfoca al centro
+    antes de la foto, con un tope de 1,2 s para no dejar esperando.
+  - El tamaño de la página enderezada salía de la **caja envolvente** del
+    cuadrilátero. Con una hoja girada eso es la diagonal, no el lado, y la
+    imagen se ampliaba por encima de los píxeles que había. Ahora sale de los
+    lados reales del papel, y nunca se amplía.
+
+  El reconocimiento de texto, además, leía a 1600 px: en un A4 son unos 135
+  puntos por pulgada, y a esa resolución la letra de cuerpo 10 tiene trece
+  píxeles de alto. Ahora lee a la misma resolución a la que se revela la página,
+  unos 300 ppp, que es la horquilla en la que trabajan los escáneres de
+  sobremesa.
+
+- **La página se revela a 300 ppp, y antes se quedaba en 250.** El tope estaba
+  en 2900 px con el argumento de que por encima el fichero crece sin que el ojo
+  lo note. Medido sobre una foto real, el argumento era falso: una hoja
+  fotografiada con doce megapíxeles ocupa unos 3770 px dentro del encuadre, así
+  que el tope no estaba comprimiendo nada, estaba **tirando** un 23 % de
+  resolución lineal que ya venía capturada. Comparadas al mismo tamaño en
+  pantalla, la letra de cuerpo pasa de 20 a 26 px de alto.
+
+  Se para en 300 ppp y no más arriba porque ahí se acaba el detalle que hay en
+  la foto: medido sobre la misma imagen, el borde de una letra ocupa dos
+  píxeles y medio **en el original**, así que pedir más resolución sólo
+  agrandaría el borrón. Por el mismo motivo no se tocó la máscara de enfoque:
+  probadas siete combinaciones de radio e intensidad sobre el mismo recorte, la
+  mejor estrechaba el borde un 18 % y ninguna cambiaba nada que se viera. El
+  problema no era el filtro, era la resolución a la que se le daba la página.
+
+- **El apilado de ráfaga es Kotlin puro y se prueba sin teléfono.** El alineado
+  busca en dos pasos, de grueso a fino: primero sobre una versión reducida a la
+  cuarta parte, que abarca mucho por poco dinero, y después se afina a escala
+  real ajustando una parábola al error para bajar del píxel. Sin ese último
+  paso, medio píxel de error al promediar tres fotos ya se ve como una página
+  algo más blanda que la original: se habría quitado ruido a cambio de nitidez,
+  que es un mal negocio.
+
+  Para decidir si una foto de la ráfaga sirve se compara el error en su mejor
+  posición con el error a veinte píxeles de ahí. **Es una proporción y no un
+  valor absoluto**, y esa parte importa: un corte absoluto no vale porque el
+  error depende muchísimo de lo que haya en la página, y una hoja con mucho
+  texto se sale de cualquier número que sirva para una hoja más vacía. Se probó
+  con un corte absoluto primero y rechazaba fotos buenas.
+
+  Las pruebas de esto miran **dos cosas a la vez, ruido y filo**, y es a
+  propósito: promediar siempre baja el ruido, así que una prueba que sólo mire
+  el ruido pasa incluso con el alineado roto, y con el alineado roto la página
+  sale borrosa.
+
+- **La página no se enfoca: se le deshace el desenfoque.** Una máscara de
+  desenfoque —lo que hacía antes, y lo que hace casi todo el mundo— no deshace
+  nada: exagera el contraste a los lados de cada borde para que el ojo lo lea
+  como más definido. Tiene techo, y el techo se ve: los trazos salen
+  **moteados**, con grises sucios por dentro que la máscara no puede arreglar
+  porque ahí no hay borde que exagerar.
+
+  Ahora se parte de un modelo de **cómo** se emborronó la foto y se busca la
+  imagen que, al emborronarse así, daría la que tenemos. Es Richardson-Lucy, el
+  método que se usa en astronomía por el mismo motivo: recuperar detalle que sí
+  está en los datos, pero repartido entre píxeles vecinos. Los trazos salen
+  macizos en lugar de moteados, y eso es lo que se lee como nitidez.
+
+  Frente a la máscara asimétrica que hubo entre medias, medido sobre la misma
+  hoja real a 300 ppp: los halos bajan del 0,21 % al 0,05 % y el lápiz que
+  sobrevive sube del 81,1 % al 83,2 %. Mejor en las tres cosas a la vez, que es
+  raro y por eso justificó el cambio.
+
+  **La corrección se aplica de forma asimétrica**, y esa parte sí se conserva de
+  la versión anterior. Richardson-Lucy oscurece la tinta y aclara el papel por
+  igual, y aclarar el papel sube los grises flojos: la curva de tono que viene
+  después los manda a blanco, o sea que **borra el lápiz**. Medido en su día:
+  subiendo el enfoque simétrico lo justo para estrechar el borde de 2,64 a
+  2,05 px, el trazo de lápiz que sobrevivía caía del 85 % al 50 %. Se ganaba
+  filo en lo impreso a cambio de perder la mitad de lo escrito a mano. Por eso
+  la corrección va entera hacia la tinta y frenada hacia el papel.
+
+  El deslizador de intensidad ya no gradúa una cantidad sino **cuántas veces se
+  corrige**, de cuatro a diez vueltas, que es lo único que la deconvolución
+  tiene de graduable. Cuesta lo suyo y conviene decirlo: medido en un Galaxy
+  S22 Ultra, revelar una página entera a 300 ppp con la intensidad al máximo son
+  **2,85 s**, y rehacer la vista previa de la pantalla de revisión, **0,53 s**.
+  Lo segundo es lo que se nota al mover el deslizador.
+
+  Antes de llegar aquí se descartaron dos caminos, y los dos por medición: subir
+  la resolución de captura (la cámara entrega 4000×3000 y es el máximo que
+  expone el sistema; el modo de 108 MP es propietario de Samsung y CameraX no lo
+  ve) y apretar más la máscara de desenfoque (ocho combinaciones probadas; la
+  mejor estrechaba el borde un 18 % y ninguna cambiaba nada que se viera).
+
+- **Una página sin color ya no se guarda por triplicado.** Una hoja escaneada y
+  mejorada es gris: el filtro la deja en tinta y papel, con el mismo valor
+  repetido en los tres canales. PDFBox escribe siempre `DeviceRGB`, así que cada
+  página viajaba tres veces dentro del PDF. Ahora, cuando la imagen es gris de
+  verdad, se guarda en un canal. Sobre la misma hoja a 300 ppp: 4,55 MB en RGB
+  contra **2,82 MB** en gris, exactamente los mismos píxeles.
+
+  Con eso, la página más nítida sale además **más ligera** que antes: la versión
+  anterior, a 250 ppp y en RGB, pesaba 3,19 MB. La comprobación de «esto es
+  gris» mira todos los píxeles y no una muestra, y descarta también las imágenes
+  con transparencia: un canal de gris no puede guardar ni el color ni el alfa, y
+  equivocarse ahí no es comprimir peor, es tirar contenido sin avisar.
+
+- **La cadena de mejora trabaja sobre el sitio.** Encadenando las versiones que
+  devuelven un array nuevo había cinco páginas enteras de enteros vivas a la
+  vez; a 300 ppp eso son más de doscientos megabytes para revelar una hoja, y la
+  aplicación no pide `largeHeap`. Ahora son dos, así que la resolución sube y la
+  memoria en vuelo **baja** respecto a la versión anterior. El aplanado de luz
+  ya no materializa el fondo estimado —interpola la rejilla al vuelo— y la
+  pasada vertical del desenfoque se hace con una ventana deslizante sobre el
+  propio array. Hay pruebas que comparan píxel a píxel las dos versiones de cada
+  paso: un anillo desfasado por una fila no rompe nada, sólo deja la página
+  sutilmente peor, y eso es justo lo que no se detecta mirando.
+
+- **El binario crece, y conviene decir cuánto.** Lo que un usuario descarga pasa
+  de unos 6 MB a unos **12,5 MB**: el modelo de reconocimiento de texto pesa
+  unos 6 MB y viaja dentro de la aplicación. Es el precio de que el OCR funcione
+  sin conexión; la alternativa era descargarlo, y eso habría exigido el permiso
+  de internet. El AAB del repositorio marca 30 MB porque lleva las cuatro
+  arquitecturas y 5,8 MB de mapa de ofuscación, y de eso Play sólo entrega la
+  arquitectura del teléfono.
+- Las notas de versión de Google Play se generan con
+  `tools/generar_notas_version.py`, que comprueba los trece idiomas y el límite
+  de 500 caracteres. Antes se escribían a mano y el límite se descubría al
+  pegarlas en el navegador.
+
 ## [1.3.0] — 2026-09-09
 
 ### Nuevo

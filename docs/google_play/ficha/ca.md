@@ -15,7 +15,7 @@ NexaPDF: PDF sense connexió
 Uneix, divideix, edita i signa PDF sense connexió. Sense anuncis ni rastreig.
 ```
 
-## Descripcion completa (2735/4000)
+## Descripcion completa (3707/4000)
 
 ```
 NexaPDF és una caixa d'eines per a PDF que funciona sencera al teu mòbil.
@@ -24,6 +24,9 @@ No demana el permís d'internet. Això no és una promesa: és una restricció d
 
 QUÈ FA
 
+• Escanejar paper amb la càmera. Troba les vores del full mentre apuntes, mostra fins a quin punt les distingeix, corregeix la perspectiva i pot llegir el text perquè després puguis cercar dins el document.
+• Mode targeta per al DNI, el carnet de conduir, targetes de crèdit, abonaments de transport i passaports. Les dues cares van en un full i a mida real, així que en imprimir-lo obtens la mida del carnet i no una foto ampliada.
+• Diverses fotos per pàgina, fusionades en una. Millorar una pàgina amplifica el gra alhora que el detall; amb tres fotos el gra s’anul·la sol.
 • Unir documents en un de sol, arrossegant per ordenar-los i amb la previsualització de la primera pàgina de cadascun. Admet també Word, Excel, PowerPoint i imatges: el que no és PDF es converteix abans.
 • Dividir un document en un fitxer per pàgina, per intervals o extraient les pàgines que triïs.
 • Convertir fotos en documents, des de la galeria o fent la foto al moment. Una imatge per pàgina, o 2, 4 i 6 juntes.
@@ -35,7 +38,9 @@ QUÈ FA
 
 PRIVADESA, SENSE ADORNS
 
-• Sense permís d'internet. Sense cap permís, de fet.
+• Sense permís d’internet. És el mateix sistema operatiu el que bloqueja qualsevol connexió, així que els teus documents no poden sortir del telèfon.
+• Un sol permís, la càmera, i només per a l’escàner. Es demana en obrir l’escàner, mai en arrencar, i si el deneges l’escàner continua funcionant amb fotos de la teva galeria.
+• El reconeixement de text es fa al teu telèfon. El model viatja dins l’aplicació: no es descarrega res i no s’envia res.
 • Sense comptes, sense registre, sense analítica, sense informes d'errors i sense publicitat.
 • El teu certificat es llegeix, s'utilitza i es descarta. No es desa mai.
 • La carpeta de treball es buida cada vegada que s'engega l'aplicació.

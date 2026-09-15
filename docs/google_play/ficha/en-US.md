@@ -15,7 +15,7 @@ NexaPDF: PDF tools offline
 Merge, split, edit and sign PDFs offline. No ads, no tracking, no accounts.
 ```
 
-## Descripcion completa (2599/4000)
+## Descripcion completa (3695/4000)
 
 ```
 NexaPDF is a complete PDF toolbox that runs entirely on your phone.
@@ -24,6 +24,9 @@ It does not ask for the internet permission. That is not a promise: it is a rest
 
 WHAT IT DOES
 
+• Scan paper with the camera. It finds the edges of the sheet while you aim, shows how well it can see them, straightens the perspective and can read the text so you can search inside the document afterwards.
+• Card mode for ID cards, driving licences, bank cards, travel passes and passports. Both sides go on one sheet at their real size, so printing it gives you something the size of the card itself, not a blown-up photo.
+• Several shots per page, merged into one. Enhancing a page amplifies its grain along with its detail, so there is a point where the paper gets dirtier faster than the letters get sharper. Three shots cancel the grain out, and that point moves further away.
 • Merge documents into one, dragging to set the order, with a preview of each first page. It also accepts Word, Excel, PowerPoint and images: anything that is not a PDF is converted first.
 • Split a document into one file per page, by ranges, or by extracting the pages you pick.
 • Turn photos into documents, from your gallery or straight from the camera. One image per page, or 2, 4 and 6 together.
@@ -35,7 +38,9 @@ WHAT IT DOES
 
 PRIVACY, PLAINLY
 
-• No internet permission. No permissions at all, in fact.
+• No internet permission. The operating system itself blocks any connection, so your documents cannot leave the phone even if something inside the app tried.
+• One single permission, the camera, and only for the scanner. It is asked for when you open the scanner, never on startup, and if you say no the scanner still works with photos from your gallery.
+• Text recognition runs on your phone. The model ships inside the app: nothing is downloaded and nothing is sent.
 • No accounts, no sign-up, no analytics, no crash reporting, no advertising.
 • Your certificate is read, used and discarded. It is never stored.
 • The working folder is emptied every time the app starts.

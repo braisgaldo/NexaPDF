@@ -248,4 +248,16 @@ class EstadoApp(private val contenedor: ContenedorApp) : ViewModel() {
 
     fun fijarNombreParaFirmas(nombre: String) =
         viewModelScope.launch { contenedor.ajustes.fijarNombreParaFirmas(nombre) }
+
+    fun fijarEscanerOcr(valor: Boolean) =
+        viewModelScope.launch { contenedor.ajustes.fijarEscanerOcr(valor) }
+
+    fun fijarEscanerAutomatico(valor: Boolean) =
+        viewModelScope.launch { contenedor.ajustes.fijarEscanerAutomatico(valor) }
+
+    fun fijarEscanerRafaga(valor: Boolean) =
+        viewModelScope.launch { contenedor.ajustes.fijarEscanerRafaga(valor) }
+
+    fun fijarEscanerFiltro(clave: String) =
+        viewModelScope.launch { contenedor.ajustes.fijarEscanerFiltro(clave) }
 }

@@ -16,7 +16,7 @@ plugins {
 // --- Versionado -------------------------------------------------------------
 // versionName sigue SemVer. versionCode se deriva de forma monotona con la
 // formula MAJOR * 10_000 + MINOR * 100 + PATCH, documentada en docs/INSTALL.md.
-val appVersionName = "1.3.0"
+val appVersionName = "1.5.0"
 val appVersionCode = appVersionName.split(".").let { (major, minor, patch) ->
     major.toInt() * 10_000 + minor.toInt() * 100 + patch.toInt()
 }
@@ -133,6 +133,11 @@ kotlin {
             implementation(libs.androidx.documentfile)
             implementation(libs.androidx.exifinterface)
             implementation(libs.kotlinx.coroutines.android)
+            implementation(libs.androidx.camera.core)
+            implementation(libs.androidx.camera.camera2)
+            implementation(libs.androidx.camera.lifecycle)
+            implementation(libs.androidx.camera.view)
+            implementation(libs.mlkit.text.recognition)
             implementation(libs.pdfbox.android)
             implementation(libs.bouncycastle.prov)
             implementation(libs.bouncycastle.pkix)
@@ -230,7 +235,25 @@ android {
     buildTypes {
         getByName("debug") {
             applicationIdSuffix = ".debug"
-            isMinifyEnabled = false
+
+            // R8 apagado por defecto, porque compilar para depurar tiene que
+            // ser rapido. Con -Pnexapdf.minificarDebug se enciende, y eso
+            // permite **probar el binario minificado en el telefono sin
+            // desinstalar la version de la tienda**: es el mismo R8 que el de
+            // publicacion, pero bajo el identificador .debug, asi que las dos
+            // conviven. Es la unica forma de comprobar que las reglas de
+            // ofuscacion no han roto nada que se resuelva por reflexion (ML Kit
+            // descubre sus componentes asi, y CameraX su configuracion) sin
+            // quitarle la aplicacion al usuario del telefono.
+            val minificar = providers.gradleProperty("nexapdf.minificarDebug").isPresent
+            isMinifyEnabled = minificar
+            isShrinkResources = minificar
+            if (minificar) {
+                proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro",
+                )
+            }
 
             // Nombre propio para el build de depuracion. Los dos se pueden
             // instalar a la vez, y con la misma etiqueta eran indistinguibles

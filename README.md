@@ -1,10 +1,12 @@
 # NexaPDF
 
-**Herramientas PDF que funcionan sin conexión.** Une, separa, convierte, edita y
-firma documentos sin que salgan de tu teléfono.
+**Herramientas PDF que funcionan sin conexión.** Escanea, une, separa, convierte,
+edita y firma documentos sin que salgan de tu teléfono.
 
 NexaPDF no declara el permiso de internet. No es una promesa de buena voluntad:
 es una restricción del propio sistema operativo, comprobable en el manifiesto.
+El único permiso que declara es el de cámara, y solo lo usa el escáner
+(ver [ADR 0005](docs/adr/0005-camara-escaner.md)).
 
 ---
 
@@ -12,6 +14,7 @@ es una restricción del propio sistema operativo, comprobable en el manifiesto.
 
 | | |
 |---|---|
+| **Escanear** | Fotografía un papel y sale un PDF derecho, limpio y con el texto dentro para poder buscarlo. Encuentra los bordes mientras apuntas, enseña el porcentaje de detección y dispara solo cuando el encuadre está bien. |
 | **Unir** | Varios documentos en uno, arrastrando para ordenarlos. Admite PDF, Word, Excel, PowerPoint e imágenes: lo que no sea PDF se convierte antes. |
 | **Separar** | Por páginas sueltas, por rangos o extrayendo una selección. |
 | **Imágenes a PDF** | Desde la galería o haciendo una foto. Una por página, o 2, 4 y 6 juntas. |
@@ -22,6 +25,12 @@ es una restricción del propio sistema operativo, comprobable en el manifiesto.
 
 Seis temas (tres claros y tres oscuros) más «seguir al sistema», y trece idiomas
 con el árabe en RTL.
+
+El reconocimiento de texto del escáner corre en el dispositivo, con el modelo
+empaquetado dentro del APK: funciona en modo avión y no descarga nada. La
+detección de bordes es Kotlin puro en `commonMain`, sin OpenCV, y está cubierta
+por pruebas unitarias que miden tanto el acierto como el temblor entre
+fotogramas.
 
 ## Capturas
 

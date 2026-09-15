@@ -1,7 +1,9 @@
 Novetats
 
-Un PDF que obres des de missatgeria o des del gestor de fitxers ja no es queda en «només llegir». El visor porta ara una caixa d'eines per signar-lo, editar-lo, protegir-lo amb contrasenya, dividir-lo o exportar-lo, i desar-lo on vulguis, sense sortir ni tornar a buscar el fitxer.
+Escàner de documents. Fotografia un paper i obtens un PDF dret i llegible, no una foto torta dins d'un PDF.
 
-• Compartir diversos PDF porta a unir-los.
-• Compartir fotos porta a fer-ne un document.
-• Obrir una còpia de seguretat ofereix importar-la.
+• Troba les vores mentre apuntes i dispara sol quan la mà està quieta.
+• Corregeix la perspectiva i neteja la pàgina.
+• Fa diverses fotos per pàgina i les fusiona: menys gra, més nitidesa.
+• Mode targeta: DNI o passaport a mida real, les dues cares en un full.
+• Pot llegir el text per cercar-hi dins. Tot al teu telèfon.

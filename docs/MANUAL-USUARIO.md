@@ -16,11 +16,17 @@ a internet, así que tus documentos no pueden salir de él aunque quisieras.
 
 ## La pantalla de inicio
 
-Al abrir NexaPDF ves una rejilla con todo lo que sabe hacer. Cabe entera en la
-pantalla: no hay que desplazarse para descubrir nada.
+Al abrir NexaPDF ves todo lo que sabe hacer. Cabe entero en la pantalla: no hay
+que desplazarse para descubrir nada.
+
+Arriba del todo, a lo ancho, está **Escanear**. Va aparte de la rejilla porque
+es la única herramienta que empieza sin fichero: las otras ocho piden un
+documento que ya tienes, y el escáner sirve para cuando lo que tienes es un
+papel encima de la mesa.
 
 | Herramienta | Para qué sirve |
 |---|---|
+| **Escanear** | Fotografiar papeles y convertirlos en un PDF con texto buscable. |
 | **Leer PDF** | Leer, buscar dentro y moverse por el documento. |
 | **Unir PDF** | Juntar varios documentos en uno solo. |
 | **Separar PDF** | Partir un documento en las partes que quieras. |
@@ -62,6 +68,20 @@ En **Ajustes › Cómo se lee** eliges entre **página a página** (deslizas de
 lado y ves una cada vez) y **desplazamiento continuo** (todas seguidas, como
 se lee cualquier otra cosa en el teléfono). Con el desplazamiento continuo,
 el pellizco con dos dedos ensancha las páginas en lugar de moverlas.
+
+---
+
+### Quitar una página
+
+Desde la caja de herramientas (el icono de llave inglesa), **Eliminar esta
+página** quita la que estás leyendo. Pregunta antes, y no deja el documento sin
+páginas.
+
+Como todo en NexaPDF, el resultado es un documento **nuevo**: el que tenías
+sigue donde estaba, así que si te arrepientes basta con volver a abrirlo.
+
+Si quieres quitar varias de una vez, en la rejilla de páginas (*Páginas y
+más…*) se tocan las que sobren y aparece el botón de eliminar.
 
 ---
 
@@ -152,6 +172,128 @@ cambia.
 
 ---
 
+## Escanear un papel
+
+Es la herramienta para digitalizar lo que tienes en papel: un contrato, una
+factura, los apuntes de alguien. El resultado es un PDF derecho y legible, no
+una foto torcida metida en un PDF, y si lo pides trae el texto dentro para que
+puedas buscarlo.
+
+### Apuntar
+
+1. Toca **Escanear**. La primera vez te pedirá permiso para usar la cámara, con
+   una pantalla que explica para qué es. Si lo deniegas, el escáner sigue
+   sirviendo con fotos de tu galería.
+2. Apunta al papel. Verás su contorno dibujado encima y, arriba, un
+   **porcentaje**: es cuánta parte del borde la aplicación distingue de verdad.
+
+   | Lo que ves | Qué significa |
+   |---|---|
+   | Gris, «Buscando el documento» | Todavía no ha encontrado la hoja. |
+   | Ámbar, «Mantén el pulso» | La ha encontrado, pero el contorno aún se mueve. |
+   | Verde, «Listo» | Bien encuadrada y quieta. Es el momento de disparar. |
+   | Verde, «Pon la hoja siguiente» | Esa hoja ya está tomada; cambia de papel. |
+
+3. Arriba a la derecha pone **Auto** o **Manual**, y se toca para cambiar:
+
+   - **Auto**: dispara solo al llegar a verde. Después **espera a que cambies de
+     hoja**: hasta que quites el papel o pongas otro, no vuelve a disparar, así
+     que no saca dos fotos de la misma página. Mientras espera, el rótulo lo dice
+     («Pon la hoja siguiente»).
+   - **Manual**: decides tú con el botón redondo. Puedes disparar las veces que
+     quieras sobre la misma hoja.
+
+   El modo con el que arranca el escáner se elige en
+   *Ajustes › Escáner › Captura automática*.
+
+Consejos que cambian mucho el resultado:
+
+- **Fondo que contraste.** Un folio blanco sobre una mesa blanca es el caso
+  difícil: la aplicación no puede ver un borde que tú tampoco verías. Sobre
+  madera o sobre una carpeta oscura sube al instante.
+- **Sombras.** Si tu propia mano hace sombra sobre el borde, muévete o enciende
+  la linterna con el botón del rayo.
+
+Cada foto se añade a la lista. Escanea todas las hojas seguidas y luego pulsa
+**Continuar**. Si sales del escáner con páginas sin convertir, pregunta antes de
+descartarlas.
+
+### Revisar
+
+Aquí ves cada página tal y como va a quedar. Pasa de una a otra deslizando.
+
+- **Ajustar bordes**: si el recorte no es el que querías, arrastra las cuatro
+  esquinas sobre la foto original. **Foto entera** deja de recortar, y
+  **Detectar otra vez** vuelve a intentarlo solo.
+- **Girar**: de noventa en noventa grados.
+- **Añadir**: vuelve a la cámara para meter más hojas.
+- **Eliminar**: quita esa página; las demás no cambian.
+- **Mejora**: cómo se limpia la página. *Documento nítido* es el de siempre y
+  deja el papel blanco y la tinta negra; *Escala de grises* conserva los matices;
+  *Blanco y negro* da el aspecto de fotocopia. El deslizador ajusta la fuerza.
+
+Si el borde no se detectó con seguridad, la página lleva un aviso. No impide
+nada: es para que mires esa antes de crear el PDF.
+
+### Varias fotos por página
+
+Cada disparo hace **tres fotos seguidas** y las funde en una. No es un truco de
+presentación: el límite de nitidez de un escaneo no es el filtro, es el grano.
+Mejorar la página amplifica el ruido a la vez que el detalle, así que llega un
+punto en que el papel se ensucia más rápido de lo que las letras ganan. Con tres
+fotos el grano se cancela solo, porque es distinto en cada disparo y el papel es
+el mismo.
+
+Entre foto y foto la mano se mueve, y eso está contemplado: se mide cuánto y se
+recoloca cada una antes de promediar. Si algo no encaja —te has movido de más,
+una sombra ha cambiado, un dedo ha entrado en el encuadre— esa parte
+sencillamente no se promedia y se queda la de la primera foto. El peor caso es
+que no ganes nada, nunca una página peor.
+
+Cuesta unos segundos más por hoja. Si prefieres ir rápido, se apaga en
+*Ajustes › Escáner › Varias fotos por página*.
+
+### Guardar
+
+Pulsa **Crear PDF** y decide cuatro cosas:
+
+- **El nombre.** Viene propuesto «Escaneo» con la fecha, y se cambia entero. Es
+  el nombre con el que se guarda el fichero, así que no hay que renombrarlo
+  después.
+- **Modo tarjeta.** Déjalo en *Documento* para un papel normal. Si lo que has
+  fotografiado es un DNI, un carné de conducir, una tarjeta de crédito, un abono
+  de transporte o un pasaporte, elige el formato: las caras se montan sobre una
+  hoja normal **a su tamaño real**, así que al imprimirla sale del tamaño del
+  carné y sirve para entregarla en una ventanilla. El anverso y el reverso caben
+  en el mismo folio, con aire para recortarlos.
+
+  *Automático* deduce el formato por la forma de lo que has fotografiado.
+  Acierta al separar una tarjeta de un pasaporte, que es la diferencia que se
+  nota al imprimir; lo que **no** puede hacer es distinguir un pasaporte de un
+  documento mediano, porque tienen casi la misma proporción. Si necesitas uno de
+  esos en concreto, elígelo a mano.
+- **El tamaño de página.** *Como el papel* deja la página con la forma de la
+  hoja escaneada, que es lo que sale más limpio. *A4* o *Carta* si lo vas a
+  imprimir. En modo tarjeta no aparece: la hoja es siempre una hoja normal,
+  porque el sentido del modo es que el carné salga pequeño **dentro** de ella.
+- **Texto buscable.** Reconoce las palabras y las mete en el PDF de forma
+  invisible, encima de la imagen. El documento se ve exactamente igual, pero
+  puedes buscar dentro y copiar. Añade unos segundos por página y se hace en tu
+  teléfono, sin conexión.
+
+Al terminar, el documento se abre o no según lo que tengas en
+*Ajustes › Al terminar un documento › Escanear*.
+
+> **Qué esperar del texto buscable.** Lee alfabeto latino, que cubre castellano,
+> gallego, catalán, euskera, inglés, francés, alemán e italiano. No lee chino,
+> japonés, ruso, griego ni árabe: esas páginas salen como imagen, que sigue
+> siendo un PDF correcto. Y como cualquier reconocimiento de texto, se equivoca
+> con la letra manuscrita y con las fotos movidas. El original nunca se toca: el
+> texto va detrás de la imagen, así que un fallo de lectura no estropea lo que
+> se ve.
+
+---
+
 ## Convertir fotos en un documento
 
 1. Toca **Imágenes a PDF**. Puedes elegir una foto o varias.
@@ -166,6 +308,12 @@ cambia.
 
 Las fotos hechas en vertical salen derechas: NexaPDF lee la orientación que
 graba la cámara y la aplica.
+
+> **¿Y en qué se diferencia de Escanear?** En qué tratan la foto. Aquí la foto
+> se mete tal cual, que es lo que quieres con una imagen que ya es lo que es:
+> una captura, un gráfico, un recuerdo. El escáner busca un papel dentro de la
+> foto, lo recorta, lo endereza y lo limpia. Para digitalizar documentos, el
+> escáner; para meter imágenes en un PDF, esta.
 
 ---
 
@@ -434,6 +582,16 @@ no. En cualquier caso el fichero va a la carpeta que hayas elegido.
 
 > Convertir sólo aparece en el sentido que acaba en PDF. Para un `.docx` o un
 > `.xlsx` la aplicación no tiene visor, así que no habría nada que abrir.
+
+### Escáner
+
+Tres opciones:
+
+- **Texto buscable por defecto**: si el reconocimiento viene marcado al crear el
+  PDF. Puedes cambiarlo en cada escaneo.
+- **Captura automática**: si el escáner dispara solo al encuadrar bien.
+- **Mejora por defecto**: el filtro que se aplica a cada hoja nada más
+  capturarla. Se puede cambiar página a página al revisar.
 
 ### Ofrecer la firma manuscrita
 

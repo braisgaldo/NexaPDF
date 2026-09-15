@@ -33,6 +33,10 @@ import es.ghatostudio.nexapdf.data.ErrorCopia
 import es.ghatostudio.nexapdf.data.ResultadoCopia
 import es.ghatostudio.nexapdf.di.ContenedorApp
 import es.ghatostudio.nexapdf.di.LocalContenedor
+import es.ghatostudio.nexapdf.domain.escaner.Cuadrilatero
+import es.ghatostudio.nexapdf.domain.escaner.HojaEscaneada
+import es.ghatostudio.nexapdf.domain.escaner.PaginaEscaneada
+import es.ghatostudio.nexapdf.domain.escaner.TextoPagina
 import es.ghatostudio.nexapdf.domain.model.BloqueTexto
 import es.ghatostudio.nexapdf.domain.model.BorradorEdicion
 import es.ghatostudio.nexapdf.domain.model.DocumentoPdf
@@ -75,8 +79,15 @@ import es.ghatostudio.nexapdf.resources.error_fichero_invalido
 import es.ghatostudio.nexapdf.resources.error_nada_seleccionado
 import es.ghatostudio.nexapdf.resources.error_sin_memoria
 import es.ghatostudio.nexapdf.resources.firma_hecha
+import es.ghatostudio.nexapdf.resources.esc_capturada
+import es.ghatostudio.nexapdf.resources.esc_leyendo
+import es.ghatostudio.nexapdf.resources.esc_montando
+import es.ghatostudio.nexapdf.resources.esc_preparando
+import es.ghatostudio.nexapdf.resources.esc_sin_texto
 import es.ghatostudio.nexapdf.resources.img_sin_camara
+import es.ghatostudio.nexapdf.ui.componentes.DialogoGuardarEscaneo
 import es.ghatostudio.nexapdf.ui.componentes.DialogoOrigenImagen
+import es.ghatostudio.nexapdf.ui.componentes.OpcionesEscaneo
 import es.ghatostudio.nexapdf.ui.componentes.VeloDeTrabajo
 import es.ghatostudio.nexapdf.ui.donacion.HojaDonacion
 import es.ghatostudio.nexapdf.ui.navegacion.Destino
@@ -92,10 +103,12 @@ import es.ghatostudio.nexapdf.ui.pantallas.PantallaAyuda
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaCompartir
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaDocumento
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaEditor
+import es.ghatostudio.nexapdf.ui.pantallas.PantallaEscaner
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaFirma
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaImagenes
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaInicio
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaRecientes
+import es.ghatostudio.nexapdf.ui.pantallas.PantallaRevisionEscaneo
 import es.ghatostudio.nexapdf.ui.pantallas.PantallaVisor
 import es.ghatostudio.nexapdf.ui.pantallas.PeticionFirmaCertificado
 import es.ghatostudio.nexapdf.ui.theme.NexaTheme
@@ -245,6 +258,42 @@ private fun ContenidoApp(
     // De donde sacar las imagenes. `null` = no se esta preguntando; `true` =
     // se pueden elegir varias, `false` = solo una.
     var pidiendoOrigenImagen by remember { mutableStateOf<Boolean?>(null) }
+
+    // --- Escaner -------------------------------------------------------------
+    // Las hojas viven aqui y no en el destino: la camara se monta una sola vez
+    // y cada foto es un cambio de estado, no una pantalla nueva.
+    val hojas = remember { mutableStateListOf<HojaEscaneada>() }
+    val vistasDeHoja = remember { mutableStateMapOf<String, ImageBitmap>() }
+    val fotosOriginales = remember { mutableStateMapOf<String, ImageBitmap>() }
+    var contadorHojas by remember { mutableStateOf(0) }
+    var permisoCamara by remember { mutableStateOf(contenedor.camara?.hayPermiso() == true) }
+    var permisoDenegado by remember { mutableStateOf(false) }
+    var guardandoEscaneo by remember { mutableStateOf(false) }
+
+    // Las vistas previas del escaner se rehacen solo cuando cambia algo que se
+    // ve: el recorte, el filtro, su intensidad o el giro. Sin la comprobacion,
+    // arrastrar una esquina revelaba otra vez las diez hojas del documento en
+    // cada fotograma del arrastre.
+    //
+    // La espera inicial es lo que convierte un arrastre de cien pasos en una
+    // sola revelacion: cada cambio reinicia el efecto, y solo el ultimo llega a
+    // pasar de aqui.
+    val clavesDeVista = remember { mutableStateMapOf<String, Int>() }
+    LaunchedEffect(hojas.toList()) {
+        val vivas = hojas.map { it.id }.toSet()
+        vistasDeHoja.keys.retainAll(vivas)
+        clavesDeVista.keys.retainAll(vivas)
+        delay(ESPERA_VISTA_HOJA)
+        hojas.toList().forEach { hoja ->
+            val clave = claveDeRevelado(hoja)
+            if (clavesDeVista[hoja.id] == clave) return@forEach
+            val resultado = contenedor.escaner.previsualizar(hoja, ANCHO_VISTA_HOJA)
+            if (resultado is ResultadoPdf.Exito) {
+                vistasDeHoja[hoja.id] = resultado.valor
+                clavesDeVista[hoja.id] = clave
+            }
+        }
+    }
 
     val rutaActiva = documentos.firstOrNull()?.ruta
 
@@ -424,6 +473,40 @@ private fun ContenidoApp(
             AperturaAlTerminar.PREGUNTAR -> abrirRecienCreado = destinoDelResultado
             AperturaAlTerminar.NO_ABRIR -> estado.volverAInicio()
         }
+    }
+
+    /**
+     * Anade una foto al escaneo, buscandole antes los bordes.
+     *
+     * La deteccion se repite aqui sobre la foto de verdad aunque la vista previa
+     * ya hubiera encontrado el papel: la vista previa analiza una imagen de 640
+     * px y la foto tiene veinte veces mas detalle, asi que el recorte sale mas
+     * fino. Ademas la foto de la galeria no ha pasado por la vista previa y
+     * necesita el mismo trato.
+     */
+    suspend fun anadirHoja(
+        ruta: String,
+        filtro: es.ghatostudio.nexapdf.domain.model.FiltroPagina,
+        avisar: Boolean = true,
+        rafaga: List<String> = emptyList(),
+    ) {
+        // Los bordes se buscan **solo** en la foto de referencia. Las demas de
+        // la rafaga son la misma hoja tomada un instante despues, y detectarlas
+        // por separado daria cuatro recortes ligeramente distintos: justo el
+        // temblor que luego habria que corregir.
+        val deteccion = contenedor.escaner.detectarEn(ruta)
+        contadorHojas += 1
+        hojas.add(
+            HojaEscaneada(
+                id = "hoja-$contadorHojas",
+                rutaOriginal = ruta,
+                rutasRafaga = rafaga,
+                cuadro = deteccion.cuadro ?: Cuadrilatero.COMPLETO,
+                filtro = filtro,
+                confianza = deteccion.confianza,
+            ),
+        )
+        if (avisar) estado.avisar(getString(Res.string.esc_capturada, hojas.size))
     }
 
     fun rutaDeSalida(nombre: String): String {
@@ -659,6 +742,28 @@ private fun ContenidoApp(
                                 estado.ir(Destino.Cifrar(elegido.ruta, protegido))
                             }
 
+                            Herramienta.ESCANEAR -> {
+                                // Se empieza siempre en limpio: las hojas de un
+                                // escaneo anterior ya se convirtieron en
+                                // documento, y arrastrarlas al siguiente es la
+                                // forma mas segura de colar la factura de ayer
+                                // dentro del contrato de hoy.
+                                hojas.clear()
+                                vistasDeHoja.clear()
+                                fotosOriginales.clear()
+                                permisoCamara = contenedor.camara?.hayPermiso() == true
+                                permisoDenegado = false
+                                estado.ir(Destino.Escaner)
+                                // El permiso se pide al entrar y no antes: aqui
+                                // ya se ve para que sirve.
+                                val camara = contenedor.camara
+                                if (camara != null && camara.disponible && !permisoCamara) {
+                                    val dado = camara.pedirPermiso()
+                                    permisoCamara = dado
+                                    permisoDenegado = !dado
+                                }
+                            }
+
                             Herramienta.IMAGENES -> {
                                 // Se pregunta de donde sacar las imagenes: de
                                 // la galeria o haciendo una foto en el momento.
@@ -796,6 +901,41 @@ private fun ContenidoApp(
                                     estado.avisar(
                                         getString(Res.string.doc_resultado_guardado, guardado),
                                     )
+                                }
+                            }
+                        },
+                        alEliminarPagina = { indice ->
+                            alcance.launch {
+                                // Se escribe un documento nuevo con el resto de
+                                // paginas, como hace la rejilla: el original del
+                                // usuario no se toca nunca, y asi quitar una
+                                // pagina siempre se puede deshacer volviendo al
+                                // fichero de antes.
+                                val quedan = paginas.map { it.indice } - indice
+                                if (quedan.isEmpty()) return@launch
+                                estado.empezarTrabajo(textoProcesando)
+                                val salida = rutaDeSalida(
+                                    "${nombreBase(destino.ruta)} sin pagina ${indice + 1}.pdf",
+                                )
+                                val hecho = contenedor.motorPdf
+                                    .extraerPaginas(destino.ruta, quedan, salida)
+                                estado.terminarTrabajo()
+                                when (hecho) {
+                                    is ResultadoPdf.Exito -> {
+                                        registrarResultado(hecho.valor)
+                                        contenedor.motorPdf.cerrar(destino.ruta)
+                                        abrirDocumentos(listOf(hecho.valor)) {
+                                            estado.reemplazar(
+                                                Destino.Visor(
+                                                    hecho.valor,
+                                                    indice.coerceAtMost(quedan.lastIndex),
+                                                ),
+                                            )
+                                        }
+                                    }
+
+                                    is ResultadoPdf.Fallo ->
+                                        estado.avisar(mensajeDeError(hecho.causa))
                                 }
                             }
                         },
@@ -1078,6 +1218,99 @@ private fun ContenidoApp(
                         }
                     },
                 ),
+            )
+
+            Destino.Escaner -> PantallaEscaner(
+                camara = contenedor.camara,
+                capturadas = hojas.size,
+                capturaAutomatica = ajustes.escanerCapturaAutomatica,
+                fotosPorDisparo = if (ajustes.escanerRafaga) FOTOS_EN_RAFAGA else 1,
+                snackbar = snackbar,
+                permisoConcedido = permisoCamara,
+                permisoDenegado = permisoDenegado,
+                alCambiarAutomatica = { estado.fijarEscanerAutomatico(it) },
+                alCapturar = { fotos ->
+                    alcance.launch {
+                        anadirHoja(
+                            ruta = fotos.first(),
+                            filtro = ajustes.filtroEscaner,
+                            rafaga = fotos.drop(1),
+                        )
+                    }
+                },
+                alAbrirGaleria = {
+                    alcance.launch {
+                        val elegidas = contenedor.selector.elegirImagenes(multiple = true)
+                        if (elegidas.isEmpty()) return@launch
+                        estado.empezarTrabajo(textoProcesando)
+                        // Se espera a que las hojas esten dentro antes de
+                        // navegar. Sin esperar, la revision se abria con la
+                        // lista todavia vacia y se volvia sola al visor, que es
+                        // lo que hace cuando se queda sin paginas.
+                        elegidas.forEachIndexed { indice, elegida ->
+                            estado.fijarProgreso(indice, elegidas.size)
+                            anadirHoja(elegida.ruta, ajustes.filtroEscaner, avisar = false)
+                        }
+                        estado.terminarTrabajo()
+                        if (hojas.isNotEmpty() && estado.destinoActual == Destino.Escaner) {
+                            estado.ir(Destino.RevisionEscaneo)
+                        }
+                    }
+                },
+                alPedirPermiso = {
+                    alcance.launch {
+                        val camara = contenedor.camara ?: return@launch
+                        val dado = camara.pedirPermiso()
+                        permisoCamara = dado
+                        permisoDenegado = !dado
+                    }
+                },
+                alContinuar = { estado.ir(Destino.RevisionEscaneo) },
+                alVolver = { estado.volver() },
+            )
+
+            Destino.RevisionEscaneo -> PantallaRevisionEscaneo(
+                hojas = hojas,
+                previsualizaciones = vistasDeHoja,
+                originales = fotosOriginales,
+                confirmarDestructivas = ajustes.confirmarAccionesDestructivas,
+                snackbar = snackbar,
+                alCambiarHoja = { nueva ->
+                    val indice = hojas.indexOfFirst { it.id == nueva.id }
+                    if (indice >= 0) hojas[indice] = nueva
+                },
+                alEliminar = { id -> hojas.removeAll { it.id == id } },
+                alAnadir = {
+                    // Se vuelve al visor en lugar de apilar otro: a la revision
+                    // solo se llega desde el escaner, asi que el de debajo es el
+                    // bueno. Apilando, ir y venir entre las dos pantallas
+                    // llenaba la pila de copias y el boton atras habia que
+                    // pulsarlo una vez por viaje.
+                    estado.volver()
+                },
+                alRedetectar = { id ->
+                    alcance.launch {
+                        val indice = hojas.indexOfFirst { it.id == id }
+                        if (indice < 0) return@launch
+                        val hoja = hojas[indice]
+                        val deteccion = contenedor.escaner.detectarEn(hoja.rutaOriginal)
+                        hojas[indice] = hoja.copy(
+                            cuadro = deteccion.cuadro ?: Cuadrilatero.COMPLETO,
+                            confianza = deteccion.confianza,
+                        )
+                    }
+                },
+                alPedirOriginal = { ruta ->
+                    if (!fotosOriginales.containsKey(ruta)) {
+                        alcance.launch {
+                            val cargada = contenedor.motorPdf
+                                .renderizarImagen(ruta, ANCHO_FOTO_ORIGINAL)
+                            if (cargada is ResultadoPdf.Exito) fotosOriginales[ruta] = cargada.valor
+                        }
+                    }
+                },
+                alCrear = { guardandoEscaneo = true },
+                alVolver = { estado.volver() },
             )
 
             is Destino.Imagenes -> PantallaImagenes(
@@ -1410,6 +1643,10 @@ private fun ContenidoApp(
                 alCambiarApertura = { tarea, valor ->
                     estado.fijarApertura(tarea, valor.name)
                 },
+                alCambiarEscanerOcr = { estado.fijarEscanerOcr(it) },
+                alCambiarEscanerAutomatico = { estado.fijarEscanerAutomatico(it) },
+                alCambiarEscanerRafaga = { estado.fijarEscanerRafaga(it) },
+                alCambiarEscanerFiltro = { estado.fijarEscanerFiltro(it.name) },
                 alElegirCarpeta = {
                     alcance.launch {
                         val elegida = contenedor.selector.elegirCarpeta()
@@ -1511,6 +1748,41 @@ private fun ContenidoApp(
                     if (estado.destinoActual !is Destino.Imagenes) {
                         estado.ir(Destino.Imagenes(imagenes.toList()))
                     }
+                }
+            },
+        )
+    }
+
+    if (guardandoEscaneo) {
+        DialogoGuardarEscaneo(
+            nombreSugerido = nombreSugeridoEscaneo(contenedor),
+            ocrDisponible = contenedor.escaner.ocrDisponible,
+            ocrPorDefecto = ajustes.escanerOcr,
+            alCancelar = { guardandoEscaneo = false },
+            alGuardar = { opciones ->
+                guardandoEscaneo = false
+                alcance.launch {
+                    crearPdfDeEscaneo(
+                        contenedor = contenedor,
+                        estado = estado,
+                        hojas = hojas.toList(),
+                        opciones = opciones,
+                        rutaDeSalida = ::rutaDeSalida,
+                        mensajeDeError = { mensajeDeError(it) },
+                        alTerminar = { ruta ->
+                            alcance.launch {
+                                hojas.clear()
+                                vistasDeHoja.clear()
+                                fotosOriginales.clear()
+                                registrarResultado(ruta)
+                                abrirDocumentos(listOf(ruta))
+                                mostrarResultado(
+                                    TareaConResultado.ESCANEAR,
+                                    Destino.Documento(listOf(ruta)),
+                                )
+                            }
+                        },
+                    )
                 }
             },
         )
@@ -1702,6 +1974,149 @@ private fun crearPdfDeImagenes(
     }
 }
 
+/**
+ * Nombre que se ofrece por defecto al guardar un escaneo.
+ *
+ * Lleva la fecha porque quien escanea lo hace por lotes, y "Escaneo", "Escaneo
+ * (2)", "Escaneo (3)" no distingue el albaran de esta manana del contrato de la
+ * semana pasada. Se puede cambiar entero: es una sugerencia, no una plantilla.
+ */
+private fun nombreSugeridoEscaneo(contenedor: ContenedorApp): String {
+    val fecha = contenedor.servicios.formatearFecha(contenedor.servicios.ahora())
+    return "Escaneo $fecha"
+}
+
+/**
+ * Prepara la version de la pagina que va a leer el reconocedor.
+ *
+ * Si la hoja no lleva filtro, la que ya se revelo sirve y no se hace nada. Si lo
+ * lleva, se revela una segunda vez sin el: cuesta unas decimas por pagina y es
+ * lo que hace que las palabras acentuadas lleguen a la capa de texto.
+ */
+private suspend fun paraLeer(
+    contenedor: ContenedorApp,
+    hoja: HojaEscaneada,
+    carpeta: String,
+    yaRevelada: String,
+): String {
+    if (hoja.filtro == es.ghatostudio.nexapdf.domain.model.FiltroPagina.NINGUNO) return yaRevelada
+    val destino = contenedor.ficheros.unirRuta(carpeta, "lectura-${hoja.id}.jpg")
+    val sinFiltro = hoja.copy(filtro = es.ghatostudio.nexapdf.domain.model.FiltroPagina.NINGUNO)
+    return contenedor.escaner.revelar(sinFiltro, destino).valorONulo() ?: yaRevelada
+}
+
+/**
+ * Convierte las hojas revisadas en un PDF.
+ *
+ * Son tres fases y cada una dice en pantalla por donde va, porque juntas pueden
+ * tardar un minuto largo con diez paginas y un velo mudo durante un minuto se
+ * lee como que la aplicacion se ha colgado:
+ *
+ *  1. **Enderezar** cada hoja y escribirla como imagen.
+ *  2. **Leer** su texto, si se pidio.
+ *  3. **Montar** el documento con las imagenes y la capa de texto encima.
+ *
+ * Si el reconocimiento no encuentra nada se sigue adelante y se avisa: un PDF de
+ * imagenes sigue siendo el documento que se queria, y perderlo por eso seria
+ * tirar el escaneo entero.
+ */
+private suspend fun crearPdfDeEscaneo(
+    contenedor: ContenedorApp,
+    estado: EstadoApp,
+    hojas: List<HojaEscaneada>,
+    opciones: OpcionesEscaneo,
+    rutaDeSalida: (String) -> String,
+    mensajeDeError: suspend (ErrorPdf) -> String,
+    alTerminar: (String) -> Unit,
+) {
+    if (hojas.isEmpty()) return
+
+    val carpetaTemporal = contenedor.ficheros.unirRuta(
+        contenedor.servicios.directorioTrabajo,
+        "escaner",
+    )
+    contenedor.ficheros.asegurarDirectorio(carpetaTemporal)
+
+    estado.empezarTrabajo(getString(Res.string.esc_preparando))
+    val reveladas = mutableListOf<Pair<HojaEscaneada, String>>()
+    hojas.forEachIndexed { indice, hoja ->
+        estado.fijarProgreso(indice, hojas.size)
+        val destino = contenedor.ficheros.unirRuta(carpetaTemporal, "pagina-${hoja.id}.jpg")
+        when (val revelada = contenedor.escaner.revelar(hoja, destino)) {
+            is ResultadoPdf.Exito -> reveladas += hoja to revelada.valor
+            is ResultadoPdf.Fallo -> estado.avisar(mensajeDeError(revelada.causa))
+        }
+    }
+    if (reveladas.isEmpty()) {
+        estado.terminarTrabajo()
+        estado.avisar(mensajeDeError(ErrorPdf.FICHERO_INVALIDO))
+        return
+    }
+
+    var palabrasLeidas = 0
+    val paginas = if (!opciones.conTexto) {
+        reveladas.map { (_, ruta) -> PaginaEscaneada(ruta) }
+    } else {
+        estado.empezarTrabajo(getString(Res.string.esc_leyendo))
+        reveladas.mapIndexed { indice, (hoja, ruta) ->
+            estado.fijarProgreso(indice, reveladas.size)
+            // El reconocedor lee la pagina **sin el filtro de mejora**. El filtro
+            // esta para que la pagina se vea limpia, y para eso lleva el papel a
+            // blanco puro y la tinta a negro; eso se come los trazos mas finos, y
+            // los mas finos de una pagina en castellano son justo las tildes y la
+            // virgulilla de la ene. Con la pagina filtrada, "reunion" y "manana"
+            // desaparecian de la capa de texto sin que nada avisara.
+            //
+            // Las coordenadas siguen valiendo porque las dos versiones salen del
+            // mismo recorte y del mismo giro: cambia el color de los pixeles, no
+            // donde esta cada palabra.
+            val textoDe = paraLeer(contenedor, hoja, carpetaTemporal, ruta)
+            val texto = contenedor.escaner.reconocerTexto(textoDe).valorONulo()
+                ?: TextoPagina.SIN_TEXTO
+            if (textoDe != ruta) contenedor.ficheros.borrar(textoDe)
+            palabrasLeidas += texto.palabras.size
+            PaginaEscaneada(ruta, texto)
+        }
+    }
+
+    estado.empezarTrabajo(getString(Res.string.esc_montando))
+    val salida = rutaDeSalida("${opciones.nombre}.pdf")
+    val avance: (Int, Int) -> Unit = { hechas, total -> estado.fijarProgreso(hechas, total) }
+    val tarjeta = opciones.tarjeta
+    val resultado = if (tarjeta != null) {
+        contenedor.motorPdf.tarjetasAPdf(
+            paginas = paginas,
+            tipo = tarjeta,
+            tamano = opciones.tamano,
+            rutaSalida = salida,
+            alAvanzar = avance,
+        )
+    } else {
+        contenedor.motorPdf.escaneoAPdf(
+            paginas = paginas,
+            tamano = opciones.tamano,
+            rutaSalida = salida,
+            alAvanzar = avance,
+        )
+    }
+    estado.terminarTrabajo()
+
+    // Las paginas reveladas ya estan dentro del PDF; dejarlas ocupa el doble de
+    // espacio para siempre y no sirven para nada.
+    reveladas.forEach { (_, ruta) -> contenedor.ficheros.borrar(ruta) }
+
+    when (resultado) {
+        is ResultadoPdf.Exito -> {
+            if (opciones.conTexto && palabrasLeidas == 0) {
+                estado.avisar(getString(Res.string.esc_sin_texto))
+            }
+            alTerminar(resultado.valor)
+        }
+
+        is ResultadoPdf.Fallo -> estado.avisar(mensajeDeError(resultado.causa))
+    }
+}
+
 private suspend fun guardarEdicion(
     contenedor: ContenedorApp,
     estado: EstadoApp,
@@ -1830,6 +2245,41 @@ private suspend fun importarCopiaDesde(
 
 /** Ancho en pixeles de las miniaturas de la pantalla de imagenes. */
 private const val ANCHO_MINIATURA_IMAGEN = 320
+
+/**
+ * Ancho al que se revela una hoja del escaner para ensenarla en pantalla.
+ *
+ * Estaba en 900 y era parte de lo que se veia blando: una pagina A4 entera a 900
+ * px deja cada linea de texto en ocho pixeles de alto, que es el limite de lo
+ * legible. La tarjeta ocupa unos 800 px de pantalla, asi que a 1500 hay algo de
+ * margen y el texto se lee recortado en lugar de emborronado.
+ */
+/**
+ * Cuantas fotos hace cada disparo con la rafaga activada.
+ *
+ * Tres. El ruido baja con la raiz del numero de fotos, asi que de una a tres se
+ * gana casi la mitad y de tres a seis solo un veinte por ciento mas; y cada foto
+ * de mas alarga el disparo y aumenta lo que la mano se mueve entre la primera y
+ * la ultima, que es lo que el alineado tiene que deshacer.
+ */
+private const val FOTOS_EN_RAFAGA = 3
+
+private const val ANCHO_VISTA_HOJA = 1500
+
+/** Ancho al que se carga la foto original para ajustarle las esquinas. */
+private const val ANCHO_FOTO_ORIGINAL = 1200
+
+/** Espera antes de rehacer una vista previa, para no hacerlo en cada arrastre. */
+private const val ESPERA_VISTA_HOJA = 140L
+
+/**
+ * Lo que hace que una hoja tenga que volver a revelarse.
+ *
+ * No entra el identificador ni la confianza: cambiarlos no altera un solo
+ * pixel de lo que se ve.
+ */
+private fun claveDeRevelado(hoja: HojaEscaneada): Int =
+    listOf(hoja.cuadro, hoja.filtro, hoja.intensidadFiltro, hoja.giroGrados).hashCode()
 
 /**
  * Ancho al que se lee una imagen insertada para verla en el editor.

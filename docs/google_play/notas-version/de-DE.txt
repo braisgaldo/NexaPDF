@@ -1,7 +1,9 @@
 Neu
 
-Ein PDF, das Sie aus einer Messaging-App oder der Dateiverwaltung öffnen, lässt sich nicht mehr nur lesen. Der Betrachter hat jetzt einen Werkzeugkasten: signieren, bearbeiten, mit Passwort schützen, teilen oder exportieren und speichern, wo Sie wollen — ohne die App zu verlassen und die Datei erneut zu suchen.
+Dokumentenscanner. Fotografieren Sie ein Blatt und erhalten Sie ein gerades, lesbares PDF statt eines schiefen Fotos.
 
-• Mehrere PDFs teilen führt zum Zusammenführen.
-• Fotos teilen führt zum Dokument.
-• Eine Sicherung öffnen bietet den Import an.
+• Findet die Ränder beim Zielen und löst aus, sobald die Hand ruhig ist.
+• Korrigiert die Perspektive und säubert die Seite.
+• Macht mehrere Aufnahmen pro Seite und fügt sie zusammen: weniger Rauschen.
+• Kartenmodus: Ausweis oder Reisepass in Originalgröße, beide Seiten auf einem Blatt.
+• Kann den Text lesen, damit Sie darin suchen können. Alles auf dem Gerät.

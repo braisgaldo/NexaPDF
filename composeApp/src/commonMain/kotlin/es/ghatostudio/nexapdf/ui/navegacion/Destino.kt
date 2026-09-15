@@ -38,6 +38,18 @@ sealed interface Destino {
 
     data class Imagenes(val rutas: List<String>) : Destino
 
+    /**
+     * El visor del escaner: camara en vivo, contorno y porcentaje.
+     *
+     * No lleva argumentos: las hojas capturadas viven en el estado de la
+     * aplicacion, no en la pila de navegacion. Meterlas aqui obligaria a
+     * reconstruir la pantalla entera con cada foto, y con ella la camara.
+     */
+    data object Escaner : Destino
+
+    /** Repaso de lo escaneado antes de convertirlo en documento. */
+    data object RevisionEscaneo : Destino
+
     data class Editor(val ruta: String, val paginaInicial: Int) : Destino
 
     /**

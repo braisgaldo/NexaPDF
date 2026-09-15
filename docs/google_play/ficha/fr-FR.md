@@ -15,7 +15,7 @@ NexaPDF : outils PDF
 Fusionnez, divisez, modifiez et signez des PDF. Sans internet, sans publicité.
 ```
 
-## Descripcion completa (2980/4000)
+## Descripcion completa (3980/4000)
 
 ```
 NexaPDF est une boîte à outils PDF qui fonctionne entièrement sur votre téléphone.
@@ -24,6 +24,9 @@ Elle ne demande pas la permission d'accès à internet. Ce n'est pas une promess
 
 CE QU'ELLE FAIT
 
+• Numériser du papier avec l’appareil photo. Il trouve les bords de la feuille pendant que vous visez, montre à quel point il les distingue, redresse la perspective et peut lire le texte pour que vous puissiez ensuite chercher dans le document.
+• Mode carte pour la pièce d’identité, le permis, les cartes bancaires, les titres de transport et les passeports. Les deux faces tiennent sur une feuille à leur taille réelle : à l’impression, vous obtenez la taille de la carte.
+• Plusieurs photos par page, fusionnées en une : le grain s’annule de lui-même.
 • Fusionner des documents en un seul, en les faisant glisser pour les ordonner, avec un aperçu de la première page de chacun. Elle accepte aussi Word, Excel, PowerPoint et les images : ce qui n'est pas un PDF est converti au préalable.
 • Diviser un document en un fichier par page, par plages, ou en extrayant les pages choisies.
 • Transformer des photos en documents, depuis la galerie ou en prenant la photo sur le moment. Une image par page, ou 2, 4 et 6 ensemble.
@@ -35,7 +38,9 @@ CE QU'ELLE FAIT
 
 CONFIDENTIALITÉ, SANS DÉTOUR
 
-• Pas de permission internet. Aucune permission, en réalité.
+• Pas de permission internet. C’est le système d’exploitation lui-même qui bloque toute connexion : vos documents ne peuvent pas quitter le téléphone.
+• Une seule permission, l’appareil photo, et uniquement pour le scanner. Elle est demandée à l’ouverture du scanner, jamais au démarrage, et si vous refusez le scanner fonctionne avec les photos de votre galerie.
+• La reconnaissance de texte se fait sur votre téléphone. Le modèle est inclus dans l’application : rien n’est téléchargé, rien n’est envoyé.
 • Pas de compte, pas d'inscription, pas d'analyse, pas de rapport d'erreur, pas de publicité.
 • Votre certificat est lu, utilisé puis abandonné. Il n'est jamais conservé.
 • Le dossier de travail est vidé à chaque démarrage de l'application.

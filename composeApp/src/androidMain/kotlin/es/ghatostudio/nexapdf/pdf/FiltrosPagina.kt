@@ -2,6 +2,9 @@ package es.ghatostudio.nexapdf.pdf
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import es.ghatostudio.nexapdf.domain.escaner.AplanadoDeLuz
+import es.ghatostudio.nexapdf.domain.escaner.Deconvolucion
+import es.ghatostudio.nexapdf.domain.escaner.TonoDeDocumento
 import es.ghatostudio.nexapdf.domain.model.FiltroPagina
 import kotlin.math.roundToInt
 
@@ -32,28 +35,63 @@ object FiltrosPagina {
             }
 
             FiltroPagina.BLANCO_Y_NEGRO -> {
-                // Umbral relativo a la luminancia media de la pagina: un escaneo
-                // con sombra lateral no tiene un umbral fijo que le sirva.
-                val umbral = umbralAutomatico(pixeles) * (0.75f + 0.5f * (1f - fuerza))
-                transformar(pixeles) { r, g, b ->
-                    val valor = if (luminancia(r, g, b) >= umbral) 255 else 0
-                    Triple(valor, valor, valor)
+                // Se aplana la luz antes de decidir el umbral. El metodo de Otsu
+                // busca el mejor corte **para toda la pagina**, y con una sombra
+                // lateral no existe ninguno que valga: el que salva la zona
+                // iluminada llena la sombra de negro. Sobre la pagina ya plana
+                // si lo hay.
+                val gris = IntArray(pixeles.size)
+                for (indice in pixeles.indices) {
+                    val pixel = pixeles[indice]
+                    gris[indice] = luminancia(Color.red(pixel), Color.green(pixel), Color.blue(pixel))
+                }
+                AplanadoDeLuz.aplanarEnSitio(gris, ancho, alto)
+                val umbral = umbralDeOtsu(gris) * (0.75f + 0.5f * (1f - fuerza))
+                for (indice in pixeles.indices) {
+                    val valor = if (gris[indice] >= umbral) 255 else 0
+                    pixeles[indice] = Color.argb(Color.alpha(pixeles[indice]), valor, valor, valor)
                 }
             }
 
             FiltroPagina.DOCUMENTO_NITIDO -> {
-                // Lleva a blanco puro todo lo que ya casi lo era y oscurece la
-                // tinta: es lo que se espera de una foto de un papel.
-                val corteFondo = 168 + (60 * fuerza).roundToInt()
-                val corteTinta = 60 + (40 * (1f - fuerza)).roundToInt()
-                transformar(pixeles) { r, g, b ->
-                    val gris = luminancia(r, g, b)
-                    val valor = when {
-                        gris >= corteFondo -> 255
-                        gris <= corteTinta -> 0
-                        else -> ((gris - corteTinta) * 255f / (corteFondo - corteTinta)).roundToInt()
-                    }
-                    Triple(valor, valor, valor)
+                // Tres pasos, en este orden, y cada uno arregla algo distinto:
+                //
+                //  1. **Aplanar la luz.** Un telefono no ilumina el papel por
+                //     igual: la propia mano hace sombra. Con un corte global, la
+                //     mitad iluminada salia blanca y la sombreada gris sucia.
+                //  2. **Deshacer el desenfoque.** La foto de un papel nunca
+                //     sale perfectamente definida, y enderezar la perspectiva
+                //     ablanda mas. Aqui no se disimula exagerando los bordes:
+                //     se deshace, partiendo de un modelo de como se emborrono.
+                //  3. **Cortar.** Solo ahora tiene sentido un umbral fijo, que
+                //     es lo unico que habia antes: con la pagina ya plana, el
+                //     mismo corte vale en todas partes.
+                // Los tres pasos van sobre el mismo array. Encadenando las
+                // versiones que devuelven array nuevo habia cinco paginas
+                // enteras vivas a la vez: a resolucion nativa son mas de
+                // doscientos megabytes solo en enteros, y la aplicacion no pide
+                // `largeHeap`.
+                val gris = IntArray(pixeles.size)
+                for (indice in pixeles.indices) {
+                    val pixel = pixeles[indice]
+                    gris[indice] = luminancia(Color.red(pixel), Color.green(pixel), Color.blue(pixel))
+                }
+
+                AplanadoDeLuz.aplanarEnSitio(gris, ancho, alto)
+                Deconvolucion.aplicarEnSitio(
+                    luminancia = gris,
+                    ancho = ancho,
+                    alto = alto,
+                    iteraciones = VUELTAS_BASE + (fuerza * VUELTAS_EXTRA).roundToInt(),
+                    haciaElPapel = ENFOQUE_HACIA_EL_PAPEL,
+                    estimacion = FloatArray(pixeles.size),
+                    apoyo = FloatArray(pixeles.size),
+                )
+                TonoDeDocumento.aplicarEnSitio(gris, fuerza)
+
+                for (indice in pixeles.indices) {
+                    val valor = gris[indice]
+                    pixeles[indice] = Color.argb(Color.alpha(pixeles[indice]), valor, valor, valor)
                 }
             }
 
@@ -103,6 +141,32 @@ object FiltrosPagina {
     private fun luminancia(r: Int, g: Int, b: Int): Int =
         ((r * 299 + g * 587 + b * 114) / 1000).coerceIn(0, 255)
 
+    /**
+     * Vueltas de deconvolucion con la intensidad al minimo.
+     *
+     * Cuatro ya deja los trazos macizos. Por debajo la pagina vuelve a verse
+     * moteada, que es el defecto que este paso viene a arreglar.
+     */
+    private const val VUELTAS_BASE = 4
+
+    /**
+     * Lo que anade el deslizador por encima del minimo.
+     *
+     * El deslizador no cambia una cantidad sino cuantas veces se corrige, que es
+     * lo unico que la deconvolucion tiene de graduable. Diez vueltas es el
+     * techo util: mas alla el papel coge grano y las letras ya no ganan.
+     */
+    private const val VUELTAS_EXTRA = 6
+
+    /**
+     * Cuanto se aclara el lado claro del borde.
+     *
+     * Fijo, y a proposito fuera del deslizador: no es un ajuste de gusto, es el
+     * freno. Es lo unico que separa "las letras se ven macizas" de "la pagina
+     * tiene halos y el lapiz ha desaparecido".
+     */
+    private const val ENFOQUE_HACIA_EL_PAPEL = 0.40f
+
     private fun contraste(canal: Int, factor: Float): Int =
         (((canal - 128) * factor) + 128).roundToInt().coerceIn(0, 255)
 
@@ -111,13 +175,11 @@ object FiltrosPagina {
      * grupos de luminancia de la imagen. Es el que usan los escaneres y funciona
      * sin ajustes en fotos con iluminacion desigual.
      */
-    private fun umbralAutomatico(pixeles: IntArray): Int {
+    private fun umbralDeOtsu(gris: IntArray): Int {
         val histograma = IntArray(256)
-        for (pixel in pixeles) {
-            histograma[luminancia(Color.red(pixel), Color.green(pixel), Color.blue(pixel))]++
-        }
+        for (valor in gris) histograma[valor.coerceIn(0, 255)]++
 
-        val total = pixeles.size
+        val total = gris.size
         var sumaTotal = 0L
         for (valor in 0..255) sumaTotal += valor.toLong() * histograma[valor]
 

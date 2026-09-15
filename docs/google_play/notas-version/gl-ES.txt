@@ -1,7 +1,9 @@
 Novidades
 
-Un PDF que abres desde mensaxería ou desde o xestor de ficheiros xa non queda en «só ler». O visor leva agora unha caixa de ferramentas para asinalo, editalo, protexelo con contrasinal, separalo ou exportalo, e gardalo onde queiras, sen saír nin volver buscar o ficheiro.
+Dixitalizador de documentos. Fotografía un papel e sae un PDF dereito e lexible, non unha foto torta dentro dun PDF.
 
-• Compartir varios PDF leva a unilos.
-• Compartir fotos leva a convertelas en documento.
-• Abrir unha copia de seguridade ofrece importala.
+• Atopa os bordos mentres apuntas e dispara só cando a man está quieta.
+• Corrixe a perspectiva e limpa a páxina.
+• Fai varias fotos por páxina e fúndeas: menos gran, máis nitidez.
+• Modo tarxeta: DNI ou pasaporte saen a tamaño real, as dúas caras nunha folla.
+• Pode ler o texto para buscar dentro. Todo no teu teléfono.

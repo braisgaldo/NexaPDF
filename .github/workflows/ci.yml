@@ -46,10 +46,15 @@ jobs:
       - name: Comprobar que los trece idiomas estan completos
         run: python tools/generar_traducciones.py --comprobar
 
+      - name: Comprobar las notas de version de la tienda
+        run: python tools/generar_notas_version.py --comprobar
+
       - name: Comprobar que los recursos generados estan al dia
         run: |
           python tools/generar_colores.py
           python tools/generar_traducciones.py
+          python tools/generar_notas_version.py
+          python tools/generar_ficha.py
           python tools/generar_sitio.py
           if ! git diff --quiet; then
             echo "::error::Hay recursos generados sin regenerar. Ejecuta los scripts de tools/ y vuelve a commitear."
@@ -77,15 +82,53 @@ jobs:
           fi
           echo "Sin bibliotecas de facturacion."
 
-      - name: Comprobar que la app no declara permisos
+      - name: Comprobar que la app solo declara los permisos previstos
         run: |
+          # Hasta la 1.3.0 la app no declaraba ninguno y la comprobacion era
+          # "que no haya". Con el escaner de documentos hace falta la camara
+          # (ver docs/adr/0005-camara-escaner.md), asi que la regla pasa a ser
+          # una lista blanca: cualquier permiso que no este aqui falla el
+          # trabajo y obliga a justificarlo en un ADR y en la politica de
+          # privacidad, que es lo que se queria proteger desde el principio.
           MANIFIESTO=composeApp/src/androidMain/AndroidManifest.xml
-          if grep -q "uses-permission" "$MANIFIESTO"; then
-            echo "::error::El manifiesto declara permisos. Requiere un ADR y actualizar la politica de privacidad."
-            grep "uses-permission" "$MANIFIESTO"
+          PERMITIDOS="android.permission.CAMERA"
+          DECLARADOS=$(grep -o 'uses-permission android:name="[^"]*"' "$MANIFIESTO" | sed 's/.*name="//; s/"//' | sort -u)
+          ESTADO=0
+          for PERMISO in $DECLARADOS; do
+            # Las lineas con tools:node="remove" quitan permisos que meten las
+            # bibliotecas; no son permisos que la app pida.
+            if grep -q "\"$PERMISO\".*tools:node=\"remove\"" "$MANIFIESTO"; then
+              continue
+            fi
+            case " $PERMITIDOS " in
+              *" $PERMISO "*) echo "  permitido: $PERMISO" ;;
+              *)
+                echo "::error::Permiso no previsto: $PERMISO. Requiere un ADR y actualizar la politica de privacidad."
+                ESTADO=1
+                ;;
+            esac
+          done
+          exit $ESTADO
+
+      - name: Comprobar que el binario no puede salir a internet
+        run: |
+          # Esta es la promesa que de verdad importa y la unica que el sistema
+          # operativo hace cumplir. Se mira el manifiesto FUSIONADO, no el
+          # nuestro: el permiso de internet no lo declararia NexaPDF, lo
+          # arrastraria una biblioteca. Con INTERNET presente, la afirmacion de
+          # la ficha de Play y de la politica de privacidad dejaria de ser
+          # cierta, asi que esto tiene que fallar la compilacion.
+          FUSIONADO=$(find composeApp/build/intermediates -name AndroidManifest.xml -path '*merged_manifest/debug*' | head -1)
+          if [ -z "$FUSIONADO" ]; then
+            echo "::error::No se encontro el manifiesto fusionado."
             exit 1
           fi
-          echo "Sin permisos declarados."
+          if grep -qE 'android.permission.(INTERNET|ACCESS_NETWORK_STATE)' "$FUSIONADO"; then
+            echo "::error::El manifiesto fusionado pide red. Ver docs/PRIVACIDAD.md."
+            grep -o 'uses-permission android:name="[^"]*"' "$FUSIONADO"
+            exit 1
+          fi
+          echo "Sin acceso a red en el binario."
 
       - name: Guardar los informes si algo falla
         if: failure()

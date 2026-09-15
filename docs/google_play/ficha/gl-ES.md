@@ -15,7 +15,7 @@ NexaPDF: PDF sen conexión
 Une, separa, edita e asina PDF sen conexión. Sen anuncios e sen rastrexo.
 ```
 
-## Descripcion completa (2702/4000)
+## Descripcion completa (3631/4000)
 
 ```
 NexaPDF é unha caixa de ferramentas para PDF que funciona enteira no teu móbil.
@@ -24,6 +24,9 @@ Non pide o permiso de internet. Iso non é unha promesa: é unha restrición do 
 
 QUE FAI
 
+• Dixitalizar papel coa cámara. Atopa os bordos da folla mentres apuntas, amosa ata que punto os distingue, corrixe a perspectiva e pode ler o texto para que despois poidas buscar dentro do documento.
+• Modo tarxeta para o DNI, o carné de conducir, tarxetas de crédito, abonos de transporte e pasaportes. As dúas caras van nunha folla e a tamaño real, así que ao imprimila sae do tamaño do carné e non unha foto ampliada.
+• Varias fotos por páxina, fundidas nunha. Mellorar unha páxina amplifica o gran á vez que o detalle; con tres fotos o gran cancélase só.
 • Unir documentos nun só, arrastrando para ordenalos e coa vista previa da primeira páxina de cada un. Admite tamén Word, Excel, PowerPoint e imaxes: o que non é PDF convértese antes.
 • Separar un documento nun ficheiro por páxina, por rangos ou extraendo as páxinas que elixas.
 • Converter fotos en documentos, desde a galería ou facendo a foto no momento. Unha imaxe por páxina, ou 2, 4 e 6 xuntas.
@@ -35,7 +38,9 @@ QUE FAI
 
 PRIVACIDADE, SEN ADORNOS
 
-• Sen permiso de internet. Sen ningún permiso, de feito.
+• Sen permiso de internet. É o propio sistema operativo o que bloquea calquera conexión, así que os teus documentos non poden saír do teléfono.
+• Un único permiso, a cámara, e só para o dixitalizador. Pídese ao abrilo, nunca ao arrincar, e se o denegas segue funcionando con fotos da túa galería.
+• O recoñecemento de texto faise no teu teléfono. O modelo viaxa dentro da aplicación: non se descarga nada e non se envía nada.
 • Sen contas, sen rexistro, sen analítica, sen informes de fallos e sen publicidade.
 • O teu certificado lese, úsase e descártase. Non se garda nunca.
 • O cartafol de traballo baléirase cada vez que arranca a aplicación.

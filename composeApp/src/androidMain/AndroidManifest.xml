@@ -1,11 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!--
         NexaPDF no declara ningun permiso de red: todo el procesado ocurre en el
         dispositivo. Los ficheros se leen y escriben mediante el Storage Access
         Framework y MediaStore, que no requieren permisos de almacenamiento.
+
+        El unico permiso que se declara es CAMERA, y solo lo usa el escaner de
+        documentos. Hace falta porque el escaner necesita mirar los fotogramas
+        antes de la foto para dibujar el contorno del papel y el porcentaje de
+        deteccion; la app de camara del sistema, que es la que se sigue usando
+        en "Imagenes a PDF", entrega la foto ya hecha y no deja ver el visor.
+        El razonamiento completo esta en docs/adr/0005-camara-escaner.md.
+
+        Se pide en el momento de entrar al escaner, nunca al arrancar, y la app
+        funciona entera sin concederlo: sin camara, el escaner acepta imagenes
+        de la galeria.
     -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!--
+        La camara es opcional: un dispositivo sin ella (una tableta, un Chrome
+        OS) tiene que poder instalar la aplicacion igualmente, porque las otras
+        ocho herramientas no la necesitan. Sin este `required="false"`, Play
+        excluiria esos dispositivos de la ficha sin avisar.
+    -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+
+    <!--
+        ML Kit y CameraX arrastran en sus manifiestos el permiso de internet y
+        el de estado de la red, para telemetria que NexaPDF no usa. Se quitan
+        aqui: el modelo de reconocimiento de texto viaja dentro del APK y
+        funciona sin red, asi que quitarlos no rompe nada y mantiene la unica
+        promesa que el sistema operativo puede hacer cumplir por nosotros.
+
+        Solo se listan los que alguna biblioteca declara de verdad. Pedir que se
+        quite uno que nadie pide es una linea que no hace nada y un aviso en
+        cada compilacion; la CI comprueba el resultado sobre el manifiesto ya
+        fusionado, que es donde se ve la verdad.
+    -->
+    <uses-permission android:name="android.permission.INTERNET" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" tools:node="remove" />
 
     <application
         android:name=".NexaPdfApplication"
@@ -94,9 +131,10 @@
             <data android:mimeType="*/*" />
         </intent>
         <!--
-            Necesario para localizar la app de camara del sistema. NexaPDF NO
-            declara el permiso CAMERA: delega la captura en la app de camara del
-            telefono, que ya tiene sus propios permisos.
+            Necesario para localizar la app de camara del sistema, que es la que
+            sigue usando "Imagenes a PDF": entrega una foto ya hecha y no
+            necesita el permiso de camara de NexaPDF. El escaner es el unico que
+            abre la camara por su cuenta, y para eso si declara CAMERA arriba.
         -->
         <intent>
             <action android:name="android.media.action.IMAGE_CAPTURE" />

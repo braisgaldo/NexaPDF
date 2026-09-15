@@ -1,7 +1,9 @@
 Novedades
 
-Un PDF que abres desde mensajería o desde el gestor de archivos ya no se queda en «sólo leer». El visor lleva ahora una caja de herramientas para firmarlo, editarlo, protegerlo con contraseña, separarlo o exportarlo, y guardarlo donde quieras, sin salir ni volver a buscar el fichero.
+Escáner de documentos. Fotografía un papel y sale un PDF derecho y legible, no una foto torcida dentro de un PDF.
 
-• Compartir varios PDF a la vez lleva a unirlos.
-• Compartir fotos lleva a convertirlas en documento.
-• Abrir una copia de seguridad ofrece importarla.
+• Encuentra los bordes mientras apuntas y dispara solo cuando la mano está quieta.
+• Corrige la perspectiva y hace varias fotos de cada hoja para que salga nítida.
+• Modo tarjeta: DNI, carné o pasaporte salen a tamaño real, las dos caras en una hoja.
+• Puede leer el texto para que busques dentro. Todo en tu teléfono.
+• Guarda con el nombre que elijas.

@@ -1,6 +1,6 @@
 # Publicar NexaPDF en Google Play
 
-Todo lo necesario para crear la ficha y subir la versión 1.3.0. Los datos que
+Todo lo necesario para crear la ficha y subir la versión 1.5.0. Los datos que
 Play Console pide, en el orden en que los pide.
 
 > **Consultado el 3 de septiembre de 2026.** Las políticas de las tiendas
@@ -15,8 +15,8 @@ Play Console pide, en el orden en que los pide.
 |---|---|
 | **Nombre de la app** | `NexaPDF` |
 | **Nombre del paquete** (application ID) | `es.ghatostudio.nexapdf` |
-| **Versión** | `1.3.0` |
-| **Código de versión** | `10300` |
+| **Versión** | `1.5.0` |
+| **Código de versión** | `10400` |
 | **SDK mínimo** | 26 (Android 8.0 Oreo) |
 | **SDK objetivo** | 37 |
 | **Categoría** | Productividad |
@@ -36,12 +36,12 @@ elegido con dominio inverso propio (`es.ghatostudio`) para que no colisione.
 
 ```
 docs/google_play/
-├── bundle/NexaPDF-1.3.0-release.aab   ← esto es lo que se sube
+├── bundle/NexaPDF-1.5.0-release.aab   ← esto es lo que se sube
 ├── claves/nexapdf-release.p12         ← clave de firma (NO subir a git)
 ├── graficos/
 │   ├── icono-512.png                  512 x 512, para la ficha
 │   └── grafico-destacado-1024x500.png 1024 x 500
-├── capturas/                          8 capturas del dispositivo real
+├── capturas/                          capturas del dispositivo real
 │                                      (sólo con documentos y certificado de
 │                                       prueba: ningún dato personal)
 └── ficha/<locale>.md                  textos de la ficha en 13 idiomas
@@ -51,6 +51,23 @@ docs/google_play/
 Release y la clave de firma no puede vivir en un repositorio público. Se
 regeneran con `./gradlew :composeApp:bundleRelease` y con el procedimiento de
 `docs/INSTALL.md`.
+
+### Tamaño de esta versión
+
+| | 1.3.0 | 1.5.0 |
+|---|---|---|
+| AAB del repositorio | 10,3 MB | 31,9 MB |
+| APK universal | 6,3 MB | 50,4 MB |
+| **Lo que descarga un usuario** | **~6 MB** | **~12,5 MB** |
+
+Las dos primeras filas asustan y no deberían: el AAB lleva las **cuatro**
+arquitecturas más 5,8 MB de mapa de ofuscación, y el APK universal las lleva
+todas descomprimidas. Play entrega sólo la arquitectura del teléfono y descarta
+el mapa, así que lo que cuenta es la tercera fila.
+
+El aumento es el modelo de reconocimiento de texto, que va dentro de la
+aplicación para que el OCR funcione sin conexión. Descargarlo habría exigido el
+permiso de internet.
 
 ## 3. La clave de firma
 
@@ -94,13 +111,38 @@ iguales y todas verificables en el manifiesto:
 | ¿La app tiene acceso a la ubicación? | No |
 | ¿Recopila identificadores de dispositivo o de publicidad? | No |
 | ¿Usa servicios de terceros que recopilen datos? | No |
+| ¿Accede a la cámara? | **Sí**, desde la 1.5.0, solo para el escáner |
+| ¿Se recopilan o comparten las fotos? | **No**: no salen del dispositivo |
 
 **Por qué se puede afirmar sin matices:** la aplicación no declara el permiso
 `android.permission.INTERNET`. Sin ese permiso el sistema operativo bloquea
 cualquier conexión, así que no hay forma técnica de que recopile o comparta
-nada. Si una revisión lo cuestiona, basta con señalar el manifiesto:
-`composeApp/src/androidMain/AndroidManifest.xml`, que no contiene ninguna
-etiqueta `uses-permission`.
+nada. Si una revisión lo cuestiona, basta con señalar el manifiesto
+**fusionado**, que es donde se vería si una dependencia lo hubiera colado:
+
+```bash
+./gradlew :composeApp:assembleDebug
+grep -o 'uses-permission android:name="[^"]*"'   composeApp/build/intermediates/merged_manifest/debug/*/AndroidManifest.xml
+# android.permission.CAMERA
+```
+
+### Sobre el permiso de cámara (nuevo en 1.5.0)
+
+Es el único permiso de la aplicación y lo usa **solo** el escáner de documentos.
+Play pide declararlo en el apartado de **acceso a datos**, no en el de
+recopilación: acceder a la cámara no es recopilar datos si lo capturado no sale
+del dispositivo, que es el caso. Las fotos se guardan en la carpeta privada de
+la app, se borran al montar el PDF y nunca se envían a ninguna parte, porque no
+hay a dónde enviarlas.
+
+El razonamiento completo, por si una revisión lo pregunta, está en
+`docs/adr/0005-camara-escaner.md`.
+
+**Cuidado con el formulario de fotos y vídeos.** La respuesta correcta es que la
+aplicación **no** accede a la fototeca del usuario para recopilar nada: usa el
+selector de fotos del sistema, que entrega solo lo que la persona toca, y la
+cámara para capturar en el momento. Ninguna de las dos cosas produce datos
+recopilados ni compartidos.
 
 ## 5. Clasificación del contenido (cuestionario IARC)
 
@@ -146,9 +188,6 @@ facturación obligatoria de Google Play, por tres motivos que se cumplen a la ve
 ```bash
 ./gradlew :composeApp:dependencies --configuration releaseRuntimeClasspath | grep -i billing
 # sin resultados
-
-grep -c uses-permission composeApp/src/androidMain/AndroidManifest.xml
-# 0
 ```
 
 La integración continua comprueba las dos cosas en cada cambio
@@ -219,7 +258,8 @@ alertas → Crear presupuesto → importe 5 € → avisos al 50 %, 90 % y 100 %
 - [ ] `./gradlew :composeApp:bundleRelease` termina sin errores.
 - [ ] `jarsigner -verify` sobre el AAB dice `jar verified`.
 - [ ] `versionCode` es mayor que el de la versión anterior en Play.
-- [ ] El manifiesto no declara ningún permiso.
+- [ ] El manifiesto declara **solo** `CAMERA` (lo comprueba el CI con lista blanca).
+- [ ] El manifiesto **fusionado** no contiene `INTERNET` ni `ACCESS_NETWORK_STATE`.
 - [ ] No hay `billingclient` en las dependencias.
 - [ ] Probado el flujo principal en un dispositivo real.
 
@@ -228,7 +268,7 @@ alertas → Crear presupuesto → importe 5 € → avisos al 50 %, 90 % y 100 %
 - [ ] Título, descripción corta y larga en los 13 idiomas (`ficha/`).
 - [ ] Icono 512 × 512 subido.
 - [ ] Gráfico destacado 1024 × 500 subido.
-- [ ] Al menos 2 capturas de teléfono (mínimo de Play; hay 8 en `capturas/`).
+- [ ] Al menos 2 capturas de teléfono (mínimo de Play; hay 10 en `capturas/`).
 - [ ] Categoría: Productividad.
 - [ ] Aviso de «símbolos de depuración» al subir el AAB: es opcional. El código
       nativo no es de NexaPDF, son dos bibliotecas de AndroidX
@@ -255,7 +295,7 @@ alertas → Crear presupuesto → importe 5 € → avisos al 50 %, 90 % y 100 %
 - [ ] Play App Signing activado.
 - [ ] Copia de seguridad del `.p12` y su contraseña **fuera** de este ordenador.
 - [ ] Prueba cerrada con 12 testers durante 14 días, si aplica.
-- [ ] Etiqueta `v1.3.0` creada y GitHub Release publicada con el AAB adjunto.
+- [ ] Etiqueta `v1.5.0` creada y GitHub Release publicada con el AAB adjunto.
 
 ## 11. App Store (para cuando toque)
 

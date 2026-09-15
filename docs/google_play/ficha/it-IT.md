@@ -15,7 +15,7 @@ NexaPDF: PDF offline
 Unisci, dividi, modifica e firma PDF offline. Senza pubblicità né tracciamento.
 ```
 
-## Descripcion completa (2794/4000)
+## Descripcion completa (3744/4000)
 
 ```
 NexaPDF è una cassetta degli attrezzi per PDF che gira interamente sul telefono.
@@ -24,6 +24,9 @@ Non chiede il permesso di accesso a internet. Non è una promessa: è una restri
 
 COSA FA
 
+• Scansionare la carta con la fotocamera. Trova i bordi del foglio mentre inquadri, mostra quanto bene li distingue, raddrizza la prospettiva e può leggere il testo perché tu possa poi cercare dentro il documento.
+• Modalità tessera per carta d’identità, patente, carte bancarie, abbonamenti e passaporti. Fronte e retro stanno in un foglio a grandezza reale: stampandolo ottieni le dimensioni della tessera, non una foto ingrandita.
+• Più scatti per pagina, fusi in uno. Migliorare una pagina amplifica la grana insieme al dettaglio; con tre scatti la grana si annulla da sola.
 • Unire documenti in uno solo, trascinandoli per ordinarli, con l'anteprima della prima pagina di ciascuno. Accetta anche Word, Excel, PowerPoint e immagini: ciò che non è PDF viene convertito prima.
 • Dividere un documento: un file per pagina, per intervalli, o estraendo le pagine scelte.
 • Trasformare foto in documenti, dalla galleria o scattando sul momento. Un'immagine per pagina, oppure 2, 4 e 6 insieme.
@@ -35,7 +38,9 @@ COSA FA
 
 PRIVACY, SENZA GIRI DI PAROLE
 
-• Nessun permesso di internet. A dire il vero, nessun permesso del tutto.
+• Nessun permesso di internet. È il sistema operativo stesso a bloccare qualsiasi connessione, quindi i tuoi documenti non possono uscire dal telefono.
+• Un solo permesso, la fotocamera, e soltanto per lo scanner. Viene chiesto aprendo lo scanner, mai all’avvio, e se lo neghi lo scanner funziona con le foto della tua galleria.
+• Il riconoscimento del testo avviene sul telefono. Il modello è dentro l’app: non si scarica e non si invia nulla.
 • Nessun account, nessuna registrazione, nessuna analisi, nessun rapporto di errore, nessuna pubblicità.
 • Il tuo certificato viene letto, usato e scartato. Non viene mai conservato.
 • La cartella di lavoro si svuota a ogni avvio dell'applicazione.

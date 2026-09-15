@@ -1,7 +1,9 @@
 Nouveautés
 
-Un PDF ouvert depuis une messagerie ou le gestionnaire de fichiers ne se limite plus à la lecture. Le lecteur dispose d'une boîte à outils pour le signer, le modifier, le protéger par mot de passe, le diviser ou l'exporter, et l'enregistrer où vous voulez, sans sortir ni rechercher le fichier.
+Scanner de documents. Photographiez une feuille et obtenez un PDF droit et lisible, pas une photo de travers dans un PDF.
 
-• Partager plusieurs PDF mène à les fusionner.
-• Partager des photos mène à en faire un document.
-• Ouvrir une sauvegarde propose de l'importer.
+• Trouve les bords pendant que vous visez et déclenche quand la main est immobile.
+• Redresse la perspective et nettoie la page.
+• Prend plusieurs photos par page et les fusionne : moins de grain.
+• Mode carte : pièce d'identité ou passeport à taille réelle, les deux faces sur une feuille.
+• Peut lire le texte pour chercher dedans. Tout sur votre téléphone.

@@ -49,6 +49,11 @@ class RepositorioAjustes(
         val aperturaConvertir = stringPreferencesKey("apertura_convertir")
         val aperturaImagenes = stringPreferencesKey("apertura_imagenes")
         val aperturaCifrar = stringPreferencesKey("apertura_cifrar")
+        val aperturaEscanear = stringPreferencesKey("apertura_escanear")
+        val escanerOcr = booleanPreferencesKey("escaner_ocr")
+        val escanerAutomatico = booleanPreferencesKey("escaner_automatico")
+        val escanerRafaga = booleanPreferencesKey("escaner_rafaga")
+        val escanerFiltro = stringPreferencesKey("escaner_filtro")
         val carpetaDestino = stringPreferencesKey("carpeta_destino")
         val preguntarCompartir = booleanPreferencesKey("preguntar_compartir")
         val resumenSeparar = booleanPreferencesKey("resumen_separar")
@@ -82,6 +87,13 @@ class RepositorioAjustes(
                 ?: porDefecto.aperturaImagenes,
             aperturaCifrar = preferencias[Claves.aperturaCifrar]
                 ?: porDefecto.aperturaCifrar,
+            aperturaEscanear = preferencias[Claves.aperturaEscanear]
+                ?: porDefecto.aperturaEscanear,
+            escanerOcr = preferencias[Claves.escanerOcr] ?: porDefecto.escanerOcr,
+            escanerCapturaAutomatica = preferencias[Claves.escanerAutomatico]
+                ?: porDefecto.escanerCapturaAutomatica,
+            escanerRafaga = preferencias[Claves.escanerRafaga] ?: porDefecto.escanerRafaga,
+            escanerFiltro = preferencias[Claves.escanerFiltro] ?: porDefecto.escanerFiltro,
             carpetaDestino = preferencias[Claves.carpetaDestino],
             preguntarCompartir = preferencias[Claves.preguntarCompartir]
                 ?: porDefecto.preguntarCompartir,
@@ -165,7 +177,18 @@ class RepositorioAjustes(
         TareaConResultado.CONVERTIR -> Claves.aperturaConvertir
         TareaConResultado.IMAGENES -> Claves.aperturaImagenes
         TareaConResultado.CIFRAR -> Claves.aperturaCifrar
+        TareaConResultado.ESCANEAR -> Claves.aperturaEscanear
     }
+
+    suspend fun fijarEscanerOcr(valor: Boolean) = editar { it[Claves.escanerOcr] = valor }
+
+    suspend fun fijarEscanerAutomatico(valor: Boolean) =
+        editar { it[Claves.escanerAutomatico] = valor }
+
+    suspend fun fijarEscanerRafaga(valor: Boolean) =
+        editar { it[Claves.escanerRafaga] = valor }
+
+    suspend fun fijarEscanerFiltro(clave: String) = editar { it[Claves.escanerFiltro] = clave }
 
     suspend fun fijarPreguntarCompartir(valor: Boolean) =
         editar { it[Claves.preguntarCompartir] = valor }
@@ -210,6 +233,11 @@ class RepositorioAjustes(
         preferencias[Claves.aperturaConvertir] = nuevos.aperturaConvertir
         preferencias[Claves.aperturaImagenes] = nuevos.aperturaImagenes
         preferencias[Claves.aperturaCifrar] = nuevos.aperturaCifrar
+        preferencias[Claves.aperturaEscanear] = nuevos.aperturaEscanear
+        preferencias[Claves.escanerOcr] = nuevos.escanerOcr
+        preferencias[Claves.escanerAutomatico] = nuevos.escanerCapturaAutomatica
+        preferencias[Claves.escanerRafaga] = nuevos.escanerRafaga
+        preferencias[Claves.escanerFiltro] = nuevos.escanerFiltro
         preferencias[Claves.preguntarCompartir] = nuevos.preguntarCompartir
         preferencias[Claves.resumenSeparar] = nuevos.resumenAlSepararEnPartes
         preferencias[Claves.pedirManuscrita] = nuevos.pedirFirmaManuscrita

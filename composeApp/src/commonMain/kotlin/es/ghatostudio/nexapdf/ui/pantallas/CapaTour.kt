@@ -48,6 +48,8 @@ import es.ghatostudio.nexapdf.resources.tour_z_baldosas_c
 import es.ghatostudio.nexapdf.resources.tour_z_baldosas_t
 import es.ghatostudio.nexapdf.resources.tour_z_editar_c
 import es.ghatostudio.nexapdf.resources.tour_z_editar_t
+import es.ghatostudio.nexapdf.resources.tour_z_escanear_c
+import es.ghatostudio.nexapdf.resources.tour_z_escanear_t
 import es.ghatostudio.nexapdf.resources.tour_z_leer_c
 import es.ghatostudio.nexapdf.resources.tour_z_leer_t
 import es.ghatostudio.nexapdf.resources.tour_z_recientes_c
@@ -64,6 +66,7 @@ import es.ghatostudio.nexapdf.resources.tour_z_proteger_t
 /** Los pasos del recorrido, en el orden en que se usa la aplicacion. */
 private val PASOS: List<Triple<ZonaTour, StringResource, StringResource>> = listOf(
     Triple(ZonaTour.BALDOSAS, Res.string.tour_z_baldosas_t, Res.string.tour_z_baldosas_c),
+    Triple(ZonaTour.ESCANEAR, Res.string.tour_z_escanear_t, Res.string.tour_z_escanear_c),
     Triple(ZonaTour.LEER, Res.string.tour_z_leer_t, Res.string.tour_z_leer_c),
     Triple(ZonaTour.EDITAR, Res.string.tour_z_editar_t, Res.string.tour_z_editar_c),
     Triple(ZonaTour.PROTEGER, Res.string.tour_z_proteger_t, Res.string.tour_z_proteger_c),

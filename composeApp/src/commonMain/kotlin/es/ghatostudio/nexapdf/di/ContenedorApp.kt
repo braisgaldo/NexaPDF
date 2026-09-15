@@ -3,9 +3,11 @@ package es.ghatostudio.nexapdf.di
 import androidx.compose.runtime.staticCompositionLocalOf
 import es.ghatostudio.nexapdf.data.CodecCopiaSeguridad
 import es.ghatostudio.nexapdf.data.RepositorioAjustes
+import es.ghatostudio.nexapdf.domain.escaner.MotorEscaner
 import es.ghatostudio.nexapdf.domain.pdf.ConversorDocumentos
 import es.ghatostudio.nexapdf.domain.pdf.MotorPdf
 import es.ghatostudio.nexapdf.domain.plataforma.AlmacenFicheros
+import es.ghatostudio.nexapdf.domain.plataforma.CamaraDocumentos
 import es.ghatostudio.nexapdf.domain.plataforma.SelectorFicheros
 import es.ghatostudio.nexapdf.domain.plataforma.ServiciosPlataforma
 
@@ -24,6 +26,15 @@ class ContenedorApp(
     val ficheros: AlmacenFicheros,
     val selector: SelectorFicheros,
     val ajustes: RepositorioAjustes,
+    val escaner: MotorEscaner,
+    /**
+     * La camara en vivo, o `null` donde no la haya.
+     *
+     * Es la unica dependencia opcional. En escritorio todavia no existe, y el
+     * escaner tiene que poder funcionar solo con imagenes de la galeria en lugar
+     * de desaparecer del menu.
+     */
+    val camara: CamaraDocumentos? = null,
     val codecCopias: CodecCopiaSeguridad = CodecCopiaSeguridad(),
 )
 

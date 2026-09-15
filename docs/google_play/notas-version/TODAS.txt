@@ -1,117 +1,148 @@
-<es-ES>
-Novedades
-
-Un PDF que abres desde mensajería o desde el gestor de archivos ya no se queda en «sólo leer». El visor lleva ahora una caja de herramientas para firmarlo, editarlo, protegerlo con contraseña, separarlo o exportarlo, y guardarlo donde quieras, sin salir ni volver a buscar el fichero.
-
-• Compartir varios PDF a la vez lleva a unirlos.
-• Compartir fotos lleva a convertirlas en documento.
-• Abrir una copia de seguridad ofrece importarla.
-</es-ES>
 <en-US>
 What's new
 
-A PDF you open from a messaging app or your file manager is no longer read-only. The viewer now has a toolbox to sign it, edit it, protect it with a password, split or export it, and save it wherever you want, without leaving and hunting for the file again.
+Document scanner. Photograph a sheet of paper and get a straight, readable PDF instead of a crooked photo inside a PDF.
 
-• Sharing several PDFs at once takes you to merging them.
-• Sharing photos takes you to turning them into a document.
-• Opening a backup offers to import it.
+• Finds the edges while you aim and shoots once your hand is still.
+• Corrects the perspective and takes several shots per page for a sharp result.
+• Card mode: ID, licence or passport come out at actual size, both sides on one sheet.
+• Reads the text so you can search inside, all on your phone.
+• Saves with your chosen name.
 </en-US>
+<es-ES>
+Novedades
+
+Escáner de documentos. Fotografía un papel y sale un PDF derecho y legible, no una foto torcida dentro de un PDF.
+
+• Encuentra los bordes mientras apuntas y dispara solo cuando la mano está quieta.
+• Corrige la perspectiva y hace varias fotos de cada hoja para que salga nítida.
+• Modo tarjeta: DNI, carné o pasaporte salen a tamaño real, las dos caras en una hoja.
+• Puede leer el texto para que busques dentro. Todo en tu teléfono.
+• Guarda con el nombre que elijas.
+</es-ES>
 <fr-FR>
 Nouveautés
 
-Un PDF ouvert depuis une messagerie ou le gestionnaire de fichiers ne se limite plus à la lecture. Le lecteur dispose d'une boîte à outils pour le signer, le modifier, le protéger par mot de passe, le diviser ou l'exporter, et l'enregistrer où vous voulez, sans sortir ni rechercher le fichier.
+Scanner de documents. Photographiez une feuille et obtenez un PDF droit et lisible, pas une photo de travers dans un PDF.
 
-• Partager plusieurs PDF mène à les fusionner.
-• Partager des photos mène à en faire un document.
-• Ouvrir une sauvegarde propose de l'importer.
+• Trouve les bords pendant que vous visez et déclenche quand la main est immobile.
+• Redresse la perspective et nettoie la page.
+• Prend plusieurs photos par page et les fusionne : moins de grain.
+• Mode carte : pièce d'identité ou passeport à taille réelle, les deux faces sur une feuille.
+• Peut lire le texte pour chercher dedans. Tout sur votre téléphone.
 </fr-FR>
 <de-DE>
 Neu
 
-Ein PDF, das Sie aus einer Messaging-App oder der Dateiverwaltung öffnen, lässt sich nicht mehr nur lesen. Der Betrachter hat jetzt einen Werkzeugkasten: signieren, bearbeiten, mit Passwort schützen, teilen oder exportieren und speichern, wo Sie wollen — ohne die App zu verlassen und die Datei erneut zu suchen.
+Dokumentenscanner. Fotografieren Sie ein Blatt und erhalten Sie ein gerades, lesbares PDF statt eines schiefen Fotos.
 
-• Mehrere PDFs teilen führt zum Zusammenführen.
-• Fotos teilen führt zum Dokument.
-• Eine Sicherung öffnen bietet den Import an.
+• Findet die Ränder beim Zielen und löst aus, sobald die Hand ruhig ist.
+• Korrigiert die Perspektive und säubert die Seite.
+• Macht mehrere Aufnahmen pro Seite und fügt sie zusammen: weniger Rauschen.
+• Kartenmodus: Ausweis oder Reisepass in Originalgröße, beide Seiten auf einem Blatt.
+• Kann den Text lesen, damit Sie darin suchen können. Alles auf dem Gerät.
 </de-DE>
-<it-IT>
-Novità
-
-Un PDF aperto da una app di messaggistica o dal gestore file non è più di sola lettura. Il visore ha ora una cassetta degli attrezzi per firmarlo, modificarlo, proteggerlo con password, dividerlo o esportarlo, e salvarlo dove vuoi, senza uscire e ricercare il file.
-
-• Condividere più PDF porta a unirli.
-• Condividere foto porta a farne un documento.
-• Aprire un backup propone di importarlo.
-</it-IT>
-<gl-ES>
-Novidades
-
-Un PDF que abres desde mensaxería ou desde o xestor de ficheiros xa non queda en «só ler». O visor leva agora unha caixa de ferramentas para asinalo, editalo, protexelo con contrasinal, separalo ou exportalo, e gardalo onde queiras, sen saír nin volver buscar o ficheiro.
-
-• Compartir varios PDF leva a unilos.
-• Compartir fotos leva a convertelas en documento.
-• Abrir unha copia de seguridade ofrece importala.
-</gl-ES>
-<ca>
-Novetats
-
-Un PDF que obres des de missatgeria o des del gestor de fitxers ja no es queda en «només llegir». El visor porta ara una caixa d'eines per signar-lo, editar-lo, protegir-lo amb contrasenya, dividir-lo o exportar-lo, i desar-lo on vulguis, sense sortir ni tornar a buscar el fitxer.
-
-• Compartir diversos PDF porta a unir-los.
-• Compartir fotos porta a fer-ne un document.
-• Obrir una còpia de seguretat ofereix importar-la.
-</ca>
-<eu-ES>
-Berritasunak
-
-Mezularitzatik edo fitxategi-kudeatzailetik irekitzen duzun PDF bat ez da jada «irakurri besterik ez». Ikustaileak tresna-kutxa bat du orain: sinatu, editatu, pasahitzarekin babestu, zatitu edo esportatu, eta nahi duzun lekuan gorde, irten eta fitxategia berriro bilatu gabe.
-
-• PDF bat baino gehiago partekatzeak batzera darama.
-• Argazkiak partekatzeak dokumentu bihurtzera.
-• Babeskopia bat irekitzeak inportatzea eskaintzen du.
-</eu-ES>
-<el-GR>
-Τι νέο υπάρχει
-
-Ένα PDF που ανοίγετε από εφαρμογή μηνυμάτων ή από τη διαχείριση αρχείων δεν είναι πια μόνο για ανάγνωση. Ο αναγνώστης έχει τώρα εργαλειοθήκη: υπογραφή, επεξεργασία, προστασία με κωδικό, διαχωρισμό ή εξαγωγή, και αποθήκευση όπου θέλετε.
-
-• Κοινή χρήση πολλών PDF οδηγεί στη συγχώνευση.
-• Κοινή χρήση φωτογραφιών, στη δημιουργία εγγράφου.
-• Άνοιγμα αντιγράφου προτείνει την εισαγωγή του.
-</el-GR>
-<ru-RU>
-Что нового
-
-PDF, открытый из мессенджера или файлового менеджера, больше не только для чтения. В просмотре появился набор инструментов: подписать, отредактировать, защитить паролем, разделить или экспортировать и сохранить куда угодно — не выходя и не разыскивая файл заново.
-
-• Отправка нескольких PDF ведёт к объединению.
-• Отправка фотографий — к созданию документа.
-• Открытие резервной копии предлагает импорт.
-</ru-RU>
 <zh-CN>
-新增内容
+新功能
 
-从聊天软件或文件管理器打开的 PDF 不再只能阅读。阅读器新增了工具箱：签名、编辑、加密、拆分或导出，并可另存到任意位置，无需退出再去找一遍文件。
+文档扫描。拍一张纸，得到的是端正易读的 PDF，而不是一张歪斜的照片。
 
-• 一次分享多个 PDF，直接进入合并。
-• 分享照片，直接进入转成文档。
-• 打开备份文件，会提示导入。
+• 取景时就找到纸张边缘，并显示识别程度。
+• 取景合适、手持稳定时自动拍摄。
+• 自动校正透视并清理页面。
+• 每页拍摄多张并合成：噪点更少，更清晰。
+• 证卡模式：身份证或护照按实际尺寸输出，正反面同页。
+• 可识别文字，方便在文档里搜索。全部在手机上完成。
+• 用你自己起的名字保存。
 </zh-CN>
 <ja-JP>
 新機能
 
-メッセージアプリやファイル管理から開いた PDF が「読むだけ」ではなくなりました。ビューアに道具箱を追加：署名、編集、パスワード保護、分割や書き出し、任意の場所への保存が、アプリを出てファイルを探し直さずにできます。
+書類スキャナー。紙を撮るだけで、傾いた写真ではなく、まっすぐで読みやすい PDF になります。
 
-• 複数の PDF を共有すると結合へ。
-• 写真を共有すると文書化へ。
-• バックアップを開くと取り込みを提案。
+• 構えている間に用紙の輪郭を見つけ、どれだけ見えているかを表示。
+• 構図が決まり手が止まったら自動で撮影。
+• 傾きを補正してページをきれいに。
+• 1 ページにつき複数枚を撮って合成。ノイズが減り、くっきりします。
+• カードモード：身分証やパスポートを実物大で、表裏を 1 枚に。
+• 文字を読み取れば書類の中を検索できます。すべて端末内で処理。
+• 好きな名前を付けて保存。
 </ja-JP>
+<ru-RU>
+Что нового
+
+Сканер документов. Сфотографируйте лист и получите ровный, читаемый PDF, а не кривое фото внутри PDF.
+
+• Находит края, пока вы наводите, и снимает сам, когда рука замерла.
+• Выправляет перспективу и чистит страницу.
+• Делает несколько снимков на страницу и объединяет их: меньше шума.
+• Режим карточки: удостоверение или паспорт в натуральную величину, обе стороны на листе.
+• Может распознать текст, чтобы искать внутри. Всё в телефоне.
+</ru-RU>
+<it-IT>
+Novità
+
+Scanner di documenti. Fotografa un foglio e ottieni un PDF dritto e leggibile, non una foto storta dentro un PDF.
+
+• Trova i bordi mentre inquadri e scatta da solo quando la mano è ferma.
+• Raddrizza la prospettiva e pulisce la pagina.
+• Scatta più foto per pagina e le fonde: meno grana, più nitidezza.
+• Modalità tessera: documento o passaporto a grandezza reale, fronte e retro in un foglio.
+• Può leggere il testo per cercarci dentro. Tutto sul telefono.
+</it-IT>
+<el-GR>
+Τι νέο υπάρχει
+
+Σαρωτής εγγράφων. Φωτογραφίστε ένα χαρτί και πάρτε ένα ίσιο, ευανάγνωστο PDF.
+
+• Βρίσκει τις άκρες καθώς στοχεύετε και τραβά μόνο του όταν σταθεροποιηθεί.
+• Ισιώνει την προοπτική και καθαρίζει τη σελίδα.
+• Τραβά πολλές λήψεις ανά σελίδα και τις συνθέτει: λιγότερος θόρυβος.
+• Λειτουργία κάρτας: ταυτότητα ή διαβατήριο σε φυσικό μέγεθος, και οι δύο όψεις σε ένα φύλλο.
+• Μπορεί να διαβάσει το κείμενο για αναζήτηση. Όλα στο τηλέφωνο.
+</el-GR>
 <ar>
 الجديد
 
-ملف PDF تفتحه من تطبيق مراسلة أو من مدير الملفات لم يعد للقراءة فقط. صار في العارض صندوق أدوات لتوقيعه وتحريره وحمايته بكلمة مرور وتقسيمه أو تصديره وحفظه حيث تشاء، دون الخروج والبحث عن الملف من جديد.
+ماسح ضوئي للمستندات. صوّر ورقة واحصل على PDF مستقيم وواضح بدل صورة مائلة.
 
-• مشاركة عدة ملفات PDF تقود إلى دمجها.
-• مشاركة الصور تقود إلى تحويلها لمستند.
-• فتح نسخة احتياطية يعرض استيرادها.
+• يجد حواف الورقة أثناء التصويب ويعرض مدى وضوحها.
+• يلتقط تلقائيًا عندما يستقر الإطار وتثبت اليد.
+• يصحّح المنظور وينظّف الصفحة.
+• يلتقط عدة صور لكل صفحة ويدمجها: ضوضاء أقل ووضوح أعلى.
+• وضع البطاقة: الهوية أو جواز السفر بالحجم الحقيقي، والوجهان في ورقة واحدة.
+• يمكنه قراءة النص للبحث داخل المستند. كل ذلك داخل هاتفك.
 </ar>
+<gl-ES>
+Novidades
+
+Dixitalizador de documentos. Fotografía un papel e sae un PDF dereito e lexible, non unha foto torta dentro dun PDF.
+
+• Atopa os bordos mentres apuntas e dispara só cando a man está quieta.
+• Corrixe a perspectiva e limpa a páxina.
+• Fai varias fotos por páxina e fúndeas: menos gran, máis nitidez.
+• Modo tarxeta: DNI ou pasaporte saen a tamaño real, as dúas caras nunha folla.
+• Pode ler o texto para buscar dentro. Todo no teu teléfono.
+</gl-ES>
+<ca>
+Novetats
+
+Escàner de documents. Fotografia un paper i obtens un PDF dret i llegible, no una foto torta dins d'un PDF.
+
+• Troba les vores mentre apuntes i dispara sol quan la mà està quieta.
+• Corregeix la perspectiva i neteja la pàgina.
+• Fa diverses fotos per pàgina i les fusiona: menys gra, més nitidesa.
+• Mode targeta: DNI o passaport a mida real, les dues cares en un full.
+• Pot llegir el text per cercar-hi dins. Tot al teu telèfon.
+</ca>
+<eu-ES>
+Berritasunak
+
+Dokumentu-eskanerra. Atera paper bati argazkia eta PDF zuzen eta irakurgarria lortuko duzu, ez argazki oker bat.
+
+• Ertzak aurkitzen ditu apuntatu ahala eta berak ateratzen du eskua geldi dagoenean.
+• Perspektiba zuzentzen du eta orria garbitzen.
+• Orriko hainbat argazki ateratzen ditu eta batu: pikor gutxiago.
+• Txartel modua: NAN edo pasaportea tamaina errealean, bi aldeak orri berean.
+• Testua irakur dezake barruan bilatzeko. Dena zure telefonoan.
+</eu-ES>

@@ -8,7 +8,7 @@ import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.exifinterface.media.ExifInterface
+import com.tom_roush.pdfbox.cos.COSName
 import com.tom_roush.pdfbox.io.MemoryUsageSetting
 import com.tom_roush.pdfbox.multipdf.PDFMergerUtility
 import com.tom_roush.pdfbox.pdmodel.PDDocument
@@ -17,10 +17,22 @@ import com.tom_roush.pdfbox.pdmodel.PDPage
 import com.tom_roush.pdfbox.pdmodel.PDPageContentStream
 import com.tom_roush.pdfbox.pdmodel.common.PDRectangle
 import com.tom_roush.pdfbox.pdmodel.graphics.image.JPEGFactory
+import com.tom_roush.pdfbox.pdmodel.graphics.color.PDDeviceGray
 import com.tom_roush.pdfbox.pdmodel.graphics.image.LosslessFactory
+import com.tom_roush.pdfbox.pdmodel.graphics.image.PDImageXObject
 import com.tom_roush.pdfbox.pdmodel.interactive.digitalsignature.PDSignature
+import com.tom_roush.pdfbox.pdmodel.font.PDFont
+import com.tom_roush.pdfbox.pdmodel.graphics.state.RenderingMode
 import com.tom_roush.pdfbox.text.PDFTextStripper
+// Se importa con otro nombre: `Matrix` a secas ya es la de android.graphics
+// en este fichero, y las dos hacen falta.
+import com.tom_roush.pdfbox.util.Matrix as Matriz
 import com.tom_roush.pdfbox.text.TextPosition
+import es.ghatostudio.nexapdf.domain.escaner.PaginaEscaneada
+import es.ghatostudio.nexapdf.domain.escaner.SEPARACION_TARJETAS_PT
+import es.ghatostudio.nexapdf.domain.escaner.TipoTarjeta
+import es.ghatostudio.nexapdf.domain.escaner.huecoDeTarjeta
+import es.ghatostudio.nexapdf.domain.escaner.TextoPagina
 import es.ghatostudio.nexapdf.domain.model.BloqueTexto
 import es.ghatostudio.nexapdf.domain.model.BorradorEdicion
 import es.ghatostudio.nexapdf.domain.model.DisposicionImagenes
@@ -44,7 +56,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.text.Normalizer
+import java.util.zip.Deflater
+import java.util.zip.DeflaterOutputStream
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -487,53 +504,278 @@ class MotorPdfAndroid(
         }
     }
 
+    // --- Escaneo -------------------------------------------------------------
+
+    override suspend fun escaneoAPdf(
+        paginas: List<PaginaEscaneada>,
+        tamano: TamanoPagina,
+        rutaSalida: String,
+        alAvanzar: ((Int, Int) -> Unit)?,
+    ): ResultadoPdf<String> = withContext(Dispatchers.IO) {
+        if (paginas.isEmpty()) {
+            return@withContext ResultadoPdf.Fallo(ErrorPdf.FICHERO_INVALIDO, "sin paginas")
+        }
+
+        escribirDocumento(rutaSalida) { documento ->
+            val fuentes = FuentesPdf(documento)
+            paginas.forEachIndexed { indice, hoja ->
+                // Se carga al tamano de pagina escaneada y no al de una imagen
+                // cualquiera. Con el tope general, la pagina revelada se volvia
+                // a reducir aqui justo antes de entrar en el PDF: un recorte de
+                // resolucion de ultima hora, despues de todo el cuidado que se
+                // puso en conseguirla.
+                val mapa = cargarImagen(hoja.rutaImagen, CargadorImagen.LADO_PAGINA_ESCANEADA)
+                if (mapa != null) {
+                    try {
+                        val caja = cajaDeEscaneo(tamano, mapa)
+                        val pagina = PDPage(caja)
+                        documento.addPage(pagina)
+
+                        val destino = encajar(
+                            mapa.width,
+                            mapa.height,
+                            RectanguloPt(0f, 0f, caja.width, caja.height),
+                        )
+                        PDPageContentStream(documento, pagina).use { flujo ->
+                            flujo.drawImage(
+                                incrustar(documento, mapa),
+                                destino.x,
+                                destino.y,
+                                destino.ancho,
+                                destino.alto,
+                            )
+                            escribirCapaDeTexto(flujo, fuentes, hoja.texto, destino)
+                        }
+                    } finally {
+                        mapa.recycle()
+                    }
+                }
+                alAvanzar?.invoke(indice + 1, paginas.size)
+                currentCoroutineContext().ensureActive()
+            }
+            if (documento.numberOfPages == 0) error("ninguna pagina legible")
+        }
+    }
+
+    override suspend fun tarjetasAPdf(
+        paginas: List<PaginaEscaneada>,
+        tipo: TipoTarjeta,
+        tamano: TamanoPagina,
+        rutaSalida: String,
+        alAvanzar: ((Int, Int) -> Unit)?,
+    ): ResultadoPdf<String> = withContext(Dispatchers.IO) {
+        if (paginas.isEmpty()) {
+            return@withContext ResultadoPdf.Fallo(ErrorPdf.FICHERO_INVALIDO, "sin tarjetas")
+        }
+
+        // La pagina de una tarjeta nunca se ajusta a la imagen: el sentido de
+        // este modo es que la tarjeta salga a su tamano dentro de una hoja
+        // normal, asi que hace falta una hoja normal. Si venia "ajustar a la
+        // imagen" del dialogo, aqui se traduce a A4.
+        val hoja = if (tamano == TamanoPagina.AJUSTAR_A_IMAGEN) TamanoPagina.A4 else tamano
+        val anchoPagina = hoja.anchoPt
+        val altoPagina = hoja.altoPt
+
+        escribirDocumento(rutaSalida) { documento ->
+            val fuentes = FuentesPdf(documento)
+            var pagina: PDPage? = null
+            var flujo: PDPageContentStream? = null
+            var colocadasEnLaPagina = 0
+
+            try {
+                paginas.forEachIndexed { indice, cara ->
+                    val mapa = cargarImagen(cara.rutaImagen, CargadorImagen.LADO_PAGINA_ESCANEADA)
+                    if (mapa != null) {
+                        try {
+                            val hueco = huecoDeTarjeta(
+                                tipo = tipo,
+                                anchoImagenPx = mapa.width,
+                                altoImagenPx = mapa.height,
+                                anchoPaginaPt = anchoPagina,
+                                altoPaginaPt = altoPagina,
+                            )
+
+                            if (flujo == null || colocadasEnLaPagina >= hueco.porPagina) {
+                                flujo?.close()
+                                pagina = PDPage(PDRectangle(anchoPagina, altoPagina))
+                                documento.addPage(pagina)
+                                flujo = PDPageContentStream(documento, pagina)
+                                colocadasEnLaPagina = 0
+                            }
+
+                            // El bloque entero va centrado en vertical: con una
+                            // sola cara queda en medio de la hoja en lugar de
+                            // pegada arriba, que es como se ve una fotocopia
+                            // hecha a mano y no un documento.
+                            val bloque = hueco.porPagina * hueco.altoPt +
+                                (hueco.porPagina - 1) * SEPARACION_TARJETAS_PT
+                            val primeraArriba = (altoPagina + bloque) / 2f
+                            val arriba = primeraArriba -
+                                colocadasEnLaPagina * (hueco.altoPt + SEPARACION_TARJETAS_PT)
+
+                            // Dentro de su hueco la imagen conserva **su** forma.
+                            // Estirarla hasta el rectangulo normalizado forzaria
+                            // el tamano exacto, si, pero un recorte algo torcido
+                            // saldria deformado y eso se ve enseguida. Encajada,
+                            // el peor caso es una tarjeta un pelo mas pequena.
+                            val destino = encajar(
+                                mapa.width,
+                                mapa.height,
+                                RectanguloPt(
+                                    x = (anchoPagina - hueco.anchoPt) / 2f,
+                                    y = arriba - hueco.altoPt,
+                                    ancho = hueco.anchoPt,
+                                    alto = hueco.altoPt,
+                                ),
+                            )
+
+                            flujo?.let { destinoFlujo ->
+                                destinoFlujo.drawImage(
+                                    incrustar(documento, mapa),
+                                    destino.x,
+                                    destino.y,
+                                    destino.ancho,
+                                    destino.alto,
+                                )
+                                escribirCapaDeTexto(destinoFlujo, fuentes, cara.texto, destino)
+                            }
+                            colocadasEnLaPagina++
+                        } finally {
+                            mapa.recycle()
+                        }
+                    }
+                    alAvanzar?.invoke(indice + 1, paginas.size)
+                    currentCoroutineContext().ensureActive()
+                }
+            } finally {
+                flujo?.close()
+            }
+
+            if (documento.numberOfPages == 0) error("ninguna tarjeta legible")
+        }
+    }
+
+    /**
+     * Tamano de la pagina de un escaneo.
+     *
+     * Ajustar a la imagen es lo razonable por defecto: la hoja ya viene
+     * recortada con la forma del papel, asi que la pagina toma esa misma forma y
+     * no aparecen franjas blancas. Los tamanos fijos estan para quien va a
+     * imprimir, y entonces la orientacion la manda la propia hoja: un apaisado
+     * metido en un A4 vertical sale diminuto y en medio de un desierto blanco.
+     */
+    private fun cajaDeEscaneo(tamano: TamanoPagina, mapa: Bitmap): PDRectangle {
+        if (tamano == TamanoPagina.AJUSTAR_A_IMAGEN) {
+            // El lado mayor a 842 pt, el alto de un A4: asi una hoja escaneada
+            // sale del tamano de una hoja, y la imagen que va dentro le da unos
+            // 300 puntos por pulgada, que es la resolucion a la que se digitaliza
+            // un documento por convenio.
+            val escala = 842f / max(mapa.width, mapa.height)
+            return PDRectangle(mapa.width * escala, mapa.height * escala)
+        }
+        return if (mapa.width > mapa.height) {
+            PDRectangle(tamano.altoPt, tamano.anchoPt)
+        } else {
+            PDRectangle(tamano.anchoPt, tamano.altoPt)
+        }
+    }
+
+    /**
+     * Escribe el texto reconocido encima de la imagen, sin que se vea.
+     *
+     * El modo de dibujo `NEITHER` significa "ni rellenar ni trazar": los glifos
+     * ocupan su sitio, se pueden buscar, seleccionar y copiar, pero no pintan un
+     * solo pixel. Es como funciona cualquier PDF escaneado con OCR, y la razon
+     * de que el documento se vea exactamente igual que la foto por mal que haya
+     * leido el reconocedor.
+     *
+     * Cada palabra se coloca con su propia matriz de texto en lugar de con un
+     * tamano de fuente: asi el ancho del texto invisible coincide con el ancho
+     * de la palabra de la imagen, y al buscar, el lector subraya donde esta la
+     * palabra de verdad y no cincuenta puntos mas alla.
+     */
+    private fun escribirCapaDeTexto(
+        flujo: PDPageContentStream,
+        fuentes: FuentesPdf,
+        texto: TextoPagina,
+        destino: RectanguloPt,
+    ) {
+        if (texto.vacia) return
+
+        flujo.beginText()
+        flujo.setRenderingMode(RenderingMode.NEITHER)
+
+        texto.palabras.forEach { palabra ->
+            val marco = palabra.marco.normalizado()
+            val anchoCaja = marco.ancho * destino.ancho
+            val altoCaja = marco.alto * destino.alto
+            if (anchoCaja < 0.5f || altoCaja < 0.5f) return@forEach
+
+            val escribible = escribible(fuentes, palabra.texto) ?: return@forEach
+            val fuente = escribible.fuente
+            val anchoUnitario = runCatching {
+                fuente.getStringWidth(escribible.texto) / 1000f
+            }.getOrNull() ?: return@forEach
+            if (anchoUnitario <= 0f) return@forEach
+
+            val x = destino.x + marco.izquierda * destino.ancho
+            // El marco viene con el origen arriba y el PDF cuenta desde abajo.
+            val base = destino.y + (1f - marco.abajo) * destino.alto + altoCaja * DESCENSO
+
+            flujo.setFont(fuente, 1f)
+            flujo.setTextMatrix(
+                Matriz(anchoCaja / anchoUnitario, 0f, 0f, altoCaja / ALTO_GLIFO, x, base),
+            )
+            runCatching { flujo.showText(escribible.texto) }
+        }
+
+        flujo.endText()
+    }
+
+    /** Una palabra y la fuente con la que se puede escribir de verdad. */
+    private data class PalabraEscribible(val texto: String, val fuente: PDFont)
+
+    /**
+     * Busca la forma de escribir una palabra en la capa de texto.
+     *
+     * Se prueba primero tal cual. Si ninguna fuente disponible sabe escribirla
+     * se prueba **sin las tildes**. El castellano no llega a este segundo
+     * intento: las letras acentuadas estan en la codificacion de las fuentes
+     * estandar. Llega el griego, el cirilico o el arabe cuando el telefono no
+     * trae una fuente que los cubra, y llegan los signos raros que el
+     * reconocedor se inventa en una foto con ruido.
+     *
+     * Puede parecer una rendicion, pero la alternativa es peor: una palabra que
+     * no se escribe desaparece de la capa de texto, y entonces no se encuentra
+     * ni buscandola con tilde ni sin ella. Escrita sin tilde se encuentra al
+     * buscar sin tilde, que es como escribe la mayoria en un buscador. Solo si
+     * tampoco eso se puede se descarta la palabra; la imagen, que es lo que se
+     * ve, no cambia en ningun caso.
+     */
+    private fun escribible(fuentes: FuentesPdf, texto: String): PalabraEscribible? {
+        fuentes.elegir(texto, negrita = false, cursiva = false).let { eleccion ->
+            if (eleccion is FuentesPdf.Eleccion.Vectorial) {
+                return PalabraEscribible(texto, eleccion.fuente)
+            }
+        }
+
+        val sinTildes = Normalizer.normalize(texto, Normalizer.Form.NFD)
+            .replace(MARCAS_DIACRITICAS, "")
+        if (sinTildes.isBlank() || sinTildes == texto) return null
+
+        val eleccion = fuentes.elegir(sinTildes, negrita = false, cursiva = false)
+        return (eleccion as? FuentesPdf.Eleccion.Vectorial)
+            ?.let { PalabraEscribible(sinTildes, it.fuente) }
+    }
+
     /**
      * Carga la imagen submuestreada y ya girada segun su EXIF.
      *
-     * Sin lo primero, una rafaga de fotos de 50 megapixeles agota la memoria del
-     * telefono; sin lo segundo, las fotos hechas en vertical salen tumbadas,
-     * porque la camara guarda el sensor en horizontal y anota el giro aparte.
+     * El trabajo lo hace [CargadorImagen], que comparte con el motor del
+     * escaner: las dos cosas necesitan exactamente lo mismo.
      */
-    private fun cargarImagen(ruta: String, ladoMaximo: Int = MAXIMO_LADO_IMAGEN): Bitmap? {
-        val fichero = File(ruta)
-        if (!fichero.exists()) return null
-
-        val medidas = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-        BitmapFactory.decodeFile(fichero.absolutePath, medidas)
-        if (medidas.outWidth <= 0) return null
-
-        var muestreo = 1
-        while (
-            (medidas.outWidth / muestreo) > ladoMaximo ||
-            (medidas.outHeight / muestreo) > ladoMaximo
-        ) {
-            muestreo *= 2
-        }
-
-        val mapa = BitmapFactory.decodeFile(
-            fichero.absolutePath,
-            BitmapFactory.Options().apply { inSampleSize = muestreo },
-        ) ?: return null
-
-        val giro = runCatching {
-            when (
-                ExifInterface(fichero.absolutePath)
-                    .getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-            ) {
-                ExifInterface.ORIENTATION_ROTATE_90 -> 90f
-                ExifInterface.ORIENTATION_ROTATE_180 -> 180f
-                ExifInterface.ORIENTATION_ROTATE_270 -> 270f
-                else -> 0f
-            }
-        }.getOrDefault(0f)
-
-        if (giro == 0f) return mapa
-
-        val matriz = android.graphics.Matrix().apply { postRotate(giro) }
-        val girado = Bitmap.createBitmap(mapa, 0, 0, mapa.width, mapa.height, matriz, true)
-        if (girado != mapa) mapa.recycle()
-        return girado
-    }
+    private fun cargarImagen(ruta: String, ladoMaximo: Int = MAXIMO_LADO_IMAGEN): Bitmap? =
+        CargadorImagen.cargar(ruta, ladoMaximo)
 
     /**
      * Incrusta la imagen eligiendo compresion.
@@ -547,8 +789,58 @@ class MotorPdfAndroid(
         if (pareceFotografia(mapa)) {
             JPEGFactory.createFromImage(documento, mapa, 0.85f)
         } else {
-            LosslessFactory.createFromImage(documento, mapa)
+            incrustarEnGris(documento, mapa) ?: LosslessFactory.createFromImage(documento, mapa)
         }
+
+    /**
+     * Guarda una imagen sin color como un canal y no como tres.
+     *
+     * Una pagina escaneada y mejorada es gris: el filtro la deja en tinta y
+     * papel, con los mismos tres valores repetidos en cada pixel.
+     * `LosslessFactory` no lo mira y escribe siempre `DeviceRGB`, asi que el PDF
+     * llevaba cada pagina por triplicado. Medido sobre una hoja real revelada a
+     * 300 ppp: 4,55 MB en RGB contra 2,82 MB en gris, exactamente los mismos
+     * pixeles. Con eso, subir la resolucion de 250 a 300 ppp sale **mas barato
+     * en fichero** que la version anterior, que pesaba 3,19 MB.
+     *
+     * Devuelve `null` si la imagen tiene color de verdad **o transparencia**, y
+     * entonces decide el que llama. Las dos comprobaciones miran **todos** los
+     * pixeles y no una muestra: aqui una equivocacion no es una estimacion mala,
+     * es tirar el color o el fondo transparente de la imagen de alguien. Un
+     * canal de gris no puede guardar ninguna de las dos cosas, y el recorte
+     * seria silencioso.
+     */
+    private fun incrustarEnGris(documento: PDDocument, mapa: Bitmap): PDImageXObject? {
+        val ancho = mapa.width
+        val alto = mapa.height
+        val pixeles = IntArray(ancho * alto)
+        mapa.getPixels(pixeles, 0, ancho, 0, 0, ancho, alto)
+
+        val gris = ByteArray(pixeles.size)
+        for (indice in pixeles.indices) {
+            val pixel = pixeles[indice]
+            if ((pixel ushr 24) != 0xFF) return null
+            val r = (pixel shr 16) and 0xFF
+            val g = (pixel shr 8) and 0xFF
+            val b = pixel and 0xFF
+            if (r != g || g != b) return null
+            gris[indice] = r.toByte()
+        }
+
+        val comprimido = ByteArrayOutputStream().also { destino ->
+            DeflaterOutputStream(destino, Deflater(Deflater.BEST_COMPRESSION)).use { it.write(gris) }
+        }.toByteArray()
+
+        return PDImageXObject(
+            documento,
+            ByteArrayInputStream(comprimido),
+            COSName.FLATE_DECODE,
+            ancho,
+            alto,
+            8,
+            PDDeviceGray.INSTANCE,
+        )
+    }
 
     private fun pareceFotografia(mapa: Bitmap): Boolean {
         val paso = max(1, min(mapa.width, mapa.height) / 32)
@@ -1313,6 +1605,21 @@ class MotorPdfAndroid(
 
         /** Colores distintos a partir de los cuales se considera fotografia. */
         const val UMBRAL_COLORES = 180
+
+        /**
+         * Alto de un glifo tipico con la fuente a tamano 1.
+         *
+         * Sirve para estirar el texto invisible hasta el alto de la palabra
+         * de la imagen. No hace falta que sea exacto: nadie lo ve, y lo que
+         * importa es que la caja de seleccion caiga sobre la palabra.
+         */
+        const val ALTO_GLIFO = 0.72f
+
+        /** Parte de la caja que queda por debajo de la linea base. */
+        const val DESCENSO = 0.18f
+
+        /** Las marcas que sobran al descomponer una letra acentuada. */
+        val MARCAS_DIACRITICAS = Regex("""\p{Mn}+""")
     }
 }
 

@@ -15,7 +15,7 @@ NexaPDF: PDF sin conexión
 Une, separa, edita y firma PDF sin conexión. Sin anuncios y sin rastreo.
 ```
 
-## Descripcion completa (2778/4000)
+## Descripcion completa (3931/4000)
 
 ```
 NexaPDF es una caja de herramientas para PDF que funciona entera en tu móvil.
@@ -24,6 +24,9 @@ No pide el permiso de internet. Eso no es una promesa: es una restricción del p
 
 QUÉ HACE
 
+• Escanear papel con la cámara. Encuentra los bordes de la hoja mientras apuntas, enseña hasta qué punto los distingue, corrige la perspectiva y puede leer el texto para que después puedas buscar dentro del documento.
+• Modo tarjeta para el DNI, el carné de conducir, tarjetas de crédito, abonos de transporte y pasaportes. Las dos caras van en una hoja y a su tamaño real, así que al imprimirla sale del tamaño del carné y no una foto ampliada.
+• Varias fotos por página, fundidas en una. Mejorar una página amplifica el grano a la vez que el detalle, así que llega un punto en que el papel se ensucia más rápido de lo que las letras ganan. Con tres fotos el grano se cancela solo y ese punto se aleja.
 • Unir documentos en uno solo, arrastrando para ordenarlos y con la vista previa de la primera página de cada uno. Admite también Word, Excel, PowerPoint e imágenes: lo que no es PDF se convierte antes.
 • Separar un documento en un fichero por página, por rangos o extrayendo las páginas que elijas.
 • Convertir fotos en documentos, desde la galería o haciendo la foto en el momento. Una imagen por página, o 2, 4 y 6 juntas.
@@ -35,7 +38,9 @@ QUÉ HACE
 
 PRIVACIDAD, SIN ADORNOS
 
-• Sin permiso de internet. Sin ningún permiso, de hecho.
+• Sin permiso de internet. Es el propio sistema operativo el que bloquea cualquier conexión, así que tus documentos no pueden salir del teléfono ni aunque algo dentro de la aplicación lo intentara.
+• Un único permiso, la cámara, y solo para el escáner. Se pide al abrir el escáner, nunca al arrancar, y si lo deniegas el escáner sigue funcionando con fotos de tu galería.
+• El reconocimiento de texto se hace en tu teléfono. El modelo viaja dentro de la aplicación: no se descarga nada y no se envía nada.
 • Sin cuentas, sin registro, sin analítica, sin informes de fallos y sin publicidad.
 • Tu certificado se lee, se usa y se descarta. No se guarda nunca.
 • La carpeta de trabajo se vacía cada vez que arranca la aplicación.

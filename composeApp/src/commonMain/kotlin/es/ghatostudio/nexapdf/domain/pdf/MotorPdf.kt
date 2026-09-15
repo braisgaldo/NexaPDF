@@ -1,6 +1,8 @@
 package es.ghatostudio.nexapdf.domain.pdf
 
 import androidx.compose.ui.graphics.ImageBitmap
+import es.ghatostudio.nexapdf.domain.escaner.PaginaEscaneada
+import es.ghatostudio.nexapdf.domain.escaner.TipoTarjeta
 import es.ghatostudio.nexapdf.domain.model.BloqueTexto
 import es.ghatostudio.nexapdf.domain.model.BorradorEdicion
 import es.ghatostudio.nexapdf.domain.model.DisposicionImagenes
@@ -101,6 +103,51 @@ interface MotorPdf {
         margenPt: Float,
         espaciadoPt: Float,
         rutaSalida: String,
+    ): ResultadoPdf<String>
+
+    /**
+     * Crea un PDF a partir de paginas escaneadas, con su capa de texto buscable.
+     *
+     * Es distinto de [imagenesAPdf] en lo unico que importa: cada palabra
+     * reconocida se escribe encima de la imagen en modo de dibujo invisible, en
+     * el sitio exacto donde esta. El documento se ve igual que la foto, pero el
+     * texto se puede buscar, seleccionar y copiar en cualquier lector. Es la
+     * tecnica estandar de los escaneres, y la razon de que se llame "PDF con
+     * capa de texto" y no "PDF convertido a texto": el original se conserva tal
+     * cual y el texto va detras, de modo que un fallo del reconocimiento nunca
+     * estropea lo que se ve.
+     *
+     * @param alAvanzar se llama con (hechas, total) segun se escriben paginas.
+     */
+    suspend fun escaneoAPdf(
+        paginas: List<PaginaEscaneada>,
+        tamano: TamanoPagina,
+        rutaSalida: String,
+        alAvanzar: ((Int, Int) -> Unit)? = null,
+    ): ResultadoPdf<String>
+
+    /**
+     * Monta un PDF de tarjetas, cada una a su **tamano fisico real**.
+     *
+     * Es lo que separa este modo del escaneo normal, y no es un detalle de
+     * presentacion. De la copia de un DNI se espera poder imprimirla y que salga
+     * del tamano del DNI, porque para eso se hace: para grapar junto a un
+     * impreso. Escalada a A4 no sirve para eso por bien que se vea.
+     *
+     * Las caras se apilan centradas en la pagina con aire entre ellas, asi que
+     * el anverso y el reverso salen juntos en el mismo folio y se pueden
+     * recortar. Cuando no caben mas, se abre otra pagina.
+     *
+     * @param tipo formato normalizado; [TipoTarjeta.AUTOMATICO] lo deduce de la
+     *   forma de la primera cara.
+     * @param alAvanzar se llama con (hechas, total) segun se colocan caras.
+     */
+    suspend fun tarjetasAPdf(
+        paginas: List<PaginaEscaneada>,
+        tipo: TipoTarjeta,
+        tamano: TamanoPagina,
+        rutaSalida: String,
+        alAvanzar: ((Int, Int) -> Unit)? = null,
     ): ResultadoPdf<String>
 
     /** Aplica las anotaciones y filtros del borrador y guarda un documento nuevo. */

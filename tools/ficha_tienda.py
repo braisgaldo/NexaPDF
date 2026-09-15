@@ -72,6 +72,9 @@ It does not ask for the internet permission. That is not a promise: it is a rest
 
 WHAT IT DOES
 
+• Scan paper with the camera. It finds the edges of the sheet while you aim, shows how well it can see them, straightens the perspective and can read the text so you can search inside the document afterwards.
+• Card mode for ID cards, driving licences, bank cards, travel passes and passports. Both sides go on one sheet at their real size, so printing it gives you something the size of the card itself, not a blown-up photo.
+• Several shots per page, merged into one. Enhancing a page amplifies its grain along with its detail, so there is a point where the paper gets dirtier faster than the letters get sharper. Three shots cancel the grain out, and that point moves further away.
 • Merge documents into one, dragging to set the order, with a preview of each first page. It also accepts Word, Excel, PowerPoint and images: anything that is not a PDF is converted first.
 • Split a document into one file per page, by ranges, or by extracting the pages you pick.
 • Turn photos into documents, from your gallery or straight from the camera. One image per page, or 2, 4 and 6 together.
@@ -83,7 +86,9 @@ WHAT IT DOES
 
 PRIVACY, PLAINLY
 
-• No internet permission. No permissions at all, in fact.
+• No internet permission. The operating system itself blocks any connection, so your documents cannot leave the phone even if something inside the app tried.
+• One single permission, the camera, and only for the scanner. It is asked for when you open the scanner, never on startup, and if you say no the scanner still works with photos from your gallery.
+• Text recognition runs on your phone. The model ships inside the app: nothing is downloaded and nothing is sent.
 • No accounts, no sign-up, no analytics, no crash reporting, no advertising.
 • Your certificate is read, used and discarded. It is never stored.
 • The working folder is emptied every time the app starts.
@@ -109,6 +114,9 @@ No pide el permiso de internet. Eso no es una promesa: es una restricción del p
 
 QUÉ HACE
 
+• Escanear papel con la cámara. Encuentra los bordes de la hoja mientras apuntas, enseña hasta qué punto los distingue, corrige la perspectiva y puede leer el texto para que después puedas buscar dentro del documento.
+• Modo tarjeta para el DNI, el carné de conducir, tarjetas de crédito, abonos de transporte y pasaportes. Las dos caras van en una hoja y a su tamaño real, así que al imprimirla sale del tamaño del carné y no una foto ampliada.
+• Varias fotos por página, fundidas en una. Mejorar una página amplifica el grano a la vez que el detalle, así que llega un punto en que el papel se ensucia más rápido de lo que las letras ganan. Con tres fotos el grano se cancela solo y ese punto se aleja.
 • Unir documentos en uno solo, arrastrando para ordenarlos y con la vista previa de la primera página de cada uno. Admite también Word, Excel, PowerPoint e imágenes: lo que no es PDF se convierte antes.
 • Separar un documento en un fichero por página, por rangos o extrayendo las páginas que elijas.
 • Convertir fotos en documentos, desde la galería o haciendo la foto en el momento. Una imagen por página, o 2, 4 y 6 juntas.
@@ -120,7 +128,9 @@ QUÉ HACE
 
 PRIVACIDAD, SIN ADORNOS
 
-• Sin permiso de internet. Sin ningún permiso, de hecho.
+• Sin permiso de internet. Es el propio sistema operativo el que bloquea cualquier conexión, así que tus documentos no pueden salir del teléfono ni aunque algo dentro de la aplicación lo intentara.
+• Un único permiso, la cámara, y solo para el escáner. Se pide al abrir el escáner, nunca al arrancar, y si lo deniegas el escáner sigue funcionando con fotos de tu galería.
+• El reconocimiento de texto se hace en tu teléfono. El modelo viaja dentro de la aplicación: no se descarga nada y no se envía nada.
 • Sin cuentas, sin registro, sin analítica, sin informes de fallos y sin publicidad.
 • Tu certificado se lee, se usa y se descarta. No se guarda nunca.
 • La carpeta de trabajo se vacía cada vez que arranca la aplicación.
@@ -146,6 +156,9 @@ Elle ne demande pas la permission d'accès à internet. Ce n'est pas une promess
 
 CE QU'ELLE FAIT
 
+• Numériser du papier avec l’appareil photo. Il trouve les bords de la feuille pendant que vous visez, montre à quel point il les distingue, redresse la perspective et peut lire le texte pour que vous puissiez ensuite chercher dans le document.
+• Mode carte pour la pièce d’identité, le permis, les cartes bancaires, les titres de transport et les passeports. Les deux faces tiennent sur une feuille à leur taille réelle : à l’impression, vous obtenez la taille de la carte.
+• Plusieurs photos par page, fusionnées en une : le grain s’annule de lui-même.
 • Fusionner des documents en un seul, en les faisant glisser pour les ordonner, avec un aperçu de la première page de chacun. Elle accepte aussi Word, Excel, PowerPoint et les images : ce qui n'est pas un PDF est converti au préalable.
 • Diviser un document en un fichier par page, par plages, ou en extrayant les pages choisies.
 • Transformer des photos en documents, depuis la galerie ou en prenant la photo sur le moment. Une image par page, ou 2, 4 et 6 ensemble.
@@ -157,7 +170,9 @@ CE QU'ELLE FAIT
 
 CONFIDENTIALITÉ, SANS DÉTOUR
 
-• Pas de permission internet. Aucune permission, en réalité.
+• Pas de permission internet. C’est le système d’exploitation lui-même qui bloque toute connexion : vos documents ne peuvent pas quitter le téléphone.
+• Une seule permission, l’appareil photo, et uniquement pour le scanner. Elle est demandée à l’ouverture du scanner, jamais au démarrage, et si vous refusez le scanner fonctionne avec les photos de votre galerie.
+• La reconnaissance de texte se fait sur votre téléphone. Le modèle est inclus dans l’application : rien n’est téléchargé, rien n’est envoyé.
 • Pas de compte, pas d'inscription, pas d'analyse, pas de rapport d'erreur, pas de publicité.
 • Votre certificat est lu, utilisé puis abandonné. Il n'est jamais conservé.
 • Le dossier de travail est vidé à chaque démarrage de l'application.
@@ -183,6 +198,9 @@ Die App fordert keine Internetberechtigung an. Das ist kein Versprechen, sondern
 
 WAS SIE KANN
 
+• Papier mit der Kamera scannen. Findet die Ränder des Blattes beim Zielen, zeigt, wie gut es sie erkennt, korrigiert die Perspektive und kann den Text lesen, damit Sie später im Dokument suchen können.
+• Kartenmodus für Ausweis, Führerschein, Bankkarten, Fahrkarten und Reisepässe. Beide Seiten kommen in Originalgröße auf ein Blatt, sodass der Ausdruck die Größe der Karte hat und kein vergrößertes Foto ist.
+• Mehrere Aufnahmen pro Seite, zu einer zusammengefügt. Das Aufbereiten verstärkt das Rauschen zusammen mit dem Detail; mit drei Aufnahmen hebt sich das Rauschen von selbst auf.
 • Dokumente zu einem zusammenfügen, per Ziehen ordnen, mit Vorschau der ersten Seite jedes Dokuments. Auch Word, Excel, PowerPoint und Bilder werden angenommen: Was kein PDF ist, wird vorher umgewandelt.
 • Ein Dokument aufteilen: eine Datei pro Seite, nach Bereichen, oder ausgewählte Seiten entnehmen.
 • Fotos in Dokumente verwandeln, aus der Galerie oder direkt mit der Kamera. Ein Bild pro Seite, oder 2, 4 und 6 zusammen.
@@ -194,7 +212,9 @@ WAS SIE KANN
 
 DATENSCHUTZ, OHNE UMSCHWEIFE
 
-• Keine Internetberechtigung. Genau genommen überhaupt keine Berechtigungen.
+• Keine Internetberechtigung. Das Betriebssystem selbst blockiert jede Verbindung, Ihre Dokumente können das Telefon also nicht verlassen.
+• Eine einzige Berechtigung, die Kamera, und nur für den Scanner. Sie wird beim Öffnen des Scanners abgefragt, nie beim Start, und bei Ablehnung arbeitet der Scanner mit Fotos aus Ihrer Galerie.
+• Die Texterkennung läuft auf Ihrem Gerät. Das Modell steckt in der App: nichts wird heruntergeladen, nichts gesendet.
 • Keine Konten, keine Registrierung, keine Analyse, keine Absturzberichte, keine Werbung.
 • Ihr Zertifikat wird gelesen, verwendet und verworfen. Es wird nie gespeichert.
 • Der Arbeitsordner wird bei jedem Start der App geleert.
@@ -220,6 +240,9 @@ Quellcode: github.com/braisgaldo/NexaPDF""",
 
 功能
 
+• 用相机扫描纸张。取景时就能找到纸的边缘，并显示识别程度，自动校正透视，还可以识别文字，让你之后能在文档里搜索。
+• 证卡模式，适用于身份证、驾照、银行卡、交通卡和护照。正反面按实际尺寸放在同一页，打印出来就是证件本身的大小，而不是放大的照片。
+• 每页拍摄多张并合成一张。增强页面会在提升细节的同时放大噪点；拍三张可以让噪点自行抵消。
 • 把多个文档合并为一个，拖动排序，并显示每个文档首页的预览。同样支持 Word、Excel、PowerPoint 和图片：非 PDF 的文件会先转换。
 • 拆分文档：每页一个文件、按范围拆分，或提取你选中的页面。
 • 把照片变成文档，可从相册选取或当场拍照。每页一张图，或 2、4、6 张排在一起。
@@ -231,7 +254,9 @@ Quellcode: github.com/braisgaldo/NexaPDF""",
 
 隐私，直说
 
-• 没有联网权限。事实上没有申请任何权限。
+• 没有联网权限。是操作系统本身拦截一切连接，所以你的文档无法离开手机。
+• 只有一个权限——相机，而且只用于扫描。打开扫描时才申请，绝不在启动时申请；即使拒绝，扫描仍可使用相册里的照片。
+• 文字识别在你的手机上完成。模型随应用一起安装：不下载，也不上传。
 • 没有账号、没有注册、没有统计分析、没有崩溃上报、没有广告。
 • 你的证书只被读取、使用，然后丢弃，绝不保存。
 • 每次启动应用时，工作文件夹都会清空。
@@ -257,6 +282,9 @@ PDF 与办公格式之间的转换保留的是内容，而非精确排版。PDF 
 
 できること
 
+• カメラで紙をスキャン。構えている間に用紙の輪郭を見つけ、どれだけはっきり見えているかを表示し、傾きを補正します。文字を読み取れば、あとから書類の中を検索できます。
+• 身分証、運転免許証、銀行カード、交通系カード、パスポートのためのカードモード。表裏を実物大で 1 枚に収めるので、印刷すればカードと同じ大きさになります。
+• 1 ページにつき複数枚を撮って合成します。補正は細部と一緒にノイズも強めますが、3 枚撮ればノイズは打ち消し合います。
 • 複数の文書を 1 つに結合。ドラッグして順序を変えられ、各文書の 1 ページ目のプレビューが出ます。Word・Excel・PowerPoint・画像も受け付け、PDF でないものは先に変換されます。
 • 文書の分割：1 ページごとに 1 ファイル、範囲指定、選んだページの取り出し。
 • 写真を文書に変換。ギャラリーから選ぶか、その場で撮影できます。1 ページに 1 枚、または 2・4・6 枚まとめて。
@@ -268,7 +296,9 @@ PDF 与办公格式之间的转换保留的是内容，而非精确排版。PDF 
 
 プライバシーについて、率直に
 
-• インターネット権限なし。そもそも権限を一切要求しません。
+• インターネット権限なし。OS 自体が通信を遮断するので、書類が端末の外に出ることはありません。
+• 権限はカメラひとつだけで、用途はスキャンのみ。スキャン画面を開いたときに尋ね、起動時には尋ねません。断ってもギャラリーの写真でスキャンできます。
+• 文字認識は端末内で行います。モデルはアプリに同梱：ダウンロードも送信もしません。
 • アカウントなし、登録なし、分析なし、クラッシュ報告なし、広告なし。
 • 証明書は読み取って使ったら破棄します。保存は一切しません。
 • 作業フォルダーはアプリ起動のたびに空にします。
@@ -294,6 +324,9 @@ PDF とオフィス形式の変換で保たれるのは内容であり、レイ�
 
 ЧТО ОНО УМЕЕТ
 
+• Сканировать бумагу камерой. Находит края листа, пока вы наводите, показывает, насколько хорошо их различает, выправляет перспективу и может распознать текст, чтобы потом искать внутри документа.
+• Режим карточки для удостоверений, водительских прав, банковских и транспортных карт и паспортов. Обе стороны ложатся на один лист в натуральную величину, поэтому распечатка получается размером с саму карточку.
+• Несколько снимков на страницу, объединённых в один. Обработка усиливает шум вместе с деталями; три снимка гасят шум сами собой.
 • Объединять документы в один, перетаскивая для изменения порядка, с предпросмотром первой страницы каждого. Принимает также Word, Excel, PowerPoint и изображения: всё, что не PDF, сначала преобразуется.
 • Делить документ: по одному файлу на страницу, по диапазонам или извлекая выбранные страницы.
 • Превращать фотографии в документы — из галереи или снимая на месте. По одному изображению на страницу, либо 2, 4 и 6 вместе.
@@ -305,7 +338,9 @@ PDF とオフィス形式の変換で保たれるのは内容であり、レイ�
 
 О ПРИВАТНОСТИ, БЕЗ ПРИКРАС
 
-• Нет разрешения на интернет. Собственно, нет вообще никаких разрешений.
+• Нет разрешения на интернет. Любое соединение блокирует сама операционная система, поэтому документы не могут покинуть телефон.
+• Одно-единственное разрешение — камера, и только для сканера. Его запрашивают при открытии сканера, а не при запуске; если отказать, сканер работает с фотографиями из галереи.
+• Распознавание текста выполняется на телефоне. Модель лежит внутри приложения: ничего не скачивается и ничего не отправляется.
 • Ни аккаунтов, ни регистрации, ни аналитики, ни отчётов о сбоях, ни рекламы.
 • Ваш сертификат читается, используется и отбрасывается. Он никогда не сохраняется.
 • Рабочая папка очищается при каждом запуске приложения.
@@ -331,6 +366,9 @@ Non chiede il permesso di accesso a internet. Non è una promessa: è una restri
 
 COSA FA
 
+• Scansionare la carta con la fotocamera. Trova i bordi del foglio mentre inquadri, mostra quanto bene li distingue, raddrizza la prospettiva e può leggere il testo perché tu possa poi cercare dentro il documento.
+• Modalità tessera per carta d’identità, patente, carte bancarie, abbonamenti e passaporti. Fronte e retro stanno in un foglio a grandezza reale: stampandolo ottieni le dimensioni della tessera, non una foto ingrandita.
+• Più scatti per pagina, fusi in uno. Migliorare una pagina amplifica la grana insieme al dettaglio; con tre scatti la grana si annulla da sola.
 • Unire documenti in uno solo, trascinandoli per ordinarli, con l'anteprima della prima pagina di ciascuno. Accetta anche Word, Excel, PowerPoint e immagini: ciò che non è PDF viene convertito prima.
 • Dividere un documento: un file per pagina, per intervalli, o estraendo le pagine scelte.
 • Trasformare foto in documenti, dalla galleria o scattando sul momento. Un'immagine per pagina, oppure 2, 4 e 6 insieme.
@@ -342,7 +380,9 @@ COSA FA
 
 PRIVACY, SENZA GIRI DI PAROLE
 
-• Nessun permesso di internet. A dire il vero, nessun permesso del tutto.
+• Nessun permesso di internet. È il sistema operativo stesso a bloccare qualsiasi connessione, quindi i tuoi documenti non possono uscire dal telefono.
+• Un solo permesso, la fotocamera, e soltanto per lo scanner. Viene chiesto aprendo lo scanner, mai all’avvio, e se lo neghi lo scanner funziona con le foto della tua galleria.
+• Il riconoscimento del testo avviene sul telefono. Il modello è dentro l’app: non si scarica e non si invia nulla.
 • Nessun account, nessuna registrazione, nessuna analisi, nessun rapporto di errore, nessuna pubblicità.
 • Il tuo certificato viene letto, usato e scartato. Non viene mai conservato.
 • La cartella di lavoro si svuota a ogni avvio dell'applicazione.
@@ -368,6 +408,9 @@ Codice sorgente: github.com/braisgaldo/NexaPDF""",
 
 ΤΙ ΚΑΝΕΙ
 
+• Σάρωση χαρτιού με την κάμερα. Βρίσκει τις άκρες του φύλλου καθώς στοχεύετε, δείχνει πόσο καθαρά τις διακρίνει, ισιώνει την προοπτική και μπορεί να διαβάσει το κείμενο ώστε να ψάχνετε μέσα στο έγγραφο.
+• Λειτουργία κάρτας για ταυτότητες, διπλώματα, τραπεζικές κάρτες, κάρτες μετακίνησης και διαβατήρια. Και οι δύο όψεις μπαίνουν σε ένα φύλλο σε φυσικό μέγεθος, ώστε η εκτύπωση να έχει το μέγεθος της κάρτας.
+• Πολλές λήψεις ανά σελίδα, ενωμένες σε μία. Η βελτίωση ενισχύει τον θόρυβο μαζί με τη λεπτομέρεια· με τρεις λήψεις ο θόρυβος αλληλοαναιρείται.
 • Ενώνει έγγραφα σε ένα, με σύρσιμο για την ταξινόμηση και προεπισκόπηση της πρώτης σελίδας του καθενός. Δέχεται επίσης Word, Excel, PowerPoint και εικόνες: ό,τι δεν είναι PDF μετατρέπεται πρώτα.
 • Χωρίζει ένα έγγραφο: ένα αρχείο ανά σελίδα, κατά περιοχές, ή εξάγοντας τις σελίδες που επιλέγετε.
 • Μετατρέπει φωτογραφίες σε έγγραφα, από τη συλλογή ή τραβώντας τες επιτόπου. Μία εικόνα ανά σελίδα, ή 2, 4 και 6 μαζί.
@@ -379,7 +422,9 @@ Codice sorgente: github.com/braisgaldo/NexaPDF""",
 
 ΑΠΟΡΡΗΤΟ, ΧΩΡΙΣ ΠΕΡΙΣΤΡΟΦΕΣ
 
-• Καμία άδεια διαδικτύου. Στην πραγματικότητα, καμία άδεια απολύτως.
+• Καμία άδεια διαδικτύου. Το ίδιο το λειτουργικό μπλοκάρει κάθε σύνδεση, οπότε τα έγγραφά σας δεν μπορούν να φύγουν από το τηλέφωνο.
+• Μία μόνο άδεια, η κάμερα, και μόνο για τον σαρωτή. Ζητείται όταν ανοίγετε τον σαρωτή, ποτέ στην εκκίνηση, και αν την αρνηθείτε ο σαρωτής δουλεύει με φωτογραφίες από τη συλλογή σας.
+• Η αναγνώριση κειμένου γίνεται στο τηλέφωνό σας. Το μοντέλο είναι μέσα στην εφαρμογή: τίποτα δεν κατεβαίνει και τίποτα δεν στέλνεται.
 • Χωρίς λογαριασμούς, χωρίς εγγραφή, χωρίς αναλυτικά στοιχεία, χωρίς αναφορές σφαλμάτων, χωρίς διαφημίσεις.
 • Το πιστοποιητικό σας διαβάζεται, χρησιμοποιείται και απορρίπτεται. Δεν αποθηκεύεται ποτέ.
 • Ο φάκελος εργασίας αδειάζει σε κάθε εκκίνηση της εφαρμογής.
@@ -405,6 +450,9 @@ Codice sorgente: github.com/braisgaldo/NexaPDF""",
 
 ما الذي يفعله
 
+• مسح الورق بالكاميرا. يجد حواف الورقة أثناء التصويب، ويعرض مدى وضوحها، ويصحّح المنظور، ويمكنه قراءة النص لتتمكن لاحقًا من البحث داخل المستند.
+• وضع البطاقة لبطاقات الهوية ورخص القيادة والبطاقات المصرفية وبطاقات النقل وجوازات السفر. يظهر الوجهان في ورقة واحدة بالحجم الحقيقي، فتأتي الطباعة بحجم البطاقة نفسها لا صورة مكبّرة.
+• عدة لقطات لكل صفحة تُدمج في واحدة. تحسين الصفحة يضخّم الضوضاء مع التفاصيل؛ ثلاث لقطات تُلغي الضوضاء من تلقاء نفسها.
 • دمج المستندات في مستند واحد، مع السحب لترتيبها ومعاينة الصفحة الأولى من كل منها. ويقبل أيضًا ملفات Word وExcel وPowerPoint والصور: وكل ما ليس PDF يُحوَّل أولًا.
 • تقسيم المستند: ملف لكل صفحة، أو حسب نطاقات، أو باستخراج الصفحات التي تختارها.
 • تحويل الصور إلى مستندات، من المعرض أو بالتقاطها في اللحظة. صورة واحدة في كل صفحة، أو ٢ و٤ و٦ معًا.
@@ -416,7 +464,9 @@ Codice sorgente: github.com/braisgaldo/NexaPDF""",
 
 الخصوصية، بصراحة
 
-• لا إذن للإنترنت. بل لا أذونات على الإطلاق.
+• لا إذن للإنترنت. نظام التشغيل نفسه يحجب أي اتصال، فلا يمكن لمستنداتك أن تغادر الهاتف.
+• إذن واحد فقط، الكاميرا، وللماسح الضوئي وحده. يُطلب عند فتح الماسح لا عند بدء التطبيق، وإن رفضته يظل الماسح يعمل بصور معرضك.
+• التعرف على النص يجري داخل هاتفك. النموذج مضمَّن في التطبيق: لا تنزيل ولا إرسال.
 • لا حسابات ولا تسجيل ولا تحليلات ولا تقارير أعطال ولا إعلانات.
 • تُقرأ شهادتك وتُستخدم ثم تُهمَل. ولا تُحفظ أبدًا.
 • يُفرَّغ مجلد العمل في كل مرة يبدأ فيها التطبيق.
@@ -442,6 +492,9 @@ Non pide o permiso de internet. Iso non é unha promesa: é unha restrición do 
 
 QUE FAI
 
+• Dixitalizar papel coa cámara. Atopa os bordos da folla mentres apuntas, amosa ata que punto os distingue, corrixe a perspectiva e pode ler o texto para que despois poidas buscar dentro do documento.
+• Modo tarxeta para o DNI, o carné de conducir, tarxetas de crédito, abonos de transporte e pasaportes. As dúas caras van nunha folla e a tamaño real, así que ao imprimila sae do tamaño do carné e non unha foto ampliada.
+• Varias fotos por páxina, fundidas nunha. Mellorar unha páxina amplifica o gran á vez que o detalle; con tres fotos o gran cancélase só.
 • Unir documentos nun só, arrastrando para ordenalos e coa vista previa da primeira páxina de cada un. Admite tamén Word, Excel, PowerPoint e imaxes: o que non é PDF convértese antes.
 • Separar un documento nun ficheiro por páxina, por rangos ou extraendo as páxinas que elixas.
 • Converter fotos en documentos, desde a galería ou facendo a foto no momento. Unha imaxe por páxina, ou 2, 4 e 6 xuntas.
@@ -453,7 +506,9 @@ QUE FAI
 
 PRIVACIDADE, SEN ADORNOS
 
-• Sen permiso de internet. Sen ningún permiso, de feito.
+• Sen permiso de internet. É o propio sistema operativo o que bloquea calquera conexión, así que os teus documentos non poden saír do teléfono.
+• Un único permiso, a cámara, e só para o dixitalizador. Pídese ao abrilo, nunca ao arrincar, e se o denegas segue funcionando con fotos da túa galería.
+• O recoñecemento de texto faise no teu teléfono. O modelo viaxa dentro da aplicación: non se descarga nada e non se envía nada.
 • Sen contas, sen rexistro, sen analítica, sen informes de fallos e sen publicidade.
 • O teu certificado lese, úsase e descártase. Non se garda nunca.
 • O cartafol de traballo baléirase cada vez que arranca a aplicación.
@@ -479,6 +534,9 @@ No demana el permís d'internet. Això no és una promesa: és una restricció d
 
 QUÈ FA
 
+• Escanejar paper amb la càmera. Troba les vores del full mentre apuntes, mostra fins a quin punt les distingeix, corregeix la perspectiva i pot llegir el text perquè després puguis cercar dins el document.
+• Mode targeta per al DNI, el carnet de conduir, targetes de crèdit, abonaments de transport i passaports. Les dues cares van en un full i a mida real, així que en imprimir-lo obtens la mida del carnet i no una foto ampliada.
+• Diverses fotos per pàgina, fusionades en una. Millorar una pàgina amplifica el gra alhora que el detall; amb tres fotos el gra s’anul·la sol.
 • Unir documents en un de sol, arrossegant per ordenar-los i amb la previsualització de la primera pàgina de cadascun. Admet també Word, Excel, PowerPoint i imatges: el que no és PDF es converteix abans.
 • Dividir un document en un fitxer per pàgina, per intervals o extraient les pàgines que triïs.
 • Convertir fotos en documents, des de la galeria o fent la foto al moment. Una imatge per pàgina, o 2, 4 i 6 juntes.
@@ -490,7 +548,9 @@ QUÈ FA
 
 PRIVADESA, SENSE ADORNS
 
-• Sense permís d'internet. Sense cap permís, de fet.
+• Sense permís d’internet. És el mateix sistema operatiu el que bloqueja qualsevol connexió, així que els teus documents no poden sortir del telèfon.
+• Un sol permís, la càmera, i només per a l’escàner. Es demana en obrir l’escàner, mai en arrencar, i si el deneges l’escàner continua funcionant amb fotos de la teva galeria.
+• El reconeixement de text es fa al teu telèfon. El model viatja dins l’aplicació: no es descarrega res i no s’envia res.
 • Sense comptes, sense registre, sense analítica, sense informes d'errors i sense publicitat.
 • El teu certificat es llegeix, s'utilitza i es descarta. No es desa mai.
 • La carpeta de treball es buida cada vegada que s'engega l'aplicació.
@@ -516,6 +576,9 @@ Ez du interneterako baimenik eskatzen. Hori ez da promesa bat: sistema eragileak
 
 ZER EGITEN DUEN
 
+• Papera kamerarekin eskaneatu. Orriaren ertzak aurkitzen ditu apuntatzen duzun bitartean, zenbateraino bereizten dituen erakusten du, perspektiba zuzentzen du eta testua irakur dezake gero dokumentuaren barruan bilatu ahal izateko.
+• Txartel modua NANerako, gidabaimenerako, banku-txarteletarako, garraio-txarteletarako eta pasaporteetarako. Bi aldeak orri bakarrean doaz eta tamaina errealean, beraz inprimatzean txartelaren tamaina bera ateratzen da, ez argazki handitu bat.
+• Orriko hainbat argazki, batean fusionatuta. Orria hobetzeak pikorra ere areagotzen du xehetasunarekin batera; hiru argazkirekin pikorra bere kabuz ezabatzen da.
 • Dokumentuak bakarrean batu, arrastatuz ordenatuz eta bakoitzaren lehen orriaren aurrebistarekin. Word, Excel, PowerPoint eta irudiak ere onartzen ditu: PDF ez dena lehenago bihurtzen da.
 • Dokumentu bat zatitu: fitxategi bat orriko, barrutika, edo aukeratutako orriak aterata.
 • Argazkiak dokumentu bihurtu, galeriatik edo unean bertan aterata. Irudi bat orriko, edo 2, 4 eta 6 elkarrekin.
@@ -527,7 +590,9 @@ ZER EGITEN DUEN
 
 PRIBATUTASUNA, BIRIBILKETARIK GABE
 
-• Interneterako baimenik ez. Egia esan, baimenik bat ere ez.
+• Interneterako baimenik ez. Sistema eragileak berak blokeatzen du edozein konexio, beraz zure dokumentuak ezin dira telefonotik atera.
+• Baimen bakarra, kamera, eta eskanerrerako soilik. Eskanerra irekitzean eskatzen da, inoiz ez abiaraztean, eta ukatuz gero eskanerrak zure galeriako argazkiekin funtzionatzen du.
+• Testuaren ezagutza zure telefonoan egiten da. Eredua aplikazioaren barruan doa: ez da ezer deskargatzen eta ez da ezer bidaltzen.
 • Konturik ez, izen-ematerik ez, analitikarik ez, akats-txostenik ez, iragarkirik ez.
 • Zure ziurtagiria irakurri, erabili eta baztertu egiten da. Ez da inoiz gordetzen.
 • Lan-karpeta hustu egiten da aplikazioa abiarazten den bakoitzean.

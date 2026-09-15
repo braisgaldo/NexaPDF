@@ -1,7 +1,9 @@
 Novità
 
-Un PDF aperto da una app di messaggistica o dal gestore file non è più di sola lettura. Il visore ha ora una cassetta degli attrezzi per firmarlo, modificarlo, proteggerlo con password, dividerlo o esportarlo, e salvarlo dove vuoi, senza uscire e ricercare il file.
+Scanner di documenti. Fotografa un foglio e ottieni un PDF dritto e leggibile, non una foto storta dentro un PDF.
 
-• Condividere più PDF porta a unirli.
-• Condividere foto porta a farne un documento.
-• Aprire un backup propone di importarlo.
+• Trova i bordi mentre inquadri e scatta da solo quando la mano è ferma.
+• Raddrizza la prospettiva e pulisce la pagina.
+• Scatta più foto per pagina e le fonde: meno grana, più nitidezza.
+• Modalità tessera: documento o passaporto a grandezza reale, fronte e retro in un foglio.
+• Può leggere il testo per cercarci dentro. Tutto sul telefono.

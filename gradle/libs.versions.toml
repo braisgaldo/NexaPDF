@@ -22,6 +22,8 @@ androidxBrowser = "1.10.0"
 androidxDocumentFile = "1.1.0"
 androidxExifInterface = "1.4.1"
 androidxLifecycle = "2.11.0"
+androidxCamera = "1.6.2"
+mlkitTextRecognition = "16.0.1"
 pdfboxAndroid = "2.0.27.0"
 bouncycastle = "1.84"
 junit = "4.13.2"
@@ -60,6 +62,23 @@ androidx-documentfile = { module = "androidx.documentfile:documentfile", version
 androidx-exifinterface = { module = "androidx.exifinterface:exifinterface", version.ref = "androidxExifInterface" }
 androidx-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
+
+# --- Camara del escaner ---
+# Solo lo imprescindible para una vista previa con analisis de fotogramas.
+# `camera-view` trae el PreviewView, que resuelve por su cuenta el recorte y el
+# giro del sensor; hacer eso a mano son doscientas lineas y un fallo por cada
+# fabricante. No se incluye `camera-extensions` ni `camera-video`.
+androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "androidxCamera" }
+androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "androidxCamera" }
+androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "androidxCamera" }
+androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "androidxCamera" }
+
+# --- Reconocimiento de texto ---
+# Variante *empaquetada*: el modelo viaja dentro del APK y se ejecuta en el
+# dispositivo. La otra variante (play-services-mlkit-text-recognition) descarga
+# el modelo desde Google Play, y eso exigiria el permiso de internet, que es
+# justo lo que NexaPDF no tiene ni va a tener.
+mlkit-text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "mlkitTextRecognition" }
 
 # --- PDF y firma ---
 pdfbox-android = { module = "com.tom-roush:pdfbox-android", version.ref = "pdfboxAndroid" }
