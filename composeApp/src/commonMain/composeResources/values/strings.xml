@@ -42,6 +42,8 @@
     <string name="aj_elegir_carpeta">Choose folder</string>
     <string name="aj_escaner_auto">Auto capture</string>
     <string name="aj_escaner_auto_desc">Shoot on its own when the paper is well framed.</string>
+    <string name="aj_escaner_color">Keep the original colours</string>
+    <string name="aj_escaner_color_desc">Shadows and blur are still corrected, but a red stamp stays red. The file is larger.</string>
     <string name="aj_escaner_filtro">Default enhancement</string>
     <string name="aj_escaner_filtro_desc">Applied to each page as soon as it is captured.</string>
     <string name="aj_escaner_ocr">Searchable text by default</string>

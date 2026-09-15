@@ -41,6 +41,14 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
     invisible, encima de la imagen, en el sitio exacto donde están. El
     documento se ve igual que la foto pero se puede buscar, seleccionar y
     copiar en cualquier lector. Alfabeto latino.
+  - **Conservar los colores originales**, en *Ajustes › Escáner*. La mejora de
+    página hace dos cosas a la vez: quita las sombras y da nitidez, que es lo que
+    se le pide, y de paso pasa la hoja a gris, que no. Para un folio impreso da
+    igual; para una factura con un sello rojo, un apunte a bolígrafo azul o un
+    gráfico de colores, es contenido que desaparece. Con esto activado la página
+    pasa por la misma mejora —y el reconocimiento de texto sigue leyendo igual— y
+    se guarda en color. Pesa más, y por eso no viene puesto.
+
   - **Varias fotos por página.** Cada disparo hace tres fotos seguidas y se
     funden en una. El límite de nitidez de un escaneo no es el filtro, es el
     grano: mejorar la página amplifica el ruido a la vez que el detalle, así que
@@ -80,6 +88,37 @@ proyecto se versiona con [SemVer](https://semver.org/lang/es/).
     descargas.
   - Al terminar se abre o no según *Ajustes › Al terminar un documento ›
     Escanear*, como el resto de tareas.
+
+- **Al terminar un escaneo se abre la vista de lectura**, y no la del documento
+  como el resto de tareas. Lo que se acaba de crear es un PDF **buscable**, y lo
+  primero que uno quiere es leerlo y buscar dentro para comprobar que el
+  reconocimiento pilló lo que tenía que pillar.
+
+- **Buscar acerca y centra la coincidencia.** Antes saltaba a la página y la
+  dejaba entera, con la palabra resaltada midiendo dos milímetros en un A4 visto
+  en un móvil: eso resalta, pero no enseña. El acercamiento sale de lo que ocupa
+  la palabra y se queda entre 1,6× y 4×, para que una coincidencia de dos letras
+  no llene la pantalla de un trozo de letra sin contexto.
+
+  Costó tres arreglos, y los tres se vieron usando la aplicación, no leyendo el
+  código:
+
+  - El centrado tomaba las coordenadas de la palabra como si fueran de la
+    pantalla, y **la página no llena la pantalla**: se dibuja encajada, con
+    margen a dos lados. Medido sobre 1080×2000 con la palabra al 35 % de la
+    hoja, el desvío iba de 0 a 876 px según la forma de la página. De ahí que
+    fallara «a veces».
+  - El tope de desplazamiento estaba medido contra la pantalla, así que una
+    palabra del margen no llegaba al centro y se quedaba a un tercio de pantalla.
+    Importa más de lo que parece: los márgenes son donde empieza y acaba **cada
+    línea**. Ahora el enfoque usa su propio tope, medido contra el papel.
+  - Y el último: una búsqueda recién hecha saltaba a la página pero nunca marcaba
+    **qué** coincidencia enfocar. Resaltaba bien y no se acercaba, mientras que
+    moverse con las flechas sí funcionaba.
+
+  Sólo en lectura lateral. En la vertical el encuadre no es una transformación
+  sobre la página sino el ancho de la columna, así que acercarse ahí ensancharía
+  el documento sin llevar a ninguna parte.
 
 - **Eliminar la página que se está leyendo**, desde la caja de herramientas del
   visor. Antes sólo se podía desde la rejilla de páginas, seleccionando; pero el

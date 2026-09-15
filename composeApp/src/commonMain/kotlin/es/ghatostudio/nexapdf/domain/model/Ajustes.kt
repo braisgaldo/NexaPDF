@@ -127,6 +127,21 @@ data class Ajustes(
      */
     val escanerRafaga: Boolean = true,
 
+    /**
+     * Guardar el escaneo en color en vez de en blanco y negro.
+     *
+     * La mejora de pagina hace dos cosas a la vez: quita las sombras y da
+     * nitidez, que es lo que se le pide, y de paso pasa la hoja a gris, que no
+     * se le pidio. Para un folio impreso da igual; para una factura con un sello
+     * rojo, un apunte a boligrafo azul o un grafico de colores, es contenido que
+     * desaparece.
+     *
+     * Con esto activado la pagina pasa por la misma mejora —incluido el
+     * reconocimiento de texto, que sigue leyendo igual— y se guarda conservando
+     * su color. Pesa mas, y por eso no viene puesto.
+     */
+    val escanerColor: Boolean = false,
+
     /** Filtro que se aplica a cada hoja nada mas capturarla. */
     val escanerFiltro: String = FiltroPagina.DOCUMENTO_NITIDO.name,
 

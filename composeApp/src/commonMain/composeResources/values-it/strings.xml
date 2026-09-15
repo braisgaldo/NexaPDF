@@ -42,6 +42,8 @@
     <string name="aj_elegir_carpeta">Scegli cartella</string>
     <string name="aj_escaner_auto">Scatto automatico</string>
     <string name="aj_escaner_auto_desc">Scattare da solo quando il foglio è ben inquadrato.</string>
+    <string name="aj_escaner_color">Conservare i colori originali</string>
+    <string name="aj_escaner_color_desc">Ombre e sfocatura si correggono comunque, ma un timbro rosso resta rosso. Il file pesa di più.</string>
     <string name="aj_escaner_filtro">Miglioramento predefinito</string>
     <string name="aj_escaner_filtro_desc">Si applica a ogni pagina appena acquisita.</string>
     <string name="aj_escaner_ocr">Testo ricercabile per impostazione predefinita</string>

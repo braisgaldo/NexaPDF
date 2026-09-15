@@ -49,7 +49,13 @@ Arriba a la derecha, la rueda dentada abre los **Ajustes**.
 **Ficheros recientes**.
 
 - **La lupa** busca en todo el documento. Las apariciones quedan resaltadas
-  sobre la página, y el contador y las flechas te llevan de una a otra.
+  sobre la página, y el contador y las flechas te llevan de una a otra. Al
+  encontrar una, el visor **se acerca y la centra**: una palabra resaltada en un
+  A4 visto en un móvil mide dos milímetros, y dejarla ahí es resaltarla sin
+  enseñarla. Si prefieres ver la página entera, pellizca para alejar. Esto
+  funciona leyendo página a página; con el desplazamiento continuo el pellizco
+  ensancha las páginas en lugar de moverlas, así que ahí no hay a dónde
+  acercarse.
 - **El icono de lista** muestra el índice de secciones. Sólo aparece cuando el
   PDF trae índice; los documentos escaneados no suelen tenerlo.
 - **El escudo** lista las firmas digitales. Se tiñe de color cuando hay alguna.
@@ -252,6 +258,17 @@ que no ganes nada, nunca una página peor.
 
 Cuesta unos segundos más por hoja. Si prefieres ir rápido, se apaga en
 *Ajustes › Escáner › Varias fotos por página*.
+
+### Conservar los colores
+
+La mejora de página hace dos cosas a la vez: quita las sombras y da nitidez, que
+es lo que quieres, y de paso pasa la hoja a gris, que no lo habías pedido. Para
+un folio impreso da igual. Para una factura con un sello rojo, un apunte a
+bolígrafo azul o un gráfico, es contenido que desaparece.
+
+En *Ajustes › Escáner › Conservar los colores originales* la página pasa por la
+misma mejora —y el texto se sigue reconociendo igual— pero se guarda en color.
+Pesa bastante más, y por eso viene apagado.
 
 ### Guardar
 

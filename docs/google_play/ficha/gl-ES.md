@@ -15,7 +15,7 @@ NexaPDF: PDF sen conexión
 Une, separa, edita e asina PDF sen conexión. Sen anuncios e sen rastrexo.
 ```
 
-## Descripcion completa (3631/4000)
+## Descripcion completa (3739/4000)
 
 ```
 NexaPDF é unha caixa de ferramentas para PDF que funciona enteira no teu móbil.
@@ -27,6 +27,7 @@ QUE FAI
 • Dixitalizar papel coa cámara. Atopa os bordos da folla mentres apuntas, amosa ata que punto os distingue, corrixe a perspectiva e pode ler o texto para que despois poidas buscar dentro do documento.
 • Modo tarxeta para o DNI, o carné de conducir, tarxetas de crédito, abonos de transporte e pasaportes. As dúas caras van nunha folla e a tamaño real, así que ao imprimila sae do tamaño do carné e non unha foto ampliada.
 • Varias fotos por páxina, fundidas nunha. Mellorar unha páxina amplifica o gran á vez que o detalle; con tres fotos o gran cancélase só.
+• Conservar as cores orixinais, se queres: nunha factura cun selo vermello, o gris fai desaparecer contido.
 • Unir documentos nun só, arrastrando para ordenalos e coa vista previa da primeira páxina de cada un. Admite tamén Word, Excel, PowerPoint e imaxes: o que non é PDF convértese antes.
 • Separar un documento nun ficheiro por páxina, por rangos ou extraendo as páxinas que elixas.
 • Converter fotos en documentos, desde a galería ou facendo a foto no momento. Unha imaxe por páxina, ou 2, 4 e 6 xuntas.

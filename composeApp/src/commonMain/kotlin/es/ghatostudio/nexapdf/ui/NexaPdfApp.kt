@@ -489,6 +489,7 @@ private fun ContenidoApp(
         filtro: es.ghatostudio.nexapdf.domain.model.FiltroPagina,
         avisar: Boolean = true,
         rafaga: List<String> = emptyList(),
+        enColor: Boolean = false,
     ) {
         // Los bordes se buscan **solo** en la foto de referencia. Las demas de
         // la rafaga son la misma hoja tomada un instante despues, y detectarlas
@@ -503,6 +504,7 @@ private fun ContenidoApp(
                 rutasRafaga = rafaga,
                 cuadro = deteccion.cuadro ?: Cuadrilatero.COMPLETO,
                 filtro = filtro,
+                enColor = enColor,
                 confianza = deteccion.confianza,
             ),
         )
@@ -1235,6 +1237,7 @@ private fun ContenidoApp(
                             ruta = fotos.first(),
                             filtro = ajustes.filtroEscaner,
                             rafaga = fotos.drop(1),
+                            enColor = ajustes.escanerColor,
                         )
                     }
                 },
@@ -1249,7 +1252,12 @@ private fun ContenidoApp(
                         // lo que hace cuando se queda sin paginas.
                         elegidas.forEachIndexed { indice, elegida ->
                             estado.fijarProgreso(indice, elegidas.size)
-                            anadirHoja(elegida.ruta, ajustes.filtroEscaner, avisar = false)
+                            anadirHoja(
+                                ruta = elegida.ruta,
+                                filtro = ajustes.filtroEscaner,
+                                avisar = false,
+                                enColor = ajustes.escanerColor,
+                            )
                         }
                         estado.terminarTrabajo()
                         if (hojas.isNotEmpty() && estado.destinoActual == Destino.Escaner) {
@@ -1646,6 +1654,7 @@ private fun ContenidoApp(
                 alCambiarEscanerOcr = { estado.fijarEscanerOcr(it) },
                 alCambiarEscanerAutomatico = { estado.fijarEscanerAutomatico(it) },
                 alCambiarEscanerRafaga = { estado.fijarEscanerRafaga(it) },
+                alCambiarEscanerColor = { estado.fijarEscanerColor(it) },
                 alCambiarEscanerFiltro = { estado.fijarEscanerFiltro(it.name) },
                 alElegirCarpeta = {
                     alcance.launch {
@@ -1776,9 +1785,18 @@ private fun ContenidoApp(
                                 fotosOriginales.clear()
                                 registrarResultado(ruta)
                                 abrirDocumentos(listOf(ruta))
+                                // El escaneo acaba en la vista de lectura y no
+                                // en la del documento, al reves que el resto de
+                                // tareas. Y es a proposito: lo que se acaba de
+                                // crear es un PDF **buscable**, y lo primero que
+                                // uno quiere hacer con el es leerlo y buscar
+                                // dentro para comprobar que el reconocimiento ha
+                                // pillado lo que tenia que pillar. La pantalla de
+                                // documento ofrece herramientas sobre un fichero
+                                // que aun no has visto.
                                 mostrarResultado(
                                     TareaConResultado.ESCANEAR,
-                                    Destino.Documento(listOf(ruta)),
+                                    Destino.Visor(ruta),
                                 )
                             }
                         },

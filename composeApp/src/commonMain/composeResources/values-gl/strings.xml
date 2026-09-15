@@ -42,6 +42,8 @@
     <string name="aj_elegir_carpeta">Escoller cartafol</string>
     <string name="aj_escaner_auto">Captura automática</string>
     <string name="aj_escaner_auto_desc">Disparar só cando o papel estea ben encadrado.</string>
+    <string name="aj_escaner_color">Conservar as cores orixinais</string>
+    <string name="aj_escaner_color_desc">Séguense quitando sombras e dando nitidez, pero un selo vermello segue sendo vermello. O ficheiro pesa máis.</string>
     <string name="aj_escaner_filtro">Mellora por defecto</string>
     <string name="aj_escaner_filtro_desc">Aplícase a cada páxina nada máis capturala.</string>
     <string name="aj_escaner_ocr">Texto buscable por defecto</string>

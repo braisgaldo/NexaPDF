@@ -15,7 +15,7 @@ NexaPDF: PDF offline
 Unisci, dividi, modifica e firma PDF offline. Senza pubblicità né tracciamento.
 ```
 
-## Descripcion completa (3744/4000)
+## Descripcion completa (3858/4000)
 
 ```
 NexaPDF è una cassetta degli attrezzi per PDF che gira interamente sul telefono.
@@ -27,6 +27,7 @@ COSA FA
 • Scansionare la carta con la fotocamera. Trova i bordi del foglio mentre inquadri, mostra quanto bene li distingue, raddrizza la prospettiva e può leggere il testo perché tu possa poi cercare dentro il documento.
 • Modalità tessera per carta d’identità, patente, carte bancarie, abbonamenti e passaporti. Fronte e retro stanno in un foglio a grandezza reale: stampandolo ottieni le dimensioni della tessera, non una foto ingrandita.
 • Più scatti per pagina, fusi in uno. Migliorare una pagina amplifica la grana insieme al dettaglio; con tre scatti la grana si annulla da sola.
+• Conservare i colori originali, se vuoi: su una fattura con un timbro rosso, il grigio fa sparire del contenuto.
 • Unire documenti in uno solo, trascinandoli per ordinarli, con l'anteprima della prima pagina di ciascuno. Accetta anche Word, Excel, PowerPoint e immagini: ciò che non è PDF viene convertito prima.
 • Dividere un documento: un file per pagina, per intervalli, o estraendo le pagine scelte.
 • Trasformare foto in documenti, dalla galleria o scattando sul momento. Un'immagine per pagina, oppure 2, 4 e 6 insieme.

@@ -42,6 +42,8 @@
     <string name="aj_elegir_carpeta">Choisir un dossier</string>
     <string name="aj_escaner_auto">Capture automatique</string>
     <string name="aj_escaner_auto_desc">Déclencher tout seul quand la feuille est bien cadrée.</string>
+    <string name="aj_escaner_color">Conserver les couleurs d’origine</string>
+    <string name="aj_escaner_color_desc">Les ombres et le flou sont toujours corrigés, mais un tampon rouge reste rouge. Le fichier est plus lourd.</string>
     <string name="aj_escaner_filtro">Amélioration par défaut</string>
     <string name="aj_escaner_filtro_desc">Appliquée à chaque page dès sa capture.</string>
     <string name="aj_escaner_ocr">Texte recherchable par défaut</string>

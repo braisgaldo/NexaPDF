@@ -258,6 +258,9 @@ class EstadoApp(private val contenedor: ContenedorApp) : ViewModel() {
     fun fijarEscanerRafaga(valor: Boolean) =
         viewModelScope.launch { contenedor.ajustes.fijarEscanerRafaga(valor) }
 
+    fun fijarEscanerColor(valor: Boolean) =
+        viewModelScope.launch { contenedor.ajustes.fijarEscanerColor(valor) }
+
     fun fijarEscanerFiltro(clave: String) =
         viewModelScope.launch { contenedor.ajustes.fijarEscanerFiltro(clave) }
 }

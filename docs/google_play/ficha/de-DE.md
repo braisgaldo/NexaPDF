@@ -15,7 +15,7 @@ NexaPDF: PDF ohne Internet
 PDFs zusammenfügen, teilen, bearbeiten, signieren. Ohne Netz, ohne Werbung.
 ```
 
-## Descripcion completa (3793/4000)
+## Descripcion completa (3911/4000)
 
 ```
 NexaPDF ist ein PDF-Werkzeugkasten, der vollständig auf Ihrem Telefon läuft.
@@ -27,6 +27,7 @@ WAS SIE KANN
 • Papier mit der Kamera scannen. Findet die Ränder des Blattes beim Zielen, zeigt, wie gut es sie erkennt, korrigiert die Perspektive und kann den Text lesen, damit Sie später im Dokument suchen können.
 • Kartenmodus für Ausweis, Führerschein, Bankkarten, Fahrkarten und Reisepässe. Beide Seiten kommen in Originalgröße auf ein Blatt, sodass der Ausdruck die Größe der Karte hat und kein vergrößertes Foto ist.
 • Mehrere Aufnahmen pro Seite, zu einer zusammengefügt. Das Aufbereiten verstärkt das Rauschen zusammen mit dem Detail; mit drei Aufnahmen hebt sich das Rauschen von selbst auf.
+• Originalfarben behalten, wenn Sie möchten: auf einer Rechnung mit rotem Stempel geht in Graustufen Inhalt verloren.
 • Dokumente zu einem zusammenfügen, per Ziehen ordnen, mit Vorschau der ersten Seite jedes Dokuments. Auch Word, Excel, PowerPoint und Bilder werden angenommen: Was kein PDF ist, wird vorher umgewandelt.
 • Ein Dokument aufteilen: eine Datei pro Seite, nach Bereichen, oder ausgewählte Seiten entnehmen.
 • Fotos in Dokumente verwandeln, aus der Galerie oder direkt mit der Kamera. Ein Bild pro Seite, oder 2, 4 und 6 zusammen.

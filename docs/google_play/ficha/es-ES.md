@@ -15,7 +15,7 @@ NexaPDF: PDF sin conexión
 Une, separa, edita y firma PDF sin conexión. Sin anuncios y sin rastreo.
 ```
 
-## Descripcion completa (3931/4000)
+## Descripcion completa (3994/4000)
 
 ```
 NexaPDF es una caja de herramientas para PDF que funciona entera en tu móvil.
@@ -26,7 +26,8 @@ QUÉ HACE
 
 • Escanear papel con la cámara. Encuentra los bordes de la hoja mientras apuntas, enseña hasta qué punto los distingue, corrige la perspectiva y puede leer el texto para que después puedas buscar dentro del documento.
 • Modo tarjeta para el DNI, el carné de conducir, tarjetas de crédito, abonos de transporte y pasaportes. Las dos caras van en una hoja y a su tamaño real, así que al imprimirla sale del tamaño del carné y no una foto ampliada.
-• Varias fotos por página, fundidas en una. Mejorar una página amplifica el grano a la vez que el detalle, así que llega un punto en que el papel se ensucia más rápido de lo que las letras ganan. Con tres fotos el grano se cancela solo y ese punto se aleja.
+• Varias fotos por página, fundidas en una. Mejorar amplifica el grano a la vez que el detalle; con tres fotos el grano se cancela solo y se puede apretar más.
+• Conservar los colores originales, si quieres: en una factura con un sello rojo o un apunte a bolígrafo azul, pasar la hoja a gris es contenido que desaparece.
 • Unir documentos en uno solo, arrastrando para ordenarlos y con la vista previa de la primera página de cada uno. Admite también Word, Excel, PowerPoint e imágenes: lo que no es PDF se convierte antes.
 • Separar un documento en un fichero por página, por rangos o extrayendo las páginas que elijas.
 • Convertir fotos en documentos, desde la galería o haciendo la foto en el momento. Una imagen por página, o 2, 4 y 6 juntas.

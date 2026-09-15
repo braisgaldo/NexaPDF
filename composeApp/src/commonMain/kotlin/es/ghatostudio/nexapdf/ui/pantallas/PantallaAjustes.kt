@@ -169,6 +169,8 @@ import es.ghatostudio.nexapdf.resources.aj_seccion_avisos
 import es.ghatostudio.nexapdf.resources.aj_seccion_copia
 import es.ghatostudio.nexapdf.resources.aj_escaner_auto
 import es.ghatostudio.nexapdf.resources.aj_escaner_auto_desc
+import es.ghatostudio.nexapdf.resources.aj_escaner_color
+import es.ghatostudio.nexapdf.resources.aj_escaner_color_desc
 import es.ghatostudio.nexapdf.resources.aj_escaner_filtro
 import es.ghatostudio.nexapdf.resources.aj_escaner_rafaga
 import es.ghatostudio.nexapdf.resources.aj_escaner_rafaga_desc
@@ -213,6 +215,7 @@ fun PantallaAjustes(
     alCambiarEscanerOcr: (Boolean) -> Unit,
     alCambiarEscanerAutomatico: (Boolean) -> Unit,
     alCambiarEscanerRafaga: (Boolean) -> Unit,
+    alCambiarEscanerColor: (Boolean) -> Unit,
     alCambiarEscanerFiltro: (FiltroPagina) -> Unit,
     alElegirCarpeta: () -> Unit,
     alQuitarCarpeta: () -> Unit,
@@ -376,6 +379,14 @@ fun PantallaAjustes(
                         detalle = stringResource(Res.string.aj_escaner_rafaga_desc),
                         valor = ajustes.escanerRafaga,
                         alCambiar = alCambiarEscanerRafaga,
+                    )
+                }
+                item {
+                    FilaConmutador(
+                        titulo = stringResource(Res.string.aj_escaner_color),
+                        detalle = stringResource(Res.string.aj_escaner_color_desc),
+                        valor = ajustes.escanerColor,
+                        alCambiar = alCambiarEscanerColor,
                     )
                 }
                 item {

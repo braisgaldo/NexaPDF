@@ -42,6 +42,8 @@
     <string name="aj_elegir_carpeta">Επιλογή φακέλου</string>
     <string name="aj_escaner_auto">Αυτόματη λήψη</string>
     <string name="aj_escaner_auto_desc">Να τραβά μόνο του όταν το χαρτί είναι καλά καδραρισμένο.</string>
+    <string name="aj_escaner_color">Διατήρηση των αρχικών χρωμάτων</string>
+    <string name="aj_escaner_color_desc">Οι σκιές και η θολούρα διορθώνονται κανονικά, αλλά μια κόκκινη σφραγίδα μένει κόκκινη. Το αρχείο είναι μεγαλύτερο.</string>
     <string name="aj_escaner_filtro">Προεπιλεγμένη βελτίωση</string>
     <string name="aj_escaner_filtro_desc">Εφαρμόζεται σε κάθε σελίδα μόλις καταγραφεί.</string>
     <string name="aj_escaner_ocr">Αναζητήσιμο κείμενο από προεπιλογή</string>

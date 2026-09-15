@@ -675,6 +675,78 @@ class EscanerAndroidTest {
     }
 
     @Test
+    fun conLaOpcionDeColorElSelloRojoSigueSiendoRojo() = runBlocking {
+        // La mejora de pagina hace dos cosas a la vez: quita sombras y da
+        // nitidez, que es lo que se le pide, y de paso pasa la hoja a gris, que
+        // no. Para un folio impreso da igual; para una factura con un sello
+        // rojo es contenido que desaparece.
+        val hoja = HojaEscaneada(
+            id = "color",
+            rutaOriginal = crearImagenConToqueDeColor("sello.png", 1200, 1700).absolutePath,
+            cuadro = Cuadrilatero.COMPLETO,
+            filtro = FiltroPagina.DOCUMENTO_NITIDO,
+            enColor = true,
+        )
+        val enGris = hoja.copy(id = "gris", enColor = false)
+
+        val rutaColor = File(trabajo, "sello-color.png").absolutePath
+        val rutaGris = File(trabajo, "sello-gris.png").absolutePath
+        assertTrue(escaner.revelar(hoja, rutaColor) is ResultadoPdf.Exito)
+        assertTrue(escaner.revelar(enGris, rutaGris) is ResultadoPdf.Exito)
+
+        val (rojoColor, saturacionColor) = selloMedido(rutaColor)
+        val (_, saturacionGris) = selloMedido(rutaGris)
+
+        assertTrue(
+            "sin la opcion el sello deberia quedar gris, y tiene $saturacionGris de saturacion",
+            saturacionGris < 12,
+        )
+        assertTrue(
+            "con la opcion el sello sigue teniendo solo $saturacionColor de saturacion",
+            saturacionColor > 60,
+        )
+        assertTrue(
+            "el sello tendria que seguir siendo rojo y su canal rojo vale $rojoColor",
+            rojoColor > 120,
+        )
+    }
+
+    /**
+     * Canal rojo medio del sello y cuanto se separa del gris.
+     *
+     * La saturacion se mide como la distancia entre el canal mas alto y el mas
+     * bajo: en un pixel gris los tres valen lo mismo y sale cero, sea claro u
+     * oscuro. Mirar solo el canal rojo no valdria, porque un gris claro tambien
+     * tiene el rojo alto.
+     */
+    private fun selloMedido(ruta: String): Pair<Int, Int> {
+        val mapa = CargadorImagen.cargar(ruta, 4000) ?: return 0 to 0
+        // El sello se dibuja entre el 60 % y el 88 % de ancho y el 80 % y 88 %
+        // de alto; se mide el centro de esa zona para no coger sus bordes.
+        val desdeX = (mapa.width * 0.66f).toInt()
+        val hastaX = (mapa.width * 0.82f).toInt()
+        val desdeY = (mapa.height * 0.82f).toInt()
+        val hastaY = (mapa.height * 0.86f).toInt()
+        var sumaRojo = 0L
+        var sumaSaturacion = 0L
+        var cuenta = 0
+        for (y in desdeY until hastaY) {
+            for (x in desdeX until hastaX) {
+                val pixel = mapa.getPixel(x, y)
+                val r = Color.red(pixel)
+                val g = Color.green(pixel)
+                val b = Color.blue(pixel)
+                sumaRojo += r
+                sumaSaturacion += (maxOf(r, g, b) - minOf(r, g, b))
+                cuenta++
+            }
+        }
+        mapa.recycle()
+        if (cuenta == 0) return 0 to 0
+        return (sumaRojo / cuenta).toInt() to (sumaSaturacion / cuenta).toInt()
+    }
+
+    @Test
     fun laRafagaDejaLaPaginaConMenosGrano() = runBlocking {
         // La prueba que justifica la rafaga, y de punta a punta: tres fotos con
         // grano distinto de la misma hoja tienen que dar una pagina mas limpia

@@ -3,7 +3,7 @@ Novedades
 Escáner de documentos. Fotografía un papel y sale un PDF derecho y legible, no una foto torcida dentro de un PDF.
 
 • Encuentra los bordes mientras apuntas y dispara solo cuando la mano está quieta.
-• Corrige la perspectiva y hace varias fotos de cada hoja para que salga nítida.
+• Corrige la perspectiva, hace varias fotos por hoja y puede guardar en color.
 • Modo tarjeta: DNI, carné o pasaporte salen a tamaño real, las dos caras en una hoja.
 • Puede leer el texto para que busques dentro. Todo en tu teléfono.
 • Guarda con el nombre que elijas.

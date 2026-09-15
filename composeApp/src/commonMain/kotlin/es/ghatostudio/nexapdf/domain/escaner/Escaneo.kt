@@ -231,6 +231,15 @@ data class HojaEscaneada(
     val cuadro: Cuadrilatero,
     val filtro: FiltroPagina = FiltroPagina.DOCUMENTO_NITIDO,
     val intensidadFiltro: Float = 0.5f,
+    /**
+     * Conservar el color al mejorar la pagina.
+     *
+     * Viaja con la hoja y no se lee de los ajustes al revelar para que la vista
+     * previa de la revision y el PDF final salgan iguales: si cambiara el ajuste
+     * a mitad de un escaneo, las hojas ya revisadas saldrian distintas de como
+     * se vieron.
+     */
+    val enColor: Boolean = false,
     /** Giro en pasos de 90 grados aplicado despues de enderezar. */
     val giroGrados: Int = 0,
     /** Confianza con la que se detecto el recorte, para poder avisar. */

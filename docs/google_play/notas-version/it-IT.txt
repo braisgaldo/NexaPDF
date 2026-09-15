@@ -3,7 +3,7 @@ Novità
 Scanner di documenti. Fotografa un foglio e ottieni un PDF dritto e leggibile, non una foto storta dentro un PDF.
 
 • Trova i bordi mentre inquadri e scatta da solo quando la mano è ferma.
-• Raddrizza la prospettiva e pulisce la pagina.
+• Raddrizza la prospettiva, pulisce la pagina e può mantenere il colore.
 • Scatta più foto per pagina e le fonde: meno grana, più nitidezza.
 • Modalità tessera: documento o passaporto a grandezza reale, fronte e retro in un foglio.
 • Può leggere il testo per cercarci dentro. Tutto sul telefono.

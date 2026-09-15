@@ -1184,6 +1184,40 @@ TEXTOS = {
         "ca": "Pàgines més netes i nítides. Cadascuna triga uns segons més.",
         "eu": "Orri garbiagoak eta zorrotzagoak. Bakoitzak segundo batzuk gehiago behar ditu.",
     },
+
+    # --- Ajuste de color -----------------------------------------------------
+    # No se dice "no convertir a escala de grises" sino lo que se gana: que el
+    # sello rojo de la factura siga siendo rojo.
+    "aj_escaner_color": {
+        "en": "Keep the original colours",
+        "es": "Conservar los colores originales",
+        "fr": "Conserver les couleurs d’origine",
+        "de": "Originalfarben behalten",
+        "zh": "保留原始颜色",
+        "ja": "元の色を残す",
+        "ru": "Сохранять исходные цвета",
+        "it": "Conservare i colori originali",
+        "el": "Διατήρηση των αρχικών χρωμάτων",
+        "ar": "الاحتفاظ بالألوان الأصلية",
+        "gl": "Conservar as cores orixinais",
+        "ca": "Conservar els colors originals",
+        "eu": "Jatorrizko koloreak gorde",
+    },
+    "aj_escaner_color_desc": {
+        "en": "Shadows and blur are still corrected, but a red stamp stays red. The file is larger.",
+        "es": "Se siguen quitando sombras y dando nitidez, pero un sello rojo sigue siendo rojo. El fichero pesa más.",
+        "fr": "Les ombres et le flou sont toujours corrigés, mais un tampon rouge reste rouge. Le fichier est plus lourd.",
+        "de": "Schatten und Unschärfe werden weiterhin korrigiert, aber ein roter Stempel bleibt rot. Die Datei wird größer.",
+        "zh": "依然会去除阴影并提升清晰度，但红色印章仍是红色。文件更大。",
+        "ja": "影の除去と鮮明化はそのまま。赤い印は赤いまま残ります。ファイルは大きくなります。",
+        "ru": "Тени и размытие по-прежнему исправляются, но красная печать останется красной. Файл больше.",
+        "it": "Ombre e sfocatura si correggono comunque, ma un timbro rosso resta rosso. Il file pesa di più.",
+        "el": "Οι σκιές και η θολούρα διορθώνονται κανονικά, αλλά μια κόκκινη σφραγίδα μένει κόκκινη. Το αρχείο είναι μεγαλύτερο.",
+        "ar": "تُصحَّح الظلال والضبابية كالمعتاد، لكن الختم الأحمر يبقى أحمر. حجم الملف أكبر.",
+        "gl": "Séguense quitando sombras e dando nitidez, pero un selo vermello segue sendo vermello. O ficheiro pesa máis.",
+        "ca": "Se segueixen traient ombres i donant nitidesa, però un segell vermell continua sent vermell. El fitxer pesa més.",
+        "eu": "Itzalak kendu eta zorroztasuna eman egiten da oraindik, baina zigilu gorri bat gorri mantentzen da. Fitxategiak gehiago pisatzen du.",
+    },
 }
 
 PLURALES = {

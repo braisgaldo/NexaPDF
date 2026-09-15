@@ -3,7 +3,7 @@ What's new
 Document scanner. Photograph a sheet of paper and get a straight, readable PDF instead of a crooked photo inside a PDF.
 
 • Finds the edges while you aim and shoots once your hand is still.
-• Corrects the perspective and takes several shots per page for a sharp result.
+• Corrects the perspective, takes several shots per page, and can keep colour.
 • Card mode: ID, licence or passport come out at actual size, both sides on one sheet.
 • Reads the text so you can search inside, all on your phone.
 • Saves with your chosen name.

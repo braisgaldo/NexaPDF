@@ -53,6 +53,7 @@ class RepositorioAjustes(
         val escanerOcr = booleanPreferencesKey("escaner_ocr")
         val escanerAutomatico = booleanPreferencesKey("escaner_automatico")
         val escanerRafaga = booleanPreferencesKey("escaner_rafaga")
+        val escanerColor = booleanPreferencesKey("escaner_color")
         val escanerFiltro = stringPreferencesKey("escaner_filtro")
         val carpetaDestino = stringPreferencesKey("carpeta_destino")
         val preguntarCompartir = booleanPreferencesKey("preguntar_compartir")
@@ -93,6 +94,7 @@ class RepositorioAjustes(
             escanerCapturaAutomatica = preferencias[Claves.escanerAutomatico]
                 ?: porDefecto.escanerCapturaAutomatica,
             escanerRafaga = preferencias[Claves.escanerRafaga] ?: porDefecto.escanerRafaga,
+            escanerColor = preferencias[Claves.escanerColor] ?: porDefecto.escanerColor,
             escanerFiltro = preferencias[Claves.escanerFiltro] ?: porDefecto.escanerFiltro,
             carpetaDestino = preferencias[Claves.carpetaDestino],
             preguntarCompartir = preferencias[Claves.preguntarCompartir]
@@ -188,6 +190,9 @@ class RepositorioAjustes(
     suspend fun fijarEscanerRafaga(valor: Boolean) =
         editar { it[Claves.escanerRafaga] = valor }
 
+    suspend fun fijarEscanerColor(valor: Boolean) =
+        editar { it[Claves.escanerColor] = valor }
+
     suspend fun fijarEscanerFiltro(clave: String) = editar { it[Claves.escanerFiltro] = clave }
 
     suspend fun fijarPreguntarCompartir(valor: Boolean) =
@@ -237,6 +242,7 @@ class RepositorioAjustes(
         preferencias[Claves.escanerOcr] = nuevos.escanerOcr
         preferencias[Claves.escanerAutomatico] = nuevos.escanerCapturaAutomatica
         preferencias[Claves.escanerRafaga] = nuevos.escanerRafaga
+        preferencias[Claves.escanerColor] = nuevos.escanerColor
         preferencias[Claves.escanerFiltro] = nuevos.escanerFiltro
         preferencias[Claves.preguntarCompartir] = nuevos.preguntarCompartir
         preferencias[Claves.resumenSeparar] = nuevos.resumenAlSepararEnPartes

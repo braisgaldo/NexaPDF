@@ -15,7 +15,7 @@ NexaPDF: PDF sense connexió
 Uneix, divideix, edita i signa PDF sense connexió. Sense anuncis ni rastreig.
 ```
 
-## Descripcion completa (3707/4000)
+## Descripcion completa (3823/4000)
 
 ```
 NexaPDF és una caixa d'eines per a PDF que funciona sencera al teu mòbil.
@@ -27,6 +27,7 @@ QUÈ FA
 • Escanejar paper amb la càmera. Troba les vores del full mentre apuntes, mostra fins a quin punt les distingeix, corregeix la perspectiva i pot llegir el text perquè després puguis cercar dins el document.
 • Mode targeta per al DNI, el carnet de conduir, targetes de crèdit, abonaments de transport i passaports. Les dues cares van en un full i a mida real, així que en imprimir-lo obtens la mida del carnet i no una foto ampliada.
 • Diverses fotos per pàgina, fusionades en una. Millorar una pàgina amplifica el gra alhora que el detall; amb tres fotos el gra s’anul·la sol.
+• Conservar els colors originals, si vols: en una factura amb un segell vermell, el gris fa desaparèixer contingut.
 • Unir documents en un de sol, arrossegant per ordenar-los i amb la previsualització de la primera pàgina de cadascun. Admet també Word, Excel, PowerPoint i imatges: el que no és PDF es converteix abans.
 • Dividir un document en un fitxer per pàgina, per intervals o extraient les pàgines que triïs.
 • Convertir fotos en documents, des de la galeria o fent la foto al moment. Una imatge per pàgina, o 2, 4 i 6 juntes.

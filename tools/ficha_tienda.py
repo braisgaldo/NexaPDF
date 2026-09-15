@@ -75,6 +75,7 @@ WHAT IT DOES
 • Scan paper with the camera. It finds the edges of the sheet while you aim, shows how well it can see them, straightens the perspective and can read the text so you can search inside the document afterwards.
 • Card mode for ID cards, driving licences, bank cards, travel passes and passports. Both sides go on one sheet at their real size, so printing it gives you something the size of the card itself, not a blown-up photo.
 • Several shots per page, merged into one. Enhancing a page amplifies its grain along with its detail, so there is a point where the paper gets dirtier faster than the letters get sharper. Three shots cancel the grain out, and that point moves further away.
+• Keep the original colours if you want to. Enhancing a page removes shadows and sharpens it, and as a side effect turns it grey; on an invoice with a red stamp or a note in blue ink, that is content gone. The option keeps the colour and the text stays searchable.
 • Merge documents into one, dragging to set the order, with a preview of each first page. It also accepts Word, Excel, PowerPoint and images: anything that is not a PDF is converted first.
 • Split a document into one file per page, by ranges, or by extracting the pages you pick.
 • Turn photos into documents, from your gallery or straight from the camera. One image per page, or 2, 4 and 6 together.
@@ -116,7 +117,8 @@ QUÉ HACE
 
 • Escanear papel con la cámara. Encuentra los bordes de la hoja mientras apuntas, enseña hasta qué punto los distingue, corrige la perspectiva y puede leer el texto para que después puedas buscar dentro del documento.
 • Modo tarjeta para el DNI, el carné de conducir, tarjetas de crédito, abonos de transporte y pasaportes. Las dos caras van en una hoja y a su tamaño real, así que al imprimirla sale del tamaño del carné y no una foto ampliada.
-• Varias fotos por página, fundidas en una. Mejorar una página amplifica el grano a la vez que el detalle, así que llega un punto en que el papel se ensucia más rápido de lo que las letras ganan. Con tres fotos el grano se cancela solo y ese punto se aleja.
+• Varias fotos por página, fundidas en una. Mejorar amplifica el grano a la vez que el detalle; con tres fotos el grano se cancela solo y se puede apretar más.
+• Conservar los colores originales, si quieres: en una factura con un sello rojo o un apunte a bolígrafo azul, pasar la hoja a gris es contenido que desaparece.
 • Unir documentos en uno solo, arrastrando para ordenarlos y con la vista previa de la primera página de cada uno. Admite también Word, Excel, PowerPoint e imágenes: lo que no es PDF se convierte antes.
 • Separar un documento en un fichero por página, por rangos o extrayendo las páginas que elijas.
 • Convertir fotos en documentos, desde la galería o haciendo la foto en el momento. Una imagen por página, o 2, 4 y 6 juntas.
@@ -156,10 +158,11 @@ Elle ne demande pas la permission d'accès à internet. Ce n'est pas une promess
 
 CE QU'ELLE FAIT
 
-• Numériser du papier avec l’appareil photo. Il trouve les bords de la feuille pendant que vous visez, montre à quel point il les distingue, redresse la perspective et peut lire le texte pour que vous puissiez ensuite chercher dans le document.
-• Mode carte pour la pièce d’identité, le permis, les cartes bancaires, les titres de transport et les passeports. Les deux faces tiennent sur une feuille à leur taille réelle : à l’impression, vous obtenez la taille de la carte.
+• Numériser du papier avec l’appareil photo. Il trouve les bords pendant que vous visez, montre ce qu’il distingue, redresse la perspective et peut lire le texte pour que vous puissiez chercher dans le document.
+• Mode carte pour la pièce d’identité, le permis, les cartes bancaires et les passeports : les deux faces sur une feuille, à leur taille réelle. À l’impression, vous obtenez la taille de la carte.
 • Plusieurs photos par page, fusionnées en une : le grain s’annule de lui-même.
-• Fusionner des documents en un seul, en les faisant glisser pour les ordonner, avec un aperçu de la première page de chacun. Elle accepte aussi Word, Excel, PowerPoint et les images : ce qui n'est pas un PDF est converti au préalable.
+• Conserver les couleurs d’origine : sur une facture avec un tampon rouge, le gris fait disparaître du contenu.
+• Fusionner des documents en un seul, en les faisant glisser pour les ordonner, avec un aperçu de chacun. Word, Excel, PowerPoint et images sont convertis au préalable.
 • Diviser un document en un fichier par page, par plages, ou en extrayant les pages choisies.
 • Transformer des photos en documents, depuis la galerie ou en prenant la photo sur le moment. Une image par page, ou 2, 4 et 6 ensemble.
 • Modifier les pages : dessiner à main levée, surligner, ajouter des formes, des flèches, des zones de texte et des images. Remplacer une ligne du texte existant. Appliquer des filtres pour nettoyer un document photographié.
@@ -201,6 +204,7 @@ WAS SIE KANN
 • Papier mit der Kamera scannen. Findet die Ränder des Blattes beim Zielen, zeigt, wie gut es sie erkennt, korrigiert die Perspektive und kann den Text lesen, damit Sie später im Dokument suchen können.
 • Kartenmodus für Ausweis, Führerschein, Bankkarten, Fahrkarten und Reisepässe. Beide Seiten kommen in Originalgröße auf ein Blatt, sodass der Ausdruck die Größe der Karte hat und kein vergrößertes Foto ist.
 • Mehrere Aufnahmen pro Seite, zu einer zusammengefügt. Das Aufbereiten verstärkt das Rauschen zusammen mit dem Detail; mit drei Aufnahmen hebt sich das Rauschen von selbst auf.
+• Originalfarben behalten, wenn Sie möchten: auf einer Rechnung mit rotem Stempel geht in Graustufen Inhalt verloren.
 • Dokumente zu einem zusammenfügen, per Ziehen ordnen, mit Vorschau der ersten Seite jedes Dokuments. Auch Word, Excel, PowerPoint und Bilder werden angenommen: Was kein PDF ist, wird vorher umgewandelt.
 • Ein Dokument aufteilen: eine Datei pro Seite, nach Bereichen, oder ausgewählte Seiten entnehmen.
 • Fotos in Dokumente verwandeln, aus der Galerie oder direkt mit der Kamera. Ein Bild pro Seite, oder 2, 4 und 6 zusammen.
@@ -243,6 +247,7 @@ Quellcode: github.com/braisgaldo/NexaPDF""",
 • 用相机扫描纸张。取景时就能找到纸的边缘，并显示识别程度，自动校正透视，还可以识别文字，让你之后能在文档里搜索。
 • 证卡模式，适用于身份证、驾照、银行卡、交通卡和护照。正反面按实际尺寸放在同一页，打印出来就是证件本身的大小，而不是放大的照片。
 • 每页拍摄多张并合成一张。增强页面会在提升细节的同时放大噪点；拍三张可以让噪点自行抵消。
+• 可以保留原始颜色：发票上的红色印章转成灰度就等于丢失内容。
 • 把多个文档合并为一个，拖动排序，并显示每个文档首页的预览。同样支持 Word、Excel、PowerPoint 和图片：非 PDF 的文件会先转换。
 • 拆分文档：每页一个文件、按范围拆分，或提取你选中的页面。
 • 把照片变成文档，可从相册选取或当场拍照。每页一张图，或 2、4、6 张排在一起。
@@ -285,6 +290,7 @@ PDF 与办公格式之间的转换保留的是内容，而非精确排版。PDF 
 • カメラで紙をスキャン。構えている間に用紙の輪郭を見つけ、どれだけはっきり見えているかを表示し、傾きを補正します。文字を読み取れば、あとから書類の中を検索できます。
 • 身分証、運転免許証、銀行カード、交通系カード、パスポートのためのカードモード。表裏を実物大で 1 枚に収めるので、印刷すればカードと同じ大きさになります。
 • 1 ページにつき複数枚を撮って合成します。補正は細部と一緒にノイズも強めますが、3 枚撮ればノイズは打ち消し合います。
+• 元の色を残すこともできます。赤い印のある請求書では、グレーにすると内容が失われます。
 • 複数の文書を 1 つに結合。ドラッグして順序を変えられ、各文書の 1 ページ目のプレビューが出ます。Word・Excel・PowerPoint・画像も受け付け、PDF でないものは先に変換されます。
 • 文書の分割：1 ページごとに 1 ファイル、範囲指定、選んだページの取り出し。
 • 写真を文書に変換。ギャラリーから選ぶか、その場で撮影できます。1 ページに 1 枚、または 2・4・6 枚まとめて。
@@ -327,6 +333,7 @@ PDF とオフィス形式の変換で保たれるのは内容であり、レイ�
 • Сканировать бумагу камерой. Находит края листа, пока вы наводите, показывает, насколько хорошо их различает, выправляет перспективу и может распознать текст, чтобы потом искать внутри документа.
 • Режим карточки для удостоверений, водительских прав, банковских и транспортных карт и паспортов. Обе стороны ложатся на один лист в натуральную величину, поэтому распечатка получается размером с саму карточку.
 • Несколько снимков на страницу, объединённых в один. Обработка усиливает шум вместе с деталями; три снимка гасят шум сами собой.
+• Можно сохранить исходные цвета: на счёте с красной печатью серый цвет — это потерянное содержимое.
 • Объединять документы в один, перетаскивая для изменения порядка, с предпросмотром первой страницы каждого. Принимает также Word, Excel, PowerPoint и изображения: всё, что не PDF, сначала преобразуется.
 • Делить документ: по одному файлу на страницу, по диапазонам или извлекая выбранные страницы.
 • Превращать фотографии в документы — из галереи или снимая на месте. По одному изображению на страницу, либо 2, 4 и 6 вместе.
@@ -369,6 +376,7 @@ COSA FA
 • Scansionare la carta con la fotocamera. Trova i bordi del foglio mentre inquadri, mostra quanto bene li distingue, raddrizza la prospettiva e può leggere il testo perché tu possa poi cercare dentro il documento.
 • Modalità tessera per carta d’identità, patente, carte bancarie, abbonamenti e passaporti. Fronte e retro stanno in un foglio a grandezza reale: stampandolo ottieni le dimensioni della tessera, non una foto ingrandita.
 • Più scatti per pagina, fusi in uno. Migliorare una pagina amplifica la grana insieme al dettaglio; con tre scatti la grana si annulla da sola.
+• Conservare i colori originali, se vuoi: su una fattura con un timbro rosso, il grigio fa sparire del contenuto.
 • Unire documenti in uno solo, trascinandoli per ordinarli, con l'anteprima della prima pagina di ciascuno. Accetta anche Word, Excel, PowerPoint e immagini: ciò che non è PDF viene convertito prima.
 • Dividere un documento: un file per pagina, per intervalli, o estraendo le pagine scelte.
 • Trasformare foto in documenti, dalla galleria o scattando sul momento. Un'immagine per pagina, oppure 2, 4 e 6 insieme.
@@ -411,6 +419,7 @@ Codice sorgente: github.com/braisgaldo/NexaPDF""",
 • Σάρωση χαρτιού με την κάμερα. Βρίσκει τις άκρες του φύλλου καθώς στοχεύετε, δείχνει πόσο καθαρά τις διακρίνει, ισιώνει την προοπτική και μπορεί να διαβάσει το κείμενο ώστε να ψάχνετε μέσα στο έγγραφο.
 • Λειτουργία κάρτας για ταυτότητες, διπλώματα, τραπεζικές κάρτες, κάρτες μετακίνησης και διαβατήρια. Και οι δύο όψεις μπαίνουν σε ένα φύλλο σε φυσικό μέγεθος, ώστε η εκτύπωση να έχει το μέγεθος της κάρτας.
 • Πολλές λήψεις ανά σελίδα, ενωμένες σε μία. Η βελτίωση ενισχύει τον θόρυβο μαζί με τη λεπτομέρεια· με τρεις λήψεις ο θόρυβος αλληλοαναιρείται.
+• Διατήρηση των αρχικών χρωμάτων, αν θέλετε: σε τιμολόγιο με κόκκινη σφραγίδα, το γκρι χάνει περιεχόμενο.
 • Ενώνει έγγραφα σε ένα, με σύρσιμο για την ταξινόμηση και προεπισκόπηση της πρώτης σελίδας του καθενός. Δέχεται επίσης Word, Excel, PowerPoint και εικόνες: ό,τι δεν είναι PDF μετατρέπεται πρώτα.
 • Χωρίζει ένα έγγραφο: ένα αρχείο ανά σελίδα, κατά περιοχές, ή εξάγοντας τις σελίδες που επιλέγετε.
 • Μετατρέπει φωτογραφίες σε έγγραφα, από τη συλλογή ή τραβώντας τες επιτόπου. Μία εικόνα ανά σελίδα, ή 2, 4 και 6 μαζί.
@@ -453,6 +462,7 @@ Codice sorgente: github.com/braisgaldo/NexaPDF""",
 • مسح الورق بالكاميرا. يجد حواف الورقة أثناء التصويب، ويعرض مدى وضوحها، ويصحّح المنظور، ويمكنه قراءة النص لتتمكن لاحقًا من البحث داخل المستند.
 • وضع البطاقة لبطاقات الهوية ورخص القيادة والبطاقات المصرفية وبطاقات النقل وجوازات السفر. يظهر الوجهان في ورقة واحدة بالحجم الحقيقي، فتأتي الطباعة بحجم البطاقة نفسها لا صورة مكبّرة.
 • عدة لقطات لكل صفحة تُدمج في واحدة. تحسين الصفحة يضخّم الضوضاء مع التفاصيل؛ ثلاث لقطات تُلغي الضوضاء من تلقاء نفسها.
+• يمكن الاحتفاظ بالألوان الأصلية: في فاتورة عليها ختم أحمر، التحويل إلى الرمادي يعني فقدان محتوى.
 • دمج المستندات في مستند واحد، مع السحب لترتيبها ومعاينة الصفحة الأولى من كل منها. ويقبل أيضًا ملفات Word وExcel وPowerPoint والصور: وكل ما ليس PDF يُحوَّل أولًا.
 • تقسيم المستند: ملف لكل صفحة، أو حسب نطاقات، أو باستخراج الصفحات التي تختارها.
 • تحويل الصور إلى مستندات، من المعرض أو بالتقاطها في اللحظة. صورة واحدة في كل صفحة، أو ٢ و٤ و٦ معًا.
@@ -495,6 +505,7 @@ QUE FAI
 • Dixitalizar papel coa cámara. Atopa os bordos da folla mentres apuntas, amosa ata que punto os distingue, corrixe a perspectiva e pode ler o texto para que despois poidas buscar dentro do documento.
 • Modo tarxeta para o DNI, o carné de conducir, tarxetas de crédito, abonos de transporte e pasaportes. As dúas caras van nunha folla e a tamaño real, así que ao imprimila sae do tamaño do carné e non unha foto ampliada.
 • Varias fotos por páxina, fundidas nunha. Mellorar unha páxina amplifica o gran á vez que o detalle; con tres fotos o gran cancélase só.
+• Conservar as cores orixinais, se queres: nunha factura cun selo vermello, o gris fai desaparecer contido.
 • Unir documentos nun só, arrastrando para ordenalos e coa vista previa da primeira páxina de cada un. Admite tamén Word, Excel, PowerPoint e imaxes: o que non é PDF convértese antes.
 • Separar un documento nun ficheiro por páxina, por rangos ou extraendo as páxinas que elixas.
 • Converter fotos en documentos, desde a galería ou facendo a foto no momento. Unha imaxe por páxina, ou 2, 4 e 6 xuntas.
@@ -537,6 +548,7 @@ QUÈ FA
 • Escanejar paper amb la càmera. Troba les vores del full mentre apuntes, mostra fins a quin punt les distingeix, corregeix la perspectiva i pot llegir el text perquè després puguis cercar dins el document.
 • Mode targeta per al DNI, el carnet de conduir, targetes de crèdit, abonaments de transport i passaports. Les dues cares van en un full i a mida real, així que en imprimir-lo obtens la mida del carnet i no una foto ampliada.
 • Diverses fotos per pàgina, fusionades en una. Millorar una pàgina amplifica el gra alhora que el detall; amb tres fotos el gra s’anul·la sol.
+• Conservar els colors originals, si vols: en una factura amb un segell vermell, el gris fa desaparèixer contingut.
 • Unir documents en un de sol, arrossegant per ordenar-los i amb la previsualització de la primera pàgina de cadascun. Admet també Word, Excel, PowerPoint i imatges: el que no és PDF es converteix abans.
 • Dividir un document en un fitxer per pàgina, per intervals o extraient les pàgines que triïs.
 • Convertir fotos en documents, des de la galeria o fent la foto al moment. Una imatge per pàgina, o 2, 4 i 6 juntes.
@@ -579,6 +591,7 @@ ZER EGITEN DUEN
 • Papera kamerarekin eskaneatu. Orriaren ertzak aurkitzen ditu apuntatzen duzun bitartean, zenbateraino bereizten dituen erakusten du, perspektiba zuzentzen du eta testua irakur dezake gero dokumentuaren barruan bilatu ahal izateko.
 • Txartel modua NANerako, gidabaimenerako, banku-txarteletarako, garraio-txarteletarako eta pasaporteetarako. Bi aldeak orri bakarrean doaz eta tamaina errealean, beraz inprimatzean txartelaren tamaina bera ateratzen da, ez argazki handitu bat.
 • Orriko hainbat argazki, batean fusionatuta. Orria hobetzeak pikorra ere areagotzen du xehetasunarekin batera; hiru argazkirekin pikorra bere kabuz ezabatzen da.
+• Jatorrizko koloreak gorde ditzakezu: zigilu gorria duen faktura batean, grisak edukia desagerrarazten du.
 • Dokumentuak bakarrean batu, arrastatuz ordenatuz eta bakoitzaren lehen orriaren aurrebistarekin. Word, Excel, PowerPoint eta irudiak ere onartzen ditu: PDF ez dena lehenago bihurtzen da.
 • Dokumentu bat zatitu: fitxategi bat orriko, barrutika, edo aukeratutako orriak aterata.
 • Argazkiak dokumentu bihurtu, galeriatik edo unean bertan aterata. Irudi bat orriko, edo 2, 4 eta 6 elkarrekin.

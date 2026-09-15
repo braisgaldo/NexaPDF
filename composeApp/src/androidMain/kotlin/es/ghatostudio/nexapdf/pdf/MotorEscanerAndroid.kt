@@ -180,7 +180,7 @@ class MotorEscanerAndroid(
         val mejorada = if (hoja.filtro == FiltroPagina.NINGUNO) {
             fundida
         } else {
-            FiltrosPagina.aplicar(fundida, hoja.filtro, hoja.intensidadFiltro).also {
+            FiltrosPagina.aplicar(fundida, hoja.filtro, hoja.intensidadFiltro, hoja.enColor).also {
                 if (it != fundida) fundida.recycle()
             }
         }

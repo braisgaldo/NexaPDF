@@ -42,6 +42,8 @@
     <string name="aj_elegir_carpeta">Ordner wählen</string>
     <string name="aj_escaner_auto">Automatische Aufnahme</string>
     <string name="aj_escaner_auto_desc">Von selbst auslösen, wenn das Blatt gut im Bild ist.</string>
+    <string name="aj_escaner_color">Originalfarben behalten</string>
+    <string name="aj_escaner_color_desc">Schatten und Unschärfe werden weiterhin korrigiert, aber ein roter Stempel bleibt rot. Die Datei wird größer.</string>
     <string name="aj_escaner_filtro">Standardverbesserung</string>
     <string name="aj_escaner_filtro_desc">Wird auf jede Seite direkt nach der Aufnahme angewendet.</string>
     <string name="aj_escaner_ocr">Standardmäßig durchsuchbarer Text</string>

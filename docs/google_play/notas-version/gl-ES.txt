@@ -3,7 +3,7 @@ Novidades
 Dixitalizador de documentos. Fotografía un papel e sae un PDF dereito e lexible, non unha foto torta dentro dun PDF.
 
 • Atopa os bordos mentres apuntas e dispara só cando a man está quieta.
-• Corrixe a perspectiva e limpa a páxina.
+• Corrixe a perspectiva, limpa a páxina e pode gardar en cor.
 • Fai varias fotos por páxina e fúndeas: menos gran, máis nitidez.
 • Modo tarxeta: DNI ou pasaporte saen a tamaño real, as dúas caras nunha folla.
 • Pode ler o texto para buscar dentro. Todo no teu teléfono.

@@ -15,7 +15,7 @@ NexaPDF: PDF tools offline
 Merge, split, edit and sign PDFs offline. No ads, no tracking, no accounts.
 ```
 
-## Descripcion completa (3695/4000)
+## Descripcion completa (3960/4000)
 
 ```
 NexaPDF is a complete PDF toolbox that runs entirely on your phone.
@@ -27,6 +27,7 @@ WHAT IT DOES
 • Scan paper with the camera. It finds the edges of the sheet while you aim, shows how well it can see them, straightens the perspective and can read the text so you can search inside the document afterwards.
 • Card mode for ID cards, driving licences, bank cards, travel passes and passports. Both sides go on one sheet at their real size, so printing it gives you something the size of the card itself, not a blown-up photo.
 • Several shots per page, merged into one. Enhancing a page amplifies its grain along with its detail, so there is a point where the paper gets dirtier faster than the letters get sharper. Three shots cancel the grain out, and that point moves further away.
+• Keep the original colours if you want to. Enhancing a page removes shadows and sharpens it, and as a side effect turns it grey; on an invoice with a red stamp or a note in blue ink, that is content gone. The option keeps the colour and the text stays searchable.
 • Merge documents into one, dragging to set the order, with a preview of each first page. It also accepts Word, Excel, PowerPoint and images: anything that is not a PDF is converted first.
 • Split a document into one file per page, by ranges, or by extracting the pages you pick.
 • Turn photos into documents, from your gallery or straight from the camera. One image per page, or 2, 4 and 6 together.

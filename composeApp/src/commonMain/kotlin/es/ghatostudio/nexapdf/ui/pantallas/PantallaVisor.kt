@@ -53,6 +53,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import es.ghatostudio.nexapdf.domain.pdf.Coincidencia
 import es.ghatostudio.nexapdf.domain.pdf.FirmaExistente
@@ -237,8 +238,44 @@ fun PantallaVisor(
     var panel by remember { mutableStateOf<Panel?>(null) }
     val encuadre = rememberEncuadre()
 
-    // Cambiar de pagina con la anterior ampliada dejaria la nueva a medio ver.
-    LaunchedEffect(paginaActual) { encuadre.reiniciar() }
+    // La coincidencia a la que hay que acercarse, si se llego aqui desde la
+    // busqueda. Se guarda aparte del numero de pagina porque hace falta saber
+    // **donde** dentro de la pagina, no solo cual.
+    var aEnfocar by remember { mutableStateOf<Coincidencia?>(null) }
+
+    // Cambiar de pagina con la anterior ampliada dejaria la nueva a medio ver,
+    // asi que por defecto se reinicia. La excepcion es llegar buscando: ahi lo
+    // que se quiere es justo lo contrario, acercarse a la palabra. Saltar a la
+    // pagina y dejarla entera no es encontrar nada, porque en un A4 visto en un
+    // movil la palabra resaltada mide dos milimetros.
+    //
+    // El tamano entra como clave porque el encuadre no puede calcularse hasta
+    // que la pagina esta medida, y al llegar de otra pantalla todavia no lo
+    // esta.
+    LaunchedEffect(paginaActual, aEnfocar, encuadre.tamano, proporcion, lectura) {
+        val objetivo = aEnfocar
+        // Solo en lectura lateral. En la vertical el encuadre no es una
+        // transformacion sobre la pagina sino el ancho de la columna, asi que
+        // acercarse ahi ensancharia el documento sin llevar a ninguna parte.
+        val puedeEnfocar = lectura == DireccionLectura.LATERAL &&
+            objetivo != null &&
+            objetivo.pagina == paginaActual &&
+            encuadre.tamano != IntSize.Zero
+        if (puedeEnfocar && objetivo != null) {
+            val marco = objetivo.marco.normalizado()
+            encuadre.enfocar(
+                centroRelativo = Offset(
+                    (marco.izquierda + marco.derecha) / 2f,
+                    (marco.arriba + marco.abajo) / 2f,
+                ),
+                anchoRelativo = marco.derecha - marco.izquierda,
+                altoRelativo = marco.abajo - marco.arriba,
+                proporcion = proporcion,
+            )
+        } else {
+            encuadre.reiniciar()
+        }
+    }
 
     // Las dos formas de recorrer el documento comparten el mismo numero de
     // pagina, que es el que manda: lo mueve el dedo, pero tambien la
@@ -301,8 +338,15 @@ fun PantallaVisor(
         actual = 0
         buscandoAhora = false
         // Se salta a la primera aparicion: quien busca quiere verla, no leer
-        // una lista y tener que elegir.
-        resultados?.firstOrNull()?.let { acciones.alIrAPagina(it.pagina) }
+        // una lista y tener que elegir. Y se marca para acercarse a ella, que no
+        // es lo mismo: saltar a la pagina y dejarla entera resalta la palabra
+        // pero no la ensena, porque en un A4 en un movil mide dos milimetros.
+        // Faltaba justo esto, y por eso la busqueda recien hecha se quedaba sin
+        // encuadrar mientras que moverse con las flechas si encuadraba.
+        resultados?.firstOrNull()?.let {
+            aEnfocar = it
+            acciones.alIrAPagina(it.pagina)
+        }
     }
 
     Scaffold(
@@ -339,6 +383,7 @@ fun PantallaVisor(
                             onClick = {
                                 actual = (actual - 1 + cuantos) % cuantos
                                 resultados?.getOrNull(actual)?.let {
+                                    aEnfocar = it
                                     acciones.alIrAPagina(it.pagina)
                                 }
                             },
@@ -353,6 +398,7 @@ fun PantallaVisor(
                             onClick = {
                                 actual = (actual + 1) % cuantos
                                 resultados?.getOrNull(actual)?.let {
+                                    aEnfocar = it
                                     acciones.alIrAPagina(it.pagina)
                                 }
                             },
@@ -365,7 +411,12 @@ fun PantallaVisor(
                         }
                     }
                     IconButton(
-                        onClick = { buscando = false; consulta = ""; actual = 0 },
+                        onClick = {
+                            buscando = false
+                            consulta = ""
+                            actual = 0
+                            aEnfocar = null
+                        },
                         modifier = Modifier.size(48.dp),
                     ) {
                         Icon(
@@ -922,58 +973,6 @@ private val AMARILLO_BUSQUEDA = Color(0xB3FFD54F)
 /** La aparicion en la que se esta: naranja, para no confundirla con el resto. */
 private val NARANJA_ACTIVA = Color(0xCCFF8A3D)
 
-@Composable
-private fun ListaResultados(
-    resultados: List<Coincidencia>,
-    buscando: Boolean,
-    alElegir: (Int) -> Unit,
-) {
-    if (buscando) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
-        }
-        return
-    }
-    if (resultados.isEmpty()) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(
-                text = stringResource(Res.string.visor_sin_resultados),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-        return
-    }
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(resultados) { coincidencia ->
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 56.dp)
-                    .clickable { alElegir(coincidencia.pagina) }
-                    .padding(horizontal = 20.dp, vertical = 10.dp),
-            ) {
-                Text(
-                    text = stringResource(
-                        Res.string.visor_pagina_numero,
-                        coincidencia.pagina + 1,
-                    ),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                )
-                Text(
-                    text = coincidencia.fragmento,
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-        }
-    }
-}
-
-/** Encabezado comun de los paneles: titulo, icono y cuenta. */
 @Composable
 private fun CabeceraPanel(
     icono: androidx.compose.ui.graphics.vector.ImageVector,

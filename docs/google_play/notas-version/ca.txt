@@ -3,7 +3,7 @@ Novetats
 Escàner de documents. Fotografia un paper i obtens un PDF dret i llegible, no una foto torta dins d'un PDF.
 
 • Troba les vores mentre apuntes i dispara sol quan la mà està quieta.
-• Corregeix la perspectiva i neteja la pàgina.
+• Corregeix la perspectiva, neteja la pàgina i pot desar en color.
 • Fa diverses fotos per pàgina i les fusiona: menys gra, més nitidesa.
 • Mode targeta: DNI o passaport a mida real, les dues cares en un full.
 • Pot llegir el text per cercar-hi dins. Tot al teu telèfon.

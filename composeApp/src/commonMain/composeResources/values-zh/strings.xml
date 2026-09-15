@@ -42,6 +42,8 @@
     <string name="aj_elegir_carpeta">选择文件夹</string>
     <string name="aj_escaner_auto">自动拍摄</string>
     <string name="aj_escaner_auto_desc">当纸张取景良好时自动按下快门。</string>
+    <string name="aj_escaner_color">保留原始颜色</string>
+    <string name="aj_escaner_color_desc">依然会去除阴影并提升清晰度，但红色印章仍是红色。文件更大。</string>
     <string name="aj_escaner_filtro">默认增强方式</string>
     <string name="aj_escaner_filtro_desc">拍摄后立即应用到每一页。</string>
     <string name="aj_escaner_ocr">默认生成可搜索的文字</string>

@@ -3,7 +3,7 @@ Neu
 Dokumentenscanner. Fotografieren Sie ein Blatt und erhalten Sie ein gerades, lesbares PDF statt eines schiefen Fotos.
 
 • Findet die Ränder beim Zielen und löst aus, sobald die Hand ruhig ist.
-• Korrigiert die Perspektive und säubert die Seite.
-• Macht mehrere Aufnahmen pro Seite und fügt sie zusammen: weniger Rauschen.
+• Korrigiert die Perspektive, säubert die Seite und kann Farbe behalten.
+• Mehrere Aufnahmen pro Seite, zusammengefügt: weniger Rauschen.
 • Kartenmodus: Ausweis oder Reisepass in Originalgröße, beide Seiten auf einem Blatt.
 • Kann den Text lesen, damit Sie darin suchen können. Alles auf dem Gerät.

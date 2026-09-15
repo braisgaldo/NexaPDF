@@ -42,6 +42,8 @@
     <string name="aj_elegir_carpeta">Tria una carpeta</string>
     <string name="aj_escaner_auto">Captura automàtica</string>
     <string name="aj_escaner_auto_desc">Disparar sol quan el paper estigui ben enquadrat.</string>
+    <string name="aj_escaner_color">Conservar els colors originals</string>
+    <string name="aj_escaner_color_desc">Se segueixen traient ombres i donant nitidesa, però un segell vermell continua sent vermell. El fitxer pesa més.</string>
     <string name="aj_escaner_filtro">Millora per defecte</string>
     <string name="aj_escaner_filtro_desc">S’aplica a cada pàgina just després de capturar-la.</string>
     <string name="aj_escaner_ocr">Text cercable per defecte</string>

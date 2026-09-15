@@ -58,6 +58,117 @@ class EstadoEncuadre {
     }
 
     /**
+     * Amplia y centra la vista sobre una zona concreta de la pagina.
+     *
+     * Existe por la busqueda. Saltar a la pagina donde esta la palabra y dejarla
+     * ahi, entera y a tamano de pantalla, no es encontrar nada: en un A4 visto
+     * en un movil la palabra resaltada mide dos milimetros y hay que buscarla
+     * con el dedo. Lo que uno espera al pulsar un resultado es verlo, y para eso
+     * hay que acercarse a el.
+     *
+     * **La pagina no llena la vista**, y ese detalle es justo el que hay que
+     * tener en cuenta. Se dibuja encajada y centrada, asi que entre el borde de
+     * la pantalla y el borde del papel queda un margen que depende de lo
+     * apaisada que sea cada una. Tomando las coordenadas de la palabra como si
+     * fueran de la pantalla, el centrado sale desviado **justo ese margen**: con
+     * una pagina casi tan ancha como la vista casi se acierta, y con una
+     * estrecha la palabra se va fuera. Por eso aqui se rehace el mismo encaje
+     * que hace la capa de resaltados.
+     *
+     * @param centroRelativo centro de la zona, de 0 a 1 sobre la **pagina**.
+     * @param anchoRelativo y [altoRelativo] tamano de la zona en esas mismas
+     *   unidades.
+     * @param proporcion ancho dividido por alto de la pagina.
+     */
+    fun enfocar(
+        centroRelativo: Offset,
+        anchoRelativo: Float,
+        altoRelativo: Float,
+        proporcion: Float,
+    ) {
+        if (tamano == IntSize.Zero || proporcion <= 0f) return
+
+        val anchoVista = tamano.width.toFloat()
+        val altoVista = tamano.height.toFloat()
+        if (anchoVista <= 0f || altoVista <= 0f) return
+
+        // El mismo encaje que `ContentScale.Fit`: la pagina entra entera y sobra
+        // sitio por dos lados.
+        val anchoPagina: Float
+        val altoPagina: Float
+        if (anchoVista / altoVista > proporcion) {
+            altoPagina = altoVista
+            anchoPagina = altoVista * proporcion
+        } else {
+            anchoPagina = anchoVista
+            altoPagina = anchoVista / proporcion
+        }
+        val margenX = (anchoVista - anchoPagina) / 2f
+        val margenY = (altoVista - altoPagina) / 2f
+
+        // El acercamiento se calcula en pixeles de pantalla y no en fracciones
+        // de pagina, que es otra cosa que el margen desvirtuaba: una zona que
+        // ocupa el 10 % de una pagina estrecha no ocupa el 10 % de la vista.
+        val anchoZona = (anchoRelativo * anchoPagina).coerceAtLeast(MINIMO_PIXELES)
+        val altoZona = (altoRelativo * altoPagina).coerceAtLeast(MINIMO_PIXELES)
+        val porAncho = FRACCION_OBJETIVO * anchoVista / anchoZona
+        val porAlto = FRACCION_OBJETIVO * altoVista / altoZona
+        escala = minOf(porAncho, porAlto).coerceIn(ACERCAMIENTO_MINIMO, ACERCAMIENTO_MAXIMO)
+
+        // El encuadre escala respecto al centro de la vista, asi que para traer
+        // un punto al centro hay que desplazarlo justo lo contrario de lo que la
+        // escala lo aleja.
+        val centro = Offset(anchoVista / 2f, altoVista / 2f)
+        val punto = Offset(
+            margenX + centroRelativo.x * anchoPagina,
+            margenY + centroRelativo.y * altoPagina,
+        )
+        desplazamiento = acotarAlPapel(
+            propuesto = -(punto - centro) * escala,
+            escalaActual = escala,
+            margenX = margenX,
+            margenY = margenY,
+            anchoPagina = anchoPagina,
+            altoPagina = altoPagina,
+        )
+    }
+
+    /**
+     * Tope de desplazamiento medido contra el papel, no contra la pantalla.
+     *
+     * [acotar] impide sacar de la vista algo del tamano de la vista, y para
+     * arrastrar con el dedo esta bien. Para el enfoque no vale, y se veia: una
+     * palabra del margen izquierdo de la hoja necesita un desplazamiento mayor
+     * del que ese tope permite, asi que se quedaba a un tercio de pantalla del
+     * centro. Y como los margenes son justo donde empieza y acaba **cada linea**
+     * de texto, le pasaba a muchisimas palabras.
+     *
+     * El limite de aqui es otro: el borde del papel no puede pasar del centro de
+     * la vista. Con esa regla cualquier punto que este dentro de la hoja se
+     * puede centrar exactamente —el caso extremo es centrar el propio borde— y
+     * se sigue sin poder empujar la pagina hasta perderla de vista.
+     */
+    private fun acotarAlPapel(
+        propuesto: Offset,
+        escalaActual: Float,
+        margenX: Float,
+        margenY: Float,
+        anchoPagina: Float,
+        altoPagina: Float,
+    ): Offset {
+        val centroX = tamano.width / 2f
+        val centroY = tamano.height / 2f
+        val maximoX = (centroX - margenX) * escalaActual
+        val minimoX = -(margenX + anchoPagina - centroX) * escalaActual
+        val maximoY = (centroY - margenY) * escalaActual
+        val minimoY = -(margenY + altoPagina - centroY) * escalaActual
+        return Offset(
+            propuesto.x.coerceIn(minOf(minimoX, maximoX), maxOf(minimoX, maximoX)),
+            propuesto.y.coerceIn(minOf(minimoY, maximoY), maxOf(minimoY, maximoY)),
+        )
+    }
+
+    /**
      * Pasa un punto de la pantalla a coordenadas de la pagina sin ampliar.
      *
      * Es la operacion inversa del encuadre: deshace el desplazamiento y la
@@ -83,6 +194,22 @@ class EstadoEncuadre {
     private companion object {
         const val MINIMO = 1f
         const val MAXIMO = 6f
+
+        /** Que parte de la vista debe ocupar la zona enfocada. */
+        const val FRACCION_OBJETIVO = 0.5f
+
+        /**
+         * Limites del acercamiento automatico.
+         *
+         * El minimo esta para que saltar a un resultado se note aunque la
+         * palabra sea larga; el maximo, para que una coincidencia de dos letras
+         * no deje la pantalla llena de un trozo de letra sin contexto alrededor.
+         */
+        const val ACERCAMIENTO_MINIMO = 1.6f
+        const val ACERCAMIENTO_MAXIMO = 4f
+
+        /** Suelo para no dividir por cero con una zona degenerada. */
+        const val MINIMO_PIXELES = 1f
     }
 }
 

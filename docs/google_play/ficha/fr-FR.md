@@ -15,7 +15,7 @@ NexaPDF : outils PDF
 Fusionnez, divisez, modifiez et signez des PDF. Sans internet, sans publicité.
 ```
 
-## Descripcion completa (3980/4000)
+## Descripcion completa (3959/4000)
 
 ```
 NexaPDF est une boîte à outils PDF qui fonctionne entièrement sur votre téléphone.
@@ -24,10 +24,11 @@ Elle ne demande pas la permission d'accès à internet. Ce n'est pas une promess
 
 CE QU'ELLE FAIT
 
-• Numériser du papier avec l’appareil photo. Il trouve les bords de la feuille pendant que vous visez, montre à quel point il les distingue, redresse la perspective et peut lire le texte pour que vous puissiez ensuite chercher dans le document.
-• Mode carte pour la pièce d’identité, le permis, les cartes bancaires, les titres de transport et les passeports. Les deux faces tiennent sur une feuille à leur taille réelle : à l’impression, vous obtenez la taille de la carte.
+• Numériser du papier avec l’appareil photo. Il trouve les bords pendant que vous visez, montre ce qu’il distingue, redresse la perspective et peut lire le texte pour que vous puissiez chercher dans le document.
+• Mode carte pour la pièce d’identité, le permis, les cartes bancaires et les passeports : les deux faces sur une feuille, à leur taille réelle. À l’impression, vous obtenez la taille de la carte.
 • Plusieurs photos par page, fusionnées en une : le grain s’annule de lui-même.
-• Fusionner des documents en un seul, en les faisant glisser pour les ordonner, avec un aperçu de la première page de chacun. Elle accepte aussi Word, Excel, PowerPoint et les images : ce qui n'est pas un PDF est converti au préalable.
+• Conserver les couleurs d’origine : sur une facture avec un tampon rouge, le gris fait disparaître du contenu.
+• Fusionner des documents en un seul, en les faisant glisser pour les ordonner, avec un aperçu de chacun. Word, Excel, PowerPoint et images sont convertis au préalable.
 • Diviser un document en un fichier par page, par plages, ou en extrayant les pages choisies.
 • Transformer des photos en documents, depuis la galerie ou en prenant la photo sur le moment. Une image par page, ou 2, 4 et 6 ensemble.
 • Modifier les pages : dessiner à main levée, surligner, ajouter des formes, des flèches, des zones de texte et des images. Remplacer une ligne du texte existant. Appliquer des filtres pour nettoyer un document photographié.

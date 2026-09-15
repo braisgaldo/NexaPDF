@@ -42,6 +42,8 @@
     <string name="aj_elegir_carpeta">Aukeratu karpeta</string>
     <string name="aj_escaner_auto">Kaptura automatikoa</string>
     <string name="aj_escaner_auto_desc">Bakarrik atera papera ondo enkoadratuta dagoenean.</string>
+    <string name="aj_escaner_color">Jatorrizko koloreak gorde</string>
+    <string name="aj_escaner_color_desc">Itzalak kendu eta zorroztasuna eman egiten da oraindik, baina zigilu gorri bat gorri mantentzen da. Fitxategiak gehiago pisatzen du.</string>
     <string name="aj_escaner_filtro">Hobekuntza lehenetsia</string>
     <string name="aj_escaner_filtro_desc">Orri bakoitzari hartu bezain laster aplikatzen zaio.</string>
     <string name="aj_escaner_ocr">Testu bilagarria lehenetsita</string>

@@ -18,7 +18,21 @@ import kotlin.math.roundToInt
  */
 object FiltrosPagina {
 
-    fun aplicar(origen: Bitmap, filtro: FiltroPagina, intensidad: Float): Bitmap {
+    /**
+     * @param enColor conserva el color del papel en lugar de entregar la pagina
+     *   en gris. Solo lo mira [FiltroPagina.DOCUMENTO_NITIDO]: es el unico
+     *   filtro cuyo trabajo —quitar sombras y dar nitidez— no tiene nada que ver
+     *   con el color, y pasar a gris era un efecto secundario suyo, no su
+     *   proposito. Los demas son blanco y negro o escala de grises **por
+     *   definicion**, y ahi el color no es un efecto secundario sino lo que se
+     *   ha pedido quitar.
+     */
+    fun aplicar(
+        origen: Bitmap,
+        filtro: FiltroPagina,
+        intensidad: Float,
+        enColor: Boolean = false,
+    ): Bitmap {
         if (filtro == FiltroPagina.NINGUNO) return origen
 
         val ancho = origen.width
@@ -89,9 +103,43 @@ object FiltrosPagina {
                 )
                 TonoDeDocumento.aplicarEnSitio(gris, fuerza)
 
-                for (indice in pixeles.indices) {
-                    val valor = gris[indice]
-                    pixeles[indice] = Color.argb(Color.alpha(pixeles[indice]), valor, valor, valor)
+                if (enColor) {
+                    // Se traslada a cada canal **en proporcion**, no sumando. Y
+                    // esa diferencia es justo la que decide si esto funciona:
+                    // sumando, un sello rojo se iria hacia el blanco junto con el
+                    // papel y acabaria rosa palido, porque sumar lo mismo a los
+                    // tres canales acerca cualquier color al gris. Multiplicando
+                    // se conserva la relacion entre canales, que es lo que el ojo
+                    // lee como "sigue siendo rojo".
+                    for (indice in pixeles.indices) {
+                        val pixel = pixeles[indice]
+                        val original = luminancia(
+                            Color.red(pixel),
+                            Color.green(pixel),
+                            Color.blue(pixel),
+                        )
+                        if (original < MINIMA_LUMINANCIA) {
+                            // Negro casi puro: no hay color del que conservar la
+                            // proporcion, y dividir por ahi dispara el factor.
+                            val valor = gris[indice]
+                            pixeles[indice] =
+                                Color.argb(Color.alpha(pixel), valor, valor, valor)
+                            continue
+                        }
+                        val factor = gris[indice].toFloat() / original
+                        pixeles[indice] = Color.argb(
+                            Color.alpha(pixel),
+                            (Color.red(pixel) * factor).roundToInt().coerceIn(0, 255),
+                            (Color.green(pixel) * factor).roundToInt().coerceIn(0, 255),
+                            (Color.blue(pixel) * factor).roundToInt().coerceIn(0, 255),
+                        )
+                    }
+                } else {
+                    for (indice in pixeles.indices) {
+                        val valor = gris[indice]
+                        pixeles[indice] =
+                            Color.argb(Color.alpha(pixeles[indice]), valor, valor, valor)
+                    }
                 }
             }
 
@@ -166,6 +214,16 @@ object FiltrosPagina {
      * tiene halos y el lapiz ha desaparecido".
      */
     private const val ENFOQUE_HACIA_EL_PAPEL = 0.40f
+
+    /**
+     * Por debajo de esta luminancia no se conserva el color.
+     *
+     * En un pixel casi negro no queda color que conservar, y la proporcion entre
+     * lo que sale y lo que entra se dispara: un 40 que pasa a 200 es un factor
+     * de cinco, y multiplicar por cinco un negro con un resto de tinte lo
+     * convierte en un color chillon que no estaba en el papel.
+     */
+    private const val MINIMA_LUMINANCIA = 12
 
     private fun contraste(canal: Int, factor: Float): Int =
         (((canal - 128) * factor) + 128).roundToInt().coerceIn(0, 255)

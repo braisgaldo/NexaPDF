@@ -3,7 +3,7 @@ Berritasunak
 Dokumentu-eskanerra. Atera paper bati argazkia eta PDF zuzen eta irakurgarria lortuko duzu, ez argazki oker bat.
 
 • Ertzak aurkitzen ditu apuntatu ahala eta berak ateratzen du eskua geldi dagoenean.
-• Perspektiba zuzentzen du eta orria garbitzen.
+• Perspektiba zuzendu, orria garbitu eta kolorea gorde dezake.
 • Orriko hainbat argazki ateratzen ditu eta batu: pikor gutxiago.
 • Txartel modua: NAN edo pasaportea tamaina errealean, bi aldeak orri berean.
 • Testua irakur dezake barruan bilatzeko. Dena zure telefonoan.

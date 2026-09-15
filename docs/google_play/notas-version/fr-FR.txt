@@ -3,7 +3,7 @@ Nouveautés
 Scanner de documents. Photographiez une feuille et obtenez un PDF droit et lisible, pas une photo de travers dans un PDF.
 
 • Trouve les bords pendant que vous visez et déclenche quand la main est immobile.
-• Redresse la perspective et nettoie la page.
-• Prend plusieurs photos par page et les fusionne : moins de grain.
-• Mode carte : pièce d'identité ou passeport à taille réelle, les deux faces sur une feuille.
+• Redresse la perspective, nettoie la page et peut garder la couleur.
+• Plusieurs photos par page, fusionnées : moins de grain.
+• Mode carte : pièce d'identité ou passeport à taille réelle, recto et verso.
 • Peut lire le texte pour chercher dedans. Tout sur votre téléphone.

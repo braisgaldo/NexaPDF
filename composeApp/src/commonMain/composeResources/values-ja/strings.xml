@@ -42,6 +42,8 @@
     <string name="aj_elegir_carpeta">フォルダーを選ぶ</string>
     <string name="aj_escaner_auto">自動撮影</string>
     <string name="aj_escaner_auto_desc">紙がきれいに収まったら自動でシャッターを切ります。</string>
+    <string name="aj_escaner_color">元の色を残す</string>
+    <string name="aj_escaner_color_desc">影の除去と鮮明化はそのまま。赤い印は赤いまま残ります。ファイルは大きくなります。</string>
     <string name="aj_escaner_filtro">既定の補正</string>
     <string name="aj_escaner_filtro_desc">撮影した直後に各ページへ適用します。</string>
     <string name="aj_escaner_ocr">既定で検索できる文字にする</string>

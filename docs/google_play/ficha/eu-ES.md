@@ -15,7 +15,7 @@ NexaPDF: PDF konexiorik gabe
 Batu, zatitu, editatu eta sinatu PDFak. Internetik gabe, iragarkirik gabe.
 ```
 
-## Descripcion completa (3745/4000)
+## Descripcion completa (3853/4000)
 
 ```
 NexaPDF zure mugikorrean osorik dabilen PDF tresna-kutxa bat da.
@@ -27,6 +27,7 @@ ZER EGITEN DUEN
 • Papera kamerarekin eskaneatu. Orriaren ertzak aurkitzen ditu apuntatzen duzun bitartean, zenbateraino bereizten dituen erakusten du, perspektiba zuzentzen du eta testua irakur dezake gero dokumentuaren barruan bilatu ahal izateko.
 • Txartel modua NANerako, gidabaimenerako, banku-txarteletarako, garraio-txarteletarako eta pasaporteetarako. Bi aldeak orri bakarrean doaz eta tamaina errealean, beraz inprimatzean txartelaren tamaina bera ateratzen da, ez argazki handitu bat.
 • Orriko hainbat argazki, batean fusionatuta. Orria hobetzeak pikorra ere areagotzen du xehetasunarekin batera; hiru argazkirekin pikorra bere kabuz ezabatzen da.
+• Jatorrizko koloreak gorde ditzakezu: zigilu gorria duen faktura batean, grisak edukia desagerrarazten du.
 • Dokumentuak bakarrean batu, arrastatuz ordenatuz eta bakoitzaren lehen orriaren aurrebistarekin. Word, Excel, PowerPoint eta irudiak ere onartzen ditu: PDF ez dena lehenago bihurtzen da.
 • Dokumentu bat zatitu: fitxategi bat orriko, barrutika, edo aukeratutako orriak aterata.
 • Argazkiak dokumentu bihurtu, galeriatik edo unean bertan aterata. Irudi bat orriko, edo 2, 4 eta 6 elkarrekin.
