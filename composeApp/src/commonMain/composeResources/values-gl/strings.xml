@@ -129,7 +129,7 @@ Para separar, «Dividir en partes…» amosa todas as páxinas de golpe. Cada pa
     <string name="ayuda_que_es_c">Unha caixa de ferramentas para PDF que funciona enteira no teu móbil. Unir, separar, converter fotos en documentos, debuxar e escribir sobre as páxinas, e asinar. Sen conta, sen internet e sen anuncios.</string>
     <string name="ayuda_que_es_t">Que é NexaPDF?</string>
     <string name="ayuda_titulo">Axuda</string>
-    <string name="ayuda_visor_c">Abre un documento con Ler PDF, ou toca un en Ficheiros recentes. A lupa busca en todo o documento: as aparicións quedan resaltadas na páxina e as frechas lévanche dunha a outra. A icona de lista amosa as seccións e o escudo as sinaturas dixitais.</string>
+    <string name="ayuda_visor_c">Abre un documento con Ler PDF, ou toca un en Ficheiros recentes. A lupa busca en todo o documento: as aparicións quedan resaltadas na páxina e as frechas lévanche dunha a outra. A icona de lista amosa as seccións e o escudo as sinaturas dixitais. Toca dúas veces para achegarte onde toques, e outras dúas para volver ver a páxina enteira. Belisca para ampliar á túa medida e arrastra para moverte.</string>
     <string name="ayuda_visor_t">Ler un PDF</string>
     <string name="cd_ajustes">Abrir axustes</string>
     <string name="cd_bandera">Bandeira de %1$s</string>

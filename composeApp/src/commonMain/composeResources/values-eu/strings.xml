@@ -129,7 +129,7 @@ Banantzeko, «Zatitan banandu…» orri guztiak batera erakusten ditu. Zati bako
     <string name="ayuda_que_es_c">PDFetarako tresna-kutxa bat, osorik zure mugikorrean dabilena. Batu, zatitu, argazkiak dokumentu bihurtu, orrialdeetan marraztu eta idatzi, eta sinatu. Konturik gabe, internetik gabe eta iragarkirik gabe.</string>
     <string name="ayuda_que_es_t">Zer da NexaPDF?</string>
     <string name="ayuda_titulo">Laguntza</string>
-    <string name="ayuda_visor_c">Ireki dokumentu bat «Irakurri PDFa» aukerarekin, edo ukitu bat azken fitxategietan. Lupak dokumentu osoan bilatzen du: agerraldiak orrian nabarmentzen dira eta gezien bidez mugitzen zara. Zerrenda-ikonoak atalak erakusten ditu, eta ezkutuak sinadura digitalak.</string>
+    <string name="ayuda_visor_c">Ireki dokumentu bat «Irakurri PDFa» aukerarekin, edo ukitu bat azken fitxategietan. Lupak dokumentu osoan bilatzen du: agerraldiak orrian nabarmentzen dira eta gezien bidez mugitzen zara. Zerrenda-ikonoak atalak erakusten ditu, eta ezkutuak sinadura digitalak. Ukitu birritan ukitzen duzun lekura hurbiltzeko, eta beste birritan orri osoa berriro ikusteko. Atximurtu nahi bezala handitzeko eta arrastatu mugitzeko.</string>
     <string name="ayuda_visor_t">PDF bat irakurri</string>
     <string name="cd_ajustes">Ireki ezarpenak</string>
     <string name="cd_bandera">%1$s hizkuntzaren bandera</string>

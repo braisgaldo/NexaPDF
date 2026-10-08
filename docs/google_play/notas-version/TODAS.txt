@@ -1,148 +1,117 @@
 <en-US>
 What's new
 
-Document scanner. Photograph a sheet of paper and get a straight, readable PDF instead of a crooked photo inside a PDF.
+Double-tap to zoom in exactly where you tap, and double-tap again to see the whole page. Works both page by page and in continuous scrolling.
 
-• Finds the edges while you aim and shoots once your hand is still.
-• Corrects the perspective, takes several shots per page, and can keep colour.
-• Card mode: ID, licence or passport come out at actual size, both sides on one sheet.
-• Reads the text so you can search inside, all on your phone.
-• Saves with your chosen name.
+• What was under your finger stays under your finger, even in the corners.
+• In continuous scrolling, zooming works again and stays as you move on to the next page.
+• Fixed: the page number didn't update when going back to the page you opened the document on.
 </en-US>
 <es-ES>
 Novedades
 
-Escáner de documentos. Fotografía un papel y sale un PDF derecho y legible, no una foto torcida dentro de un PDF.
+Toca dos veces para acercarte justo donde has tocado, y otras dos para volver a ver la página entera. Funciona leyendo página a página y en continuo.
 
-• Encuentra los bordes mientras apuntas y dispara solo cuando la mano está quieta.
-• Corrige la perspectiva, hace varias fotos por hoja y puede guardar en color.
-• Modo tarjeta: DNI, carné o pasaporte salen a tamaño real, las dos caras en una hoja.
-• Puede leer el texto para que busques dentro. Todo en tu teléfono.
-• Guarda con el nombre que elijas.
+• Lo que estaba bajo el dedo se queda bajo el dedo, también en las esquinas.
+• En lectura continua, ampliar vuelve a funcionar y no se pierde al pasar de página.
+• Corregido: el número de página no se actualizaba al volver a la página por la que abriste el documento.
 </es-ES>
 <fr-FR>
 Nouveautés
 
-Scanner de documents. Photographiez une feuille et obtenez un PDF droit et lisible, pas une photo de travers dans un PDF.
+Touchez deux fois pour zoomer exactement là où vous touchez, et encore deux fois pour revoir la page entière. Fonctionne page par page et en défilement continu.
 
-• Trouve les bords pendant que vous visez et déclenche quand la main est immobile.
-• Redresse la perspective, nettoie la page et peut garder la couleur.
-• Plusieurs photos par page, fusionnées : moins de grain.
-• Mode carte : pièce d'identité ou passeport à taille réelle, recto et verso.
-• Peut lire le texte pour chercher dedans. Tout sur votre téléphone.
+• Ce qui était sous votre doigt reste sous votre doigt, même dans les coins.
+• En défilement continu, le zoom fonctionne à nouveau et se conserve d'une page à l'autre.
+• Corrigé : le numéro de page ne se mettait pas à jour en revenant à la page d'ouverture.
 </fr-FR>
 <de-DE>
 Neu
 
-Dokumentenscanner. Fotografieren Sie ein Blatt und erhalten Sie ein gerades, lesbares PDF statt eines schiefen Fotos.
+Zweimal tippen vergrößert genau die angetippte Stelle, erneut zweimal tippen zeigt wieder die ganze Seite. Funktioniert seitenweise und beim durchgehenden Scrollen.
 
-• Findet die Ränder beim Zielen und löst aus, sobald die Hand ruhig ist.
-• Korrigiert die Perspektive, säubert die Seite und kann Farbe behalten.
-• Mehrere Aufnahmen pro Seite, zusammengefügt: weniger Rauschen.
-• Kartenmodus: Ausweis oder Reisepass in Originalgröße, beide Seiten auf einem Blatt.
-• Kann den Text lesen, damit Sie darin suchen können. Alles auf dem Gerät.
+• Was unter dem Finger war, bleibt unter dem Finger – auch in den Ecken.
+• Beim durchgehenden Scrollen funktioniert das Zoomen wieder und bleibt beim Seitenwechsel erhalten.
+• Behoben: Die Seitenzahl wurde bei der Rückkehr zur Anfangsseite nicht aktualisiert.
 </de-DE>
 <zh-CN>
 新功能
 
-文档扫描。拍一张纸，得到的是端正易读的 PDF，而不是一张歪斜的照片。
+双击即可放大点按的位置，再次双击即可看到整页。逐页阅读和连续滚动都支持。
 
-• 取景时就找到纸张边缘，并显示识别程度。
-• 取景合适、手持稳定时自动拍摄。
-• 自动校正透视、清理页面，也可以保留原始颜色。
-• 每页拍摄多张并合成：噪点更少，更清晰。
-• 证卡模式：身份证或护照按实际尺寸输出，正反面同页。
-• 可识别文字，方便在文档里搜索。全部在手机上完成。
-• 用你自己起的名字保存。
+• 手指下的内容放大后仍在手指下，角落也一样。
+• 连续滚动时缩放恢复正常，翻到下一页也会保持。
+• 修复：回到打开文档时所在的页面时，页码没有更新。
 </zh-CN>
 <ja-JP>
 新機能
 
-書類スキャナー。紙を撮るだけで、傾いた写真ではなく、まっすぐで読みやすい PDF になります。
+ダブルタップでタップした場所をそのまま拡大し、もう一度ダブルタップでページ全体に戻ります。1 ページずつの表示でも連続スクロールでも使えます。
 
-• 構えている間に用紙の輪郭を見つけ、どれだけ見えているかを表示。
-• 構図が決まり手が止まったら自動で撮影。
-• 傾きを補正してページをきれいに。元の色を残すこともできます。
-• 1 ページにつき複数枚を撮って合成。ノイズが減り、くっきりします。
-• カードモード：身分証やパスポートを実物大で、表裏を 1 枚に。
-• 文字を読み取れば書類の中を検索できます。すべて端末内で処理。
-• 好きな名前を付けて保存。
+• 指の下にあったものは、拡大しても指の下に。隅でも同じです。
+• 連続スクロールでの拡大が正しく動作し、次のページに進んでも保たれます。
+• 修正：最初に開いたページに戻ったとき、ページ番号が更新されない問題。
 </ja-JP>
 <ru-RU>
 Что нового
 
-Сканер документов. Сфотографируйте лист и получите ровный, читаемый PDF, а не кривое фото внутри PDF.
+Двойное касание приближает именно то место, которого вы коснулись, а повторное возвращает всю страницу. Работает и постранично, и при непрерывной прокрутке.
 
-• Находит края, пока вы наводите, и снимает сам, когда рука замерла.
-• Выправляет перспективу, чистит страницу и может сохранить цвет.
-• Делает несколько снимков на страницу и объединяет их: меньше шума.
-• Режим карточки: удостоверение или паспорт в натуральную величину, обе стороны на листе.
-• Может распознать текст, чтобы искать внутри. Всё в телефоне.
+• То, что было под пальцем, остаётся под пальцем — даже в углах.
+• При непрерывной прокрутке масштаб снова работает и сохраняется при переходе на следующую страницу.
+• Исправлено: номер страницы не обновлялся при возврате на страницу, с которой открыт документ.
 </ru-RU>
 <it-IT>
 Novità
 
-Scanner di documenti. Fotografa un foglio e ottieni un PDF dritto e leggibile, non una foto storta dentro un PDF.
+Tocca due volte per ingrandire proprio dove tocchi, e altre due per rivedere la pagina intera. Funziona pagina per pagina e con lo scorrimento continuo.
 
-• Trova i bordi mentre inquadri e scatta da solo quando la mano è ferma.
-• Raddrizza la prospettiva, pulisce la pagina e può mantenere il colore.
-• Scatta più foto per pagina e le fonde: meno grana, più nitidezza.
-• Modalità tessera: documento o passaporto a grandezza reale, fronte e retro in un foglio.
-• Può leggere il testo per cercarci dentro. Tutto sul telefono.
+• Ciò che era sotto il dito resta sotto il dito, anche negli angoli.
+• Con lo scorrimento continuo lo zoom funziona di nuovo e resta passando alla pagina successiva.
+• Corretto: il numero di pagina non si aggiornava tornando alla pagina di apertura.
 </it-IT>
 <el-GR>
 Τι νέο υπάρχει
 
-Σαρωτής εγγράφων. Φωτογραφίστε ένα χαρτί και πάρτε ένα ίσιο, ευανάγνωστο PDF.
+Πατήστε δύο φορές για μεγέθυνση ακριβώς εκεί που αγγίζετε και άλλες δύο για να δείτε ξανά όλη τη σελίδα. Λειτουργεί ανά σελίδα και με συνεχή κύλιση.
 
-• Βρίσκει τις άκρες καθώς στοχεύετε και τραβά μόνο του όταν σταθεροποιηθεί.
-• Ισιώνει την προοπτική, καθαρίζει τη σελίδα και μπορεί να κρατήσει το χρώμα.
-• Τραβά πολλές λήψεις ανά σελίδα και τις συνθέτει: λιγότερος θόρυβος.
-• Λειτουργία κάρτας: ταυτότητα ή διαβατήριο σε φυσικό μέγεθος, και οι δύο όψεις σε ένα φύλλο.
-• Μπορεί να διαβάσει το κείμενο για αναζήτηση. Όλα στο τηλέφωνο.
+• Ό,τι ήταν κάτω από το δάχτυλο μένει εκεί, ακόμη και στις γωνίες.
+• Στη συνεχή κύλιση η μεγέθυνση λειτουργεί ξανά και διατηρείται στην επόμενη σελίδα.
+• Διορθώθηκε: ο αριθμός σελίδας δεν ενημερωνόταν στην επιστροφή στη σελίδα ανοίγματος.
 </el-GR>
 <ar>
 الجديد
 
-ماسح ضوئي للمستندات. صوّر ورقة واحصل على PDF مستقيم وواضح بدل صورة مائلة.
+المس مرتين للتكبير حيث لمست تمامًا، ومرتين أخريين لرؤية الصفحة كاملة. يعمل في القراءة صفحةً صفحة وفي التمرير المتواصل.
 
-• يجد حواف الورقة أثناء التصويب ويعرض مدى وضوحها.
-• يلتقط تلقائيًا عندما يستقر الإطار وتثبت اليد.
-• يصحّح المنظور وينظّف الصفحة، ويمكنه الاحتفاظ بالألوان.
-• يلتقط عدة صور لكل صفحة ويدمجها: ضوضاء أقل ووضوح أعلى.
-• وضع البطاقة: الهوية أو جواز السفر بالحجم الحقيقي، والوجهان في ورقة واحدة.
-• يمكنه قراءة النص للبحث داخل المستند. كل ذلك داخل هاتفك.
+• ما كان تحت إصبعك يبقى تحت إصبعك، حتى في الزوايا.
+• في التمرير المتواصل يعمل التكبير من جديد ويبقى عند الانتقال إلى الصفحة التالية.
+• إصلاح: رقم الصفحة لم يكن يتحدّث عند العودة إلى الصفحة التي فُتح عليها المستند.
 </ar>
 <gl-ES>
 Novidades
 
-Dixitalizador de documentos. Fotografía un papel e sae un PDF dereito e lexible, non unha foto torta dentro dun PDF.
+Toca dúas veces para achegarte xusto onde tocaches, e outras dúas para volver ver a páxina enteira. Funciona páxina a páxina e en desprazamento continuo.
 
-• Atopa os bordos mentres apuntas e dispara só cando a man está quieta.
-• Corrixe a perspectiva, limpa a páxina e pode gardar en cor.
-• Fai varias fotos por páxina e fúndeas: menos gran, máis nitidez.
-• Modo tarxeta: DNI ou pasaporte saen a tamaño real, as dúas caras nunha folla.
-• Pode ler o texto para buscar dentro. Todo no teu teléfono.
+• O que estaba baixo o dedo queda baixo o dedo, tamén nas esquinas.
+• No desprazamento continuo, ampliar volve funcionar e mantense ao pasar de páxina.
+• Corrixido: o número de páxina non se actualizaba ao volver á páxina pola que abriches o documento.
 </gl-ES>
 <ca>
 Novetats
 
-Escàner de documents. Fotografia un paper i obtens un PDF dret i llegible, no una foto torta dins d'un PDF.
+Toca dues vegades per apropar-te just on has tocat, i dues més per tornar a veure la pàgina sencera. Funciona pàgina a pàgina i amb desplaçament continu.
 
-• Troba les vores mentre apuntes i dispara sol quan la mà està quieta.
-• Corregeix la perspectiva, neteja la pàgina i pot desar en color.
-• Fa diverses fotos per pàgina i les fusiona: menys gra, més nitidesa.
-• Mode targeta: DNI o passaport a mida real, les dues cares en un full.
-• Pot llegir el text per cercar-hi dins. Tot al teu telèfon.
+• El que era sota el dit es queda sota el dit, també a les cantonades.
+• Amb desplaçament continu, ampliar torna a funcionar i es manté en passar de pàgina.
+• Corregit: el número de pàgina no s'actualitzava en tornar a la pàgina on havies obert el document.
 </ca>
 <eu-ES>
 Berritasunak
 
-Dokumentu-eskanerra. Atera paper bati argazkia eta PDF zuzen eta irakurgarria lortuko duzu, ez argazki oker bat.
+Ukitu birritan ukitu duzun lekura zehazki hurbiltzeko, eta beste birritan orri osoa berriro ikusteko. Orriz orri eta etengabeko korritzean dabil.
 
-• Ertzak aurkitzen ditu apuntatu ahala eta berak ateratzen du eskua geldi dagoenean.
-• Perspektiba zuzendu, orria garbitu eta kolorea gorde dezake.
-• Orriko hainbat argazki ateratzen ditu eta batu: pikor gutxiago.
-• Txartel modua: NAN edo pasaportea tamaina errealean, bi aldeak orri berean.
-• Testua irakur dezake barruan bilatzeko. Dena zure telefonoan.
+• Hatzaren azpian zegoena hatzaren azpian geratzen da, baita ertzetan ere.
+• Etengabeko korritzean, handitzeak berriro funtzionatzen du eta orriz aldatzean mantentzen da.
+• Konponduta: orri-zenbakia ez zen eguneratzen dokumentua ireki zenuen orrira itzultzean.
 </eu-ES>

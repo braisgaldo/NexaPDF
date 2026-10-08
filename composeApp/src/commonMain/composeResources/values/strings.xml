@@ -129,7 +129,7 @@ To split, «Split into parts…» shows every page at once. Each part has its ow
     <string name="ayuda_que_es_c">A toolbox for PDFs that runs entirely on your phone. Merge, split, turn photos into documents, draw and write on pages, and sign. No account, no internet, no ads.</string>
     <string name="ayuda_que_es_t">What is NexaPDF?</string>
     <string name="ayuda_titulo">Help</string>
-    <string name="ayuda_visor_c">Open a document with Read PDF, or tap one in Recent files. The magnifier searches the whole document: matches are highlighted on the page and the arrows move between them. The list icon shows the document’s sections, if it has any, and the shield lists its digital signatures. Pinch to zoom and drag to move around.</string>
+    <string name="ayuda_visor_c">Open a document with Read PDF, or tap one in Recent files. The magnifier searches the whole document: matches are highlighted on the page and the arrows move between them. The list icon shows the document’s sections, if it has any, and the shield lists its digital signatures. Double-tap to zoom in where you tap, and double-tap again to see the whole page. Pinch to zoom to your liking and drag to move around.</string>
     <string name="ayuda_visor_t">Reading a PDF</string>
     <string name="cd_ajustes">Open settings</string>
     <string name="cd_bandera">Flag for %1$s</string>

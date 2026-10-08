@@ -129,7 +129,7 @@ Zum Teilen zeigt „In Teile teilen…“ alle Seiten auf einmal. Jeder Teil hat
     <string name="ayuda_que_es_c">Ein PDF-Werkzeugkasten, der vollständig auf Ihrem Handy läuft. Zusammenfügen, teilen, Fotos in Dokumente verwandeln, auf Seiten zeichnen und schreiben, unterschreiben. Ohne Konto, ohne Internet, ohne Werbung.</string>
     <string name="ayuda_que_es_t">Was ist NexaPDF?</string>
     <string name="ayuda_titulo">Hilfe</string>
-    <string name="ayuda_visor_c">Öffnen Sie ein Dokument mit PDF lesen oder tippen Sie eins unter Zuletzt verwendet an. Die Lupe durchsucht das ganze Dokument: Treffer werden auf der Seite hervorgehoben, die Pfeile springen zwischen ihnen. Das Listensymbol zeigt die Abschnitte, das Schild die digitalen Signaturen. Zum Zoomen zwei Finger, zum Bewegen ziehen.</string>
+    <string name="ayuda_visor_c">Öffnen Sie ein Dokument mit PDF lesen oder tippen Sie eins unter Zuletzt verwendet an. Die Lupe durchsucht das ganze Dokument: Treffer werden auf der Seite hervorgehoben, die Pfeile springen zwischen ihnen. Das Listensymbol zeigt die Abschnitte, das Schild die digitalen Signaturen. Zweimal tippen vergrößert die angetippte Stelle, erneut zweimal tippen zeigt wieder die ganze Seite. Zum freien Zoomen zwei Finger, zum Bewegen ziehen.</string>
     <string name="ayuda_visor_t">Ein PDF lesen</string>
     <string name="cd_ajustes">Einstellungen öffnen</string>
     <string name="cd_bandera">Flagge für %1$s</string>

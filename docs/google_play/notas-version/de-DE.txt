@@ -1,9 +1,7 @@
 Neu
 
-Dokumentenscanner. Fotografieren Sie ein Blatt und erhalten Sie ein gerades, lesbares PDF statt eines schiefen Fotos.
+Zweimal tippen vergrößert genau die angetippte Stelle, erneut zweimal tippen zeigt wieder die ganze Seite. Funktioniert seitenweise und beim durchgehenden Scrollen.
 
-• Findet die Ränder beim Zielen und löst aus, sobald die Hand ruhig ist.
-• Korrigiert die Perspektive, säubert die Seite und kann Farbe behalten.
-• Mehrere Aufnahmen pro Seite, zusammengefügt: weniger Rauschen.
-• Kartenmodus: Ausweis oder Reisepass in Originalgröße, beide Seiten auf einem Blatt.
-• Kann den Text lesen, damit Sie darin suchen können. Alles auf dem Gerät.
+• Was unter dem Finger war, bleibt unter dem Finger – auch in den Ecken.
+• Beim durchgehenden Scrollen funktioniert das Zoomen wieder und bleibt beim Seitenwechsel erhalten.
+• Behoben: Die Seitenzahl wurde bei der Rückkehr zur Anfangsseite nicht aktualisiert.

@@ -1,9 +1,7 @@
 Novidades
 
-Dixitalizador de documentos. Fotografía un papel e sae un PDF dereito e lexible, non unha foto torta dentro dun PDF.
+Toca dúas veces para achegarte xusto onde tocaches, e outras dúas para volver ver a páxina enteira. Funciona páxina a páxina e en desprazamento continuo.
 
-• Atopa os bordos mentres apuntas e dispara só cando a man está quieta.
-• Corrixe a perspectiva, limpa a páxina e pode gardar en cor.
-• Fai varias fotos por páxina e fúndeas: menos gran, máis nitidez.
-• Modo tarxeta: DNI ou pasaporte saen a tamaño real, as dúas caras nunha folla.
-• Pode ler o texto para buscar dentro. Todo no teu teléfono.
+• O que estaba baixo o dedo queda baixo o dedo, tamén nas esquinas.
+• No desprazamento continuo, ampliar volve funcionar e mantense ao pasar de páxina.
+• Corrixido: o número de páxina non se actualizaba ao volver á páxina pola que abriches o documento.

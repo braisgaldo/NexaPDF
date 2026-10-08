@@ -1,9 +1,7 @@
 Novità
 
-Scanner di documenti. Fotografa un foglio e ottieni un PDF dritto e leggibile, non una foto storta dentro un PDF.
+Tocca due volte per ingrandire proprio dove tocchi, e altre due per rivedere la pagina intera. Funziona pagina per pagina e con lo scorrimento continuo.
 
-• Trova i bordi mentre inquadri e scatta da solo quando la mano è ferma.
-• Raddrizza la prospettiva, pulisce la pagina e può mantenere il colore.
-• Scatta più foto per pagina e le fonde: meno grana, più nitidezza.
-• Modalità tessera: documento o passaporto a grandezza reale, fronte e retro in un foglio.
-• Può leggere il testo per cercarci dentro. Tutto sul telefono.
+• Ciò che era sotto il dito resta sotto il dito, anche negli angoli.
+• Con lo scorrimento continuo lo zoom funziona di nuovo e resta passando alla pagina successiva.
+• Corretto: il numero di pagina non si aggiornava tornando alla pagina di apertura.

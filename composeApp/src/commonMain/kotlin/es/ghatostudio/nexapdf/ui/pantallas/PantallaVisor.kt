@@ -46,6 +46,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -90,13 +91,9 @@ import androidx.compose.ui.graphics.Color
 import es.ghatostudio.nexapdf.resources.vis_anterior
 import es.ghatostudio.nexapdf.resources.vis_siguiente
 import androidx.compose.foundation.gestures.snapping.SnapPosition
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
@@ -105,14 +102,13 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.times
 import es.ghatostudio.nexapdf.domain.model.DireccionLectura
 import es.ghatostudio.nexapdf.resources.vis_ir
 import es.ghatostudio.nexapdf.resources.vis_ir_a_pagina
 import es.ghatostudio.nexapdf.resources.vis_numero_pagina
 import es.ghatostudio.nexapdf.resources.comun_cancelar
 import es.ghatostudio.nexapdf.di.LocalContenedor
-import es.ghatostudio.nexapdf.ui.componentes.encuadreDosDedos
+import es.ghatostudio.nexapdf.ui.componentes.ColumnaAmpliable
 import androidx.compose.foundation.layout.aspectRatio
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -252,16 +248,23 @@ fun PantallaVisor(
     // El tamano entra como clave porque el encuadre no puede calcularse hasta
     // que la pagina esta medida, y al llegar de otra pantalla todavia no lo
     // esta.
-    LaunchedEffect(paginaActual, aEnfocar, encuadre.tamano, proporcion, lectura) {
+    //
+    // Todo esto es solo de la lectura lateral. En la vertical el encuadre no
+    // es una transformacion sobre la pagina sino el ancho de la columna, asi
+    // que acercarse a una palabra ensancharia el documento sin llevar a
+    // ninguna parte. Y ese ancho **cambia con cada ampliacion**: con el
+    // tamano como clave y sin esta distincion, ampliar relanzaba
+    // este efecto, el efecto reiniciaba y la columna volvia a su ancho en el
+    // fotograma siguiente. Los saltos de pagina de la vertical se atienden
+    // donde se sincroniza la lista, mas abajo.
+    val tamanoLateral = if (lectura == DireccionLectura.LATERAL) encuadre.tamano else IntSize.Zero
+    LaunchedEffect(paginaActual, aEnfocar, tamanoLateral, proporcion, lectura) {
+        if (lectura != DireccionLectura.LATERAL) return@LaunchedEffect
         val objetivo = aEnfocar
-        // Solo en lectura lateral. En la vertical el encuadre no es una
-        // transformacion sobre la pagina sino el ancho de la columna, asi que
-        // acercarse ahi ensancharia el documento sin llevar a ninguna parte.
-        val puedeEnfocar = lectura == DireccionLectura.LATERAL &&
-            objetivo != null &&
+        val puedeEnfocar = objetivo != null &&
             objetivo.pagina == paginaActual &&
-            encuadre.tamano != IntSize.Zero
-        if (puedeEnfocar && objetivo != null) {
+            tamanoLateral != IntSize.Zero
+        if (puedeEnfocar) {
             val marco = objetivo.marco.normalizado()
             encuadre.enfocar(
                 centroRelativo = Offset(
@@ -287,6 +290,12 @@ fun PantallaVisor(
     }
     val listaVertical = rememberLazyListState(initialFirstVisibleItemIndex = paginaActual)
 
+    // Los dos colectores de abajo viven mientras dure el visor y no se relanzan
+    // al cambiar de pagina, asi que comparar con `paginaActual` a secas era
+    // comparar con la pagina por la que se abrio el documento. Al volver a esa
+    // pagina deslizando no se avisaba, y la barra se quedaba en la anterior.
+    val paginaVigente by rememberUpdatedState(paginaActual)
+
     // Solo se informa de la pagina cuando el desplazamiento ha parado.
     // Contando las intermedias, un salto animado de la 3 a la 100 iba
     // avisando de cada una, cada aviso cambiaba la pagina actual, y eso
@@ -295,17 +304,19 @@ fun PantallaVisor(
     LaunchedEffect(paginas, lectura) {
         if (lectura != DireccionLectura.LATERAL) return@LaunchedEffect
         snapshotFlow { paginas.settledPage }.distinctUntilChanged().collect {
-            if (it != paginaActual) acciones.alIrAPagina(it)
+            if (it != paginaVigente) acciones.alIrAPagina(it)
         }
     }
+    // La pagina tambien cambia sin desplazarse: ampliar con doble toque
+    // recoloca la lista para no perder el sitio, y la de arriba puede pasar a
+    // ser otra. Por eso se vigila el indice junto al estado del desplazamiento.
     LaunchedEffect(listaVertical, lectura) {
         if (lectura != DireccionLectura.VERTICAL) return@LaunchedEffect
-        snapshotFlow { listaVertical.isScrollInProgress }
+        snapshotFlow { listaVertical.isScrollInProgress to listaVertical.firstVisibleItemIndex }
             .distinctUntilChanged()
-            .filter { !it }
-            .collect {
-                val visible = listaVertical.firstVisibleItemIndex
-                if (visible != paginaActual) acciones.alIrAPagina(visible)
+            .filter { (desplazandose, _) -> !desplazandose }
+            .collect { (_, visible) ->
+                if (visible != paginaVigente) acciones.alIrAPagina(visible)
             }
     }
     LaunchedEffect(paginaActual, lectura) {
@@ -315,8 +326,14 @@ fun PantallaVisor(
                     paginas.animateScrollToPage(paginaActual)
                 }
 
+            // Aqui solo entra un salto: la busqueda, el indice o la barra de
+            // abajo. Cuando es el dedo el que cambia de pagina, la lista ya
+            // esta en ella. Por eso es el sitio de volver al ancho normal, y
+            // no al cambiar de pagina sin mas: leyendo ampliado de seguido, la
+            // columna se estrechaba sola cada vez que se pasaba a la siguiente.
             DireccionLectura.VERTICAL ->
                 if (listaVertical.firstVisibleItemIndex != paginaActual) {
+                    encuadre.reiniciar()
                     listaVertical.animateScrollToItem(paginaActual)
                 }
         }
@@ -538,45 +555,29 @@ fun PantallaVisor(
                     }
                 }
 
-                // Desplazamiento continuo: todas las paginas seguidas. El
-                // zoom aqui no mueve la pagina, la ensancha, y el ancho de
-                // mas se recorre de lado: es como se lee un documento largo
-                // cuando la letra es pequena.
-                DireccionLectura.VERTICAL -> BoxWithConstraints(Modifier.fillMaxSize()) {
-                    val anchoBase = maxWidth
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .horizontalScroll(rememberScrollState())
-                            .encuadreDosDedos(encuadre),
-                    ) {
-                        LazyColumn(
-                            state = listaVertical,
-                            modifier = Modifier.width(anchoBase * encuadre.escala),
-                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
-                            verticalArrangement = Arrangement.spacedBy(10.dp),
-                        ) {
-                            items(totalPaginas.coerceAtLeast(1)) { indice ->
-                                Box {
-                                    PaginaDeVisor(
-                                        ruta = ruta,
-                                        indice = indice,
-                                        anchoPx = anchoRender,
-                                        contrasena = contrasena,
-                                        proporcion = proporcion,
-                                        modifier = Modifier.fillMaxWidth(),
-                                    )
-                                    Resaltados(
-                                        resultados = resultados,
-                                        pagina = indice,
-                                        activa = actual,
-                                        proporcion = proporcion,
-                                        escala = 1f,
-                                        desplazamiento = Offset.Zero,
-                                    )
-                                }
-                            }
-                        }
+                // Desplazamiento continuo: todas las paginas seguidas.
+                DireccionLectura.VERTICAL -> ColumnaAmpliable(
+                    encuadre = encuadre,
+                    lista = listaVertical,
+                    totalPaginas = totalPaginas,
+                ) { indice ->
+                    Box {
+                        PaginaDeVisor(
+                            ruta = ruta,
+                            indice = indice,
+                            anchoPx = anchoRender,
+                            contrasena = contrasena,
+                            proporcion = proporcion,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                        Resaltados(
+                            resultados = resultados,
+                            pagina = indice,
+                            activa = actual,
+                            proporcion = proporcion,
+                            escala = 1f,
+                            desplazamiento = Offset.Zero,
+                        )
                     }
                 }
             }

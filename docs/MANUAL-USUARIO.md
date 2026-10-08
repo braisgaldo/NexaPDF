@@ -52,9 +52,9 @@ Arriba a la derecha, la rueda dentada abre los **Ajustes**.
   sobre la página, y el contador y las flechas te llevan de una a otra. Al
   encontrar una, el visor **se acerca y la centra**: una palabra resaltada en un
   A4 visto en un móvil mide dos milímetros, y dejarla ahí es resaltarla sin
-  enseñarla. Si prefieres ver la página entera, pellizca para alejar. Esto
-  funciona leyendo página a página; con el desplazamiento continuo el pellizco
-  ensancha las páginas en lugar de moverlas, así que ahí no hay a dónde
+  enseñarla. Si prefieres ver la página entera, toca dos veces o pellizca para
+  alejar. Esto funciona leyendo página a página; con el desplazamiento continuo
+  ampliar ensancha las páginas en lugar de moverlas, así que ahí no hay a dónde
   acercarse.
 - **El icono de lista** muestra el índice de secciones. Sólo aparece cuando el
   PDF trae índice; los documentos escaneados no suelen tenerlo.
@@ -62,7 +62,12 @@ Arriba a la derecha, la rueda dentada abre los **Ajustes**.
 - **La caja de herramientas** abre lo que puedes hacer con el documento que
   tienes delante: firmarlo, editarlo, protegerlo con contraseña, ir a sus
   páginas para separarlo o exportarlo, y guardarlo donde quieras.
-- **Pellizca** para ampliar y **arrastra** para moverte.
+- **Toca dos veces** para acercarte justo donde has tocado: lo que estaba bajo
+  el dedo se queda bajo el dedo, así que sirve para leer ese párrafo y no otro.
+  Otros dos toques devuelven la página entera. Se hace con el pulgar y el
+  teléfono en una mano.
+- **Pellizca** para ampliar a tu medida y **arrastra** para moverte. Si
+  pellizcas mientras el doble toque aún se está acercando, manda el pellizco.
 - **Compartir** envía el documento que estás leyendo.
 
 **Para moverte por el documento** tienes la barra de abajo: las flechas van
@@ -73,7 +78,11 @@ entero de un gesto.
 En **Ajustes › Cómo se lee** eliges entre **página a página** (deslizas de
 lado y ves una cada vez) y **desplazamiento continuo** (todas seguidas, como
 se lee cualquier otra cosa en el teléfono). Con el desplazamiento continuo,
-el pellizco con dos dedos ensancha las páginas en lugar de moverlas.
+el pellizco y el doble toque ensanchan las páginas en lugar de moverlas, y el
+ancho de más se recorre de lado. Ese ancho **se mantiene mientras sigues
+leyendo** hacia abajo; sólo vuelve al normal cuando saltas a otra página con la
+búsqueda, el índice o la barra de abajo, porque entonces llegas a una página
+cualquiera y lo normal es querer verla entera.
 
 ---
 

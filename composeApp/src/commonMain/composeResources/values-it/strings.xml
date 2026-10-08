@@ -129,7 +129,7 @@ Per dividere, «Dividi in parti…» mostra tutte le pagine in una volta. Ogni p
     <string name="ayuda_que_es_c">Una cassetta degli attrezzi per PDF che gira interamente sul telefono. Unire, dividere, trasformare foto in documenti, disegnare e scrivere sulle pagine, firmare. Senza account, senza internet, senza pubblicità.</string>
     <string name="ayuda_que_es_t">Che cos’è NexaPDF?</string>
     <string name="ayuda_titulo">Aiuto</string>
-    <string name="ayuda_visor_c">Apri un documento con Leggi PDF o toccane uno tra i file recenti. La lente cerca in tutto il documento: le occorrenze vengono evidenziate sulla pagina e le frecce le scorrono. L’icona a lista mostra le sezioni, lo scudo le firme digitali. Pizzica per ingrandire e trascina per spostarti.</string>
+    <string name="ayuda_visor_c">Apri un documento con Leggi PDF o toccane uno tra i file recenti. La lente cerca in tutto il documento: le occorrenze vengono evidenziate sulla pagina e le frecce le scorrono. L’icona a lista mostra le sezioni, lo scudo le firme digitali. Tocca due volte per ingrandire dove tocchi e altre due per rivedere la pagina intera. Pizzica per ingrandire a piacere e trascina per spostarti.</string>
     <string name="ayuda_visor_t">Leggere un PDF</string>
     <string name="cd_ajustes">Apri le impostazioni</string>
     <string name="cd_bandera">Bandiera di %1$s</string>

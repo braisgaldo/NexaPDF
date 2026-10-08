@@ -1,6 +1,6 @@
 # Publicar NexaPDF en Google Play
 
-Todo lo necesario para crear la ficha y subir la versión 1.5.0. Los datos que
+Todo lo necesario para crear la ficha y subir la versión 1.6.0. Los datos que
 Play Console pide, en el orden en que los pide.
 
 > **Consultado el 3 de septiembre de 2026.** Las políticas de las tiendas
@@ -15,8 +15,8 @@ Play Console pide, en el orden en que los pide.
 |---|---|
 | **Nombre de la app** | `NexaPDF` |
 | **Nombre del paquete** (application ID) | `es.ghatostudio.nexapdf` |
-| **Versión** | `1.5.0` |
-| **Código de versión** | `10400` |
+| **Versión** | `1.6.0` |
+| **Código de versión** | `10600` |
 | **SDK mínimo** | 26 (Android 8.0 Oreo) |
 | **SDK objetivo** | 37 |
 | **Categoría** | Productividad |
@@ -36,7 +36,7 @@ elegido con dominio inverso propio (`es.ghatostudio`) para que no colisione.
 
 ```
 docs/google_play/
-├── bundle/NexaPDF-1.5.0-release.aab   ← esto es lo que se sube
+├── bundle/NexaPDF-1.6.0-release.aab   ← esto es lo que se sube
 ├── claves/nexapdf-release.p12         ← clave de firma (NO subir a git)
 ├── graficos/
 │   ├── icono-512.png                  512 x 512, para la ficha
@@ -54,11 +54,11 @@ regeneran con `./gradlew :composeApp:bundleRelease` y con el procedimiento de
 
 ### Tamaño de esta versión
 
-| | 1.3.0 | 1.5.0 |
-|---|---|---|
-| AAB del repositorio | 10,3 MB | 31,9 MB |
-| APK universal | 6,3 MB | 50,4 MB |
-| **Lo que descarga un usuario** | **~6 MB** | **~12,5 MB** |
+| | 1.3.0 | 1.5.0 | 1.6.0 |
+|---|---|---|---|
+| AAB del repositorio | 10,3 MB | 31,9 MB | 31,9 MB |
+| APK universal | 6,3 MB | 50,4 MB | 50,4 MB |
+| **Lo que descarga un usuario** | **~6 MB** | **~12,5 MB** | **~12,5 MB** |
 
 Las dos primeras filas asustan y no deberían: el AAB lleva las **cuatro**
 arquitecturas más 5,8 MB de mapa de ofuscación, y el APK universal las lleva
@@ -295,7 +295,7 @@ alertas → Crear presupuesto → importe 5 € → avisos al 50 %, 90 % y 100 %
 - [ ] Play App Signing activado.
 - [ ] Copia de seguridad del `.p12` y su contraseña **fuera** de este ordenador.
 - [ ] Prueba cerrada con 12 testers durante 14 días, si aplica.
-- [ ] Etiqueta `v1.5.0` creada y GitHub Release publicada con el AAB adjunto.
+- [ ] Etiqueta `v1.6.0` creada y GitHub Release publicada con el AAB adjunto.
 
 ## 11. App Store (para cuando toque)
 

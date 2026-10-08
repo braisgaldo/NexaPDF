@@ -1,10 +1,12 @@
 package es.ghatostudio.nexapdf.ui.componentes
 
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.calculatePan
 import androidx.compose.foundation.gestures.calculateZoom
 import androidx.compose.foundation.gestures.detectTransformGestures
+import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -12,11 +14,20 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.pointer.AwaitPointerEventScope
+import androidx.compose.ui.input.pointer.PointerInputChange
+import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlin.math.abs
+import kotlin.math.roundToInt
 
 /**
  * Zoom y desplazamiento de una pagina.
@@ -39,7 +50,21 @@ class EstadoEncuadre {
 
     val ampliada: Boolean get() = escala > 1.01f
 
+    /**
+     * Quien ha movido el encuadre por ultimo.
+     *
+     * Cada cambio pide turno. Una animacion de doble toque se apunta el suyo al
+     * empezar y se retira en cuanto otro lo pide. Sin esto, pellizcar mientras
+     * la pagina aun se esta acercando era pelearse con ella: cada fotograma de
+     * la animacion pisaba lo que acababa de hacer el dedo.
+     */
+    private var turno = 0
+
+    /** A que escala lleva un doble toque desde la actual: es un interruptor. */
+    val escalaTrasDobleToque: Float get() = if (ampliada) 1f else ESCALA_DOBLE_TOQUE
+
     fun aplicar(cambioEscala: Float, arrastre: Offset) {
+        turno++
         val nueva = (escala * cambioEscala).coerceIn(MINIMO, MAXIMO)
         // Al volver al 100 % se recentra: quedarse con un desplazamiento
         // residual hace que la pagina aparezca torcida sin motivo aparente.
@@ -53,8 +78,96 @@ class EstadoEncuadre {
     }
 
     fun reiniciar() {
+        turno++
         escala = 1f
         desplazamiento = Offset.Zero
+    }
+
+    /**
+     * Fija la escala sin animar y sin desplazamiento.
+     *
+     * Es para la lectura continua, donde la escala no transforma la pagina
+     * sino que ensancha la columna, y lo que hay que mover para no perder el
+     * sitio son las barras de desplazamiento, no este encuadre.
+     */
+    fun ponerEscala(nueva: Float) {
+        turno++
+        escala = nueva.coerceIn(MINIMO, MAXIMO)
+        desplazamiento = Offset.Zero
+    }
+
+    /**
+     * Donde acaba el encuadre tras un doble toque en [punto].
+     *
+     * Con la pagina entera, acerca a [ESCALA_DOBLE_TOQUE] **dejando bajo el
+     * dedo lo que estaba bajo el dedo**. Es lo que hace cualquier visor y lo
+     * que se espera: quien toca dos veces sobre un parrafo quiere leer ese
+     * parrafo. Acercar respecto al centro, que es lo que hace el pellizco de
+     * aqui, mandaria fuera de la pantalla justo lo que se ha tocado en cuanto
+     * no estuviera en medio.
+     *
+     * Con la pagina ya ampliada, vuelve a verla entera. No hay un segundo
+     * nivel de acercamiento: dos toques para entrar y dos para salir es un
+     * gesto que se aprende a la primera, y para afinar mas ya esta el pellizco.
+     *
+     * Se cumple hasta en las esquinas, y no por casualidad: el tope del
+     * arrastre deja justo el margen que necesita una esquina para quedarse
+     * donde esta, asi que acotar no aparta nunca lo tocado del dedo.
+     */
+    fun destinoDobleToque(punto: Offset): PosicionEncuadre {
+        if (ampliada) return PosicionEncuadre(1f, Offset.Zero)
+        val nueva = ESCALA_DOBLE_TOQUE
+        if (tamano == IntSize.Zero) return PosicionEncuadre(nueva, Offset.Zero)
+
+        // Lo que hay bajo el dedo, en coordenadas de la pagina sin ampliar, y el
+        // desplazamiento que lo vuelve a poner en el mismo sitio con la escala
+        // nueva. Es despejar `punto = centro + (enPagina - centro) * escala + d`.
+        val centro = Offset(tamano.width / 2f, tamano.height / 2f)
+        val enPagina = aPagina(punto)
+        val propuesto = punto - centro - (enPagina - centro) * nueva
+        return PosicionEncuadre(nueva, acotar(propuesto, nueva))
+    }
+
+    /** Doble toque: acerca o aleja con una animacion corta. */
+    suspend fun alternarConDobleToque(punto: Offset) {
+        animarHasta(destinoDobleToque(punto))
+    }
+
+    /**
+     * Lleva el encuadre a [destino] en [DURACION_ANIMACION_MS].
+     *
+     * Saltar de golpe al 250 % desorienta: no se ve de donde sale lo que queda
+     * en pantalla. Animado se entiende que se ha acercado a lo que se toco.
+     *
+     * Se interpola a mano, fotograma a fotograma, para poder retirarse en
+     * cuanto el usuario toma el mando con un pellizco o un arrastre (ver
+     * [turno]). Lo interrumpido se queda donde estaba, que es donde el dedo lo
+     * ha dejado.
+     */
+    suspend fun animarHasta(destino: PosicionEncuadre) {
+        val mio = ++turno
+        val escalaInicial = escala
+        val desplazamientoInicial = desplazamiento
+        val duracion = DURACION_ANIMACION_MS * 1_000_000f
+        var inicio = -1L
+        while (true) {
+            val progreso = withFrameNanos { ahora ->
+                if (inicio < 0) inicio = ahora
+                ((ahora - inicio) / duracion).coerceIn(0f, 1f)
+            }
+            if (turno != mio) return
+            if (progreso >= 1f) {
+                // El valor exacto y no el interpolado: volver a 1 tiene que
+                // dar 1, o `ampliada` podria seguir diciendo que si.
+                escala = destino.escala
+                desplazamiento = destino.desplazamiento
+                return
+            }
+            val tramo = FastOutSlowInEasing.transform(progreso)
+            escala = escalaInicial + (destino.escala - escalaInicial) * tramo
+            desplazamiento = desplazamientoInicial +
+                (destino.desplazamiento - desplazamientoInicial) * tramo
+        }
     }
 
     /**
@@ -86,6 +199,7 @@ class EstadoEncuadre {
         altoRelativo: Float,
         proporcion: Float,
     ) {
+        turno++
         if (tamano == IntSize.Zero || proporcion <= 0f) return
 
         val anchoVista = tamano.width.toFloat()
@@ -191,12 +305,24 @@ class EstadoEncuadre {
         )
     }
 
-    private companion object {
-        const val MINIMO = 1f
-        const val MAXIMO = 6f
+    companion object {
+        /**
+         * A cuanto acerca el doble toque.
+         *
+         * En un A4 que ocupa el ancho de un movil, la letra de cuerpo diez se
+         * queda en milimetro y medio; al 250 % pasa a leerse sin forzar la
+         * vista y todavia cabe una linea entera de una columna de texto.
+         */
+        const val ESCALA_DOBLE_TOQUE = 2.5f
+
+        /** Lo bastante corta para no hacer esperar, y lo bastante para seguirla. */
+        const val DURACION_ANIMACION_MS = 220
+
+        private const val MINIMO = 1f
+        private const val MAXIMO = 6f
 
         /** Que parte de la vista debe ocupar la zona enfocada. */
-        const val FRACCION_OBJETIVO = 0.5f
+        private const val FRACCION_OBJETIVO = 0.5f
 
         /**
          * Limites del acercamiento automatico.
@@ -205,16 +331,157 @@ class EstadoEncuadre {
          * palabra sea larga; el maximo, para que una coincidencia de dos letras
          * no deje la pantalla llena de un trozo de letra sin contexto alrededor.
          */
-        const val ACERCAMIENTO_MINIMO = 1.6f
-        const val ACERCAMIENTO_MAXIMO = 4f
+        private const val ACERCAMIENTO_MINIMO = 1.6f
+        private const val ACERCAMIENTO_MAXIMO = 4f
 
         /** Suelo para no dividir por cero con una zona degenerada. */
-        const val MINIMO_PIXELES = 1f
+        private const val MINIMO_PIXELES = 1f
     }
 }
 
+/** Una escala y un desplazamiento: adonde va el encuadre. */
+data class PosicionEncuadre(val escala: Float, val desplazamiento: Offset)
+
 @Composable
 fun rememberEncuadre(): EstadoEncuadre = remember { EstadoEncuadre() }
+
+/**
+ * Espera dos toques seguidos y llama a [alDobleToque] con el punto del segundo.
+ *
+ * No se usa `detectTapGestures` por una razon concreta. Ese detector da el
+ * toque por perdido en cuanto otro consume un movimiento, y con la pagina
+ * ampliada el arrastre de [encuadreConPaso] consume **cualquier** movimiento,
+ * tambien el temblor de medio pixel que tiene todo dedo al tocar. El resultado
+ * era que acercar funcionaba y alejar fallaba a ratos, justo cuando ya no se
+ * ve la pagina entera y mas falta hace.
+ *
+ * Aqui lo que decide si fue un toque es lo que de verdad lo define: un solo
+ * dedo, que no se ha movido mas que la holgura del sistema y que se ha
+ * levantado antes de que cuente como pulsacion larga. Quien consuma que es
+ * cosa suya. Y no se consume nada salvo el segundo levantamiento: pasar de
+ * pagina, arrastrar y pellizcar siguen llegando a quien los atiende.
+ *
+ * Los dos toques tienen que caer cerca el uno del otro. Dos toques rapidos en
+ * puntos distintos de la pantalla son dos toques, no uno doble.
+ */
+suspend fun PointerInputScope.detectarDobleToque(alDobleToque: suspend (Offset) -> Unit) {
+    val separacionMaxima = SEPARACION_ENTRE_TOQUES.toPx()
+    coroutineScope {
+        awaitEachGesture {
+            val primero = awaitFirstDown(requireUnconsumed = false)
+            val primerToque = esperarToque(primero) ?: return@awaitEachGesture
+
+            // El mismo margen de tiempo que usa el sistema, con su minimo: dos
+            // eventos casi simultaneos son un rebote del panel, no dos toques.
+            val segundo = withTimeoutOrNull(viewConfiguration.doubleTapTimeoutMillis) {
+                val minimo = primerToque.uptimeMillis + viewConfiguration.doubleTapMinTimeMillis
+                var abajo: PointerInputChange
+                do {
+                    abajo = awaitFirstDown(requireUnconsumed = false)
+                } while (abajo.uptimeMillis < minimo)
+                abajo
+            } ?: return@awaitEachGesture
+            if ((segundo.position - primerToque.position).getDistance() > separacionMaxima) {
+                return@awaitEachGesture
+            }
+
+            val segundoToque = esperarToque(segundo) ?: return@awaitEachGesture
+            segundoToque.consume()
+            // Fuera del gesto: la animacion dura varios fotogramas y el
+            // detector tiene que quedar libre para el siguiente toque.
+            launch { alDobleToque(segundo.position) }
+        }
+    }
+}
+
+/**
+ * Sigue al dedo de [abajo] hasta que se levanta, si eso fue un toque.
+ *
+ * Devuelve nulo si se convierte en otra cosa: un arrastre, un pellizco o una
+ * pulsacion larga.
+ */
+private suspend fun AwaitPointerEventScope.esperarToque(abajo: PointerInputChange): PointerInputChange? {
+    val holgura = viewConfiguration.touchSlop
+    while (true) {
+        val evento = awaitPointerEvent()
+        if (evento.changes.count { it.pressed } > 1) return null
+        val dedo = evento.changes.firstOrNull { it.id == abajo.id } ?: return null
+        if ((dedo.position - abajo.position).getDistance() > holgura) return null
+        if (!dedo.pressed) {
+            val duracion = dedo.uptimeMillis - abajo.uptimeMillis
+            return if (duracion < viewConfiguration.longPressTimeoutMillis) dedo else null
+        }
+    }
+}
+
+/** Distancia maxima entre los dos toques; la misma que usa Android. */
+private val SEPARACION_ENTRE_TOQUES = 100.dp
+
+/**
+ * Doble toque en la lectura continua, que no se parece al de la lateral.
+ *
+ * Ahi la escala no transforma la pagina: ensancha la columna, y lo que hay
+ * que mover para no perder el sitio son las dos barras de desplazamiento. Esta
+ * funcion dice adonde, con la regla de siempre: lo que estaba bajo el dedo
+ * sigue bajo el dedo.
+ *
+ * Se calcula **antes** de medir la columna nueva, a proposito. Esperar a que
+ * se mida y corregir despues deja un fotograma con la columna ya ancha y las
+ * barras sin mover, y se ve como un parpadeo hacia la esquina. Se puede
+ * calcular de antemano porque cada pagina es una caja de proporcion fija que
+ * ocupa el ancho de la columna menos sus margenes: su alto nuevo sale de
+ * multiplicar el de ahora por lo que crece ese ancho.
+ *
+ * @param punto donde fue el toque, relativo a la vista y no al contenido.
+ * @param anchoVista ancho de la vista sin ampliar.
+ * @param margen margen lateral de la columna, a cada lado.
+ * @param lateral desplazamiento horizontal actual.
+ * @param inicioVista `viewportStartOffset` de la lista: negativo cuando la
+ *   lista tiene margen arriba, porque las paginas cuentan desde el.
+ * @param paginas las paginas visibles ahora mismo.
+ */
+fun anclarColumna(
+    punto: Offset,
+    escalaAntes: Float,
+    escalaDespues: Float,
+    anchoVista: Float,
+    margen: Float,
+    lateral: Int,
+    inicioVista: Int,
+    paginas: List<LazyListItemInfo>,
+): AnclajeColumna {
+    val anchoPaginaAntes = (anchoVista * escalaAntes - 2 * margen).coerceAtLeast(1f)
+    val anchoPaginaDespues = (anchoVista * escalaDespues - 2 * margen).coerceAtLeast(1f)
+    val crece = anchoPaginaDespues / anchoPaginaAntes
+
+    val fraccionX = ((lateral + punto.x - margen) / anchoPaginaAntes).coerceIn(0f, 1f)
+    val maximoLateral = (anchoVista * escalaDespues - anchoVista).coerceAtLeast(0f)
+    val lateralNuevo = (margen + fraccionX * anchoPaginaDespues - punto.x)
+        .coerceIn(0f, maximoLateral)
+        .roundToInt()
+
+    // En el hueco entre dos paginas no hay ninguna bajo el dedo; vale la mas
+    // cercana, que es la que se estaba mirando.
+    val y = punto.y + inicioVista
+    val pagina = paginas.firstOrNull { y >= it.offset && y < it.offset + it.size }
+        ?: paginas.minByOrNull { abs(it.offset + it.size / 2f - y) }
+        ?: return AnclajeColumna(lateralNuevo, null, 0)
+    val fraccionY = ((y - pagina.offset) / pagina.size.coerceAtLeast(1)).coerceIn(0f, 1f)
+    // Cuanto tiene que quedar por encima del borde superior de la lista para
+    // que el punto tocado siga a la misma altura. Puede ser negativo: la pagina
+    // empieza mas abajo del borde, y la lista lo resuelve subiendo a la de antes.
+    val desplazamientoPagina = (fraccionY * pagina.size * crece - y).roundToInt()
+    return AnclajeColumna(lateralNuevo, pagina.index, desplazamientoPagina)
+}
+
+/** Adonde llevar las dos barras de la lectura continua tras un doble toque. */
+data class AnclajeColumna(
+    val lateral: Int,
+    /** Pagina que hay que llevar arriba, o nulo si no habia ninguna a la vista. */
+    val pagina: Int?,
+    /** Cuanto de esa pagina queda por encima del borde, como en `scrollToItem`. */
+    val desplazamientoPagina: Int,
+)
 
 /**
  * Pellizco para ampliar y arrastre para moverse.
@@ -246,10 +513,15 @@ fun Modifier.encuadre(estado: EstadoEncuadre): Modifier =
  * solo mueve la pagina cuando ya esta ampliada, que es cuando hay algo fuera de
  * la vista que ver; si no lo esta, el evento se deja pasar y lo recoge quien
  * corresponda para pasar de pagina.
+ *
+ * Y dos toques seguidos acercan al punto tocado, o devuelven la pagina entera
+ * si ya estaba ampliada. El pellizco pide las dos manos con el movil en una;
+ * el doble toque se hace con el pulgar.
  */
 fun Modifier.encuadreConPaso(estado: EstadoEncuadre): Modifier =
     this
         .onSizeChanged { estado.tamano = it }
+        .pointerInput(Unit) { detectarDobleToque(estado::alternarConDobleToque) }
         .pointerInput(Unit) {
             awaitEachGesture {
                 awaitFirstDown(requireUnconsumed = false)

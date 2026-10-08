@@ -129,7 +129,7 @@
     <string name="ayuda_que_es_c">一套完全在手机上运行的 PDF 工具。合并、拆分、把照片变成文档、在页面上涂画和书写、签署。无需账号、无需联网、没有广告。</string>
     <string name="ayuda_que_es_t">NexaPDF 是什么？</string>
     <string name="ayuda_titulo">帮助</string>
-    <string name="ayuda_visor_c">用「阅读 PDF」打开文档，或在最近文件中点按一个。放大镜可搜索整个文档：匹配处会在页面上高亮，箭头可在它们之间跳转。列表图标显示文档章节（如果有），盾牌图标显示数字签名。双指缩放，拖动移动。</string>
+    <string name="ayuda_visor_c">用「阅读 PDF」打开文档，或在最近文件中点按一个。放大镜可搜索整个文档：匹配处会在页面上高亮，箭头可在它们之间跳转。列表图标显示文档章节（如果有），盾牌图标显示数字签名。双击可放大点按的位置，再次双击即可看到整页。双指自由缩放，拖动移动。</string>
     <string name="ayuda_visor_t">阅读 PDF</string>
     <string name="cd_ajustes">打开设置</string>
     <string name="cd_bandera">%1$s 的旗帜</string>

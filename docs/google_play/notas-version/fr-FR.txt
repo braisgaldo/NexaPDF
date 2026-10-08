@@ -1,9 +1,7 @@
 Nouveautés
 
-Scanner de documents. Photographiez une feuille et obtenez un PDF droit et lisible, pas une photo de travers dans un PDF.
+Touchez deux fois pour zoomer exactement là où vous touchez, et encore deux fois pour revoir la page entière. Fonctionne page par page et en défilement continu.
 
-• Trouve les bords pendant que vous visez et déclenche quand la main est immobile.
-• Redresse la perspective, nettoie la page et peut garder la couleur.
-• Plusieurs photos par page, fusionnées : moins de grain.
-• Mode carte : pièce d'identité ou passeport à taille réelle, recto et verso.
-• Peut lire le texte pour chercher dedans. Tout sur votre téléphone.
+• Ce qui était sous votre doigt reste sous votre doigt, même dans les coins.
+• En défilement continu, le zoom fonctionne à nouveau et se conserve d'une page à l'autre.
+• Corrigé : le numéro de page ne se mettait pas à jour en revenant à la page d'ouverture.

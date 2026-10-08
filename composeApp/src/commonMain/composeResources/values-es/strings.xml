@@ -129,7 +129,7 @@ Para separar, «Dividir en partes…» enseña todas las páginas de golpe. Cada
     <string name="ayuda_que_es_c">Una caja de herramientas para PDF que funciona entera en tu móvil. Unir, separar, convertir fotos en documentos, dibujar y escribir sobre las páginas, y firmar. Sin cuenta, sin internet y sin anuncios.</string>
     <string name="ayuda_que_es_t">¿Qué es NexaPDF?</string>
     <string name="ayuda_titulo">Ayuda</string>
-    <string name="ayuda_visor_c">Abre un documento con Leer PDF, o toca uno en Ficheros recientes. La lupa busca en todo el documento: las apariciones quedan resaltadas sobre la página y las flechas te llevan de una a otra. El icono de lista muestra las secciones del documento, si las tiene, y el escudo sus firmas digitales. Pellizca para ampliar y arrastra para moverte.</string>
+    <string name="ayuda_visor_c">Abre un documento con Leer PDF, o toca uno en Ficheros recientes. La lupa busca en todo el documento: las apariciones quedan resaltadas sobre la página y las flechas te llevan de una a otra. El icono de lista muestra las secciones del documento, si las tiene, y el escudo sus firmas digitales. Toca dos veces para acercarte donde toques, y otras dos para volver a ver la página entera. Pellizca para ampliar a tu medida y arrastra para moverte.</string>
     <string name="ayuda_visor_t">Leer un PDF</string>
     <string name="cd_ajustes">Abrir ajustes</string>
     <string name="cd_bandera">Bandera de %1$s</string>

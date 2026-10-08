@@ -16,7 +16,7 @@ plugins {
 // --- Versionado -------------------------------------------------------------
 // versionName sigue SemVer. versionCode se deriva de forma monotona con la
 // formula MAJOR * 10_000 + MINOR * 100 + PATCH, documentada en docs/INSTALL.md.
-val appVersionName = "1.5.0"
+val appVersionName = "1.6.0"
 val appVersionCode = appVersionName.split(".").let { (major, minor, patch) ->
     major.toInt() * 10_000 + minor.toInt() * 100 + patch.toInt()
 }
@@ -93,6 +93,7 @@ kotlin {
 
     sourceSets {
         val desktopMain = getByName("desktopMain")
+        val desktopTest = getByName("desktopTest")
 
         commonMain {
             kotlin.srcDir(generatedBuildInfoDir)
@@ -155,6 +156,10 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+        }
+
+        desktopTest.dependencies {
+            implementation(libs.compose.ui.test)
         }
     }
 }

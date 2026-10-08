@@ -1,9 +1,7 @@
 What's new
 
-Document scanner. Photograph a sheet of paper and get a straight, readable PDF instead of a crooked photo inside a PDF.
+Double-tap to zoom in exactly where you tap, and double-tap again to see the whole page. Works both page by page and in continuous scrolling.
 
-• Finds the edges while you aim and shoots once your hand is still.
-• Corrects the perspective, takes several shots per page, and can keep colour.
-• Card mode: ID, licence or passport come out at actual size, both sides on one sheet.
-• Reads the text so you can search inside, all on your phone.
-• Saves with your chosen name.
+• What was under your finger stays under your finger, even in the corners.
+• In continuous scrolling, zooming works again and stays as you move on to the next page.
+• Fixed: the page number didn't update when going back to the page you opened the document on.

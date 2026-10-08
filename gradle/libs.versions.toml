@@ -94,6 +94,10 @@ bouncycastle-util = { module = "org.bouncycastle:bcutil-jdk15to18", version.ref 
 
 # --- Pruebas ---
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+# Gestos de verdad en las pruebas de escritorio: toques, arrastres y pellizcos
+# inyectados por la misma tuberia de entrada que usa la aplicacion. Solo
+# entra en desktopTest; el binario de Android no lo lleva.
+compose-ui-test = { module = "org.jetbrains.compose.ui:ui-test", version.ref = "composeMultiplatform" }
 junit = { module = "junit:junit", version.ref = "junit" }
 androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidxTestJunit" }
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidxTestRunner" }

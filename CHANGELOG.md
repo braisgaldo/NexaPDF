@@ -5,6 +5,70 @@ Todos los cambios reseñables de NexaPDF se documentan en este fichero.
 El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y el
 proyecto se versiona con [SemVer](https://semver.org/lang/es/).
 
+## [1.6.0] — 2026-10-08
+
+### Nuevo
+
+- **Doble toque para acercar y alejar**, en las dos formas de leer. Dos toques
+  sobre la página acercan al 250 % **justo donde has tocado**: lo que estaba
+  bajo el dedo sigue bajo el dedo, también en las esquinas. Es lo que hace falta
+  para leer *ese* párrafo, y no uno cualquiera que haya que ir a buscar después
+  arrastrando. Otros dos toques devuelven la página entera. El pellizco sigue
+  ahí para afinar; el doble toque es para el pulgar, con el teléfono en una mano.
+
+  - **Página a página**, el acercamiento va animado, en 220 ms, y se puede
+    interrumpir: si pellizcas o arrastras a mitad de camino, manda el dedo y la
+    animación se retira en lugar de pelearse con él.
+  - **En continuo** se ensancha la columna y las dos barras de desplazamiento se
+    recolocan **antes** de que se dibuje la columna nueva. Corregirlas después
+    dejaba un fotograma con la columna ya ancha y las barras sin mover, que se
+    veía como un parpadeo hacia la esquina.
+  - **No se confunde con nada**: dos toques lejos el uno del otro (más de
+    100 dp, como en Android), separados más de lo que el sistema considera doble
+    toque, una pulsación larga, un arrastre o un pellizco no cuentan.
+
+### Corregido
+
+- **Ampliar en el desplazamiento continuo no hacía nada** desde la 1.5.0. Para
+  poder acercarse a lo encontrado en cuanto la página está medida, el visor
+  reiniciaba el encuadre cada vez que cambiaba de tamaño; y en continuo,
+  ensanchar la columna **es** cambiarla de tamaño. La columna volvía a su ancho
+  en el fotograma siguiente. Ahora eso sólo afecta a la lectura página a página,
+  que es donde tiene sentido.
+- **Leyendo ampliado de seguido, la columna se estrechaba al pasar de página.**
+  El encuadre se reiniciaba con cada cambio de página, también cuando lo
+  provocaba el propio dedo al seguir leyendo hacia abajo. Ahora sólo vuelve al
+  ancho normal en un salto —la búsqueda, el índice o la barra de abajo—, que es
+  cuando se llega a una página cualquiera y conviene verla entera.
+- **Volver deslizando a la página por la que se abrió el documento no movía la
+  barra de abajo**: se quedaba marcando la anterior, y la flecha de «siguiente»
+  saltaba entonces una de más. Se comparaba con el número de página del momento
+  de abrir, no con el actual.
+- La integración continua fallaba desde la 1.5.0 porque `docs/privacidad.html`
+  no se había regenerado al cambiar el número de versión. Y la guía de Play
+  daba para la 1.5.0 el código de versión de la 1.4.0.
+
+### Notas técnicas
+
+- El doble toque tiene detector propio en lugar de `detectTapGestures`. El de
+  Compose da el toque por cancelado en cuanto otro consume un movimiento, y con
+  la página ampliada el arrastre consume cualquiera, también el temblor de un par
+  de píxeles que tiene todo toque real: **acercar funcionaba y alejar fallaba a
+  ratos**, justo cuando más falta hace. Tampoco mira la distancia entre los dos
+  toques. Aquí decide lo que define un toque: un solo dedo, que no se ha movido
+  más que la holgura del sistema y que se ha levantado antes de contar como
+  pulsación larga.
+- **Pruebas de gestos de verdad** en escritorio, con `ui-test` de Compose:
+  toques, temblores, arrastres y pellizcos inyectados por la misma tubería de
+  entrada que usa la aplicación, sobre el componente, sobre un pager real y
+  sobre el visor completo con dobles mínimos del contenedor. Se comprobó que
+  **fallan con el código roto**: con el detector de serie caen la del temblor,
+  la de los toques lejanos y la de la pulsación larga; con la clave de tamaño,
+  la de la columna («pasó de 336 a 336»); y con la página capturada al abrir, la
+  de volver a la primera. `ui-test` sólo entra en las pruebas, no en el binario.
+- La lectura continua sale a su propio componente, `ColumnaAmpliable`, para
+  poder probarla sin montar el visor entero.
+
 ## [1.5.0] — 2026-09-15
 
 ### Nuevo

@@ -129,7 +129,7 @@
     <string name="ayuda_que_es_c">すべて端末内で動く PDF の道具箱です。結合、分割、写真を文書に変換、ページへの手書きや文字入力、署名ができます。アカウント不要、インターネット不要、広告なし。</string>
     <string name="ayuda_que_es_t">NexaPDF とは？</string>
     <string name="ayuda_titulo">ヘルプ</string>
-    <string name="ayuda_visor_c">「PDF を読む」で開くか、最近のファイルから選びます。虫めがねは文書全体を検索し、見つかった箇所はページ上で強調され、矢印で移動できます。リストのアイコンは目次、盾のアイコンは電子署名を表示します。ピンチで拡大、ドラッグで移動します。</string>
+    <string name="ayuda_visor_c">「PDF を読む」で開くか、最近のファイルから選びます。虫めがねは文書全体を検索し、見つかった箇所はページ上で強調され、矢印で移動できます。リストのアイコンは目次、盾のアイコンは電子署名を表示します。ダブルタップでその場所を拡大し、もう一度ダブルタップでページ全体に戻ります。ピンチで自由に拡大、ドラッグで移動します。</string>
     <string name="ayuda_visor_t">PDF を読む</string>
     <string name="cd_ajustes">設定を開く</string>
     <string name="cd_bandera">%1$s の旗</string>

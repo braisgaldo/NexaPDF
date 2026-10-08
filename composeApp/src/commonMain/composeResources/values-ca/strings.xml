@@ -129,7 +129,7 @@ Per separar, «Divideix en parts…» mostra totes les pàgines de cop. Cada par
     <string name="ayuda_que_es_c">Una caixa d’eines per a PDF que funciona sencera al teu mòbil. Unir, dividir, convertir fotos en documents, dibuixar i escriure sobre les pàgines, i signar. Sense compte, sense internet i sense anuncis.</string>
     <string name="ayuda_que_es_t">Què és NexaPDF?</string>
     <string name="ayuda_titulo">Ajuda</string>
-    <string name="ayuda_visor_c">Obre un document amb Llegeix PDF, o toca’n un a Fitxers recents. La lupa cerca a tot el document: les aparicions queden ressaltades a la pàgina i les fletxes t’hi porten. La icona de llista mostra les seccions i l’escut les signatures digitals.</string>
+    <string name="ayuda_visor_c">Obre un document amb Llegeix PDF, o toca’n un a Fitxers recents. La lupa cerca a tot el document: les aparicions queden ressaltades a la pàgina i les fletxes t’hi porten. La icona de llista mostra les seccions i l’escut les signatures digitals. Toca dues vegades per apropar-te on toquis, i dues més per tornar a veure la pàgina sencera. Pessiga per ampliar a la teva mida i arrossega per moure’t.</string>
     <string name="ayuda_visor_t">Llegir un PDF</string>
     <string name="cd_ajustes">Obre la configuració</string>
     <string name="cd_bandera">Bandera de %1$s</string>

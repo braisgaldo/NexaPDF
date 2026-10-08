@@ -1,9 +1,7 @@
 Novetats
 
-Escàner de documents. Fotografia un paper i obtens un PDF dret i llegible, no una foto torta dins d'un PDF.
+Toca dues vegades per apropar-te just on has tocat, i dues més per tornar a veure la pàgina sencera. Funciona pàgina a pàgina i amb desplaçament continu.
 
-• Troba les vores mentre apuntes i dispara sol quan la mà està quieta.
-• Corregeix la perspectiva, neteja la pàgina i pot desar en color.
-• Fa diverses fotos per pàgina i les fusiona: menys gra, més nitidesa.
-• Mode targeta: DNI o passaport a mida real, les dues cares en un full.
-• Pot llegir el text per cercar-hi dins. Tot al teu telèfon.
+• El que era sota el dit es queda sota el dit, també a les cantonades.
+• Amb desplaçament continu, ampliar torna a funcionar i es manté en passar de pàgina.
+• Corregit: el número de pàgina no s'actualitzava en tornar a la pàgina on havies obert el document.

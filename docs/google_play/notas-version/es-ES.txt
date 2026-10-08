@@ -1,9 +1,7 @@
 Novedades
 
-Escáner de documentos. Fotografía un papel y sale un PDF derecho y legible, no una foto torcida dentro de un PDF.
+Toca dos veces para acercarte justo donde has tocado, y otras dos para volver a ver la página entera. Funciona leyendo página a página y en continuo.
 
-• Encuentra los bordes mientras apuntas y dispara solo cuando la mano está quieta.
-• Corrige la perspectiva, hace varias fotos por hoja y puede guardar en color.
-• Modo tarjeta: DNI, carné o pasaporte salen a tamaño real, las dos caras en una hoja.
-• Puede leer el texto para que busques dentro. Todo en tu teléfono.
-• Guarda con el nombre que elijas.
+• Lo que estaba bajo el dedo se queda bajo el dedo, también en las esquinas.
+• En lectura continua, ampliar vuelve a funcionar y no se pierde al pasar de página.
+• Corregido: el número de página no se actualizaba al volver a la página por la que abriste el documento.

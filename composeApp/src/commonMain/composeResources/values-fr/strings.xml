@@ -129,7 +129,7 @@ Pour diviser, « Diviser en parties… » affiche toutes les pages. Chaque parti
     <string name="ayuda_que_es_c">Une boîte à outils PDF qui fonctionne entièrement sur votre téléphone. Fusionner, diviser, transformer des photos en documents, dessiner et écrire sur les pages, et signer. Sans compte, sans internet, sans publicité.</string>
     <string name="ayuda_que_es_t">Qu’est-ce que NexaPDF ?</string>
     <string name="ayuda_titulo">Aide</string>
-    <string name="ayuda_visor_c">Ouvrez un document avec Lire un PDF, ou touchez-en un dans Fichiers récents. La loupe cherche dans tout le document : les occurrences sont surlignées sur la page et les flèches passent de l’une à l’autre. L’icône de liste montre les sections, et le bouclier les signatures numériques. Pincez pour zoomer et faites glisser pour vous déplacer.</string>
+    <string name="ayuda_visor_c">Ouvrez un document avec Lire un PDF, ou touchez-en un dans Fichiers récents. La loupe cherche dans tout le document : les occurrences sont surlignées sur la page et les flèches passent de l’une à l’autre. L’icône de liste montre les sections, et le bouclier les signatures numériques. Touchez deux fois pour zoomer là où vous touchez, et encore deux fois pour revoir la page entière. Pincez pour zoomer à votre guise et faites glisser pour vous déplacer.</string>
     <string name="ayuda_visor_t">Lire un PDF</string>
     <string name="cd_ajustes">Ouvrir les réglages</string>
     <string name="cd_bandera">Drapeau pour %1$s</string>

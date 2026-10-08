@@ -55,10 +55,14 @@ sdk.dir=/ruta/a/dev-tools/android-sdk
 ## Pruebas
 
 ```bash
-./gradlew :composeApp:desktopTest                 # 32 pruebas unitarias
-./gradlew :composeApp:connectedDebugAndroidTest   # 31 pruebas en el dispositivo
+./gradlew :composeApp:desktopTest                 # 107 pruebas, gestos incluidos
+./gradlew :composeApp:connectedDebugAndroidTest   # 58 pruebas en el dispositivo
 ./gradlew :composeApp:lintRelease                 # lint de Android
 ```
+
+`desktopTest` no necesita ni móvil ni emulador, y aun así prueba los gestos de
+verdad: los de `src/desktopTest` inyectan toques, arrastres y pellizcos por la
+tubería de entrada de Compose sobre el visor real, sin ventana.
 
 Las pruebas en dispositivo necesitan un móvil conectado con depuración USB
 activada. Comprueba que se ve con `adb devices`.
